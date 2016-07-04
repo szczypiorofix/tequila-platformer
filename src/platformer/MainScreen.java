@@ -31,33 +31,28 @@ public MainScreen(GameWindow gameWindow)
 
 public void tick()
 {
-	key.update();
-	
-	//if (keyboard.isAnyKeyDown()) System.out.println("Keypressed!: " +keyboard.getKey());
-	
-	
-	
-	if (key.isKeyDown(KeyEvent.VK_RIGHT))
+	//key.update();
+		
+	if ((key.isKeyDown(KeyEvent.VK_RIGHT)) && (player.getX() < MainClass.WIDTH - 50))
 	{
 		player.setSpeedX(6);
 	}
 	
-	if (key.isKeyDown(KeyEvent.VK_LEFT))
+	if ((key.isKeyDown(KeyEvent.VK_LEFT)) && (player.getX() > 15))
 	{
 		player.setSpeedX(-6);
 	}
 	
-	if ((key.isKeyDown(KeyEvent.VK_UP)) && (!player.getJump()))
+	if ((key.isKeyDown(KeyEvent.VK_UP)) && (!player.getJump()) && (player.getY() > 50))
 	{
-		player.setY(player.getY() -35);
+		player.setSpeedY(-10);
 		player.setJumping(true);
 		player.setJump(true);
-		player.setSpeedY(1);
-		//player.setFalling(true);
 	}
 	
 	if (key.isKeyDown(KeyEvent.VK_ESCAPE)) exit=true;
 	
+	if ((key.isKeyDown(KeyEvent.VK_UP)) && (player.getSpeedY() > 0)) player.setSpeedY(player.getSpeedY() -1);
 	
 	if (player.getSpeedX() > 0) player.setSpeedX(player.getSpeedX() -1);
 	if (player.getSpeedX() < 0) player.setSpeedX(player.getSpeedX() +1);
