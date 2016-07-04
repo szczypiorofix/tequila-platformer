@@ -1,5 +1,9 @@
 package platformer;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 public class MainClass implements Runnable{
 
@@ -44,10 +48,28 @@ public void run() {
 	double amountOfTicks = 60.0;
 	double ns = 1000000000 / amountOfTicks;
 	double delta = 0;
-	long timer = System.currentTimeMillis();
+	//long timer = System.currentTimeMillis();
 	int updates = 0;
 	int frames = 0;
 	
+	// GAME LOOP
+	
+	
+	Timer timer = new Timer(17, new ActionListener()
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			mainScreen.tick();
+			mainScreen.render(60, 60);
+			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
+		}
+	});
+	
+	timer.setInitialDelay(1);
+	timer.start();
+	
+	/**
 	while(running)
 	{	
 		long now = System.nanoTime();
@@ -75,7 +97,8 @@ public void run() {
 			frames = 0;
 			updates = 0;
 		}
-	}	
+	}
+	**/
 }
 
 public static void main(String[] args) {

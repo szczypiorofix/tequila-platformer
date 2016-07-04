@@ -8,11 +8,7 @@ public abstract class GameObject {
 
 protected float x,y;
 protected ObjectId id;
-protected boolean falling = true;
-protected boolean jumping = false;
-protected float gravity = 0.5f;
-protected float speedX = 0;
-protected float speedY = 0;
+
 
 
 
@@ -54,45 +50,5 @@ public ObjectId getId() {
 
 public void setId(ObjectId id) {
 	this.id = id;
-}
-
-public boolean isFalling() {
-	return falling;
-}
-
-public void setFalling(boolean falling) {
-	this.falling = falling;
-}
-
-public boolean isJumping() {
-	return jumping;
-}
-
-public void setJumping(boolean jumping) {
-	this.jumping = jumping;
-}
-
-public float getGravity() {
-	return gravity;
-}
-
-public void setGravity(float gravity) {
-	this.gravity = gravity;
-}
-
-public float getSpeedX() {
-	return speedX;
-}
-
-public void setSpeedX(float speedX) {
-	this.speedX = speedX;
-}
-
-public float getSpeedY() {
-	return speedY;
-}
-
-public void setSpeedY(float speedY) {
-	this.speedY = speedY;
 }
 }

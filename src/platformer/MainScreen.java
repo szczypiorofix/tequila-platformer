@@ -32,7 +32,26 @@ public MainScreen(GameWindow gameWindow)
 public void tick()
 {
 	//key.update();
+	
+	if (player.isOnGround())
+	{
+		player.setSpeedX(player.getSpeedX() * 0.9f);
 		
+		if ((key.isKeyDown(KeyEvent.VK_UP)) && (player.getY() > 20))
+		{
+			if (player.isJumpAgain())
+			{
+				player.setSpeedY(-10);
+				
+				// https://wiki.allegro.cc/index.php?title=How_to_implement_jumping_in_platformers
+				// http://jsfiddle.net/LyM87/2176/
+			}
+		}
+		
+		
+	}
+	
+	
 	if ((key.isKeyDown(KeyEvent.VK_RIGHT)) && (player.getX() < MainClass.WIDTH - 50))
 	{
 		player.setSpeedX(6);
@@ -43,19 +62,9 @@ public void tick()
 		player.setSpeedX(-6);
 	}
 	
-	if ((key.isKeyDown(KeyEvent.VK_UP)) && (!player.getJump()) && (player.getY() > 50))
-	{
-		player.setSpeedY(-10);
-		player.setJumping(true);
-		player.setJump(true);
-	}
+	
 	
 	if (key.isKeyDown(KeyEvent.VK_ESCAPE)) exit=true;
-	
-	if ((key.isKeyDown(KeyEvent.VK_UP)) && (player.getSpeedY() > 0)) player.setSpeedY(player.getSpeedY() -1);
-	
-	if (player.getSpeedX() > 0) player.setSpeedX(player.getSpeedX() -1);
-	if (player.getSpeedX() < 0) player.setSpeedX(player.getSpeedX() +1);
 	
 	objectsHandler.tick();
 }
@@ -87,7 +96,13 @@ public void render(int fps_count, int ticks_count)
 
 	g.setColor(Color.WHITE);
 	g.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 10);
-	//g.drawString("KEY: "+keyInput, WIDTH - 100, 10);
+	g.drawString("KEY: "+key.getKey(), 10, 20);
+	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 100, 40);
+	//g.drawString("speedX:"+player.getSpeedX(), MainClass.WIDTH - 100, 60);
+	//g.drawString("speedY:"+player.getSpeedY(), MainClass.WIDTH - 100, 80);
+	//g.drawString("Falling: "+player.falling, MainClass.WIDTH - 100, 100);
+	//g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 120);
+	
 	objectsHandler.render(g);
 	
 	//////////////////////////////////////////////////////////

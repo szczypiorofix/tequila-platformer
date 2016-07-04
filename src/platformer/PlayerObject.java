@@ -8,45 +8,25 @@ import java.util.LinkedList;
 public class PlayerObject extends GameObject{
 
 private float width = 30, height = 30;
-protected final float MAX_SPEED_X = 5;
-protected final float MAX_SPEED_Y = 5;
-private final int MAX_SPEED = 20;
 private ObjectsHandler objectsHandler;
-private boolean jump;
-	
-	
-	
+protected boolean onGround;
+protected boolean jumpAgain;
+protected float speedX = 0, speedY = 0;
+protected float gravity = 0.5f;
+
+
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
 	super(id, x, y);
 	this.objectsHandler = objectsHandler;
-	falling = true;
-	jumping = false;
-	jump = false;
+	onGround = false;
+	jumpAgain = false;
 }
 
-
-
-@Override
-public String toString() {
-	return "PlayerObject [width=" + width + ", height=" + height + ", x=" + x + ", y=" + y + ", id=" + id + ", falling="
-			+ falling + ", jumping=" + jumping + ", gravity=" + gravity + ", speedX=" + speedX + ", speedY=" + speedY
-			+ "]";
-}
 
 @Override
 public void tick(LinkedList<GameObject> object) {
 	
-	x += speedX;
-	y += speedY;
-	
-	if (falling)
-	{
-		jumping = false;
-		speedY += gravity;
-		if (speedY > MAX_SPEED) speedY = MAX_SPEED;
-	}
-	
-	collisions(object);
+	//collisions(object);
 }
 
 
@@ -59,16 +39,13 @@ public void collisions(LinkedList<GameObject> object)
 		{
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
-				if (y > (tempObject.getBounds().height)) {
+				if (y > (tempObject.getBounds().height +10)) {
 					
 					y = tempObject.getBounds().y - height;
-					speedY = 0;
-					jumping = false;
-					falling = false;
-					jump = false;
+
+					
 				}
 			}
-			else falling = true;
 		}
 	}
 }
@@ -77,27 +54,11 @@ public void collisions(LinkedList<GameObject> object)
 public void render(Graphics g) {
 	g.setColor(Color.RED);
 	g.fillRect((int) x, (int) y, (int) width , (int)height );
-	g.drawString("X:"+x +" Y:"+y, MainClass.WIDTH - 100, 40);
-	g.drawString("speedX:"+speedX, MainClass.WIDTH - 100, 60);
-	g.drawString("speedY:"+speedY, MainClass.WIDTH - 100, 80);
-	g.drawString("Falling: "+falling, MainClass.WIDTH - 100, 100);
-	g.drawString("Jumping: "+jumping, MainClass.WIDTH - 100, 120);
-	g.drawString("Jump: "+jump, MainClass.WIDTH - 100, 140);
 }
 
 @Override
 public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, (int) width, (int) height);
-}
-
-public void setJump(boolean b)
-{
-	jump = b;
-}
-
-public boolean getJump()
-{
-	return jump;
 }
 
 public float getWidth() {
@@ -116,15 +77,45 @@ public void setHeight(float height) {
 	this.height = height;
 }
 
-public float getMAX_SPEED_X() {
-	return MAX_SPEED_X;
+public float getSpeedX() {
+	return speedX;
 }
 
-public float getMAX_SPEED_Y() {
-	return MAX_SPEED_Y;
+public void setSpeedX(float speedX) {
+	this.speedX = speedX;
 }
 
-public int getMAX_SPEED() {
-	return MAX_SPEED;
+public float getSpeedY() {
+	return speedY;
 }
+
+
+public void setSpeedY(float speedY) {
+	this.speedY = speedY;
+}
+
+public float getGravity() {
+	return gravity;
+}
+
+public void setGravity(float gravity) {
+	this.gravity = gravity;
+}
+
+public boolean isOnGround() {
+	return onGround;
+}
+
+public void setOnGround(boolean onGround) {
+	this.onGround = onGround;
+}
+
+public boolean isJumpAgain() {
+	return jumpAgain;
+}
+
+public void setJumpAgain(boolean jumpAgain) {
+	this.jumpAgain = jumpAgain;
+}
+
 }
