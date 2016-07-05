@@ -40,9 +40,9 @@ public void tick()
 	KEY_CTRL = false;
 	KEY_SHIFT = false;
 	
-	if (key.isKeyDown(KeyEvent.VK_LEFT)) KEY_LEFT = true;
-	if (key.isKeyDown(KeyEvent.VK_RIGHT)) KEY_RIGHT = true;
-	if (key.isKeyDown(KeyEvent.VK_UP)) KEY_UP = true;
+	if ((key.isKeyDown(KeyEvent.VK_LEFT)) || (key.isKeyDown(KeyEvent.VK_A))) KEY_LEFT = true;
+	if (((key.isKeyDown(KeyEvent.VK_RIGHT)) || (key.isKeyDown(KeyEvent.VK_D)))) KEY_RIGHT = true;
+	if ((key.isKeyDown(KeyEvent.VK_UP)) || (key.isKeyDown(KeyEvent.VK_W))) KEY_UP = true;
 	if (key.isKeyDown(KeyEvent.VK_CONTROL)) KEY_CTRL = true;
 	if (key.isKeyDown(KeyEvent.VK_SHIFT)) KEY_SHIFT = true;
 	if (key.isKeyDown(KeyEvent.VK_ESCAPE)) exit=true;

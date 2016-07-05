@@ -44,9 +44,12 @@ public void tick(LinkedList<GameObject> object) {
 	
 	x += velX;
 	y += velY;
-	if (y < 50) y = 50;
 	
-	velX *= 0.8f;
+	if (y < 50) y = 50; // ZABEZPIECZENIE ¯EBY GRACZ NIE WYSKOCZY£ PRZY NISKIEJ GRAVITY POZA EKRAN;
+	if (x < 30) x = 30;
+	if (x > MainClass.WIDTH -50) x = MainClass.WIDTH - 50;
+	
+	velX *= 0.9f;
 	
 	if ((velX < 0.1f) && (velX > -0.1f)) velX = 0.0f;
 	
