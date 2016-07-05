@@ -1,11 +1,13 @@
 package platformer;
 
 import java.awt.Image;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-public class GameWindow extends JFrame {
+public class GameWindow extends JFrame implements WindowListener{
 
 private static final long serialVersionUID = 8434543456858249978L;
 private int width, height;
@@ -31,6 +33,7 @@ public GameWindow(String title, int width, int height)
 	}
 	
 	this.setIconImage(programIcon);
+	this.addWindowListener(this);
 }
 
 public void showWindow(boolean showWindow)
@@ -46,5 +49,28 @@ public void blank()
 {
 	// DO NOTHING IS THE BEST YOU CAN DO :)
 }
+
+@Override
+public void windowActivated(WindowEvent arg0) {
+	this.requestFocusInWindow();
+}
+
+@Override
+public void windowClosed(WindowEvent arg0) {}
+
+@Override
+public void windowClosing(WindowEvent arg0) {}
+
+@Override
+public void windowDeactivated(WindowEvent arg0) {}
+
+@Override
+public void windowDeiconified(WindowEvent arg0) {}
+
+@Override
+public void windowIconified(WindowEvent arg0) {}
+
+@Override
+public void windowOpened(WindowEvent arg0) {}
 
 }

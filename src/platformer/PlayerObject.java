@@ -27,9 +27,9 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 @Override
 public void tick(LinkedList<GameObject> object) {
 	
-	if ((MainScreen.KEY_LEFT) && (x > 30) && (velX > -7)) velX -= 0.8f;
+	if ((MainScreen.KEY_LEFT)) velX -= 0.9f;
 	
-	if ((MainScreen.KEY_RIGHT) && (x < MainClass.WIDTH - 50) && (velY < 7)) velX += 0.8f;
+	if (MainScreen.KEY_RIGHT) velX += 0.9f;
 	
 	if ((MainScreen.KEY_CTRL) || (MainScreen.KEY_SHIFT)) 
 		if (MainScreen.KEY_CTRL) gravity = 0.1f;
@@ -45,11 +45,7 @@ public void tick(LinkedList<GameObject> object) {
 	x += velX;
 	y += velY;
 	
-	if (y < 50) y = 50; // ZABEZPIECZENIE ¯EBY GRACZ NIE WYSKOCZY£ PRZY NISKIEJ GRAVITY POZA EKRAN;
-	if (x < 30) x = 30;
-	if (x > MainClass.WIDTH -50) x = MainClass.WIDTH - 50;
-	
-	velX *= 0.9f;
+	velX *= 0.8f;
 	
 	if ((velX < 0.1f) && (velX > -0.1f)) velX = 0.0f;
 	
@@ -115,12 +111,6 @@ public void collisions(LinkedList<GameObject> object)
 public void render(Graphics g) {
 	g.setColor(Color.BLUE);
 	g.fillRect((int) x, (int) y, (int) width , (int)height );
-	g.setColor(Color.WHITE);
-	g.drawString("Jumping: "+jumping, MainClass.WIDTH - 100, 60);
-	g.drawString("Falling: "+falling, MainClass.WIDTH - 100, 80);
-	g.drawString("velY: "+velY, MainClass.WIDTH - 100, 100);
-	g.drawString("velX: "+velX, MainClass.WIDTH - 100, 120);
-	g.drawString("Gravity: "+gravity, MainClass.WIDTH - 100, 140);
 	
 	Graphics2D g2d = (Graphics2D) g;
 	g2d.setColor(Color.RED);

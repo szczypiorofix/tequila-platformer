@@ -55,7 +55,7 @@ public void run() {
 	// GAME LOOP
 	
 	// TIMER GAMER LOOP, FPS = 60, TICKS = 60
-	gameWindow.requestFocus();
+	gameWindow.requestFocusInWindow();
 	Timer timer = new Timer(17, new ActionListener()
 	{
 		@Override
