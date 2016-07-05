@@ -7,8 +7,8 @@ import java.util.LinkedList;
 
 public class Block extends GameObject{
 
-private final int brickWidth = 30;
-private final int brickHeight = 30;
+protected static final int brickWidth = 30;
+protected static final int brickHeight = 30;
 	
 	
 public Block(ObjectId id, float x, float y) {

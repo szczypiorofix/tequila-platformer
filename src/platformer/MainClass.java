@@ -54,6 +54,7 @@ public void run() {
 	
 	// GAME LOOP
 	
+	// TIMER GAMER LOOP, FPS = 60, TICKS = 60
 	
 	Timer timer = new Timer(17, new ActionListener()
 	{
@@ -70,6 +71,7 @@ public void run() {
 	timer.start();
 	
 	/**
+	// FIXED GAME LOOP, FPS = variable, TICKS = 60
 	while(running)
 	{	
 		long now = System.nanoTime();

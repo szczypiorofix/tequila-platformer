@@ -17,6 +17,7 @@ private ObjectsHandler objectsHandler;
 private PlayerObject player;
 private InputManager key;
 private boolean exit = false;
+protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_CTRL = false, KEY_SHIFT = false;
 
 public MainScreen(GameWindow gameWindow)
 {
@@ -32,38 +33,18 @@ public MainScreen(GameWindow gameWindow)
 public void tick()
 {
 	//key.update();
+
+	KEY_UP = false;
+	KEY_LEFT = false;
+	KEY_RIGHT = false;
+	KEY_CTRL = false;
+	KEY_SHIFT = false;
 	
-	if (player.isOnGround())
-	{
-		player.setSpeedX(player.getSpeedX() * 0.9f);
-		
-		if ((key.isKeyDown(KeyEvent.VK_UP)) && (player.getY() > 20))
-		{
-			if (player.isJumpAgain())
-			{
-				player.setSpeedY(-10);
-				
-				// https://wiki.allegro.cc/index.php?title=How_to_implement_jumping_in_platformers
-				// http://jsfiddle.net/LyM87/2176/
-			}
-		}
-		
-		
-	}
-	
-	
-	if ((key.isKeyDown(KeyEvent.VK_RIGHT)) && (player.getX() < MainClass.WIDTH - 50))
-	{
-		player.setSpeedX(6);
-	}
-	
-	if ((key.isKeyDown(KeyEvent.VK_LEFT)) && (player.getX() > 15))
-	{
-		player.setSpeedX(-6);
-	}
-	
-	
-	
+	if (key.isKeyDown(KeyEvent.VK_LEFT)) KEY_LEFT = true;
+	if (key.isKeyDown(KeyEvent.VK_RIGHT)) KEY_RIGHT = true;
+	if (key.isKeyDown(KeyEvent.VK_UP)) KEY_UP = true;
+	if (key.isKeyDown(KeyEvent.VK_CONTROL)) KEY_CTRL = true;
+	if (key.isKeyDown(KeyEvent.VK_SHIFT)) KEY_SHIFT = true;
 	if (key.isKeyDown(KeyEvent.VK_ESCAPE)) exit=true;
 	
 	objectsHandler.tick();
@@ -98,10 +79,6 @@ public void render(int fps_count, int ticks_count)
 	g.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 10);
 	g.drawString("KEY: "+key.getKey(), 10, 20);
 	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 100, 40);
-	//g.drawString("speedX:"+player.getSpeedX(), MainClass.WIDTH - 100, 60);
-	//g.drawString("speedY:"+player.getSpeedY(), MainClass.WIDTH - 100, 80);
-	//g.drawString("Falling: "+player.falling, MainClass.WIDTH - 100, 100);
-	//g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 120);
 	
 	objectsHandler.render(g);
 	
