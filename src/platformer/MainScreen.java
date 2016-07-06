@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JOptionPane;
+
 public class MainScreen extends Canvas{
 
 private static final long serialVersionUID = -5788122194224852624L;
@@ -21,9 +23,13 @@ private InputManager key;
 private boolean exit = false;
 protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_CTRL = false, KEY_SHIFT = false;
 private Camera cam;
-private BufferedImage level1image = null;
-private BufferedImage landBrickImage = null;
-private BufferedImage clouds = null;
+private BufferedImage level1image, tileSetImage, clouds, backGroundMountains;
+
+private BufferedImage grassGroundL, grassGroundM, grassGroundR, middleGroundL, middleGroundM, middleGroundR, bottomGroundL, bottomGroundM, bottomGroundR; //1st Tile
+private BufferedImage smallGrassGroundL, smallGrassGroundM, smallGrassGroundR;
+private BufferedImage deepGroundL, deepGroundM, deepGroundR, leftDeepGround, rightDeepGround, deepGroundGrass;
+private BufferedImage smallGrassGround1Top, smallGround1Middle, smallGround1Bottom;
+private BufferedImage smallGrassGroundAlone;
 
 
 public MainScreen(GameWindow gameWindow)
@@ -33,10 +39,38 @@ public MainScreen(GameWindow gameWindow)
 	this.gameWindow.blank();
 	
 	BufferedImageLoader loader = new BufferedImageLoader();
-	level1image = loader.loadImage("/res/level1_image.png");
-	landBrickImage = loader.loadImage("/res/tileset.png");
-	clouds = loader.loadImage("/res/clouds.png");
-	landBrickImage = landBrickImage.getSubimage(65, 100, 20, 20);
+	level1image = loader.loadImage("/level1_image.png"); // LEVEL 1 IMAGE
+	tileSetImage = loader.loadImage("/generic_platformer_tiles.png"); // TILE SHEET: http://opengameart.org/content/pixel-art-tilesets
+	clouds = loader.loadImage("/clouds.png"); // CLOUD IMAGE
+	backGroundMountains = loader.loadImage("/backGroundMountains.png");
+
+	grassGroundL = tileSetImage.getSubimage(0, 0, 16, 16);
+	grassGroundM = tileSetImage.getSubimage(16, 0, 16, 16);
+	grassGroundR = tileSetImage.getSubimage(32, 0, 16, 16);
+	middleGroundL = tileSetImage.getSubimage(0, 16, 16, 16);
+	middleGroundM = tileSetImage.getSubimage(16, 16, 16, 16);
+	middleGroundR = tileSetImage.getSubimage(32, 16, 16, 16);
+	bottomGroundL = tileSetImage.getSubimage(0, 32, 16, 16);
+	bottomGroundM = tileSetImage.getSubimage(16, 32, 16, 16);
+	bottomGroundR = tileSetImage.getSubimage(32, 32, 16, 16);
+	
+	smallGrassGroundL = tileSetImage.getSubimage(0, 48, 16, 16);
+	smallGrassGroundM = tileSetImage.getSubimage(16, 48, 16, 16);
+	smallGrassGroundR = tileSetImage.getSubimage(32, 48, 16, 16);
+	
+	deepGroundL = tileSetImage.getSubimage(48, 0, 16, 16);
+	deepGroundM = tileSetImage.getSubimage(64, 0, 16, 16);
+	deepGroundR = tileSetImage.getSubimage(80, 0, 16, 16);
+	leftDeepGround = tileSetImage.getSubimage(48, 16, 16, 16);
+	rightDeepGround = tileSetImage.getSubimage(80, 16, 16, 16);
+	deepGroundGrass = tileSetImage.getSubimage(64, 32, 16, 16);
+	
+	smallGrassGround1Top = tileSetImage.getSubimage(48, 48, 16, 16);
+	smallGround1Middle = tileSetImage.getSubimage(48, 64, 16, 16);
+	smallGround1Bottom = tileSetImage.getSubimage(48, 80, 16, 16);
+	
+	smallGrassGroundAlone = tileSetImage.getSubimage(64, 48, 16, 16);
+	
 	gameWindow.add(this);
 	key = new InputManager();
 	gameWindow.addKeyListener(key);
@@ -68,11 +102,11 @@ public void tick()
 public void addElements()
 {
 	objectsHandler = new ObjectsHandler();
-	loadImageLevel1(level1image);
+	loadImageLevel(level1image);
 }
 
 
-private void loadImageLevel1(BufferedImage image)
+private void loadImageLevel(BufferedImage image)
 {
 	int w = level1image.getWidth();
 	int h = level1image.getHeight();
@@ -85,8 +119,10 @@ private void loadImageLevel1(BufferedImage image)
 			int green = (pixel >> 8) & 0xff;
 			int blue = (pixel) & 0xff;
 			
-			if (red == 255 && blue == 255 && green == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*32, yy*32, landBrickImage));
-			if (red == 0 && blue == 255 && green == 0) {
+			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*32, yy*32, grassGroundL));
+
+			
+			if (red == 0 && green == 0 && blue == 255) {
 				player = new PlayerObject(ObjectId.Player, xx*32, yy*32, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
 				objectsHandler.addObject(player);
 			}
@@ -112,10 +148,8 @@ public void render(int fps_count, int ticks_count)
 	g.setColor(new Color(110, 180, 224));
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g.drawImage(clouds, 170, 70, 100, 60, this); // CLOUDS
-	g.drawImage(clouds, 380, 110, 140, 80, this);
-	g.drawImage(clouds, 600, 200, 100, 60, this);
-	g.drawImage(clouds, 100, 170, 180, 100, this);
+	g.drawImage(clouds, 0, 0, 800, 600, this); // CLOUDS
+	g.drawImage(backGroundMountains, 0, 200, 800, 600, this);
 	
 	g.setColor(Color.WHITE);
 	g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 60);

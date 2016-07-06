@@ -2,7 +2,6 @@ package platformer;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
@@ -64,9 +63,9 @@ public void collisions(LinkedList<GameObject> object)
 	for (int i = 0; i < objectsHandler.object.size(); i++)
 	{
 		GameObject tempObject = objectsHandler.object.get(i);
+		
 		if (tempObject.getId() == ObjectId.Block)
 		{
-			
 			// TOP
 			if (getBoundsTop().intersects(tempObject.getBounds()))
 			{
@@ -88,7 +87,6 @@ public void collisions(LinkedList<GameObject> object)
 				falling = true;
 			}
 			
-			
 			// RIGHT
 			if (getBoundsRight().intersects(tempObject.getBounds()))
 			{
@@ -100,9 +98,6 @@ public void collisions(LinkedList<GameObject> object)
 			{					
 					x = tempObject.getX() + width;
 			}
-			
-			
-			
 		}
 	}
 }
@@ -111,13 +106,6 @@ public void collisions(LinkedList<GameObject> object)
 public void render(Graphics g) {
 	g.setColor(Color.BLUE);
 	g.fillRect((int) x, (int) y, (int) width , (int)height );
-	
-	Graphics2D g2d = (Graphics2D) g;
-	g2d.setColor(Color.RED);
-	g2d.draw(getBounds());
-	g2d.draw(getBoundsTop());
-	g2d.draw(getBoundsLeft());
-	g2d.draw(getBoundsRight());
 }
 
 

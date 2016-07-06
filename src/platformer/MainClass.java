@@ -11,7 +11,7 @@ private GameWindow gameWindow;
 private MainScreen mainScreen;
 public static int WIDTH = 0, HEIGHT = 0;
 private Thread thread;
-private int fps_count = 0, ticks_count = 0;
+//private int fps_count = 0, ticks_count = 0;
 private boolean running = false;
 
 
@@ -44,34 +44,38 @@ public void gameThreadStart()
 @Override
 public void run() {
 	
-	long lastTime = System.nanoTime();
-	double amountOfTicks = 60.0;
-	double ns = 1000000000 / amountOfTicks;
-	double delta = 0;
-	//long timer = System.currentTimeMillis();
-	int updates = 0;
-	int frames = 0;
-	
 	// GAME LOOP
 	
 	// TIMER GAMER LOOP, FPS = 60, TICKS = 60
-	gameWindow.requestFocusInWindow();
-	Timer timer = new Timer(17, new ActionListener()
+	
+	Timer timerLoop = new Timer(17, new ActionListener()
 	{
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
+			gameWindow.requestFocusInWindow();
 			mainScreen.tick();
 			mainScreen.render(60, 60);
 			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
 		}
 	});
 	
-	timer.setInitialDelay(100);
-	timer.start();
+	timerLoop.setInitialDelay(100);
+	timerLoop.start();
+	
 	
 	/**
 	// FIXED GAME LOOP, FPS = variable, TICKS = 60
+	
+	long lastTime = System.nanoTime();
+	double amountOfTicks = 60.0;
+	double ns = 1000000000 / amountOfTicks;
+	double delta = 0;
+	long timer = System.currentTimeMillis();
+	int updates = 0;
+	int frames = 0;
+	
+	
 	while(running)
 	{	
 		long now = System.nanoTime();
