@@ -23,6 +23,7 @@ protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KE
 private Camera cam;
 private BufferedImage level1image = null;
 private BufferedImage landBrickImage = null;
+private BufferedImage clouds = null;
 
 
 public MainScreen(GameWindow gameWindow)
@@ -34,7 +35,8 @@ public MainScreen(GameWindow gameWindow)
 	BufferedImageLoader loader = new BufferedImageLoader();
 	level1image = loader.loadImage("/res/level1_image.png");
 	landBrickImage = loader.loadImage("/res/tileset.png");
-	landBrickImage = landBrickImage.getSubimage(45, 30, 20, 20);
+	clouds = loader.loadImage("/res/clouds.png");
+	landBrickImage = landBrickImage.getSubimage(65, 100, 20, 20);
 	gameWindow.add(this);
 	key = new InputManager();
 	gameWindow.addKeyListener(key);
@@ -107,8 +109,14 @@ public void render(int fps_count, int ticks_count)
 	
 	/////////////////// DRAW HERE ////////////////////////////
 	
-	g.setColor(Color.BLACK);
+	g.setColor(new Color(110, 180, 224));
 	g.fillRect(0,0,getWidth(), getHeight());
+	
+	g.drawImage(clouds, 170, 70, 100, 60, this); // CLOUDS
+	g.drawImage(clouds, 380, 110, 140, 80, this);
+	g.drawImage(clouds, 600, 200, 100, 60, this);
+	g.drawImage(clouds, 100, 170, 180, 100, this);
+	
 	g.setColor(Color.WHITE);
 	g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 60);
 	g.drawString("Falling: "+player.falling, MainClass.WIDTH - 100, 80);
