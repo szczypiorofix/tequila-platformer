@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 public class PlayerObject extends GameObject{
 
+	
 private float width = 30, height = 50;
 private ObjectsHandler objectsHandler;
 private final float MAX_SPEED = 10f;
@@ -14,12 +15,13 @@ protected float velX = 0, velY = 0;
 protected float gravity = 0.4f;
 protected boolean falling = true;
 protected boolean jumping = true;
-
+private SoundsLoader sounds;
 
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
 	super(id, x, y);
 	this.objectsHandler = objectsHandler;
+	sounds = new SoundsLoader();
 }
 
 
@@ -37,6 +39,7 @@ public void tick(LinkedList<GameObject> object) {
 	
 	if ((MainScreen.KEY_UP) && (!jumping)) {
 		
+		sounds.playJumpSound();
 		velY = -10;
 		jumping = true;
 	}

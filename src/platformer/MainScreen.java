@@ -8,8 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JOptionPane;
-
 public class MainScreen extends Canvas{
 
 private static final long serialVersionUID = -5788122194224852624L;
@@ -23,6 +21,7 @@ private InputManager key;
 private boolean exit = false;
 protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_CTRL = false, KEY_SHIFT = false;
 private Camera cam;
+
 private BufferedImage level1image, tileSetImage, clouds, backGroundMountains;
 
 private BufferedImage grassGroundL, grassGroundM, grassGroundR, middleGroundL, middleGroundM, middleGroundR, bottomGroundL, bottomGroundM, bottomGroundR; //1st Tile
@@ -40,7 +39,7 @@ public MainScreen(GameWindow gameWindow)
 	
 	BufferedImageLoader loader = new BufferedImageLoader();
 	level1image = loader.loadImage("/level1_image.png"); // LEVEL 1 IMAGE
-	tileSetImage = loader.loadImage("/generic_platformer_tiles.png"); // TILE SHEET: http://opengameart.org/content/pixel-art-tilesets
+	tileSetImage = loader.loadImage("/generic_platformer_tiles.png"); // TILE SHEET: http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	clouds = loader.loadImage("/clouds.png"); // CLOUD IMAGE
 	backGroundMountains = loader.loadImage("/backGroundMountains.png");
 
@@ -111,15 +110,15 @@ private void loadImageLevel(BufferedImage image)
 	int w = level1image.getWidth();
 	int h = level1image.getHeight();
 	
-	for (int xx = 0; xx < h; xx++)
-		for (int yy = 0; yy < w; yy++)
+	for (int yy = 0; yy < h; yy++)
+		for (int xx = 0; xx < w; xx++)
 		{
 			int pixel = image.getRGB(xx, yy);
 			int red = (pixel >> 16) & 0xff;
 			int green = (pixel >> 8) & 0xff;
 			int blue = (pixel) & 0xff;
 			
-			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*32, yy*32, grassGroundL));
+			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*32, yy*32, middleGroundM));
 
 			
 			if (red == 0 && green == 0 && blue == 255) {
@@ -151,7 +150,7 @@ public void render(int fps_count, int ticks_count)
 	g.drawImage(clouds, 0, 0, 800, 600, this); // CLOUDS
 	g.drawImage(backGroundMountains, 0, 200, 800, 600, this);
 	
-	g.setColor(Color.WHITE);
+	g.setColor(Color.BLACK);
 	g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 60);
 	g.drawString("Falling: "+player.falling, MainClass.WIDTH - 100, 80);
 	g.drawString("velY: "+player.velY, MainClass.WIDTH - 100, 100);
