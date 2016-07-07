@@ -48,7 +48,7 @@ public void run() {
 	
 	// TIMER GAMER LOOP, FPS = 60, TICKS = 60
 	
-	Timer timerLoop = new Timer(17, new ActionListener()
+	Timer timerLoop = new Timer(30, new ActionListener()
 	{
 		@Override
 		public void actionPerformed(ActionEvent e)

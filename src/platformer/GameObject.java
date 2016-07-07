@@ -8,8 +8,7 @@ public abstract class GameObject {
 
 protected float x,y;
 protected ObjectId id;
-
-
+protected float width, height;
 
 
 /**
@@ -17,11 +16,13 @@ protected ObjectId id;
  * @param x
  * @param y
  */
-public GameObject(ObjectId id, float x, float y) {
+public GameObject(ObjectId id, float x, float y, float width, float height) {
 	super();
 	this.id = id;
 	this.x = x;
 	this.y = y;
+	this.width = width;
+	this.height = height;
 }
 
 public abstract void render(Graphics g);
@@ -42,6 +43,22 @@ public float getY() {
 
 public void setY(float y) {
 	this.y = y;
+}
+
+public float getWidth() {
+	return width;
+}
+
+public void setWidth(float width) {
+	this.width = width;
+}
+
+public float getHeight() {
+	return height;
+}
+
+public void setHeight(float height) {
+	this.height = height;
 }
 
 public ObjectId getId() {

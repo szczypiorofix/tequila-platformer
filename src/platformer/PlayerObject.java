@@ -2,62 +2,78 @@ package platformer;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
 public class PlayerObject extends GameObject{
 
 	
-private float width = 30, height = 50;
+private static float playerWidth = 40, playerHeight = 60;
 private ObjectsHandler objectsHandler;
 private final float MAX_SPEED = 10f;
 protected float velX = 0, velY = 0;
-protected float gravity = 0.4f;
-protected boolean falling = true;
+protected float gravity = 0.5f;
+protected boolean onGround = false;
 protected boolean jumping = true;
 private SoundsLoader sounds;
+Textures tex = MainScreen.getInstance();
+private float level1X = 0f, level1Y = 0f;
+private float level2X = 0f, level2Y = 0f;
+
+private Animation playerWalk;
 
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
-	super(id, x, y);
+	super(id, x, y, playerWidth, playerHeight);
 	this.objectsHandler = objectsHandler;
 	sounds = new SoundsLoader();
+	level1X = x;
+	level1Y = y;
+	level2X = x;
+	level2Y = y;
+	
+	playerWalk = new Animation(3, tex.player[0], tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6], tex.player[7]);
 }
 
 
 @Override
 public void tick(LinkedList<GameObject> object) {
+		
+	velX = 0;
 	
-	if ((MainScreen.KEY_LEFT)) velX -= 0.9f;
+	level1X = x /4;   // PARALLAX LEVEL 1 !!!
+	level1Y = 0f;
+	level2X = x /2;   // PARALLAX LEVEL 2 !!!
+	level2Y = 0f;
 	
-	if (MainScreen.KEY_RIGHT) velX += 0.9f;
+	if (MainScreen.KEY_LEFT) velX = -5;
 	
+	if (MainScreen.KEY_RIGHT) velX = 5;
+		
 	if ((MainScreen.KEY_CTRL) || (MainScreen.KEY_SHIFT)) 
 		if (MainScreen.KEY_CTRL) gravity = 0.1f;
 		else gravity = 0.9f;
-	else gravity = 0.4f;
+	else gravity = 0.5f;
 	
-	if ((MainScreen.KEY_UP) && (!jumping)) {
+	if ((MainScreen.KEY_UP) && (!jumping) && (onGround)) {
 		
 		sounds.playJumpSound();
 		velY = -10;
 		jumping = true;
 	}
-	
+		
+	if (!onGround) velY += gravity;
+	if (velY > MAX_SPEED) velY = MAX_SPEED;
+
 	x += velX;
 	y += velY;
 	
-	velX *= 0.8f;
-	
-	if ((velX < 0.1f) && (velX > -0.1f)) velX = 0.0f;
-	
-	if (falling || jumping)
-	{
-		velY += gravity;
-		if (velY > MAX_SPEED) velY = MAX_SPEED;
-	}
+	onGround = false;
 	
 	collisions(object);
+	
+	playerWalk.runAnimation();
 }
 
 
@@ -68,8 +84,8 @@ public void collisions(LinkedList<GameObject> object)
 		GameObject tempObject = objectsHandler.object.get(i);
 		
 		if (tempObject.getId() == ObjectId.Block)
-		{
-			// TOP
+		{		
+			
 			if (getBoundsTop().intersects(tempObject.getBounds()))
 			{
 				if (y > (tempObject.getBounds().y - height)) {
@@ -81,16 +97,12 @@ public void collisions(LinkedList<GameObject> object)
 			
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
-				y = tempObject.getY() - height;
-				velY = 0;
+				//y = tempObject.getY() - Block.brickHeight;
 				jumping = false;
-				falling = false;
-			}
-			else {
-				falling = true;
+				velY = 0;
+				onGround = true;
 			}
 			
-			// RIGHT
 			if (getBoundsRight().intersects(tempObject.getBounds()))
 			{
 					x = tempObject.getX() - width;
@@ -101,6 +113,7 @@ public void collisions(LinkedList<GameObject> object)
 			{					
 					x = tempObject.getX() + width;
 			}
+			
 		}
 	}
 }
@@ -108,7 +121,31 @@ public void collisions(LinkedList<GameObject> object)
 
 public void render(Graphics g) {
 	g.setColor(Color.BLUE);
-	g.fillRect((int) x, (int) y, (int) width , (int)height );
+	
+	if (velX != 0) playerWalk.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
+	else g.drawImage(tex.player[1], (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight, null);
+	///g.fillRect((int) x, (int) y, (int) playerWidth , (int)playerHeight );
+}
+
+// PARALLAX !
+public float getLevel1X()
+{
+	return level1X;
+}
+
+public float getLevel1Y()
+{
+	return level1Y;
+}
+
+public float getLevel2X()
+{
+	return level2X;
+}
+
+public float getLevel2Y()
+{
+	return level2Y;
 }
 
 
@@ -116,21 +153,21 @@ public void render(Graphics g) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) ((int) x + (width/2) - (width /2)/2), (int) ((int) y + (height / 2)), (int) width / 2, (int) height /2);
+	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2), (int) ((int) y + (playerHeight / 2)), (int) playerWidth / 2, (int) playerHeight /2);
 }
 
 public Rectangle getBoundsTop()
 {
-	return new Rectangle((int) ((int) x + (width /2) - (width/2)/2), (int)y, (int) width / 2, (int) height /2);
+	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2), (int)y, (int) playerWidth / 2, (int) playerHeight /2);
 }
 
 public Rectangle getBoundsRight()
 {
-	return new Rectangle((int) ((int) x+width-5), (int)y+5, (int) 5, (int) height -10);
+	return new Rectangle((int) ((int) x+playerWidth-10), (int)y+10, (int) 10, (int) playerHeight -20);
 }
 
 public Rectangle getBoundsLeft()
 {
-	return new Rectangle((int) x, (int)y+5, (int) 5, (int) height-10);
+	return new Rectangle((int) x, (int)y+10, (int) 10, (int) playerHeight-20);
 }
 }

@@ -2,7 +2,6 @@ package platformer;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 
@@ -10,19 +9,18 @@ public class Block extends GameObject{
 
 protected static final int brickWidth = 32;
 protected static final int brickHeight = 32;
-private BufferedImage image = null;
+Textures tex = MainScreen.getInstance();
+private int type;
 
-
-public Block(ObjectId id, float x, float y, BufferedImage image) {
-	super(id, x, y);
-	this.image = image;
+public Block(ObjectId id, float x, float y, int type) {
+	super(id, x, y, brickWidth, brickHeight);
+	this.type = type;
 }
 
 @Override
 public void render(Graphics g) {
-	//g.setColor(Color.YELLOW);
-	//g.drawRect((int) x, (int) y, brickWidth, brickHeight);
-	g.drawImage(image, (int)x, (int) y, brickWidth, brickHeight, null);
+	if (type == 0) g.drawImage(tex.block[0], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == 1) g.drawImage(tex.block[1], (int)x, (int)y, brickWidth, brickHeight, null);
 }
 
 @Override
