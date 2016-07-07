@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class PlayerObject extends GameObject{
 
 	
-private static float playerWidth = 40, playerHeight = 60;
+private static float playerWidth = 35, playerHeight = 60;
 private ObjectsHandler objectsHandler;
 private final float MAX_SPEED = 10f;
 protected float velX = 0, velY = 0;
@@ -20,8 +20,9 @@ private SoundsLoader sounds;
 Textures tex = MainScreen.getInstance();
 private float level1X = 0f, level1Y = 0f;
 private float level2X = 0f, level2Y = 0f;
+private int turn = 1;
 
-private Animation playerWalk;
+private Animation playerWalkRight, playerWalkLeft;
 
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
@@ -32,7 +33,8 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	level1Y = y;
 	level2X = x;
 	level2Y = y;
-	playerWalk = new Animation(3, tex.player[0], tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6], tex.player[7]);
+	playerWalkRight = new Animation(3, tex.player[0], tex.player[1], tex.player[2]);
+	playerWalkLeft = new Animation(3, tex.player[3], tex.player[4], tex.player[5]);
 }
 
 
@@ -46,9 +48,15 @@ public void tick(LinkedList<GameObject> object) {
 	level2X = x /2;   // PARALLAX LEVEL 2 !!!
 	level2Y = 0f;
 	
-	if (MainScreen.KEY_LEFT) velX = -5;
+	if (MainScreen.KEY_LEFT) {
+		velX = -5;
+		turn = -1;
+	}
 	
-	if (MainScreen.KEY_RIGHT) velX = 5;
+	if (MainScreen.KEY_RIGHT) {
+		velX = 5;
+		turn = 1;
+	}
 		
 	if ((MainScreen.KEY_CTRL) || (MainScreen.KEY_SHIFT)) 
 		if (MainScreen.KEY_CTRL) gravity = 0.1f;
@@ -72,7 +80,8 @@ public void tick(LinkedList<GameObject> object) {
 	
 	collisions(object);
 	
-	playerWalk.runAnimation();
+	playerWalkRight.runAnimation();
+	playerWalkLeft.runAnimation();
 }
 
 
@@ -96,7 +105,7 @@ public void collisions(LinkedList<GameObject> object)
 			
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
-				//y = tempObject.getY() - Block.brickHeight;
+				y = tempObject.getY() - Block.brickHeight - 24;
 				jumping = false;
 				velY = 0;
 				onGround = true;
@@ -110,7 +119,7 @@ public void collisions(LinkedList<GameObject> object)
 			// LEFT
 			if (getBoundsLeft().intersects(tempObject.getBounds()))
 			{					
-					x = tempObject.getX() + width;
+					x = tempObject.getX() + width-4;
 			}
 			
 		}
@@ -121,9 +130,12 @@ public void collisions(LinkedList<GameObject> object)
 public void render(Graphics g) {
 	g.setColor(Color.BLUE);
 	
-	if (velX != 0) playerWalk.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
-	else g.drawImage(tex.player[1], (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight, null);
-	///g.fillRect((int) x, (int) y, (int) playerWidth , (int)playerHeight );
+	if (velX > 0) playerWalkRight.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
+	else if (velX < 0) playerWalkLeft.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
+	else {
+		if (turn == 1) g.drawImage(tex.player[1], (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight, null);
+		else g.drawImage(tex.player[4], (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight, null);
+	}
 }
 
 // PARALLAX !

@@ -37,7 +37,7 @@ public MainScreen(GameWindow gameWindow)
 	
 	level1image = loader.loadImage("/level1_image.png"); // LEVEL 1 IMAGE
 	clouds = loader.loadImage("/clouds.png"); // CLOUD IMAGE  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
-	backGroundMountains = loader.loadImage("/backGroundMountains.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
+	backGroundMountains = loader.loadImage("/gory.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	grass = loader.loadImage("/grass.png"); // http://opengameart.org/content/grass-2-0
 	
 	gameWindow.add(this);
@@ -120,11 +120,11 @@ public void render(int fps_count, int ticks_count)
 	
 	/////////////////// DRAW HERE ////////////////////////////
 	
-	g.setColor(new Color(110, 180, 224));
+	g.setColor(Color.BLACK);
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g.drawImage(clouds, 0, 0, 800, 600, this); // CLOUDS
-	//g.drawImage(backGroundMountains, 0, 200, 800, 600, this);
+	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) - 20, 4800, 700, this);
+	g.drawImage(grass, (int) (0 - player.getLevel2X()), (int) (cam.getY()/1.2)+375, 2400, 200, this);	
 	
 	g.setColor(Color.BLACK);
 	g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 60);
@@ -135,9 +135,6 @@ public void render(int fps_count, int ticks_count)
 	g.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 10);
 	g.drawString("KEY: "+key.getKey(), 10, 20);
 	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 100, 40);
-	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) +200, 4800, 600, this);
-	g.drawImage(grass, (int) (0 - player.getLevel2X()), (int) (cam.getY()/1.2)+375, 2400, 200, this);	
 	
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 	
