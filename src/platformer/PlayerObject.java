@@ -32,7 +32,6 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	level1Y = y;
 	level2X = x;
 	level2Y = y;
-	
 	playerWalk = new Animation(3, tex.player[0], tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6], tex.player[7]);
 }
 
