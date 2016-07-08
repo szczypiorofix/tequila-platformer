@@ -13,7 +13,6 @@ private static final long serialVersionUID = 8434543456858249978L;
 private int width, height;
 private Image programIcon;
 
-
 public GameWindow(String title, int width, int height)
 {
 	super(title);
@@ -59,7 +58,8 @@ public void windowActivated(WindowEvent arg0) {
 public void windowClosed(WindowEvent arg0) {}
 
 @Override
-public void windowClosing(WindowEvent arg0) {}
+public void windowClosing(WindowEvent arg0) {
+}
 
 @Override
 public void windowDeactivated(WindowEvent arg0) {}

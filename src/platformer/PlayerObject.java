@@ -2,27 +2,26 @@ package platformer;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
 public class PlayerObject extends GameObject{
 
 	
-private static float playerWidth = 35, playerHeight = 60;
+private static float playerWidth = 110, playerHeight = 120;
 private ObjectsHandler objectsHandler;
 private final float MAX_SPEED = 10f;
 protected float velX = 0, velY = 0;
 protected float gravity = 0.5f;
 protected boolean onGround = false;
-protected boolean jumping = true;
+protected boolean jumping = false;
 private SoundsLoader sounds;
 Textures tex = MainScreen.getInstance();
 private float level1X = 0f, level1Y = 0f;
 private float level2X = 0f, level2Y = 0f;
 private int turn = 1;
 
-private Animation playerWalkRight, playerWalkLeft;
+private Animation playerWalkRight, playerWalkLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft;
 
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
@@ -33,8 +32,12 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	level1Y = y;
 	level2X = x;
 	level2Y = y;
-	playerWalkRight = new Animation(3, tex.player[0], tex.player[1], tex.player[2]);
-	playerWalkLeft = new Animation(3, tex.player[3], tex.player[4], tex.player[5]);
+	playerWalkRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7]);
+	playerWalkLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7]);
+	playerIdleRight = new Animation(3, tex.playerIdleR[0], tex.playerIdleR[1], tex.playerIdleR[2], tex.playerIdleR[3], tex.playerIdleR[4], tex.playerIdleR[5], tex.playerIdleR[6], tex.playerIdleR[7], tex.playerIdleR[8], tex.playerIdleR[9]);
+	playerIdleLeft = new Animation(3, tex.playerIdleL[0], tex.playerIdleL[1], tex.playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
+	playerJumpRight = new Animation(10, tex.playerJumpR[0], tex.playerJumpR[1], tex.playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
+	playerJumpLeft = new Animation(10, tex.playerJumpL[0], tex.playerJumpL[1], tex.playerJumpL[2], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
 }
 
 
@@ -65,6 +68,7 @@ public void tick(LinkedList<GameObject> object) {
 	
 	if ((MainScreen.KEY_UP) && (!jumping) && (onGround)) {
 		
+		
 		sounds.playJumpSound();
 		velY = -10;
 		jumping = true;
@@ -82,6 +86,10 @@ public void tick(LinkedList<GameObject> object) {
 	
 	playerWalkRight.runAnimation();
 	playerWalkLeft.runAnimation();
+	playerIdleRight.runAnimation();
+	playerIdleLeft.runAnimation();
+	playerJumpRight.runAnimation();
+	playerJumpLeft.runAnimation();
 }
 
 
@@ -105,7 +113,7 @@ public void collisions(LinkedList<GameObject> object)
 			
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
-				y = tempObject.getY() - Block.brickHeight - 24;
+				y = tempObject.getY() - Block.brickHeight - 65;
 				jumping = false;
 				velY = 0;
 				onGround = true;
@@ -113,15 +121,14 @@ public void collisions(LinkedList<GameObject> object)
 			
 			if (getBoundsRight().intersects(tempObject.getBounds()))
 			{
-					x = tempObject.getX() - width;
+				x = tempObject.getX() - width+15;
 			}
 			
 			// LEFT
 			if (getBoundsLeft().intersects(tempObject.getBounds()))
 			{					
-					x = tempObject.getX() + width-4;
+				x = tempObject.getX() + width-85;
 			}
-			
 		}
 	}
 }
@@ -130,12 +137,17 @@ public void collisions(LinkedList<GameObject> object)
 public void render(Graphics g) {
 	g.setColor(Color.BLUE);
 	
-	if (velX > 0) playerWalkRight.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
-	else if (velX < 0) playerWalkLeft.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
-	else {
-		if (turn == 1) g.drawImage(tex.player[1], (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight, null);
-		else g.drawImage(tex.player[4], (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight, null);
-	}
+	if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
+	if ((velX < 0) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
+		
+	if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y, (int) playerWidth+10, (int) playerHeight);
+	if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y, (int) playerWidth+10, (int) playerHeight);
+		
+	if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y, (int) playerWidth+10, (int) playerHeight);
+	if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y, (int) playerWidth+10, (int) playerHeight);
+	
+	if (velY != 0 && !onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, (int) playerWidth+10, (int) playerHeight, null);
+	if (velY != 0 && !onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, (int) playerWidth+10, (int) playerHeight, null);
 }
 
 // PARALLAX !
@@ -174,11 +186,11 @@ public Rectangle getBoundsTop()
 
 public Rectangle getBoundsRight()
 {
-	return new Rectangle((int) ((int) x+playerWidth-10), (int)y+10, (int) 10, (int) playerHeight -20);
+	return new Rectangle((int) ((int) x+playerWidth-25), (int)y+10, (int) 10, (int) playerHeight -20);
 }
 
 public Rectangle getBoundsLeft()
 {
-	return new Rectangle((int) x, (int)y+10, (int) 10, (int) playerHeight-20);
+	return new Rectangle((int) x+20, (int)y+10, (int) 10, (int) playerHeight-20);
 }
 }

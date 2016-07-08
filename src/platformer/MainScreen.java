@@ -24,7 +24,7 @@ private boolean exit = false;
 protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_CTRL = false, KEY_SHIFT = false, KEY_DOWN = false;
 private Camera cam;
 static Textures tex;
-private BufferedImage level1image, clouds, backGroundMountains, grass;
+private BufferedImage level1image, backGroundMountains, grass;
 
 
 public MainScreen(GameWindow gameWindow)
@@ -39,7 +39,7 @@ public MainScreen(GameWindow gameWindow)
 	tex = new Textures();
 	
 	level1image = loader.loadImage("/level1_image.png"); // LEVEL 1 IMAGE
-	clouds = loader.loadImage("/clouds.png"); // CLOUD IMAGE  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
+	//clouds = loader.loadImage("/clouds.png"); // CLOUD IMAGE  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	backGroundMountains = loader.loadImage("/gory.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	grass = loader.loadImage("/grass.png"); // http://opengameart.org/content/grass-2-0
 	
@@ -47,7 +47,7 @@ public MainScreen(GameWindow gameWindow)
 	key = new InputManager();
 	gameWindow.addKeyListener(key);
 	cam = new Camera(0,0);
-	Music music = new Music();
+	new Music();
 }
 
 public static Textures getInstance()
@@ -98,11 +98,11 @@ private void loadImageLevel(BufferedImage image)
 			int green = (pixel >> 8) & 0xff;
 			int blue = (pixel) & 0xff;
 			
-			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*32, yy*32, 1));
-			if (red == 200 && green == 200 && blue == 200) objectsHandler.addObject(new Block(ObjectId.Block, xx*32, yy*32, 4));
+			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*45, yy*45, 1));
+			if (red == 200 && green == 200 && blue == 200) objectsHandler.addObject(new Block(ObjectId.Block, xx*45, yy*45, 4));
 			
 			if (red == 0 && green == 0 && blue == 255) {
-				player = new PlayerObject(ObjectId.Player, xx*32, yy*32, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
+				player = new PlayerObject(ObjectId.Player, xx*45, yy*45, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
 				objectsHandler.addObject(player);
 			}
 		}
@@ -127,8 +127,8 @@ public void render(int fps_count, int ticks_count)
 	g.setColor(Color.BLACK);
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3)+150, 2800, 550, this);
-	g.drawImage(grass, (int) (0 - player.getLevel2X()), (int) (cam.getY()+390), 5200, 350, this);	
+	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3)+340, 2800, 580, this);
+	g.drawImage(grass, (int) (0 - player.getLevel2X()), (int) (cam.getY()+690), 5200, 350, this);	
 	
 	g.setColor(Color.BLACK);
 	g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 60);

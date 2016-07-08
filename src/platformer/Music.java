@@ -1,16 +1,20 @@
 package platformer;
 
-import java.io.FileInputStream;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+
 import javax.swing.JOptionPane;
 import javazoom.jl.player.Player;
 
 public class Music {
 
 private Player player;	
-	
+InputStream fis = null;
+BufferedInputStream bis = null;
+
 // http://opengameart.org/content/trance-menu
 
-public Music()
+public Music()  // Start w GameWindow
 {
 	new Thread(new Runnable()
 	{
@@ -18,9 +22,13 @@ public Music()
 		public void run()
 		{
 			try{
-			    FileInputStream fis = new FileInputStream("music.mp3");
-			    player = new Player(fis);
+			    do {
+			    fis = getClass().getClassLoader().getResourceAsStream("music1.mp3");
+			    bis = new BufferedInputStream(fis);
+			    player = new Player(bis);
 			    player.play();
+			    }
+			    while(true);
 			}
 			catch(Exception exc){
 			    exc.printStackTrace();

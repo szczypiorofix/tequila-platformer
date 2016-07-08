@@ -11,7 +11,7 @@ private GameWindow gameWindow;
 private MainScreen mainScreen;
 public static int WIDTH = 0, HEIGHT = 0;
 private Thread thread;
-private int fps_count = 0, ticks_count = 0;
+//private int fps_count = 0, ticks_count = 0;
 private boolean running = false;
 
 
