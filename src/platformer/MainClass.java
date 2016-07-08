@@ -11,7 +11,7 @@ private GameWindow gameWindow;
 private MainScreen mainScreen;
 public static int WIDTH = 0, HEIGHT = 0;
 private Thread thread;
-//private int fps_count = 0, ticks_count = 0;
+private int fps_count = 0, ticks_count = 0;
 private boolean running = false;
 
 
@@ -47,15 +47,16 @@ public void run() {
 	// GAME LOOP
 	
 	// TIMER GAMER LOOP, FPS = 60, TICKS = 60
-	
-	Timer timerLoop = new Timer(30, new ActionListener()
+	int FPS = 40;
+	int nrOfFrames = (int) 1000 / FPS;
+	Timer timerLoop = new Timer(nrOfFrames, new ActionListener()
 	{
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			gameWindow.requestFocusInWindow();
 			mainScreen.tick();
-			mainScreen.render(60, 60);
+			mainScreen.render(FPS, FPS);
 			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
 		}
 	});
@@ -64,9 +65,9 @@ public void run() {
 	timerLoop.start();
 	
 	
-	/**
-	// FIXED GAME LOOP, FPS = variable, TICKS = 60
 	
+	// FIXED GAME LOOP, FPS = variable, TICKS = 60
+	/**
 	long lastTime = System.nanoTime();
 	double amountOfTicks = 60.0;
 	double ns = 1000000000 / amountOfTicks;

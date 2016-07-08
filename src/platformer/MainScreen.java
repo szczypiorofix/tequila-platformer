@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+
+
 public class MainScreen extends Canvas{
 
 private static final long serialVersionUID = -5788122194224852624L;
@@ -28,6 +30,7 @@ private BufferedImage level1image, clouds, backGroundMountains, grass;
 public MainScreen(GameWindow gameWindow)
 {
 	super();
+	
 	this.gameWindow = gameWindow;
 	this.gameWindow.blank();
 	
@@ -96,6 +99,7 @@ private void loadImageLevel(BufferedImage image)
 			int blue = (pixel) & 0xff;
 			
 			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*32, yy*32, 1));
+			if (red == 200 && green == 200 && blue == 200) objectsHandler.addObject(new Block(ObjectId.Block, xx*32, yy*32, 4));
 			
 			if (red == 0 && green == 0 && blue == 255) {
 				player = new PlayerObject(ObjectId.Player, xx*32, yy*32, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
@@ -123,8 +127,8 @@ public void render(int fps_count, int ticks_count)
 	g.setColor(Color.BLACK);
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) - 20, 4800, 700, this);
-	g.drawImage(grass, (int) (0 - player.getLevel2X()), (int) (cam.getY()/1.2)+375, 2400, 200, this);	
+	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3)+150, 2800, 550, this);
+	g.drawImage(grass, (int) (0 - player.getLevel2X()), (int) (cam.getY()+390), 5200, 350, this);	
 	
 	g.setColor(Color.BLACK);
 	g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 60);

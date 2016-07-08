@@ -7,7 +7,7 @@ public class Textures {
 SpriteSheet bs, ps;
 private BufferedImage block_sheet = null;
 private BufferedImage player_sheet = null;
-public BufferedImage[] block = new BufferedImage[2];
+public BufferedImage[] block = new BufferedImage[12];
 public BufferedImage[] player = new BufferedImage[6];
 
 public Textures()
@@ -30,6 +30,10 @@ private void getTextures()
 {
 	block[0] = bs.grabImage(1, 1, 16, 16);  // First block
 	block[1] = bs.grabImage(2, 1, 16, 16); // Second block
+	block[2] = bs.grabImage(3, 1, 16, 16);
+	block[3] = bs.grabImage(1, 2, 16, 16);
+	block[4] = bs.grabImage(2, 2, 16, 16);
+	block[5] = bs.grabImage(3, 2, 16, 16);
 	
 	player[0] = ps.grabImage(1, 2, 24, 32);
 	player[1] = ps.grabImage(2, 2, 24, 32);

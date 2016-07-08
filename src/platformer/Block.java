@@ -21,6 +21,10 @@ public Block(ObjectId id, float x, float y, int type) {
 public void render(Graphics g) {
 	if (type == 0) g.drawImage(tex.block[0], (int)x, (int)y, brickWidth, brickHeight, null);
 	if (type == 1) g.drawImage(tex.block[1], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == 2) g.drawImage(tex.block[2], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == 3) g.drawImage(tex.block[3], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == 4) g.drawImage(tex.block[4], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == 5) g.drawImage(tex.block[5], (int)x, (int)y, brickWidth, brickHeight, null);
 }
 
 @Override

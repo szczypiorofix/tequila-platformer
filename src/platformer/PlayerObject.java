@@ -45,7 +45,7 @@ public void tick(LinkedList<GameObject> object) {
 	
 	level1X = x /4;   // PARALLAX LEVEL 1 !!!
 	level1Y = 0f;
-	level2X = x /2;   // PARALLAX LEVEL 2 !!!
+	level2X = x / 2;   // PARALLAX LEVEL 2 !!!
 	level2Y = 0f;
 	
 	if (MainScreen.KEY_LEFT) {
