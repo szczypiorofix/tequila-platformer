@@ -2,6 +2,7 @@ package platformer;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
@@ -10,7 +11,7 @@ public class PlayerObject extends GameObject{
 	
 private static float playerWidth = 110, playerHeight = 120;
 private ObjectsHandler objectsHandler;
-private final float MAX_SPEED = 10f;
+private final float MAX_SPEED = 17f;
 protected float velX = 0, velY = 0;
 protected float gravity = 0.5f;
 protected boolean onGround = false;
@@ -20,6 +21,7 @@ Textures tex = MainScreen.getInstance();
 private float level1X = 0f, level1Y = 0f;
 private float level2X = 0f, level2Y = 0f;
 private int turn = 1;
+private int health = 100;
 
 private Animation playerWalkRight, playerWalkLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft;
 
@@ -70,7 +72,7 @@ public void tick(LinkedList<GameObject> object) {
 		
 		
 		sounds.playJumpSound();
-		velY = -10;
+		velY = -12;
 		jumping = true;
 	}
 		
@@ -106,13 +108,16 @@ public void collisions(LinkedList<GameObject> object)
 			{
 				if (y > (tempObject.getBounds().y - height)) {
 					
-					y = tempObject.getY() + Block.brickHeight;
+					y = tempObject.getY() + Block.brickHeight-10;
 					velY = 0;	
 				}
 			}
 			
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
+				
+				if (velY == MAX_SPEED) health -= 10;
+				
 				y = tempObject.getY() - Block.brickHeight - 65;
 				jumping = false;
 				velY = 0;
@@ -135,19 +140,28 @@ public void collisions(LinkedList<GameObject> object)
 
 
 public void render(Graphics g) {
-	g.setColor(Color.BLUE);
 	
-	if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
-	if ((velX < 0) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y-5, (int) playerWidth+10, (int) playerHeight);
-		
-	if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y, (int) playerWidth+10, (int) playerHeight);
-	if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y, (int) playerWidth+10, (int) playerHeight);
-		
-	if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y, (int) playerWidth+10, (int) playerHeight);
-	if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y, (int) playerWidth+10, (int) playerHeight);
+	Graphics2D g2d = (Graphics2D) g;
+	g2d.setColor(Color.BLUE);
 	
-	if (velY != 0 && !onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, (int) playerWidth+10, (int) playerHeight, null);
-	if (velY != 0 && !onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, (int) playerWidth+10, (int) playerHeight, null);
+	
+	if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
+	if ((velX < 0) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
+		
+	if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
+	if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
+		
+	if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6);
+	if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6);
+	
+	if (!onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, null);
+	if (!onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, null);
+	
+	//g2d.draw(getBounds());
+	//g2d.draw(getBoundsTop());
+	//g2d.draw(getBoundsLeft());
+	//g2d.draw(getBoundsRight());
+	
 }
 
 // PARALLAX !
@@ -176,21 +190,33 @@ public float getLevel2Y()
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2), (int) ((int) y + (playerHeight / 2)), (int) playerWidth / 2, (int) playerHeight /2);
+	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2), (int) ((int) y + (playerHeight / 2)), (int) playerWidth / 2, (int) playerHeight /2-5);
 }
 
 public Rectangle getBoundsTop()
 {
-	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2), (int)y, (int) playerWidth / 2, (int) playerHeight /2);
+	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2), (int) y +10, (int) playerWidth / 2, (int) playerHeight /2);
 }
 
 public Rectangle getBoundsRight()
 {
-	return new Rectangle((int) ((int) x+playerWidth-25), (int)y+10, (int) 10, (int) playerHeight -20);
+	return new Rectangle((int) ((int) x+playerWidth-25), (int)y+10, 10, (int) playerHeight -20);
 }
 
 public Rectangle getBoundsLeft()
 {
-	return new Rectangle((int) x+20, (int)y+10, (int) 10, (int) playerHeight-20);
+	return new Rectangle((int) x+15, (int)y+10, 10, 100);
+}
+
+
+//OTHER
+
+public int getHealth() {
+	return health;
+}
+
+
+public void setHealth(int health) {
+	this.health = health;
 }
 }

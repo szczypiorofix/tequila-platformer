@@ -27,6 +27,8 @@ static Textures tex;
 private BufferedImage level1image, backGroundMountains, grass;
 
 
+
+
 public MainScreen(GameWindow gameWindow)
 {
 	super();
@@ -41,7 +43,7 @@ public MainScreen(GameWindow gameWindow)
 	level1image = loader.loadImage("/level1_image.png"); // LEVEL 1 IMAGE
 	//clouds = loader.loadImage("/clouds.png"); // CLOUD IMAGE  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	backGroundMountains = loader.loadImage("/gory.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
-	grass = loader.loadImage("/grass.png"); // http://opengameart.org/content/grass-2-0
+	grass = loader.loadImage("/grass1.png"); // http://opengameart.org/content/grass-2-0
 	
 	gameWindow.add(this);
 	key = new InputManager();
@@ -98,11 +100,11 @@ private void loadImageLevel(BufferedImage image)
 			int green = (pixel >> 8) & 0xff;
 			int blue = (pixel) & 0xff;
 			
-			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*45, yy*45, 1));
-			if (red == 200 && green == 200 && blue == 200) objectsHandler.addObject(new Block(ObjectId.Block, xx*45, yy*45, 4));
+			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*45, yy*MainClass.HEIGHT /22, 1));
+			if (red == 200 && green == 200 && blue == 200) objectsHandler.addObject(new Block(ObjectId.Block, xx*45, yy*MainClass.HEIGHT /22, 4));
 			
 			if (red == 0 && green == 0 && blue == 255) {
-				player = new PlayerObject(ObjectId.Player, xx*45, yy*45, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
+				player = new PlayerObject(ObjectId.Player, xx*45, yy*MainClass.HEIGHT /22, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
 				objectsHandler.addObject(player);
 			}
 		}
@@ -127,18 +129,31 @@ public void render(int fps_count, int ticks_count)
 	g.setColor(Color.BLACK);
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3)+340, 2800, 580, this);
-	g.drawImage(grass, (int) (0 - player.getLevel2X()), (int) (cam.getY()+690), 5200, 350, this);	
+	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), 3800, MainClass.HEIGHT, this);
 	
-	g.setColor(Color.BLACK);
-	g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 100, 60);
-	g.drawString("OnGround: "+player.onGround, MainClass.WIDTH - 100, 80);
-	g.drawString("velY: "+player.velY, MainClass.WIDTH - 100, 100);
-	g.drawString("velX: "+player.velX, MainClass.WIDTH - 100, 120);
-	g.drawString("Gravity: "+player.gravity, MainClass.WIDTH - 100, 140);
-	g.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 10);
-	g.drawString("KEY: "+key.getKey(), 10, 20);
-	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 100, 40);
+	
+	//if ((player.getX() < cam.getX()))
+	//{
+		g.drawImage(grass, (int) (0 - player.getLevel2X())+150, (int) (cam.getY()+(MainClass.HEIGHT * 1.35)), (int) (grass.getWidth()* 1.3), grass.getHeight(), this);	
+		g.drawImage(grass, (int) (0 - player.getLevel2X()+150+grass.getWidth() * 1.3), (int) (cam.getY()+(MainClass.HEIGHT * 1.35)), (int) (grass.getWidth()* 1.3), grass.getHeight(), this);
+		//g.drawImage(grass, (int) (0 - player.getLevel2X()+150+grass.getWidth() * 2.6), (int) (cam.getY()+(MainClass.HEIGHT * 1.35)), (int) (grass.getWidth()* 1.3), grass.getHeight(), this);
+	//}
+		
+	
+	
+	g.setColor(Color.YELLOW);
+	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 130, 40);
+	g.drawString("canX:"+cam.getX() +" camY:"+cam.getY(), MainClass.WIDTH - 130, 60);
+	g.drawString("Jumping: "+player.jumping, MainClass.WIDTH - 130, 80);
+	g.drawString("OnGround: "+player.onGround, MainClass.WIDTH - 130, 100);
+	g.drawString("velY: "+player.velY, MainClass.WIDTH - 130, 120);
+	g.drawString("velX: "+player.velX, MainClass.WIDTH - 130, 140);
+	g.drawString("Gravity: "+player.gravity, MainClass.WIDTH - 130, 160);
+	g.drawString("HEALTH: "+player.getHealth(), MainClass.WIDTH - 130, 180);
+	
+	g.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 20);
+	g.drawString("KEY: "+key.getKey(), 10, 40);
+	g.drawString("VIEWPORT: "+MainClass.WIDTH+"x" +MainClass.HEIGHT, 10, 60);
 	
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 	

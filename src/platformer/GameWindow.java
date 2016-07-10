@@ -1,5 +1,8 @@
 package platformer;
 
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -10,22 +13,27 @@ import javax.swing.JFrame;
 public class GameWindow extends JFrame implements WindowListener{
 
 private static final long serialVersionUID = 8434543456858249978L;
-private int width, height;
 private Image programIcon;
+public static DisplayMode currentDisplayMode = null;
 
-public GameWindow(String title, int width, int height)
+public GameWindow()
 {
-	super(title);
-	this.width = width;
-	this.height = height;
+	super("NEW PLATFORMER");
+	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	GraphicsDevice gd = ge.getDefaultScreenDevice();
+	//currentDisplayMode = ge.getDefaultScreenDevice().getDisplayMode();
 	
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setSize(this.width, this.height);
+	this.setUndecorated(true);
+	gd.setFullScreenWindow(this);
+	
+	//gd.setDisplayMode(new DisplayMode(1440, 900, 32, 60));
+	
 	setLocationRelativeTo(null);
 	setResizable(false);
 	
 	try {
-		programIcon = ImageIO.read(getClass().getResourceAsStream("/res/programIcon.png"));
+		programIcon = ImageIO.read(getClass().getResourceAsStream("/programIcon.png"));
 	} catch (IOException e) {
 		e.printStackTrace();
 		System.exit(-1);

@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Textures {
 
-SpriteSheet bs, ps;
+SpriteSheet bs;
 private BufferedImage block_sheet = null;
 public BufferedImage[] block = new BufferedImage[12];
 public BufferedImage[] playerRunR = new BufferedImage[8];
@@ -23,7 +23,6 @@ public Textures()
 	// http://charas-project.net/charas2/  - GENERATOR !!!
 	
 	bs = new SpriteSheet(block_sheet);
-	//ps = new SpriteSheet(player_sheet);
 	
 	playerRunR[0] = loader.loadImage("/Run (1).png"); // http://www.gameart2d.com/the-robot---free-sprites.html
 	playerRunR[1] = loader.loadImage("/Run (2).png"); // RUN RIGHT

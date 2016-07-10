@@ -48,8 +48,8 @@ public void nextFrame()
 }
 
 
-public void drawAnimation(Graphics g,  int x, int y, int scaleX, int scaleY)
+public void drawAnimation(Graphics g,  int x, int y)
 {
-	g.drawImage(currentImage, x, y, scaleX, scaleY, null);
+	g.drawImage(currentImage, x, y, null);
 }
 }
