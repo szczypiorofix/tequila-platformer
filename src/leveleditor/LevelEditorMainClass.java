@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
@@ -27,7 +29,8 @@ public class LevelEditorMainClass extends JFrame{
 private static final long serialVersionUID = -518719736058824960L;
 private JScrollPane scrollPane;
 private EditorPane editorPane;
-private JPanel leftPane;
+private JPanel leftPane, bottomPane;
+private JLabel selectedLabel;
 public static BufferedImage[] tileImage = new BufferedImage[30];
 private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
@@ -89,7 +92,7 @@ public LevelEditorMainClass()
 	setSize(800,600);
 	setLocationRelativeTo(null);
 	setLayout(new BorderLayout());
-	editorPane = new EditorPane(this, 40, 100);
+	editorPane = new EditorPane(40, 100);
 	scrollPane = new JScrollPane(editorPane);
 	
 	leftPane = new JPanel(new GridLayout(10, 3));
@@ -102,9 +105,14 @@ public LevelEditorMainClass()
 	}
 	tilesChoose[selectedTile].setBorder(new LineBorder(Color.RED, 2, true));
 	
+	bottomPane = new JPanel(new FlowLayout());
+	bottomPane.add(new JLabel("Obszar: " +editorPane.getRow() +"x" +editorPane.getCol()));
+	selectedLabel = new JLabel("   Selected: "+selectedTile);
+	bottomPane.add(selectedLabel);
+	
 	add(scrollPane, BorderLayout.CENTER);
 	add(leftPane, BorderLayout.WEST);
-	add(new JLabel("Obszar: " +editorPane.getRow() +"x" +editorPane.getCol()), BorderLayout.SOUTH);
+	add(bottomPane, BorderLayout.SOUTH);
 	mainMenu.add(mainSave);
 	mainMenu.add(mainOpen);
 	mainMenu.add(mainExit);
@@ -129,9 +137,19 @@ public class MenuListener implements ActionListener
 		if (e.getActionCommand().equalsIgnoreCase("Exit")) System.exit(0);
 		if (e.getActionCommand().equalsIgnoreCase("Save"))
 		{
+			
+			String filename = "";
+			
+			do {
+				filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", "level1");	
+			}
+			
+			while(filename.length() == 0);
+			
+			filename += ".lvl";
+			
 			try {
-				oos = new ObjectOutputStream(new FileOutputStream(
-			        "level1.txt"));
+				oos = new ObjectOutputStream(new FileOutputStream(filename));
 			    oos.writeObject(editorPane.getTileValues());
 			    oos.close();
 			}
@@ -156,7 +174,8 @@ public class TileListener implements ActionListener
 			tilesChoose[i].setBorder(new LineBorder(Color.GRAY, 1, false));
 		
 		tilesChoose[selectedTile].setBorder(new LineBorder(Color.RED, 2, true));
-		System.out.println(selectedTile);
+		selectedLabel.setText("   Selected: "+selectedTile);
+		//System.out.println(selectedTile);
 	}
 }
 
@@ -169,14 +188,12 @@ private int row, col;
 private Tile[][] editorTiles;
 private ActionListener editorTilesListener;
 private int[][] tileValues;
-private LevelEditorMainClass editor;
 
-public EditorPane(LevelEditorMainClass editor, int row, int col)
+public EditorPane(int row, int col)
 {
 	super(new GridLayout(row, col));
 	this.row = row;
 	this.col = col;
-	this.editor = editor;
 	setPreferredSize(new Dimension(row * 120, col * 20));
 	setMinimumSize(new Dimension(row * 120, col * 20));
 	setMaximumSize(new Dimension(row * 120, col * 20));
@@ -214,8 +231,17 @@ public class EditorTilesListener implements ActionListener
 			if (s.charAt(i) == ':') sec = true;
 		}
 		
-		editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(LevelEditorMainClass.tileImage[selectedTile]));
-		tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = selectedTile;
+		if (editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].getIcon() == null)
+		{
+			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(LevelEditorMainClass.tileImage[selectedTile]));
+			tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = selectedTile;	
+		}
+		else
+		{
+			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(null);
+			tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = -1;
+		}
+		
 	}
 }
 
