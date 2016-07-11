@@ -24,7 +24,7 @@ private boolean exit = false;
 protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_CTRL = false, KEY_SHIFT = false, KEY_DOWN = false;
 private Camera cam;
 static Textures tex;
-private BufferedImage level1image, backGroundMountains, grass;
+private BufferedImage level1image, backGroundMountains;
 
 
 
@@ -42,8 +42,8 @@ public MainScreen(GameWindow gameWindow)
 	
 	level1image = loader.loadImage("/level1_image.png"); // LEVEL 1 IMAGE
 	//clouds = loader.loadImage("/clouds.png"); // CLOUD IMAGE  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
-	backGroundMountains = loader.loadImage("/gory.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
-	grass = loader.loadImage("/grass1.png"); // http://opengameart.org/content/grass-2-0
+	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
+	//grass = loader.loadImage("/grass1.png"); // http://opengameart.org/content/grass-2-0
 	
 	gameWindow.add(this);
 	key = new InputManager();
@@ -100,10 +100,23 @@ private void loadImageLevel(BufferedImage image)
 			int green = (pixel >> 8) & 0xff;
 			int blue = (pixel) & 0xff;
 			
-			if (red == 255 && green == 255 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*45, yy*MainClass.HEIGHT /22, 1));
-			if (red == 200 && green == 200 && blue == 200) objectsHandler.addObject(new Block(ObjectId.Block, xx*45, yy*MainClass.HEIGHT /22, 4));
+			if (red == 255 && green == 0 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.UpFullLeft)); // RED
+			if (red == 150 && green == 0 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.UpFullMid));
+			if (red == 80 && green == 0 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.UpFullRight));
+						
+			if (red == 0 && green == 255 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeLeft)); // GREEN
+			if (red == 0 && green == 150 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeMid));
+			if (red == 0 && green == 80 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeRight));
 			
-			if (red == 0 && green == 0 && blue == 255) {
+			if (red == 0 && green == 0 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeLeft)); // BLUE
+			if (red == 0 && green == 0 && blue == 150) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeMid));
+			if (red == 0 && green == 0 && blue == 80) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeRight));
+			
+			
+			//if (red == 180 && green == 255 && blue == 180) objectsHandler.addObject(new SceneryObject(ObjectId.Scenery, xx*50, (int) (yy*50*0.8), 0));
+
+			
+			if (red == 50 && green == 50 && blue == 50) {
 				player = new PlayerObject(ObjectId.Player, xx*45, yy*MainClass.HEIGHT /22, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
 				objectsHandler.addObject(player);
 			}
@@ -129,17 +142,9 @@ public void render(int fps_count, int ticks_count)
 	g.setColor(Color.BLACK);
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), 3800, MainClass.HEIGHT, this);
-	
-	
-	//if ((player.getX() < cam.getX()))
-	//{
-		g.drawImage(grass, (int) (0 - player.getLevel2X())+150, (int) (cam.getY()+(MainClass.HEIGHT * 1.35)), (int) (grass.getWidth()* 1.3), grass.getHeight(), this);	
-		g.drawImage(grass, (int) (0 - player.getLevel2X()+150+grass.getWidth() * 1.3), (int) (cam.getY()+(MainClass.HEIGHT * 1.35)), (int) (grass.getWidth()* 1.3), grass.getHeight(), this);
-		//g.drawImage(grass, (int) (0 - player.getLevel2X()+150+grass.getWidth() * 2.6), (int) (cam.getY()+(MainClass.HEIGHT * 1.35)), (int) (grass.getWidth()* 1.3), grass.getHeight(), this);
-	//}
-		
-	
+	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2)-100, MainClass.WIDTH, (int) (MainClass.HEIGHT), this);
+	g.drawImage(backGroundMountains, (int) (backGroundMountains.getWidth() + 320 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2) -100, MainClass.WIDTH, MainClass.HEIGHT, this);
+	g.drawImage(backGroundMountains, (int) (backGroundMountains.getWidth() + 1900 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2) -100, MainClass.WIDTH, MainClass.HEIGHT, this);	
 	
 	g.setColor(Color.YELLOW);
 	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 130, 40);

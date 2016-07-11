@@ -9,7 +9,7 @@ public class SoundsLoader {
 
 private AudioInputStream jumpAudioStream;
 private Clip jumpClip;
-private final URL jumpSoundFile = getClass().getResource("/res/Jump.wav");
+private final URL jumpSoundFile = getClass().getResource("/Jump.wav");
 
 
 

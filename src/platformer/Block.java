@@ -7,24 +7,35 @@ import java.util.LinkedList;
 
 public class Block extends GameObject{
 
-protected static final int brickWidth = 45;
-protected static final int brickHeight = 45;
+protected static final int brickWidth = 50;
+protected static final int brickHeight = 50;
 Textures tex = MainScreen.getInstance();
-private int type;
+private TilesTypes type;
 
-public Block(ObjectId id, float x, float y, int type) {
+public Block(ObjectId id, float x, float y, TilesTypes type) {
 	super(id, x, y, brickWidth, brickHeight);
 	this.type = type;
 }
 
 @Override
 public void render(Graphics g) {
-	if (type == 0) g.drawImage(tex.block[0], (int)x, (int)y, brickWidth, brickHeight, null);
-	if (type == 1) g.drawImage(tex.block[1], (int)x, (int)y, brickWidth, brickHeight, null);
-	if (type == 2) g.drawImage(tex.block[2], (int)x, (int)y, brickWidth, brickHeight, null);
-	if (type == 3) g.drawImage(tex.block[3], (int)x, (int)y, brickWidth, brickHeight, null);
-	if (type == 4) g.drawImage(tex.block[4], (int)x, (int)y, brickWidth, brickHeight, null);
-	if (type == 5) g.drawImage(tex.block[5], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.UpFullLeft) g.drawImage(tex.blocks[0], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.UpFullMid) g.drawImage(tex.blocks[1], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.UpFullRight) g.drawImage(tex.blocks[2], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.MidEdgeLeft) g.drawImage(tex.blocks[3], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.MidEdgeMid) g.drawImage(tex.blocks[4], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.MidEdgeRight) g.drawImage(tex.blocks[5], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.UpStartLeft) g.drawImage(tex.blocks[6], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.UpStartRight) g.drawImage(tex.blocks[7], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.MidLeft) g.drawImage(tex.blocks[8], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.MidRight) g.drawImage(tex.blocks[9], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.FlyMid) g.drawImage(tex.blocks[10], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.FlyLeft) g.drawImage(tex.blocks[11], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.FlyRight) g.drawImage(tex.blocks[12], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.FlyThinLeft) g.drawImage(tex.blocks[13], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.FlyThinMid) g.drawImage(tex.blocks[14], (int)x, (int)y, brickWidth, brickHeight, null);
+	if (type == TilesTypes.FlyThinRight) g.drawImage(tex.blocks[15], (int)x, (int)y, brickWidth, brickHeight, null);
+	
 }
 
 @Override

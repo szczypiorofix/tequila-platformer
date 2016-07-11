@@ -34,8 +34,8 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	level1Y = y;
 	level2X = x;
 	level2Y = y;
-	playerWalkRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7]);
-	playerWalkLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7]);
+	playerWalkRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
+	playerWalkLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
 	playerIdleRight = new Animation(3, tex.playerIdleR[0], tex.playerIdleR[1], tex.playerIdleR[2], tex.playerIdleR[3], tex.playerIdleR[4], tex.playerIdleR[5], tex.playerIdleR[6], tex.playerIdleR[7], tex.playerIdleR[8], tex.playerIdleR[9]);
 	playerIdleLeft = new Animation(3, tex.playerIdleL[0], tex.playerIdleL[1], tex.playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
 	playerJumpRight = new Animation(10, tex.playerJumpR[0], tex.playerJumpR[1], tex.playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
@@ -118,7 +118,7 @@ public void collisions(LinkedList<GameObject> object)
 				
 				if (velY == MAX_SPEED) health -= 10;
 				
-				y = tempObject.getY() - Block.brickHeight - 65;
+				y = tempObject.getY() - Block.brickHeight - 53;
 				jumping = false;
 				velY = 0;
 				onGround = true;
@@ -126,13 +126,12 @@ public void collisions(LinkedList<GameObject> object)
 			
 			if (getBoundsRight().intersects(tempObject.getBounds()))
 			{
-				x = tempObject.getX() - width+15;
+				x = tempObject.getX() - width+32;
 			}
 			
-			// LEFT
 			if (getBoundsLeft().intersects(tempObject.getBounds()))
 			{					
-				x = tempObject.getX() + width-85;
+				x = tempObject.getX() + width-55;
 			}
 		}
 	}
@@ -141,8 +140,8 @@ public void collisions(LinkedList<GameObject> object)
 
 public void render(Graphics g) {
 	
-	Graphics2D g2d = (Graphics2D) g;
-	g2d.setColor(Color.BLUE);
+	//Graphics2D g2d = (Graphics2D) g;
+	//g2d.setColor(Color.BLUE);
 	
 	
 	if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
@@ -190,22 +189,22 @@ public float getLevel2Y()
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2), (int) ((int) y + (playerHeight / 2)), (int) playerWidth / 2, (int) playerHeight /2-5);
+	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-20, (int) ((int) y + (playerHeight / 2))-5, (int) playerWidth / 2, (int) playerHeight /2-5);
 }
 
 public Rectangle getBoundsTop()
 {
-	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2), (int) y +10, (int) playerWidth / 2, (int) playerHeight /2);
+	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2)-20, (int) y +10, (int) playerWidth / 2, (int) playerHeight /2);
 }
 
 public Rectangle getBoundsRight()
 {
-	return new Rectangle((int) ((int) x+playerWidth-25), (int)y+10, 10, (int) playerHeight -20);
+	return new Rectangle((int) ((int) x+playerWidth-25)-20, (int)y+15, 10, (int) playerHeight -35);
 }
 
 public Rectangle getBoundsLeft()
 {
-	return new Rectangle((int) x+15, (int)y+10, 10, 100);
+	return new Rectangle((int) x-5, (int)y+15, 10, (int) playerHeight -35);
 }
 
 

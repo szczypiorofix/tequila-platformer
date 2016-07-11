@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 public class GameWindow extends JFrame implements WindowListener{
 
 private static final long serialVersionUID = 8434543456858249978L;
-private Image programIcon;
+//private Image programIcon;
 public static DisplayMode currentDisplayMode = null;
 
 public GameWindow()
@@ -27,19 +27,19 @@ public GameWindow()
 	this.setUndecorated(true);
 	gd.setFullScreenWindow(this);
 	
-	//gd.setDisplayMode(new DisplayMode(1440, 900, 32, 60));
+	//gd.setDisplayMode(new DisplayMode(1024, 768, 32, 60));
 	
 	setLocationRelativeTo(null);
 	setResizable(false);
 	
-	try {
-		programIcon = ImageIO.read(getClass().getResourceAsStream("/programIcon.png"));
-	} catch (IOException e) {
-		e.printStackTrace();
-		System.exit(-1);
-	}
+	//try {
+		//programIcon = ImageIO.read(getClass().getResourceAsStream("/programIcon.png"));
+	//} catch (IOException e) {
+	//	e.printStackTrace();
+	//	System.exit(-1);
+	//}
 	
-	this.setIconImage(programIcon);
+	//this.setIconImage(programIcon);
 	this.addWindowListener(this);
 }
 
