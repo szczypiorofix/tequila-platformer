@@ -7,6 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 
 
@@ -25,8 +28,8 @@ protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KE
 private Camera cam;
 static Textures tex;
 private BufferedImage level1image, backGroundMountains;
-
-
+private ObjectInputStream ois;
+private int[][] tileValues;
 
 
 public MainScreen(GameWindow gameWindow)
@@ -89,6 +92,8 @@ public void addElements()
 
 private void loadImageLevel(BufferedImage image)
 {
+	/**
+	
 	int w = level1image.getWidth();
 	int h = level1image.getHeight();
 	
@@ -121,6 +126,36 @@ private void loadImageLevel(BufferedImage image)
 				objectsHandler.addObject(player);
 			}
 		}
+	**/
+	
+	player = new PlayerObject(ObjectId.Player, 100, 100, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
+	objectsHandler.addObject(player);
+	
+	//tileValues = new int[40][100];
+	
+	try {
+		ois = new ObjectInputStream(new FileInputStream("level1.txt"));
+		tileValues = (int[][]) (ois.readObject());
+		ois.close();
+	}
+	catch (IOException | ClassNotFoundException ioe)
+	{
+		ioe.printStackTrace();
+		System.exit(0);
+	}
+	
+	for (int xx = 0; xx < 40; xx++)
+		for (int yy = 0; yy < 100; yy++)
+		{
+			
+			if (tileValues[xx][yy] != -1)
+			{
+				if (tileValues[xx][yy] < 16)
+					objectsHandler.addObject(new Block(ObjectId.Block, yy*50, (int) ((xx*50) - MainClass.HEIGHT), tileValues[xx][yy]));
+				else
+					objectsHandler.addObject(new SceneryObject(ObjectId.Scenery, yy*50, (int) ((xx*50) - MainClass.HEIGHT), tileValues[xx][yy]));
+			}
+		}
 	
 }
 
@@ -142,9 +177,9 @@ public void render(int fps_count, int ticks_count)
 	g.setColor(Color.BLACK);
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2)-100, MainClass.WIDTH, (int) (MainClass.HEIGHT), this);
-	g.drawImage(backGroundMountains, (int) (backGroundMountains.getWidth() + 320 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2) -100, MainClass.WIDTH, MainClass.HEIGHT, this);
-	g.drawImage(backGroundMountains, (int) (backGroundMountains.getWidth() + 1900 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2) -100, MainClass.WIDTH, MainClass.HEIGHT, this);	
+	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X())+200, (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2)-100, MainClass.WIDTH, (int) (MainClass.HEIGHT), null);
+	//g.drawImage(backGroundMountains, (int) (backGroundMountains.getWidth() + 320 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2) -100, MainClass.WIDTH, MainClass.HEIGHT, null);
+	//g.drawImage(backGroundMountains, (int) (backGroundMountains.getWidth() + 1900 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2) -100, MainClass.WIDTH, MainClass.HEIGHT, null);	
 	
 	g.setColor(Color.YELLOW);
 	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 130, 40);

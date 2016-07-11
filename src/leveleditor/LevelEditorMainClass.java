@@ -2,13 +2,17 @@ package leveleditor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -29,8 +33,10 @@ private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
 private JMenuItem mainExit = new JMenuItem("Exit"), mainSave = new JMenuItem("Save"), mainOpen = new JMenuItem("Open");
 private TileChoose[] tilesChoose = new TileChoose[30];
-private ActionListener tileListener;
-public static int selectedTile = 0;
+private ActionListener tileListener, menuListener;
+public int selectedTile = 0;
+private ObjectOutputStream oos;
+
 
 
 public LevelEditorMainClass()
@@ -77,12 +83,13 @@ public LevelEditorMainClass()
 	}
 	
 	tileListener = new TileListener();
+	menuListener = new MenuListener();
 	
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setSize(800,600);
 	setLocationRelativeTo(null);
 	setLayout(new BorderLayout());
-	editorPane = new EditorPane(40, 100);
+	editorPane = new EditorPane(this, 40, 100);
 	scrollPane = new JScrollPane(editorPane);
 	
 	leftPane = new JPanel(new GridLayout(10, 3));
@@ -104,10 +111,39 @@ public LevelEditorMainClass()
 	menuBar.add(mainMenu);
 	setJMenuBar(menuBar);
 	
+	mainSave.addActionListener(menuListener);
+	mainSave.setActionCommand("Save");
+	mainOpen.addActionListener(menuListener);
+	mainOpen.setActionCommand("Open");
+	mainExit.addActionListener(menuListener);
+	mainExit.setActionCommand("Exit");
 	
-	///   ZAPIS DO PLIKU BMP w systemie RGB
-	
+	///   ZAPIS DO PLIKU BMP w systemie RGB	
 }
+
+public class MenuListener implements ActionListener
+{
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getActionCommand().equalsIgnoreCase("Exit")) System.exit(0);
+		if (e.getActionCommand().equalsIgnoreCase("Save"))
+		{
+			try {
+				oos = new ObjectOutputStream(new FileOutputStream(
+			        "level1.txt"));
+			    oos.writeObject(editorPane.getTileValues());
+			    oos.close();
+			}
+			catch (IOException ioe)
+			{
+				ioe.printStackTrace();
+				System.exit(-1);
+			}
+		}
+	}
+}
+
 
 public class TileListener implements ActionListener
 {
@@ -120,9 +156,94 @@ public class TileListener implements ActionListener
 			tilesChoose[i].setBorder(new LineBorder(Color.GRAY, 1, false));
 		
 		tilesChoose[selectedTile].setBorder(new LineBorder(Color.RED, 2, true));
+		System.out.println(selectedTile);
 	}
 }
 
+
+public class EditorPane extends JPanel{
+
+	
+private static final long serialVersionUID = -5692560801368198843L;
+private int row, col;
+private Tile[][] editorTiles;
+private ActionListener editorTilesListener;
+private int[][] tileValues;
+private LevelEditorMainClass editor;
+
+public EditorPane(LevelEditorMainClass editor, int row, int col)
+{
+	super(new GridLayout(row, col));
+	this.row = row;
+	this.col = col;
+	this.editor = editor;
+	setPreferredSize(new Dimension(row * 120, col * 20));
+	setMinimumSize(new Dimension(row * 120, col * 20));
+	setMaximumSize(new Dimension(row * 120, col * 20));
+	
+	tileValues = new int[this.row][this.col];
+	editorTiles = new Tile[this.row][this.col];
+	editorTilesListener = new EditorTilesListener();
+	
+	for (int a = 0; a < row; a++)
+		for (int b = 0; b < col; b++)
+		{
+			editorTiles[a][b] = new Tile(a+"");
+			editorTiles[a][b].addActionListener(editorTilesListener);
+			editorTiles[a][b].setActionCommand(a+":"+b);
+			tileValues[a][b] = -1;
+			add(editorTiles[a][b]);
+		}
+}
+
+
+public class EditorTilesListener implements ActionListener
+{
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		String s = e.getActionCommand();
+		String first="", second="";
+		boolean sec = false;
+		
+		for (int i = 0; i < s.length(); i++)
+		{
+			if (!sec && s.charAt(i)!= ':') first += s.charAt(i);
+			if (sec) second += s.charAt(i);
+			if (s.charAt(i) == ':') sec = true;
+		}
+		
+		editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(LevelEditorMainClass.tileImage[selectedTile]));
+		tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = selectedTile;
+	}
+}
+
+
+public int[][] getTileValues()
+{
+	return tileValues;
+}
+
+public int getRow() {
+	return row;
+}
+
+
+public void setRow(int row) {
+	this.row = row;
+}
+
+
+public int getCol() {
+	return col;
+}
+
+
+public void setCol(int col) {
+	this.col = col;
+}
+}
 
 public static void main(String[] args)
 {

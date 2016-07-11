@@ -24,13 +24,16 @@ public GameWindow()
 	GraphicsDevice gd = ge.getDefaultScreenDevice();
 	//currentDisplayMode = ge.getDefaultScreenDevice().getDisplayMode();
 	
-	this.setUndecorated(true);
-	gd.setFullScreenWindow(this);
+	//this.setUndecorated(true);
+	//gd.setFullScreenWindow(this);
 	
 	//gd.setDisplayMode(new DisplayMode(1024, 768, 32, 60));
 	
+	setSize(1366,768);
+
 	setLocationRelativeTo(null);
 	setResizable(false);
+	
 	
 	//try {
 		//programIcon = ImageIO.read(getClass().getResourceAsStream("/programIcon.png"));
