@@ -6,11 +6,14 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,6 +30,7 @@ import javax.swing.border.LineBorder;
 public class LevelEditorMainClass extends JFrame{
 
 private static final long serialVersionUID = -518719736058824960L;
+public final int ROWS = 40, COLS = 200;
 private JScrollPane scrollPane;
 private EditorPane editorPane;
 private JPanel leftPane, bottomPane;
@@ -34,11 +38,12 @@ private JLabel selectedLabel;
 public static BufferedImage[] tileImage = new BufferedImage[30];
 private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
-private JMenuItem mainExit = new JMenuItem("Exit"), mainSave = new JMenuItem("Save"), mainOpen = new JMenuItem("Open");
+private JMenuItem mainExit = new JMenuItem("Zakoñcz"), mainSave = new JMenuItem("Zapisz"), mainOpen = new JMenuItem("Otwórz");
 private TileChoose[] tilesChoose = new TileChoose[30];
 private ActionListener tileListener, menuListener;
 public int selectedTile = 0;
 private ObjectOutputStream oos;
+private ObjectInputStream ois;
 
 
 
@@ -92,7 +97,7 @@ public LevelEditorMainClass()
 	setSize(800,600);
 	setLocationRelativeTo(null);
 	setLayout(new BorderLayout());
-	editorPane = new EditorPane(40, 100);
+	editorPane = new EditorPane(ROWS, COLS);
 	scrollPane = new JScrollPane(editorPane);
 	
 	leftPane = new JPanel(new GridLayout(10, 3));
@@ -135,7 +140,8 @@ public class MenuListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		if (e.getActionCommand().equalsIgnoreCase("Exit")) System.exit(0);
-		if (e.getActionCommand().equalsIgnoreCase("Save"))
+		
+		if (e.getActionCommand().equalsIgnoreCase("Open"))
 		{
 			
 			String filename = "";
@@ -146,7 +152,46 @@ public class MenuListener implements ActionListener
 			
 			while(filename.length() == 0);
 			
-			filename += ".lvl";
+			filename = "res/Other/" +filename +".lvl";
+			
+			try {
+				ois = new ObjectInputStream(new FileInputStream(filename));
+				editorPane.setTileValues((int[][]) (ois.readObject()));
+				ois.close();
+			}
+			catch (IOException | ClassNotFoundException ioe)
+			{
+				ioe.printStackTrace();
+				System.exit(0);
+			}
+			
+			editorPane.revalidate();
+			editorPane.repaint();
+			
+			for (int a = 0; a < ROWS; a++)
+				for (int b = 0; b < COLS; b++)
+				{
+					editorPane.editorTiles[a][b].setText(a+"");
+					
+					if (editorPane.tileValues[a][b] >= 0) 
+					{
+						Image newImage = tileImage[editorPane.tileValues[a][b]].getScaledInstance(50, 30, Image.SCALE_DEFAULT);
+						editorPane.editorTiles[a][b].setIcon(new ImageIcon(newImage));
+					}
+				}
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("Save"))
+		{
+			String filename = "";
+			do {
+				filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", "level1");	
+			}	
+			while(filename.length() == 0);
+			
+			//filename += ".lvl";
+			
+			filename = "res/Other/" +filename +".lvl";
 			
 			try {
 				oos = new ObjectOutputStream(new FileOutputStream(filename));
@@ -194,9 +239,9 @@ public EditorPane(int row, int col)
 	super(new GridLayout(row, col));
 	this.row = row;
 	this.col = col;
-	setPreferredSize(new Dimension(row * 120, col * 20));
-	setMinimumSize(new Dimension(row * 120, col * 20));
-	setMaximumSize(new Dimension(row * 120, col * 20));
+	setPreferredSize(new Dimension(row * 240, col * 10));
+	setMinimumSize(new Dimension(row * 240, col * 10));
+	setMaximumSize(new Dimension(row * 240, col * 10));
 	
 	tileValues = new int[this.row][this.col];
 	editorTiles = new Tile[this.row][this.col];
@@ -233,7 +278,8 @@ public class EditorTilesListener implements ActionListener
 		
 		if (editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].getIcon() == null)
 		{
-			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(LevelEditorMainClass.tileImage[selectedTile]));
+			Image newImage = tileImage[selectedTile].getScaledInstance(50, 30, Image.SCALE_DEFAULT);
+			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(newImage));
 			tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = selectedTile;	
 		}
 		else
@@ -245,6 +291,10 @@ public class EditorTilesListener implements ActionListener
 	}
 }
 
+public void setTileValues(int[][] i)
+{
+	tileValues = i;
+}
 
 public int[][] getTileValues()
 {

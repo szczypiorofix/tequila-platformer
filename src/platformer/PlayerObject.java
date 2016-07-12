@@ -108,7 +108,7 @@ public void collisions(LinkedList<GameObject> object)
 			{
 				if (y > (tempObject.getBounds().y - height)) {
 					
-					y = tempObject.getY() + Block.brickHeight-10;
+					y = tempObject.getY() + Block.brickHeight-8;
 					velY = 0;	
 				}
 			}

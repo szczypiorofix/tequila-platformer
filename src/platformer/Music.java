@@ -12,7 +12,7 @@ private Player player;
 InputStream fis = null;
 BufferedInputStream bis = null;
 
-// http://opengameart.org/content/trance-menu
+// http://opengameart.org/content/mirage
 
 public Music()  // Start w GameWindow
 {
@@ -23,7 +23,7 @@ public Music()  // Start w GameWindow
 		{
 			try{
 			    do {
-			    fis = getClass().getClassLoader().getResourceAsStream("music1.mp3");
+			    fis = getClass().getClassLoader().getResourceAsStream("mirage.mp3");
 			    bis = new BufferedInputStream(fis);
 			    player = new Player(bis);
 			    player.play();

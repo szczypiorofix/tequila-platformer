@@ -1,8 +1,8 @@
 package leveleditor;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -25,10 +25,11 @@ public Tile(BufferedImage image)
 {
 	super();
 	this.image = image;
+	Image newImage = image.getScaledInstance(50, 30, Image.SCALE_DEFAULT);
 	setPreferredSize(new Dimension(50,30));
 	setMinimumSize(new Dimension(50,30));
 	setMaximumSize(new Dimension(50,30));
 	setContentAreaFilled(false);
-	setIcon(new ImageIcon(this.image));
+	setIcon(new ImageIcon(newImage));
 }
 }
