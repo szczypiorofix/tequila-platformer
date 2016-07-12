@@ -23,7 +23,7 @@ public GameWindow()
 	
 	this.setUndecorated(true);
 	this.setIgnoreRepaint(true);
-	//this.setResizable(false);
+	this.setResizable(false);
 	
 	gd.setFullScreenWindow(this);
 
