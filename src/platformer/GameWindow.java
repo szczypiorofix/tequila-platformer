@@ -3,11 +3,8 @@ package platformer;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class GameWindow extends JFrame implements WindowListener{
@@ -18,22 +15,21 @@ public static DisplayMode currentDisplayMode = null;
 
 public GameWindow()
 {
-	super("NEW PLATFORMER");
+	//super();
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice gd = ge.getDefaultScreenDevice();
 	//currentDisplayMode = ge.getDefaultScreenDevice().getDisplayMode();
 	
 	this.setUndecorated(true);
-	gd.setFullScreenWindow(this);
+	this.setIgnoreRepaint(true);
+	//this.setResizable(false);
 	
-	//gd.setDisplayMode(new DisplayMode(1024, 768, 32, 60));
+	gd.setFullScreenWindow(this);
+
+	//gd.setDisplayMode(new DisplayMode(1366, 768, 32, 60));
 	
 	//setSize(1366,768);
-
-	setLocationRelativeTo(null);
-	setResizable(false);
-	
 	
 	//try {
 		//programIcon = ImageIO.read(getClass().getResourceAsStream("/programIcon.png"));
@@ -50,27 +46,20 @@ public void showWindow(boolean showWindow)
 {
 	this.setVisible(showWindow);
 	if (!showWindow) {
+		
 		this.dispose();
 		System.exit(0);
 	}
 }
 
-public void blank()
-{
-	// DO NOTHING IS THE BEST YOU CAN DO :)
-}
-
 @Override
-public void windowActivated(WindowEvent arg0) {
-	this.requestFocusInWindow();
-}
+public void windowActivated(WindowEvent arg0) {}
 
 @Override
 public void windowClosed(WindowEvent arg0) {}
 
 @Override
-public void windowClosing(WindowEvent arg0) {
-}
+public void windowClosing(WindowEvent arg0) {}
 
 @Override
 public void windowDeactivated(WindowEvent arg0) {}

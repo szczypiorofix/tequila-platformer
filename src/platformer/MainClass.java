@@ -16,14 +16,15 @@ private boolean running = false;
 
 public MainClass()
 {
-	gameWindow = new GameWindow();
+	gameWindow = new GameWindow();	
 	mainScreen = new MainScreen(gameWindow);
-	gameWindow.showWindow(true);	
-		
+
+	gameWindow.setVisible(true);
 	WIDTH = mainScreen.getWidth();
 	HEIGHT = mainScreen.getHeight();
-
+	
 	mainScreen.addElements();
+	
 	gameThreadStart();
 }
 
@@ -45,9 +46,11 @@ public void run() {
 	// GAME LOOP
 	
 	// TIMER GAMER LOOP, FPS = 60, TICKS = 60
-	/**
-	int FPS = 50;
+	
+	int FPS = 60;
 	int nrOfFrames = (int) 1000 / FPS;
+	fps_count = FPS;
+	ticks_count = FPS;
 	Timer timerLoop = new Timer(nrOfFrames, new ActionListener()
 	{
 		@Override
@@ -55,7 +58,7 @@ public void run() {
 		{
 			gameWindow.requestFocusInWindow();
 			mainScreen.tick();
-			mainScreen.render(FPS, FPS);
+			mainScreen.render(fps_count, ticks_count);
 			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
 		}
 	});
@@ -63,10 +66,10 @@ public void run() {
 	timerLoop.setInitialDelay(100);
 	timerLoop.start();
 	
-	**/
+	
 	
 	// FIXED GAME LOOP, FPS = variable, TICKS = 60
-	
+	/**
 	long lastTime = System.nanoTime();
 	double amountOfTicks = 60.0;
 	double ns = 1000000000 / amountOfTicks;
@@ -81,7 +84,7 @@ public void run() {
 		long now = System.nanoTime();
 		delta += (now - lastTime) / ns;
 		lastTime = now;
-		//gameWindow.requestFocus();
+		gameWindow.requestFocus();
 		
 		while(delta >= 1)
 		{
@@ -104,7 +107,7 @@ public void run() {
 			updates = 0;
 		}
 	}
-	
+	**/
 }
 
 public static void main(String[] args) {

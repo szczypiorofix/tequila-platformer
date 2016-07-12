@@ -7,8 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 
@@ -38,7 +40,6 @@ public MainScreen(GameWindow gameWindow)
 	super();
 	
 	this.gameWindow = gameWindow;
-	this.gameWindow.blank();
 	
 	BufferedImageLoader loader = new BufferedImageLoader();
 	
@@ -48,9 +49,9 @@ public MainScreen(GameWindow gameWindow)
 	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	//grass = loader.loadImage("/grass1.png"); // http://opengameart.org/content/grass-2-0
 	
-	gameWindow.add(this);
+	this.gameWindow.add(this);
 	key = new InputManager();
-	gameWindow.addKeyListener(key);
+	this.gameWindow.addKeyListener(key);
 	cam = new Camera(0,0);
 	new Music();
 }
@@ -129,10 +130,12 @@ private void loadImageLevel()
 	**/
 	
 	
-	//tileValues = new int[40][100];
+	tileValues = new int[40][100];
 	
 	try {
-		ois = new ObjectInputStream(new FileInputStream("res/Other/level1.lvl"));
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		File file = new File(classLoader.getResource("level1.lvl").getFile());
+		ois = new ObjectInputStream(new FileInputStream(file));
 		tileValues = (int[][]) (ois.readObject());
 		ois.close();
 	}
@@ -149,9 +152,9 @@ private void loadImageLevel()
 			if (tileValues[xx][yy] != -1)
 			{
 				if (tileValues[xx][yy] < 16)
-					objectsHandler.addObject(new Block(ObjectId.Block, yy*50, (int) ((xx*50) - MainClass.HEIGHT+500), tileValues[xx][yy]));
+					objectsHandler.addObject(new Block(ObjectId.Block, yy*50, (int) ((xx*50) - MainClass.HEIGHT + (MainClass.HEIGHT*0.9)), tileValues[xx][yy]));
 				else
-					objectsHandler.addObject(new SceneryObject(ObjectId.Scenery, yy*50, (int) ((xx*50) - MainClass.HEIGHT)+500, tileValues[xx][yy]));
+					objectsHandler.addObject(new SceneryObject(ObjectId.Scenery, yy*50, (int) ((xx*50) - MainClass.HEIGHT+ (MainClass.HEIGHT *0.9)), tileValues[xx][yy]));
 			}
 		}
 	
@@ -175,12 +178,12 @@ public void render(int fps_count, int ticks_count)
 	
 	/////////////////// DRAW HERE ////////////////////////////
 	
-	g.setColor(Color.BLACK);
+	g.setColor(new Color(184, 220, 254));
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT)+50, null);
-	g.drawImage(backGroundMountains, (int) (MainClass.WIDTH - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, MainClass.HEIGHT+50, null);
-	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, MainClass.HEIGHT+50, null);	
+	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g.drawImage(backGroundMountains, (int) (MainClass.WIDTH - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
 	
 	g.setColor(Color.BLACK);
 	g.fillRect(5, 5, 150, 60);
@@ -199,6 +202,7 @@ public void render(int fps_count, int ticks_count)
 	g.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 20);
 	g.drawString("KEY: "+key.getKey(), 10, 40);
 	g.drawString("VIEWPORT: "+MainClass.WIDTH+"x" +MainClass.HEIGHT, 10, 60);
+	
 	
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 	
