@@ -7,13 +7,16 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JFrame;
 
 public class GameWindow extends JFrame implements WindowListener{
 
 private static final long serialVersionUID = 8434543456858249978L;
-//private Image programIcon;
+private BufferedImage programIcon;
 public static DisplayMode currentDisplayMode = null;
+private BufferedImageLoader loader;
 
 public GameWindow()
 {
@@ -26,7 +29,9 @@ public GameWindow()
 	//gd.setDisplayMode(new DisplayMode(1366, 768, 32, 60));
 	
 	this.setUndecorated(true);
-	this.setIgnoreRepaint(true);
+	
+	//this.setIgnoreRepaint(true);
+	
 	this.setResizable(false);
 	
 	gd.setFullScreenWindow(this);
@@ -37,6 +42,10 @@ public GameWindow()
     setPreferredSize(new Dimension(w, h));
     getContentPane().setBackground(Color.BLACK);
 	
+    loader = new BufferedImageLoader();
+    
+    programIcon = loader.loadImage("/programIcon.png");
+    
 	//try {
 		//programIcon = ImageIO.read(getClass().getResourceAsStream("/programIcon.png"));
 	//} catch (IOException e) {
@@ -44,7 +53,7 @@ public GameWindow()
 	//	System.exit(-1);
 	//}
 	
-	//this.setIconImage(programIcon);
+	this.setIconImage(programIcon);
 	this.addWindowListener(this);
 }
 

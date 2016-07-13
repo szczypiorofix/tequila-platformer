@@ -37,17 +37,10 @@ private int[][] tileValues;
 public MainScreen(GameWindow gameWindow)
 {
 	super();
-	
 	this.gameWindow = gameWindow;
-	
 	BufferedImageLoader loader = new BufferedImageLoader();
-	
 	tex = new Textures();
-	
-	//clouds = loader.loadImage("/clouds.png"); // CLOUD IMAGE  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
-	//grass = loader.loadImage("/grass1.png"); // http://opengameart.org/content/grass-2-0
-	
 	this.gameWindow.add(this);
 	key = new InputManager();
 	this.gameWindow.addKeyListener(key);
@@ -92,43 +85,6 @@ public void addElements()
 
 private void loadImageLevel()
 {
-	/**
-	
-	int w = level1image.getWidth();
-	int h = level1image.getHeight();
-	
-	for (int yy = 0; yy < h; yy++)
-		for (int xx = 0; xx < w; xx++)
-		{
-			int pixel = image.getRGB(xx, yy);
-			int red = (pixel >> 16) & 0xff;
-			int green = (pixel >> 8) & 0xff;
-			int blue = (pixel) & 0xff;
-			
-			if (red == 255 && green == 0 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.UpFullLeft)); // RED
-			if (red == 150 && green == 0 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.UpFullMid));
-			if (red == 80 && green == 0 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.UpFullRight));
-						
-			if (red == 0 && green == 255 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeLeft)); // GREEN
-			if (red == 0 && green == 150 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeMid));
-			if (red == 0 && green == 80 && blue == 0) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeRight));
-			
-			if (red == 0 && green == 0 && blue == 255) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeLeft)); // BLUE
-			if (red == 0 && green == 0 && blue == 150) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeMid));
-			if (red == 0 && green == 0 && blue == 80) objectsHandler.addObject(new Block(ObjectId.Block, xx*50, (int) (yy*50 *0.8), TilesTypes.MidEdgeRight));
-			
-			
-			//if (red == 180 && green == 255 && blue == 180) objectsHandler.addObject(new SceneryObject(ObjectId.Scenery, xx*50, (int) (yy*50*0.8), 0));
-
-			
-			if (red == 50 && green == 50 && blue == 50) {
-				player = new PlayerObject(ObjectId.Player, xx*45, yy*MainClass.HEIGHT /22, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
-				objectsHandler.addObject(player);
-			}
-		}
-	**/
-	
-	
 	tileValues = new int[40][100];
 	
 	try {
@@ -158,8 +114,7 @@ private void loadImageLevel()
 		}
 	
 	player = new PlayerObject(ObjectId.Player, 200, 800, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
-	objectsHandler.addObject(player);
-	
+	objectsHandler.addObject(player);	
 }
 
 public void render(int fps_count, int ticks_count)

@@ -1,5 +1,6 @@
 package platformer;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -46,7 +47,7 @@ public void run() {
 	// GAME LOOP
 	
 	// TIMER GAMER LOOP, FPS = 60, TICKS = 60
-	
+	/**
 	int FPS = 60;
 	int nrOfFrames = (int) 1000 / FPS;
 	fps_count = FPS;
@@ -65,11 +66,11 @@ public void run() {
 	
 	timerLoop.setInitialDelay(100);
 	timerLoop.start();
-	
+	**/
 	
 	
 	// FIXED GAME LOOP, FPS = variable, TICKS = 60
-	/**
+	
 	long lastTime = System.nanoTime();
 	double amountOfTicks = 60.0;
 	double ns = 1000000000 / amountOfTicks;
@@ -84,7 +85,7 @@ public void run() {
 		long now = System.nanoTime();
 		delta += (now - lastTime) / ns;
 		lastTime = now;
-		gameWindow.requestFocus();
+		//gameWindow.requestFocus();
 		
 		while(delta >= 1)
 		{
@@ -107,10 +108,17 @@ public void run() {
 			updates = 0;
 		}
 	}
-	**/
+	
 }
 
 public static void main(String[] args) {
-	new MainClass();
+	EventQueue.invokeLater(new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			new MainClass();
+		}
+	});
 }
 }
