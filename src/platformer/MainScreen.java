@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import javax.swing.JOptionPane;
+
 
 
 public class MainScreen extends Canvas{
@@ -25,6 +27,7 @@ private Graphics g;
 private ObjectsHandler objectsHandler;
 private PlayerObject player;
 private InputManager key;
+//private Joystick joystick;
 private boolean exit = false;
 protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_CTRL = false, KEY_SHIFT = false, KEY_DOWN = false;
 private Camera cam;
@@ -38,6 +41,13 @@ public MainScreen(GameWindow gameWindow)
 {
 	super();
 	this.gameWindow = gameWindow;
+	
+	//joystick = new Joystick();
+	//if (!joystick.isGamepadFound()) 
+	//	{
+			//JOptionPane.showMessageDialog(null, "No joy - no fun!");
+	//	}
+	
 	BufferedImageLoader loader = new BufferedImageLoader();
 	tex = new Textures();
 	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
