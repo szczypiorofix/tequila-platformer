@@ -1,5 +1,7 @@
 package platformer;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -19,17 +21,21 @@ public GameWindow()
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice gd = ge.getDefaultScreenDevice();
+	
 	//currentDisplayMode = ge.getDefaultScreenDevice().getDisplayMode();
+	//gd.setDisplayMode(new DisplayMode(1366, 768, 32, 60));
 	
 	this.setUndecorated(true);
 	this.setIgnoreRepaint(true);
 	this.setResizable(false);
 	
 	gd.setFullScreenWindow(this);
-
-	//gd.setDisplayMode(new DisplayMode(1366, 768, 32, 60));
 	
-	//setSize(1366,768);
+	int w = this.getWidth();
+    int h = this.getHeight();
+
+    setPreferredSize(new Dimension(w, h));
+    getContentPane().setBackground(Color.BLACK);
 	
 	//try {
 		//programIcon = ImageIO.read(getClass().getResourceAsStream("/programIcon.png"));
