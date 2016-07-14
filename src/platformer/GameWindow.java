@@ -30,7 +30,7 @@ public GameWindow()
 	
 	this.setUndecorated(true);
 	
-	//this.setIgnoreRepaint(true);
+	this.setIgnoreRepaint(true);
 	
 	this.setResizable(false);
 	

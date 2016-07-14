@@ -1,6 +1,7 @@
 package platformer;
 
 import java.awt.EventQueue;
+import java.io.File;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 //import javax.swing.Timer;
@@ -13,12 +14,19 @@ public static int WIDTH = 0, HEIGHT = 0;
 private Thread thread;
 private int fps_count = 0, ticks_count = 0;
 private boolean running = false;
+private boolean gamepadEnabled = false;
 
 
 public MainClass()
 {
-	gameWindow = new GameWindow();	
-	mainScreen = new MainScreen(gameWindow);
+	gameWindow = new GameWindow();
+	
+	File f = new File("input.txt");
+	if(f.exists() && !f.isDirectory()) { 
+	    gamepadEnabled = true;
+	}
+	
+	mainScreen = new MainScreen(gameWindow, gamepadEnabled);
 
 	gameWindow.setVisible(true);
 	WIDTH = mainScreen.getWidth();
@@ -29,7 +37,7 @@ public MainClass()
 }
 
 
-public void gameThreadStart()
+public synchronized void gameThreadStart()
 {
 	if (running) return;
 	running = true;
@@ -106,13 +114,14 @@ public void run() {
 }
 
 public static void main(String[] args) {
-	EventQueue.invokeLater(new Runnable()
-	{
-		@Override
-		public void run()
-		{
-			new MainClass();
-		}
-	});
+	//EventQueue.invokeLater(new Runnable()
+	//{
+	//	@Override
+	//	public void run()
+	//	{
+			
+	//	}
+	//});
+	new MainClass();
 }
 }

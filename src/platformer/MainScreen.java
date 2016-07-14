@@ -10,9 +10,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
-
-import javax.swing.JOptionPane;
+import java.util.Properties;
 
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
@@ -43,26 +43,57 @@ static Textures tex;
 private BufferedImage backGroundMountains;
 private ObjectInputStream ois;
 private int[][] tileValues;
+private boolean gamepadEnabled = false;
+private Properties prop = new Properties();
+private InputStream propInput = null;
+private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp;
 
 
-public MainScreen(GameWindow gameWindow)
+
+public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 {
 	super();
 	this.gameWindow = gameWindow;
-	
-	joystick = new Joystick();
-	if (!joystick.isGamepadFound()) 
-		{
-			JOptionPane.showMessageDialog(null, "No joy - no fun!");
-		}
-	else 
+	this.gamepadEnabled = gamepadEnabled;
+	if (this.gamepadEnabled) 
 	{
-		myGamepad = joystick.getMyFirstGamepad();
-		System.out.println("Input - " +myGamepad.getName());
-		gamepadComponents = myGamepad.getComponents();
 		
-		for (int i = 0; i < gamepadComponents.length; i++)
-			System.out.println(gamepadComponents[i].getName());
+		try {
+			propInput = new FileInputStream("input.txt");
+
+			prop.load(propInput);
+
+			leftProp = prop.getProperty("Left");
+			leftValueProp = prop.getProperty("value_left");
+			rightProp = prop.getProperty("Right");
+			rightValueProp = prop.getProperty("value_right");
+			jumpProp = prop.getProperty("Jump");
+			jumpValueProp = prop.getProperty("value_jump");
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (propInput != null) {
+				try {
+					propInput.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		
+		joystick = new Joystick();
+		if (joystick.isGamepadFound()) 
+		{
+			myGamepad = joystick.getMyFirstGamepad();
+			System.out.println("Input - " +myGamepad.getName());
+			gamepadComponents = myGamepad.getComponents();
+		
+			for (int i = 0; i < gamepadComponents.length; i++)
+				System.out.println(gamepadComponents[i].getName());
+		}
+		else this.gamepadEnabled = false;
 	}
 	
 	BufferedImageLoader loader = new BufferedImageLoader();
@@ -83,7 +114,8 @@ public static Textures getInstance()
 public void tick()
 {
 	// GAMEPAD
-	if (joystick.isGamepadFound())
+
+	if (this.gamepadEnabled)
 	{
 		myGamepad.poll();    
 		net.java.games.input.EventQueue queue = myGamepad.getEventQueue();
@@ -96,24 +128,31 @@ public void tick()
    		
 			if (comp.equals(gamepadComponents[14])) exit=true;
     	
-			if (comp.equals(gamepadComponents[7]))
+			if (comp.getName().equals(jumpProp))
     			{
     				if (value > 0) GAMEPAD_UP = true;
     				else GAMEPAD_UP = false;
     			}
-    	
-			if (comp.equals(gamepadComponents[4]))
-			{	
-    			if ((value == 0.5f) || (value == 1f))
-    			{
-    				if (value == 0.5) GAMEPAD_RIGHT = true;
-    				else GAMEPAD_LEFT = true;
-    			}
-    			else {
-    				GAMEPAD_LEFT = false;
-    				GAMEPAD_RIGHT = false;
-    			}
+			
+			if (comp.getName().equals(leftProp))
+			{
+				if (Float.toString(value).equals(leftValueProp))
+				{
+					GAMEPAD_LEFT = true;
+				}
+				else GAMEPAD_LEFT = false;
 			}
+			
+			if (comp.getName().equals(rightProp))
+			{
+				if (Float.toString(value).equals(rightValueProp))
+				{
+					GAMEPAD_RIGHT = true;
+				}
+				else GAMEPAD_RIGHT = false;
+			}
+
+		
 		}
 	}
     

@@ -1,7 +1,6 @@
 package gamepad;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -9,10 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.Properties;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -37,11 +33,9 @@ private Controller[] controllers;
 private Component[] components;
 private Component left, right, jump;
 private float leftValue, rightValue, jumpValue;
-private String deviceName = "";
 private JButton saveButton = new JButton("Zapisz i zamknij"), jumpButton = new JButton("JUMP"), leftButton = new JButton("LEFT"), rightButton = new JButton("RIGHT");
 private ActionListener buttonListener;
 private int awaitingButton = 0; // 1 - right, 2 - left, 3 - jump
-private boolean isAwaiting = false;
 private JDialog awaitingDialog;
 private JLabel leftLabel, rightLabel, jumpLabel;
 private JLabel awaitingLabel;
@@ -65,14 +59,13 @@ public GamepadSetting()
 	frame.add(southPane, BorderLayout.SOUTH);
 	
 	southPane.add(saveButton);
-	
+	saveButton.setEnabled(false);
 	saveButton.addActionListener(new ActionListener()
 	{
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			Properties prop = new Properties();
-			OutputStream output = null;
 			prop.put("Left", left.getName());
 			prop.put("value_left", Float.toString(leftValue));
 			prop.put("Right", right.getName());
@@ -109,7 +102,7 @@ public GamepadSetting()
     }
     
     northPane.add(new JLabel(myGamepad.getName()));
-	northPane.add(new JLabel(" Przyciski i ose: "));
+	northPane.add(new JLabel(" Przyciski i osie: "));
 	northPane.add(componentsNumber);
 	
 	components = myGamepad.getComponents();
@@ -192,19 +185,19 @@ public void run()
         	float value = event.getValue();          	
         	if ((awaitingDialog.isVisible()) && awaitingButton != 0) {
         		
-        		if (awaitingButton == 1) {
+        		if (awaitingButton == 1 && (value > 0.2f || value < -0.2f)) {
         			System.out.println("RIGHT przypisany do " +comp.getName() +" " +value+"");
         			rightLabel.setText(comp.getName() +" " +value);
-        			left = comp;
-        			leftValue = value;
-        		}
-        		if (awaitingButton == 2) {
-        			System.out.println("LEFT przypisany do " +comp.getName() +" " +value+"");
-        			leftLabel.setText(comp.getName() +" " +value);
         			right = comp;
         			rightValue = value;
         		}
-        		if (awaitingButton == 3) {
+        		if (awaitingButton == 2 && (value > 0.2f || value < -0.2f)) {
+        			System.out.println("LEFT przypisany do " +comp.getName() +" " +value+"");
+        			leftLabel.setText(comp.getName() +" " +value);
+        			left = comp;
+        			leftValue = value;
+        		}
+        		if (awaitingButton == 3 && (value > 0.2f || value < -0.2f)) {
         			System.out.println("JUMP przypisany do " +comp.getName() +" " +value+"");
         			jumpLabel.setText(comp.getName() +" " +value);
         			jump = comp;
@@ -212,6 +205,7 @@ public void run()
         		}
         		awaitingButton = 0;
         		awaitingDialog.setVisible(false);
+        		if (left != null && right != null && jump != null) saveButton.setEnabled(true);
         	}
         }
 	}
