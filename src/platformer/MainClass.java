@@ -1,9 +1,9 @@
 package platformer;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Timer;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
+//import javax.swing.Timer;
 
 public class MainClass implements Runnable{
 
@@ -25,17 +25,14 @@ public MainClass()
 	HEIGHT = mainScreen.getHeight();
 	
 	mainScreen.addElements();
-	
 	gameThreadStart();
 }
 
 
 public void gameThreadStart()
 {
-	if (running)
-		return;
+	if (running) return;
 	running = true;
-	
 	thread = new Thread(this);
 	thread.start();
 }
@@ -79,7 +76,6 @@ public void run() {
 	int updates = 0;
 	int frames = 0;
 	
-	
 	while(running)
 	{	
 		long now = System.nanoTime();
@@ -90,7 +86,6 @@ public void run() {
 		while(delta >= 1)
 		{
 			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
-	
 			mainScreen.tick();
 			updates++;
 			delta--;
@@ -108,7 +103,6 @@ public void run() {
 			updates = 0;
 		}
 	}
-	
 }
 
 public static void main(String[] args) {

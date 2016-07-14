@@ -14,6 +14,10 @@ import java.io.ObjectInputStream;
 
 import javax.swing.JOptionPane;
 
+import net.java.games.input.Component;
+import net.java.games.input.Controller;
+import net.java.games.input.Event;
+
 
 
 public class MainScreen extends Canvas{
@@ -27,9 +31,13 @@ private Graphics g;
 private ObjectsHandler objectsHandler;
 private PlayerObject player;
 private InputManager key;
-//private Joystick joystick;
+private Joystick joystick;
+private Controller myGamepad;
+private Component[] gamepadComponents;
+
 private boolean exit = false;
 protected static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_CTRL = false, KEY_SHIFT = false, KEY_DOWN = false;
+protected static boolean GAMEPAD_LEFT = false, GAMEPAD_RIGHT = false, GAMEPAD_UP = false;
 private Camera cam;
 static Textures tex;
 private BufferedImage backGroundMountains;
@@ -42,11 +50,20 @@ public MainScreen(GameWindow gameWindow)
 	super();
 	this.gameWindow = gameWindow;
 	
-	//joystick = new Joystick();
-	//if (!joystick.isGamepadFound()) 
-	//	{
-			//JOptionPane.showMessageDialog(null, "No joy - no fun!");
-	//	}
+	joystick = new Joystick();
+	if (!joystick.isGamepadFound()) 
+		{
+			JOptionPane.showMessageDialog(null, "No joy - no fun!");
+		}
+	else 
+	{
+		myGamepad = joystick.getMyFirstGamepad();
+		System.out.println("Input - " +myGamepad.getName());
+		gamepadComponents = myGamepad.getComponents();
+		
+		for (int i = 0; i < gamepadComponents.length; i++)
+			System.out.println(gamepadComponents[i].getName());
+	}
 	
 	BufferedImageLoader loader = new BufferedImageLoader();
 	tex = new Textures();
@@ -65,16 +82,52 @@ public static Textures getInstance()
 
 public void tick()
 {
-	//key.update();
+	// GAMEPAD
+	if (joystick.isGamepadFound())
+	{
+		myGamepad.poll();    
+		net.java.games.input.EventQueue queue = myGamepad.getEventQueue();
+		Event event = new Event();
+    
+		while(queue.getNextEvent(event))
+		{
+			Component comp = event.getComponent();
+			float value = event.getValue();          	
+   		
+			if (comp.equals(gamepadComponents[14])) exit=true;
+    	
+			if (comp.equals(gamepadComponents[7]))
+    			{
+    				if (value > 0) GAMEPAD_UP = true;
+    				else GAMEPAD_UP = false;
+    			}
+    	
+			if (comp.equals(gamepadComponents[4]))
+			{	
+    			if ((value == 0.5f) || (value == 1f))
+    			{
+    				if (value == 0.5) GAMEPAD_RIGHT = true;
+    				else GAMEPAD_LEFT = true;
+    			}
+    			else {
+    				GAMEPAD_LEFT = false;
+    				GAMEPAD_RIGHT = false;
+    			}
+			}
+		}
+	}
+    
+    // KEYBOARD
+    //key.update();
 
-	KEY_UP = false;
-	KEY_LEFT = false;
-	KEY_RIGHT = false;
-	KEY_CTRL = false;
-	KEY_SHIFT = false;
-	KEY_DOWN = false;
-	
-	if ((key.isKeyDown(KeyEvent.VK_LEFT)) || (key.isKeyDown(KeyEvent.VK_A))) KEY_LEFT = true;
+  	KEY_UP = false;
+  	KEY_LEFT = false;
+  	KEY_RIGHT = false;
+  	KEY_CTRL = false;
+  	KEY_SHIFT = false;
+  	KEY_DOWN = false;
+    
+    if ((key.isKeyDown(KeyEvent.VK_LEFT)) || (key.isKeyDown(KeyEvent.VK_A))) KEY_LEFT = true;
 	if (((key.isKeyDown(KeyEvent.VK_RIGHT)) || (key.isKeyDown(KeyEvent.VK_D)))) KEY_RIGHT = true;
 	if ((key.isKeyDown(KeyEvent.VK_UP)) || (key.isKeyDown(KeyEvent.VK_W)) || (key.isKeyDown(KeyEvent.VK_SPACE))) KEY_UP = true;
 	if ((key.isKeyDown(KeyEvent.VK_DOWN)) || (key.isKeyDown(KeyEvent.VK_S))) KEY_DOWN = true;
@@ -117,9 +170,9 @@ private void loadImageLevel()
 			if (tileValues[xx][yy] != -1)
 			{
 				if (tileValues[xx][yy] < 16)
-					objectsHandler.addObject(new Block(ObjectId.Block, yy*50, (int) ((xx*50) - MainClass.HEIGHT + (MainClass.HEIGHT*0.9)), tileValues[xx][yy]));
+					objectsHandler.addObject(new Block(ObjectId.Block, yy*50, (int) ((xx*50) - MainClass.HEIGHT + (MainClass.HEIGHT*0.7)), tileValues[xx][yy]));
 				else
-					objectsHandler.addObject(new SceneryObject(ObjectId.Scenery, yy*50, (int) ((xx*50) - MainClass.HEIGHT+ (MainClass.HEIGHT *0.9)), tileValues[xx][yy]));
+					objectsHandler.addObject(new SceneryObject(ObjectId.Scenery, yy*50, (int) ((xx*50) - MainClass.HEIGHT+ (MainClass.HEIGHT *0.7)), tileValues[xx][yy]));
 			}
 		}
 	

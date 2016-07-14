@@ -51,12 +51,12 @@ public void tick(LinkedList<GameObject> object) {
 	level2X = x / 2;   // PARALLAX LEVEL 2 !!!
 	level2Y = 0f;
 	
-	if (MainScreen.KEY_LEFT) {
+	if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT)) {
 		velX = -5;
 		turn = -1;
 	}
 	
-	if (MainScreen.KEY_RIGHT) {
+	if ((MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT)) {
 		velX = 5;
 		turn = 1;
 	}
@@ -66,7 +66,7 @@ public void tick(LinkedList<GameObject> object) {
 		else gravity = 0.9f;
 	else gravity = 0.5f;
 	
-	if ((MainScreen.KEY_UP) && (!jumping) && (onGround)) {
+	if (((MainScreen.KEY_UP || (MainScreen.GAMEPAD_UP))) && (!jumping) && (onGround)) {
 		
 		
 		sounds.playJumpSound();

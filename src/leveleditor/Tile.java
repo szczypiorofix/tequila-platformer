@@ -24,12 +24,20 @@ public Tile(String name)
 public Tile(BufferedImage image)
 {
 	super();
-	this.image = image;
+	this.setImage(image);
 	Image newImage = image.getScaledInstance(50, 30, Image.SCALE_DEFAULT);
 	setPreferredSize(new Dimension(50,30));
 	setMinimumSize(new Dimension(50,30));
 	setMaximumSize(new Dimension(50,30));
 	setContentAreaFilled(false);
 	setIcon(new ImageIcon(newImage));
+}
+
+public BufferedImage getImage() {
+	return image;
+}
+
+public void setImage(BufferedImage image) {
+	this.image = image;
 }
 }

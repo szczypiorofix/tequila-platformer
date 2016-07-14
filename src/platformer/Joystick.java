@@ -7,27 +7,23 @@ import net.java.games.input.ControllerEnvironment;
 public class Joystick {
 
 private boolean isGamepadFound = false;
-private Controller[] controllers;
-private Controller myFirstGamepad;
-private Component[] gameoadComponents;
+private Controller[] controllers = null;
+private Controller myFirstGamepad = null;
+private Component[] gamepadComponents = null;
 	
-
-
 
 public Joystick()
 {
-	controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
-	   
-	for(int i =0;i<controllers.length;i++) {
-
-	    	if (controllers[i].getType() == Controller.Type.GAMEPAD || controllers[i].getType() == Controller.Type.STICK) {
-	    		myFirstGamepad = controllers[i];
-	   		isGamepadFound = true;
-	    	}
-	    }
+	controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();   
+	for(int i =0;i<controllers.length;i++)
+	{
+	   	if (controllers[i].getType() == Controller.Type.GAMEPAD || controllers[i].getType() == Controller.Type.STICK)
+	   	{
+	   		myFirstGamepad = controllers[i];
+	  		isGamepadFound = true;
+	   	}
+	}
 }
-
-
 
 
 public boolean isGamepadFound() {
@@ -55,11 +51,10 @@ public void setMyFirstGamepad(Controller myFirstGamepad) {
 }
 
 public Component[] getGameoadComponents() {
-	return gameoadComponents;
+	return gamepadComponents;
 }
 
 public void setGameoadComponents(Component[] gameoadComponents) {
-	this.gameoadComponents = gameoadComponents;
+	this.gamepadComponents = gameoadComponents;
 }
-
 }

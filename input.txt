@@ -1,0 +1,8 @@
+#Favorite Things
+#Thu Jul 14 15:31:26 CEST 2016
+value_right=-1.0
+Left=O\u009C 
+value_left=1.0
+Jump=Przycisk 0
+value_jump=1.0
+Right=O\u009C 
