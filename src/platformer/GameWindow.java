@@ -1,6 +1,6 @@
 package platformer;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.DisplayMode;
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
@@ -18,8 +18,6 @@ private BufferedImageLoader loader;
 
 public GameWindow()
 {
-	//super(new Frame());
-	//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice gd = ge.getDefaultScreenDevice();
 	
@@ -29,26 +27,11 @@ public GameWindow()
 	this.setUndecorated(true);
 	this.setIgnoreRepaint(true);
 	this.setResizable(false);
-	
+	setBackground(Color.BLACK);
 	gd.setFullScreenWindow(this);
-	
-	int w = this.getWidth();
-    int h = this.getHeight();
-
-    setPreferredSize(new Dimension(w, h));
-   // getContentPane().setBackground(Color.BLACK);
-	
+    
     loader = new BufferedImageLoader();
-    
     programIcon = loader.loadImage("/programIcon.png");
-    
-	//try {
-		//programIcon = ImageIO.read(getClass().getResourceAsStream("/programIcon.png"));
-	//} catch (IOException e) {
-	//	e.printStackTrace();
-	//	System.exit(-1);
-	//}
-	
 	this.setIconImage(programIcon);
 	this.addWindowListener(this);
 }
@@ -57,7 +40,6 @@ public void showWindow(boolean showWindow)
 {
 	this.setVisible(showWindow);
 	if (!showWindow) {
-		
 		this.dispose();
 		System.exit(0);
 	}

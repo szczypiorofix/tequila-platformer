@@ -241,7 +241,7 @@ public void render(int fps_count, int ticks_count)
 	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
 	
 	g.setColor(Color.BLACK);
-	g.fillRect(5, 5, 150, 60);
+	g.fillRect(5, 5, 150, 80);
 	g.fillRect(MainClass.WIDTH-140, 10, 130, 210);
 	g.setColor(Color.YELLOW);
 	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 130, 40);
@@ -257,6 +257,7 @@ public void render(int fps_count, int ticks_count)
 	g.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 20);
 	g.drawString("KEY: "+key.getKey(), 10, 40);
 	g.drawString("VIEWPORT: "+MainClass.WIDTH+"x" +MainClass.HEIGHT, 10, 60);
+	g.drawString("GAMEPAD: "+this.gamepadEnabled, 10, 80);
 	
 	
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING

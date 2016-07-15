@@ -1,9 +1,8 @@
 package platformer;
 
+import java.awt.EventQueue;
 import java.io.File;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
-//import javax.swing.Timer;
+
 
 public class MainClass implements Runnable{
 
@@ -48,31 +47,9 @@ public synchronized void gameThreadStart()
 @Override
 public void run() {
 	
-	// GAME LOOP
+	gameWindow.requestFocus();
 	
-	// TIMER GAMER LOOP, FPS = 60, TICKS = 60
-	/**
-	int FPS = 60;
-	int nrOfFrames = (int) 1000 / FPS;
-	fps_count = FPS;
-	ticks_count = FPS;
-	Timer timerLoop = new Timer(nrOfFrames, new ActionListener()
-	{
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			gameWindow.requestFocusInWindow();
-			mainScreen.tick();
-			mainScreen.render(fps_count, ticks_count);
-			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
-		}
-	});
-	
-	timerLoop.setInitialDelay(100);
-	timerLoop.start();
-	**/
-	
-	
+	// GAME LOOP	
 	// FIXED GAME LOOP, FPS = variable, TICKS = 60
 	
 	long lastTime = System.nanoTime();
@@ -92,7 +69,6 @@ public void run() {
 		while(delta >= 1)
 		{
 			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
-			//gameWindow.requestFocus();
 			mainScreen.tick();
 			updates++;
 			delta--;
@@ -113,14 +89,13 @@ public void run() {
 }
 
 public static void main(String[] args) {
-	//EventQueue.invokeLater(new Runnable()
-	//{
-	//	@Override
-	//	public void run()
-	//	{
+	EventQueue.invokeLater(new Runnable()
+	{
+		@Override
+		public void run()
+		{
 			new MainClass();
-	//	}
-	//});
-	
+		}
+	});
 }
 }
