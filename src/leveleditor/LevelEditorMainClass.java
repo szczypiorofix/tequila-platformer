@@ -35,11 +35,12 @@ private JScrollPane scrollPane;
 private EditorPane editorPane;
 private JPanel leftPane, bottomPane;
 private JLabel selectedLabel;
-public static BufferedImage[] tileImage = new BufferedImage[30];
+private static final int MAX_TILES = 33;
+public static BufferedImage[] tileImage = new BufferedImage[MAX_TILES];
 private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
 private JMenuItem mainExit = new JMenuItem("Zakoñcz"), mainSave = new JMenuItem("Zapisz"), mainOpen = new JMenuItem("Otwórz");
-private TileChoose[] tilesChoose = new TileChoose[30];
+private TileChoose[] tilesChoose = new TileChoose[MAX_TILES];
 private ActionListener tileListener, menuListener;
 public int selectedTile = 0;
 private ObjectOutputStream oos;
@@ -82,6 +83,9 @@ public LevelEditorMainClass()
 		tileImage[27] = ImageIO.read(getClass().getResource("/Stone.png"));
 		tileImage[28] = ImageIO.read(getClass().getResource("/StoneBlock.png"));
 		tileImage[29] = ImageIO.read(getClass().getResource("/Tree.png"));
+		tileImage[30] = ImageIO.read(getClass().getResource("/Idle00R.png"));
+		tileImage[31] = ImageIO.read(getClass().getResource("/level_end.png"));
+		tileImage[32] = ImageIO.read(getClass().getResource("/coin48.png")).getSubimage(0, 0, 48, 48);
 		
 	}
 	catch (Exception e)
@@ -100,7 +104,7 @@ public LevelEditorMainClass()
 	editorPane = new EditorPane(ROWS, COLS);
 	scrollPane = new JScrollPane(editorPane);
 	
-	leftPane = new JPanel(new GridLayout(10, 3));
+	leftPane = new JPanel(new GridLayout(11, 3));
 	for (int i = 0; i < tileImage.length; i++)
 	{
 		tilesChoose[i] = new TileChoose(tileImage[i]);

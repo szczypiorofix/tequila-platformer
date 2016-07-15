@@ -16,6 +16,10 @@ public BufferedImage[] playerJumpL = new BufferedImage[5];
 
 public BufferedImage[] sceneryObjects = new BufferedImage[14];
 public BufferedImage[] blocks = new BufferedImage[16];
+public BufferedImage levelend;
+private BufferedImage coinImage;
+public SpriteSheet coinSheet;  // http://opengameart.org/content/coins-asset
+public BufferedImage[] coinAnim = new BufferedImage[61];
 
 public Textures()
 {
@@ -114,5 +118,14 @@ public Textures()
 	blocks[13] = loader.loadImage("/13.png");
 	blocks[14] = loader.loadImage("/14.png");
 	blocks[15] = loader.loadImage("/15.png");
+	
+	levelend = loader.loadImage("/level_end.png");
+	
+	coinImage = loader.loadImage("/coin48.png");
+	coinSheet = new SpriteSheet(coinImage);
+	
+	for (int i = 1; i < 61; i++) coinAnim[i-1] = 
+			coinSheet.grabImage(i, 1, 48, 48);
+
 }
 }

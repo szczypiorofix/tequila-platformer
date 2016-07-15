@@ -1,5 +1,5 @@
 package platformer;
 
 public enum ObjectId {
-	Player, Block, Scenery;
+	Player, Block, Scenery, LevelEnd, Coin;
 }

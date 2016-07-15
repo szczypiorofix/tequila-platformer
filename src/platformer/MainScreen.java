@@ -7,11 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.util.Properties;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
@@ -24,7 +22,8 @@ public class MainScreen extends Canvas{
 private static final long serialVersionUID = -5788122194224852624L;
 
 private GameWindow gameWindow;
-public final int ROWS = 200, COLS = 40;
+public static int LEVEL = 1;
+public static int COINS = 0;
 private BufferStrategy bs;
 private Graphics g;
 private ObjectsHandler objectsHandler;
@@ -40,8 +39,6 @@ protected static boolean GAMEPAD_LEFT = false, GAMEPAD_RIGHT = false, GAMEPAD_UP
 private Camera cam;
 static Textures tex;
 private BufferedImage backGroundMountains;
-private ObjectInputStream ois;
-private int[][] tileValues;
 private boolean gamepadEnabled = false;
 private Properties prop = new Properties();
 private InputStream propInput = null;
@@ -105,10 +102,18 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	new Music();
 }
 
-public static Textures getInstance()
+
+public void addElements()
 {
-	return tex;
+	objectsHandler = new ObjectsHandler(cam);
+	objectsHandler.loadImageLevel(LEVEL);
+	player = objectsHandler.getPlayer();
+	
+	// BUILD JAVA WEB APP QUICKLY AHHAHAHAHAH
+	// https://www.javacodegeeks.com/2016/07/build-java-web-app-quickly-java-servlet-jsp-tags-stormpath.html
+	
 }
+
 
 public void tick()
 {
@@ -177,47 +182,6 @@ public void tick()
 	cam.tick(player);
 }
 
-public void addElements()
-{
-	objectsHandler = new ObjectsHandler();
-	loadImageLevel();
-}
-
-
-private void loadImageLevel()
-{
-	tileValues = new int[40][100];
-	
-	try {
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		File file = new File(classLoader.getResource("level1.lvl").getFile());
-		ois = new ObjectInputStream(new FileInputStream(file));
-		tileValues = (int[][]) (ois.readObject());
-		ois.close();
-	}
-	catch (IOException | ClassNotFoundException ioe)
-	{
-		ioe.printStackTrace();
-		System.exit(0);
-	}
-	
-	for (int xx = 0; xx < COLS; xx++)
-		for (int yy = 0; yy < ROWS; yy++)
-		{
-			
-			if (tileValues[xx][yy] != -1)
-			{
-				if (tileValues[xx][yy] < 16)
-					objectsHandler.addObject(new Block(ObjectId.Block, yy*50, (int) ((xx*50) - MainClass.HEIGHT + (MainClass.HEIGHT*0.7)), tileValues[xx][yy]));
-				else
-					objectsHandler.addObject(new SceneryObject(ObjectId.Scenery, yy*50, (int) ((xx*50) - MainClass.HEIGHT+ (MainClass.HEIGHT *0.7)), tileValues[xx][yy]));
-			}
-		}
-	
-	player = new PlayerObject(ObjectId.Player, 200, 800, objectsHandler); /// TRZEBA PAMIÊTAÆ O DODANIU PLAYERA !!! INACZEJ GRA WYRZUCA B£AD W KLASIE CAMERA !!!
-	objectsHandler.addObject(player);	
-}
-
 public void render(int fps_count, int ticks_count)
 {
 	bs = this.getBufferStrategy();
@@ -241,7 +205,7 @@ public void render(int fps_count, int ticks_count)
 	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
 	
 	g.setColor(Color.BLACK);
-	g.fillRect(5, 5, 150, 80);
+	g.fillRect(5, 5, 150, 120);
 	g.fillRect(MainClass.WIDTH-140, 10, 130, 210);
 	g.setColor(Color.YELLOW);
 	g.drawString("X:"+player.getX() +" Y:"+player.getY(), MainClass.WIDTH - 130, 40);
@@ -255,9 +219,11 @@ public void render(int fps_count, int ticks_count)
 	g.drawString("HEALTH: "+player.getHealth(), MainClass.WIDTH - 130, 200);
 	
 	g.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 20);
-	g.drawString("KEY: "+key.getKey(), 10, 40);
-	g.drawString("VIEWPORT: "+MainClass.WIDTH+"x" +MainClass.HEIGHT, 10, 60);
-	g.drawString("GAMEPAD: "+this.gamepadEnabled, 10, 80);
+	g.drawString("LEVEL: "+LEVEL, 10, 40);
+	g.drawString("KEY: "+key.getKey(), 10, 60);
+	g.drawString("VIEWPORT: "+MainClass.WIDTH+"x" +MainClass.HEIGHT, 10, 80);
+	g.drawString("GAMEPAD: "+this.gamepadEnabled, 10, 100);
+	g.drawString("COINS: "+COINS, 10, 120);
 	
 	
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
@@ -273,9 +239,14 @@ public void render(int fps_count, int ticks_count)
 }
 
 
+public static Textures getInstance()
+{
+	return tex;
+}
+
+
 public boolean isExit()
 {
 	return exit;
 }
-
 }

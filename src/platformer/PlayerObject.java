@@ -1,6 +1,8 @@
 package platformer;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
@@ -9,7 +11,7 @@ public class PlayerObject extends GameObject{
 	
 private static float playerWidth = 110, playerHeight = 120;
 private ObjectsHandler objectsHandler;
-private final float MAX_SPEED = 17f;
+private final float MAX_SPEED = 20f;
 protected float velX = 0, velY = 0;
 protected float gravity = 0.5f;
 protected boolean onGround = false;
@@ -54,11 +56,13 @@ public void tick(LinkedList<GameObject> object) {
 	if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT)) {
 		velX = -5;
 		turn = -1;
+		//sounds.playFootStepSound();
 	}
 	
 	if ((MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT)) {
 		velX = 5;
 		turn = 1;
+		//sounds.playFootStepSound();
 	}
 		
 	if ((MainScreen.KEY_CTRL) || (MainScreen.KEY_SHIFT)) 
@@ -106,7 +110,7 @@ public void collisions(LinkedList<GameObject> object)
 			{
 				if (y > (tempObject.getBounds().y - height)) {
 					
-					y = tempObject.getY() + Block.brickHeight-8;
+					y = tempObject.getY() + Block.brickHeight-10;
 					velY = 0;	
 				}
 			}
@@ -130,6 +134,22 @@ public void collisions(LinkedList<GameObject> object)
 			if (getBoundsLeft().intersects(tempObject.getBounds()))
 			{					
 				x = tempObject.getX() + width-55;
+			}
+		}
+		else if (tempObject.getId() == ObjectId.LevelEnd)
+		{
+			if (getBounds().intersects(tempObject.getBounds()))
+			{
+				objectsHandler.switchLevel();
+			}
+		}
+		else if (tempObject.getId() == ObjectId.Coin)
+		{
+			if (getWholeBounds().intersects(tempObject.getBounds()))
+			{
+				objectsHandler.removeObject(tempObject);
+				MainScreen.COINS++;
+				sounds.playCoinSound();
 			}
 		}
 	}
@@ -158,6 +178,7 @@ public void render(Graphics g) {
 	//g2d.draw(getBoundsTop());
 	//g2d.draw(getBoundsLeft());
 	//g2d.draw(getBoundsRight());
+	//g2d.draw(getWholeBounds());
 }
 
 // PARALLAX !
@@ -186,24 +207,28 @@ public float getLevel2Y()
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-20, (int) ((int) y + (playerHeight / 2))+20, (int) playerWidth / 2 -5, (int) 25);
+	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-18, (int) ((int) y + (playerHeight / 2))+35, (int) playerWidth / 2 - 5, (int) 10);
 }
 
 public Rectangle getBoundsTop()
 {
-	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2)-20, (int) y +10, (int) playerWidth / 2, (int) playerHeight /2);
+	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2)-20, (int) y +10, (int) playerWidth / 2, (int) playerHeight /2-50);
 }
 
 public Rectangle getBoundsRight()
 {
-	return new Rectangle((int) ((int) x+playerWidth-25)-20, (int)y+15, 10, (int) playerHeight -35);
+	return new Rectangle((int) ((int) x+playerWidth-25)-20, (int)y+20, 10, (int) playerHeight -45);
 }
 
 public Rectangle getBoundsLeft()
 {
-	return new Rectangle((int) x-5, (int)y+15, 10, (int) playerHeight -35);
+	return new Rectangle((int) x-5, (int)y+20, 10, (int) playerHeight -45);
 }
 
+public Rectangle getWholeBounds()
+{
+	return new Rectangle((int) x, (int) y+10, (int) playerWidth-45, (int) playerHeight-20);
+}
 
 //OTHER
 

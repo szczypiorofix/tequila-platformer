@@ -11,10 +11,49 @@ public class SoundsLoader {
 private AudioInputStream jumpAudioStream;
 private Clip jumpClip;
 private final URL jumpSoundFile = getClass().getResource("/Jump.wav");
+private final URL coinSoundFile = getClass().getResource("/coin10.wav");
+private final URL footSoundFile = getClass().getResource("/footstep.wav");
 private FloatControl gainControl;
 
 
 //http://www.bfxr.net/
+
+
+public void playFootStepSound()
+{
+	try
+	{
+		jumpAudioStream = AudioSystem.getAudioInputStream((footSoundFile));
+		jumpClip = AudioSystem.getClip();
+		jumpClip.open(jumpAudioStream);
+		gainControl = (FloatControl) jumpClip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-10.0f);  // VOLUME CONTROL
+		jumpClip.start();
+		jumpAudioStream = null;
+    }
+	catch(Exception ex) {
+    	ex.printStackTrace();
+    	System.exit(-1);
+    	}
+}
+
+public void playCoinSound()
+{
+	try
+	{
+		jumpAudioStream = AudioSystem.getAudioInputStream((coinSoundFile));
+		jumpClip = AudioSystem.getClip();
+		jumpClip.open(jumpAudioStream);
+		gainControl = (FloatControl) jumpClip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-10.0f);  // VOLUME CONTROL
+		jumpClip.start();
+		jumpAudioStream = null;
+    }
+	catch(Exception ex) {
+    	ex.printStackTrace();
+    	System.exit(-1);
+    	}
+}
 
 
 public void playJumpSound()
