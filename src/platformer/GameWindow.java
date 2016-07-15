@@ -1,17 +1,15 @@
 package platformer;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
+import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JFrame;
-
-public class GameWindow extends JFrame implements WindowListener{
+public class GameWindow extends Frame implements WindowListener{
 
 private static final long serialVersionUID = 8434543456858249978L;
 private BufferedImage programIcon;
@@ -20,8 +18,8 @@ private BufferedImageLoader loader;
 
 public GameWindow()
 {
-	//super();
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+	//super(new Frame());
+	//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice gd = ge.getDefaultScreenDevice();
 	
@@ -29,9 +27,7 @@ public GameWindow()
 	//gd.setDisplayMode(new DisplayMode(1366, 768, 32, 60));
 	
 	this.setUndecorated(true);
-	
 	this.setIgnoreRepaint(true);
-	
 	this.setResizable(false);
 	
 	gd.setFullScreenWindow(this);
@@ -40,7 +36,7 @@ public GameWindow()
     int h = this.getHeight();
 
     setPreferredSize(new Dimension(w, h));
-    getContentPane().setBackground(Color.BLACK);
+   // getContentPane().setBackground(Color.BLACK);
 	
     loader = new BufferedImageLoader();
     

@@ -2,15 +2,13 @@ package platformer;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-
-import javax.swing.JOptionPane;
 import javazoom.jl.player.Player;
 
 public class Music {
 
-private Player player;	
-InputStream fis = null;
-BufferedInputStream bis = null;
+private Player player;
+private InputStream fis = null;
+private BufferedInputStream bis = null;
 
 // http://opengameart.org/content/mirage
 
@@ -32,7 +30,7 @@ public Music()  // Start w GameWindow
 			}
 			catch(Exception exc){
 			    exc.printStackTrace();
-			    JOptionPane.showMessageDialog(null, "B³¹d odczytu pliku music1.mp3");
+			    System.exit(-1);
 			}
 		}
 	}).start();

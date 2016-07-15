@@ -158,7 +158,6 @@ public void render(Graphics g) {
 	//g2d.draw(getBoundsTop());
 	//g2d.draw(getBoundsLeft());
 	//g2d.draw(getBoundsRight());
-	
 }
 
 // PARALLAX !
@@ -187,7 +186,7 @@ public float getLevel2Y()
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-20, (int) ((int) y + (playerHeight / 2))-5, (int) playerWidth / 2, (int) playerHeight /2-5);
+	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-20, (int) ((int) y + (playerHeight / 2))+20, (int) playerWidth / 2 -5, (int) 25);
 }
 
 public Rectangle getBoundsTop()

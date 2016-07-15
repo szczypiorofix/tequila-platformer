@@ -1,6 +1,5 @@
 package platformer;
 
-import java.awt.EventQueue;
 import java.io.File;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
@@ -89,11 +88,11 @@ public void run() {
 		long now = System.nanoTime();
 		delta += (now - lastTime) / ns;
 		lastTime = now;
-		//gameWindow.requestFocus();
 		
 		while(delta >= 1)
 		{
 			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
+			//gameWindow.requestFocus();
 			mainScreen.tick();
 			updates++;
 			delta--;
@@ -119,9 +118,9 @@ public static void main(String[] args) {
 	//	@Override
 	//	public void run()
 	//	{
-			
+			new MainClass();
 	//	}
 	//});
-	new MainClass();
+	
 }
 }

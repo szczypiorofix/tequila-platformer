@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.Properties;
-
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
