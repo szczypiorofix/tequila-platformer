@@ -129,7 +129,7 @@ public void tick()
     	
 			if (comp.getName().equals(jumpProp))
     			{
-    				if (value > 0) GAMEPAD_UP = true;
+				if (Float.toString(value).equals(jumpValueProp)) GAMEPAD_UP = true;
     				else GAMEPAD_UP = false;
     			}
 			
