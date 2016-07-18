@@ -1,10 +1,8 @@
 package platformer;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class PlayerObject extends GameObject{
 
@@ -44,7 +42,7 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 
 
 @Override
-public void tick(LinkedList<GameObject> object) {
+public void tick(ArrayList<GameObject> object) {
 		
 	velX = 0;
 	
@@ -97,7 +95,7 @@ public void tick(LinkedList<GameObject> object) {
 }
 
 
-public void collisions(LinkedList<GameObject> object)
+public void collisions(ArrayList<GameObject> object)
 {
 	for (int i = 0; i < objectsHandler.object.size(); i++)
 	{

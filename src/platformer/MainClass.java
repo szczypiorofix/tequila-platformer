@@ -19,7 +19,7 @@ public MainClass()
 {
 	gameWindow = new GameWindow();
 	
-	File f = new File("input.txt");
+	File f = new File("input.cfg");
 	if(f.exists() && !f.isDirectory()) { 
 	    gamepadEnabled = true;
 	}

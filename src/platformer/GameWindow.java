@@ -1,10 +1,13 @@
 package platformer;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
@@ -15,6 +18,7 @@ private static final long serialVersionUID = 8434543456858249978L;
 private BufferedImage programIcon;
 public static DisplayMode currentDisplayMode = null;
 private BufferedImageLoader loader;
+private BufferedImage cursorImage = null;
 
 public GameWindow()
 {
@@ -33,6 +37,10 @@ public GameWindow()
     loader = new BufferedImageLoader();
     programIcon = loader.loadImage("/programIcon.png");
 	this.setIconImage(programIcon);
+	Toolkit toolkit = Toolkit.getDefaultToolkit();
+	cursorImage = loader.loadImage("/cursor.png");
+	Cursor cursor = toolkit.createCustomCursor(cursorImage , new Point(getX(), getY()), "img");
+	this.setCursor(cursor);
 	this.addWindowListener(this);
 }
 

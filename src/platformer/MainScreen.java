@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -42,20 +43,21 @@ private BufferedImage backGroundMountains;
 private boolean gamepadEnabled = false;
 private Properties prop = new Properties();
 private InputStream propInput = null;
-private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp;
+private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
 
 
 
 public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 {
 	super();
+	this.setFocusable(false);
 	this.gameWindow = gameWindow;
 	this.gamepadEnabled = gamepadEnabled;
 	if (this.gamepadEnabled) 
 	{
 		
 		try {
-			propInput = new FileInputStream("input.txt");
+			propInput = new FileInputStream("input.cfg");
 
 			prop.load(propInput);
 
@@ -65,6 +67,8 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 			rightValueProp = prop.getProperty("value_right");
 			jumpProp = prop.getProperty("Jump");
 			jumpValueProp = prop.getProperty("value_jump");
+			startProp = prop.getProperty("Start");
+			startValueProp = prop.getProperty("value_start");
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -130,8 +134,13 @@ public void tick()
 			Component comp = event.getComponent();
 			float value = event.getValue();          	
    		
-			if (comp.equals(gamepadComponents[14])) exit=true;
+			//if (comp.equals(gamepadComponents[14])) exit=true;
     	
+			if (comp.getName().equals(startProp))
+			{
+				if (Float.toString(value).equals(startValueProp)) exit = true;
+			}
+			
 			if (comp.getName().equals(jumpProp))
     			{
 				if (Float.toString(value).equals(jumpValueProp)) GAMEPAD_UP = true;
@@ -233,7 +242,9 @@ public void render(int fps_count, int ticks_count)
 	g2d.translate(-cam.getX(), -cam.getY()); // CAM ENGING
 	
 	//////////////////////////////////////////////////////////
-		
+	
+	Toolkit.getDefaultToolkit().sync();
+	
 	g.dispose();
 	bs.show();
 }

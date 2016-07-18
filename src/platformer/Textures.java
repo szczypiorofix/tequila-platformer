@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 
 public class Textures {
 
-//SpriteSheet bs;
-//private BufferedImage block_sheet = null;
 public BufferedImage[] block = new BufferedImage[12];
 public BufferedImage[] playerRunR = new BufferedImage[10];
 public BufferedImage[] playerRunL = new BufferedImage[10];
@@ -20,16 +18,18 @@ public BufferedImage levelend;
 private BufferedImage coinImage;
 public SpriteSheet coinSheet;  // http://opengameart.org/content/coins-asset
 public BufferedImage[] coinAnim = new BufferedImage[61];
+public BufferedImage enemy1ImageR;
+public SpriteSheet enemy1SheetR;
+public BufferedImage[] enemy1AnimR = new BufferedImage[4];   // http://opengameart.org/content/animated-turtle
+public BufferedImage enemy1ImageL;
+public SpriteSheet enemy1SheetL;
+public BufferedImage[] enemy1AnimL = new BufferedImage[4];
 
 public Textures()
 {
 	BufferedImageLoader loader = new BufferedImageLoader();
-	
-	//block_sheet = loader.loadImage("/generic_platformer_tiles.png"); //TILE SHEET: http://opengameart.org/content/generic-platformer-tileset-16x16-background	
-	
+		
 	// http://charas-project.net/charas2/  - GENERATOR !!!
-	
-	//bs = new SpriteSheet(block_sheet);
 	
 	sceneryObjects[0] = loader.loadImage("/Bush (1).png");   // TILES http://www.gameart2d.com/free-desert-platformer-tileset.html
 	sceneryObjects[1] = loader.loadImage("/Bush (2).png");
@@ -121,11 +121,22 @@ public Textures()
 	
 	levelend = loader.loadImage("/level_end.png");
 	
-	coinImage = loader.loadImage("/coin48.png");
+	coinImage = loader.loadImage("/coin32.png");
 	coinSheet = new SpriteSheet(coinImage);
 	
-	for (int i = 1; i < 61; i++) coinAnim[i-1] = 
-			coinSheet.grabImage(i, 1, 48, 48);
-
+	for (int i = 1; i < 61; i++) coinAnim[i-1] = coinSheet.grabImage(i, 1, 32, 32);
+	
+	enemy1ImageR = loader.loadImage("/turtleR.png");
+	enemy1SheetR = new SpriteSheet(enemy1ImageR);
+	for (int i = 1; i < 5; i++) {
+		enemy1AnimR[i-1] = enemy1SheetR.grabImage(i, 1, 64, 64);
+	}
+	
+	enemy1ImageL = loader.loadImage("/turtleL.png");
+	enemy1SheetL = new SpriteSheet(enemy1ImageL);
+	for (int i = 1; i < 5; i++) {
+		enemy1AnimL[i-1] = enemy1SheetL.grabImage(i, 1, 64, 64);
+	}
+		
 }
 }

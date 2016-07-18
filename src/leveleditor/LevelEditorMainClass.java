@@ -35,7 +35,7 @@ private JScrollPane scrollPane;
 private EditorPane editorPane;
 private JPanel leftPane, bottomPane;
 private JLabel selectedLabel;
-private static final int MAX_TILES = 33;
+private static final int MAX_TILES = 34;
 public static BufferedImage[] tileImage = new BufferedImage[MAX_TILES];
 private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
@@ -45,6 +45,7 @@ private ActionListener tileListener, menuListener;
 public int selectedTile = 0;
 private ObjectOutputStream oos;
 private ObjectInputStream ois;
+private String currentFile = "";
 
 
 
@@ -85,7 +86,8 @@ public LevelEditorMainClass()
 		tileImage[29] = ImageIO.read(getClass().getResource("/Tree.png"));
 		tileImage[30] = ImageIO.read(getClass().getResource("/Idle00R.png"));
 		tileImage[31] = ImageIO.read(getClass().getResource("/level_end.png"));
-		tileImage[32] = ImageIO.read(getClass().getResource("/coin48.png")).getSubimage(0, 0, 48, 48);
+		tileImage[32] = ImageIO.read(getClass().getResource("/coin32.png")).getSubimage(0, 0, 32, 32);
+		tileImage[33] = ImageIO.read(getClass().getResource("/turtleR.png")).getSubimage(0, 0, 64, 64);
 		
 	}
 	catch (Exception e)
@@ -104,7 +106,7 @@ public LevelEditorMainClass()
 	editorPane = new EditorPane(ROWS, COLS);
 	scrollPane = new JScrollPane(editorPane);
 	
-	leftPane = new JPanel(new GridLayout(11, 3));
+	leftPane = new JPanel(new GridLayout(12, 3));
 	for (int i = 0; i < tileImage.length; i++)
 	{
 		tilesChoose[i] = new TileChoose(tileImage[i]);
@@ -156,7 +158,13 @@ public class MenuListener implements ActionListener
 			
 			while(filename.length() == 0);
 			
+			for (int i = 0; i < ROWS; i++)
+				for (int j = 0; j < COLS; j++)
+					editorPane.tileValues[i][j] = -1;
+			
 			filename = "res/Other/" +filename +".lvl";
+			currentFile = filename;
+			setTitle("Platformer - Level Editor: "+currentFile);
 			
 			try {
 				ois = new ObjectInputStream(new FileInputStream(filename));
@@ -169,13 +177,14 @@ public class MenuListener implements ActionListener
 				System.exit(0);
 			}
 			
-			editorPane.revalidate();
-			editorPane.repaint();
+			//editorPane.revalidate();
+			//editorPane.repaint();
 			
 			for (int a = 0; a < ROWS; a++)
 				for (int b = 0; b < COLS; b++)
 				{
 					editorPane.editorTiles[a][b].setText(a+"");
+					editorPane.editorTiles[a][b].setIcon(null);
 					
 					if (editorPane.tileValues[a][b] >= 0) 
 					{
@@ -196,6 +205,8 @@ public class MenuListener implements ActionListener
 			//filename += ".lvl";
 			
 			filename = "res/Other/" +filename +".lvl";
+			currentFile = filename;
+			setTitle("Platformer - Level Editor: "+currentFile);
 			
 			try {
 				oos = new ObjectOutputStream(new FileOutputStream(filename));

@@ -19,6 +19,8 @@ import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Event;
+import platformer.BufferedImageLoader;
+
 
 
 public class GamepadSetting {
@@ -31,13 +33,13 @@ private boolean anyGamePad = false;
 private Controller myGamepad;
 private Controller[] controllers;
 private Component[] components;
-private Component left, right, jump;
-private float leftValue, rightValue, jumpValue;
-private JButton saveButton = new JButton("Zapisz i zamknij"), jumpButton = new JButton("JUMP"), leftButton = new JButton("LEFT"), rightButton = new JButton("RIGHT");
+private Component left, right, jump, start;
+private float leftValue, rightValue, jumpValue, startValue;
+private JButton saveButton = new JButton("Zapisz i zamknij"), jumpButton = new JButton("JUMP"), leftButton = new JButton("LEFT"), rightButton = new JButton("RIGHT"), startButton = new JButton("START/EXIT");
 private ActionListener buttonListener;
-private int awaitingButton = 0; // 1 - right, 2 - left, 3 - jump
+private int awaitingButton = 0; // 1 - right, 2 - left, 3 - jump, 4 - start/exit
 private JDialog awaitingDialog;
-private JLabel leftLabel, rightLabel, jumpLabel;
+private JLabel leftLabel, rightLabel, jumpLabel, startLabel;
 private JLabel awaitingLabel;
 private Thread thread;
 private InputThread inputThread;
@@ -57,7 +59,7 @@ public GamepadSetting()
 	frame.add(eastPane, BorderLayout.EAST);
 	frame.add(westPane, BorderLayout.WEST);
 	frame.add(southPane, BorderLayout.SOUTH);
-	
+	frame.setIconImage(new BufferedImageLoader().loadImage("/gamepad.png"));
 	southPane.add(saveButton);
 	saveButton.setEnabled(false);
 	saveButton.addActionListener(new ActionListener()
@@ -72,10 +74,12 @@ public GamepadSetting()
 			prop.put("value_right", Float.toString(rightValue));
 			prop.put("Jump", jump.getName());
 			prop.put("value_jump", Float.toString(jumpValue));
-			File file = new File("input.txt");
+			prop.put("Start", start.getName());
+			prop.put("value_start", Float.toString(startValue));
+			File file = new File("input.cfg");
 			try {
 			FileOutputStream fileOut = new FileOutputStream(file);
-			prop.store(fileOut, "Favorite Things");
+			prop.store(fileOut, "Gamepad Input");
 			fileOut.close();
 			}
 			catch (Exception ex)
@@ -111,12 +115,15 @@ public GamepadSetting()
 	leftLabel = new JLabel("<null>");
 	rightLabel = new JLabel("<null>");
 	jumpLabel = new JLabel("<null>");
+	startLabel = new JLabel("<null>");
 	
-   centerPane.setLayout(new GridLayout(3, 3));
+   centerPane.setLayout(new GridLayout(4, 3));
         
    leftButton.setActionCommand("LEFT");
    rightButton.setActionCommand("RIGHT");
    jumpButton.setActionCommand("JUMP");
+   startButton.setActionCommand("START");
+   
    
    centerPane.add(new JLabel("W lewo"));
    centerPane.add(leftLabel);
@@ -124,14 +131,18 @@ public GamepadSetting()
    centerPane.add(new JLabel("W prawo"));
    centerPane.add(rightLabel);
    centerPane.add(rightButton);
-   centerPane.add(new JLabel("Skos"));
+   centerPane.add(new JLabel("Skok"));
    centerPane.add(jumpLabel);
    centerPane.add(jumpButton);
+   centerPane.add(new JLabel("Start/Exit"));
+   centerPane.add(startLabel);
+   centerPane.add(startButton);
     
    buttonListener = new ButtonListener();
    leftButton.addActionListener(buttonListener);
    rightButton.addActionListener(buttonListener);
    jumpButton.addActionListener(buttonListener);
+   startButton.addActionListener(buttonListener);
    
    awaitingDialog = new JDialog(frame, "Oczekiwanie...", true);
    awaitingDialog.setSize(300, 100);
@@ -156,10 +167,12 @@ public class ButtonListener implements ActionListener
 		if (e.getActionCommand().equalsIgnoreCase("RIGHT")) awaitingButton = 1;
 		if (e.getActionCommand().equalsIgnoreCase("LEFT")) awaitingButton = 2;
 		if (e.getActionCommand().equalsIgnoreCase("JUMP")) awaitingButton = 3;
+		if (e.getActionCommand().equalsIgnoreCase("START")) awaitingButton = 4;
 		
 		if (awaitingButton == 1) awaitingLabel.setText("Oczekiwanie na przycisk RIGHT ...");
 		else if (awaitingButton == 2) awaitingLabel.setText("Oczekiwanie na przycisk LEFT ...");
 		else if (awaitingButton == 3) awaitingLabel.setText("Oczekiwanie na przycisk JUMP ...");
+		else if (awaitingButton == 3) awaitingLabel.setText("Oczekiwanie na przycisk START/EXIT ...");
 		awaitingDialog.setVisible(true);
 		
 	}
@@ -203,9 +216,15 @@ public void run()
         			jump = comp;
         			jumpValue = value;
         		}
+        		if (awaitingButton == 4 && (value > 0.2f || value < -0.2f)) {
+        			System.out.println("START/EXIT przypisany do " +comp.getName() +" " +value+"");
+        			startLabel.setText(comp.getName() +" " +value);
+        			start = comp;
+        			startValue = value;
+        		}
         		awaitingButton = 0;
         		awaitingDialog.setVisible(false);
-        		if (left != null && right != null && jump != null) saveButton.setEnabled(true);
+        		if (left != null && right != null && jump != null && start != null) saveButton.setEnabled(true);
         	}
         }
 	}

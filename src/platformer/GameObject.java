@@ -2,7 +2,7 @@ package platformer;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public abstract class GameObject {
 
@@ -26,7 +26,7 @@ public GameObject(ObjectId id, float x, float y, float width, float height) {
 }
 
 public abstract void render(Graphics g);
-public abstract void tick(LinkedList<GameObject> object);
+public abstract void tick(ArrayList<GameObject> object);
 public abstract Rectangle getBounds();
 
 public float getX() {

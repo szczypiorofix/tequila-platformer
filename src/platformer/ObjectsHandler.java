@@ -1,23 +1,23 @@
 package platformer;
 
 import java.awt.Graphics;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class ObjectsHandler {
 
 
-public LinkedList<GameObject> object = new LinkedList<GameObject>();
+public ArrayList<GameObject> object = new ArrayList<GameObject>();
 public final int ROWS = 200, COLS = 40;
 private GameObject tempObject;
 private Camera cam;
 private ObjectInputStream ois;
 private int[][] tileValues;
 private PlayerObject player;
-private File file;
+private InputStream in = null;
+private PlayerObject tempPlayer;
 
 
 public ObjectsHandler(Camera cam)
@@ -39,8 +39,14 @@ public void render(Graphics g)
 	for (int i = 0; i < object.size(); i++)
 	{
 		tempObject = object.get(i);
-		tempObject.render(g);
+		if (tempObject.getId() != ObjectId.Player) {
+				tempObject.render(g);    // PLAYER NA PIERWSZYM MIEJSCU
+		}
+		else {
+			tempPlayer = (PlayerObject) tempObject;
+		}
 	}
+	tempPlayer.render(g);
 }
 
 private void clearLevel()
@@ -86,11 +92,11 @@ public void loadImageLevel(int level)
 	tileValues = new int[40][100];
 	
 	try {
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		if (level == 1) file = new File(classLoader.getResource("level1.lvl").getFile());
-		if (level == 2) file = new File(classLoader.getResource("level2.lvl").getFile());
-		if (level == 3) file = new File(classLoader.getResource("level3.lvl").getFile());
-		ois = new ObjectInputStream(new FileInputStream(file));
+		if (level == 1) in = getClass().getResourceAsStream("/level1.lvl");
+		if (level == 2) in = getClass().getResourceAsStream("/level2.lvl");
+		if (level == 3) in = getClass().getResourceAsStream("/level3.lvl");
+		
+		ois = new ObjectInputStream(in);
 		tileValues = (int[][]) (ois.readObject());
 		ois.close();
 	}
@@ -129,6 +135,10 @@ public void loadImageLevel(int level)
 				if (tileValues[xx][yy] == 32)
 				{
 					addObject(new Coin(ObjectId.Coin, yy*50, (int) ((xx*50) - MainClass.HEIGHT + (MainClass.HEIGHT*0.7))));
+				}
+				if (tileValues[xx][yy] == 33)
+				{
+					addObject(new Enemy1(ObjectId.Enemy1, yy*50, (int) ((xx*50) - MainClass.HEIGHT + (MainClass.HEIGHT*0.7))));
 				}
 			}
 		}	

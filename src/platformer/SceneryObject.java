@@ -2,7 +2,7 @@ package platformer;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class SceneryObject extends GameObject{
 
@@ -37,7 +37,7 @@ public void render(Graphics g) {
 }
 
 @Override
-public void tick(LinkedList<GameObject> object) {
+public void tick(ArrayList<GameObject> object) {
 }
 
 @Override

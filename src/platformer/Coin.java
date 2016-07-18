@@ -2,7 +2,7 @@ package platformer;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Coin extends GameObject{
 
@@ -11,7 +11,7 @@ private Animation coinRotating;
 
 
 public Coin(ObjectId id, float x, float y) {
-	super(id, x, y, 45, 45);
+	super(id, x, y, 32, 32);
 	coinRotating = new Animation(5, tex.coinAnim[0], tex.coinAnim[1], tex.coinAnim[2], tex.coinAnim[3], tex.coinAnim[4], tex.coinAnim[5]
 			, tex.coinAnim[6], tex.coinAnim[7], tex.coinAnim[8], tex.coinAnim[9], tex.coinAnim[10], tex.coinAnim[11], tex.coinAnim[12], tex.coinAnim[13]
 			, tex.coinAnim[14], tex.coinAnim[15], tex.coinAnim[16], tex.coinAnim[17], tex.coinAnim[18], tex.coinAnim[19], tex.coinAnim[20]
@@ -24,17 +24,16 @@ public Coin(ObjectId id, float x, float y) {
 
 @Override
 public void render(Graphics g) {	
-	//g.drawImage(tex.levelend, (int)x-tex.levelend.getWidth() /2 +23, (int)y-tex.levelend.getHeight()/2+18, null);
 	coinRotating.drawAnimation(g, (int) x, (int) y);
 }
 
 @Override
-public void tick(LinkedList<GameObject> object) {
+public void tick(ArrayList<GameObject> object) {
 	coinRotating.runAnimation();
 }
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, 45, 45);
+	return new Rectangle((int) x, (int) y, 32, 32);
 }
 }
