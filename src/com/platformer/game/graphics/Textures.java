@@ -21,6 +21,8 @@ public BufferedImage[] coinAnim = new BufferedImage[61];
 public BufferedImage[] beeR = new BufferedImage[5];
 public BufferedImage[] beeL = new BufferedImage[5];
 public BufferedImage heart;
+public BufferedImage tequilaImage;
+public BufferedImage tacoImage;
 
 //public BufferedImage enemy1ImageR;
 //public SpriteSheet enemy1SheetR;
@@ -144,6 +146,11 @@ public Textures()
 	beeL[4] = loader.loadImage("/BeeL05.png");
 	
 	heart = loader.loadImage("/heart.png");
+	
+	tequilaImage = loader.loadImage("/tequila_bottle.png");
+	
+	tacoImage = loader.loadImage("/taco.png");
+	
 	
 	/**
 	enemy1ImageR = loader.loadImage("/turtleR.png");

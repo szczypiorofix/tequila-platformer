@@ -24,9 +24,7 @@ public static Font texasFont;
 
 public MainClass()
 {	
-	if(gamepadConfigFile.exists() && !gamepadConfigFile.isDirectory()) { 
-	    gamepadEnabled = true;
-	}
+	if(gamepadConfigFile.exists() && !gamepadConfigFile.isDirectory()) gamepadEnabled = true;
 	
 	try {
 		texasFont = Font.createFont(Font.TRUETYPE_FONT, TEXAS_FONT);

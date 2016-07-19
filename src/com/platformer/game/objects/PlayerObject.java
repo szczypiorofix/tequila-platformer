@@ -27,6 +27,14 @@ private float level1X = 0f, level1Y = 0f;
 private float level2X = 0f, level2Y = 0f;
 private int turn = 1;
 private int health = 5;
+private final int TEQUILA_COOLDOWN = 300;
+private int tequila_time = TEQUILA_COOLDOWN;
+private boolean tequila_powerUp = false;
+private final int TACO_COOLDOWN = 500;
+private int taco_time = TEQUILA_COOLDOWN;
+private boolean taco_powerUp = false;
+
+
 
 private Animation playerWalkRight, playerWalkLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft;
 
@@ -67,11 +75,6 @@ public void tick(ArrayList<GameObject> object) {
 		velX = 5;
 		turn = 1;
 	}
-		
-	if ((MainScreen.KEY_CTRL) || (MainScreen.KEY_SHIFT)) 
-		if (MainScreen.KEY_CTRL) gravity = 0.1f;
-		else gravity = 0.9f;
-	else gravity = 0.5f;
 	
 	if (((MainScreen.KEY_UP || (MainScreen.GAMEPAD_UP))) && (!jumping) && (onGround)) {
 		
@@ -88,6 +91,31 @@ public void tick(ArrayList<GameObject> object) {
 	y += velY;
 	
 	onGround = false;
+	
+	gravity = 0.5f;
+	if (tequila_powerUp)
+	{
+		gravity = 0.2f;
+		
+		if (tequila_time > 0) tequila_time--;
+		else {
+			tequila_time = TEQUILA_COOLDOWN;
+			tequila_powerUp = false;
+		}
+	}
+	
+	
+	if (taco_powerUp)
+	{
+		gravity = 0.9f;
+		
+		if (taco_time > 0) taco_time--;
+		else {
+			taco_time = TACO_COOLDOWN;
+			taco_powerUp = false;
+		}
+	}
+	
 	
 	collisions(object);
 	
@@ -121,7 +149,7 @@ public void collisions(ArrayList<GameObject> object)
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
 				
-				if (velY == MAX_SPEED) health--;
+				//if (velY == MAX_SPEED) health--;   // FALL DAMAGE
 				
 				y = tempObject.getY() - Block.brickHeight - 53;
 				jumping = false;
@@ -159,9 +187,28 @@ public void collisions(ArrayList<GameObject> object)
 		{
 			if (getWholeBounds().intersects(tempObject.getBounds()))
 			{
-				if (turn == 1) x -= 80;
+				if (tempObject.getX() > x) x -= 80;
 				else x += 80;
 				health--;
+			}
+		}
+		else if (tempObject.getId() == ObjectId.Tequila)
+		{
+			if (getWholeBounds().intersects(tempObject.getBounds()) && (!isTequila_powerUp()))
+			{
+				objectsHandler.removeObject(tempObject);
+				tequila_powerUp = true;
+				taco_powerUp = false;
+			}
+		}
+		else if (tempObject.getId() == ObjectId.Taco)
+		{
+			if (getWholeBounds().intersects(tempObject.getBounds()) && (health < 5))
+			{
+				objectsHandler.removeObject(tempObject);
+				taco_powerUp = true;
+				tequila_powerUp = false;
+				health++;
 			}
 		}
 	}
@@ -295,5 +342,37 @@ public float getGravity() {
 
 public void setGravity(float gravity) {
 	this.gravity = gravity;
+}
+
+public int getTequila_time() {
+	return tequila_time;
+}
+
+public void setTequila_time(int tequila_time) {
+	this.tequila_time = tequila_time;
+}
+
+public boolean isTequila_powerUp() {
+	return tequila_powerUp;
+}
+
+public void setTequila_powerUp(boolean tequila_powerUp) {
+	this.tequila_powerUp = tequila_powerUp;
+}
+
+public int getTaco_time() {
+	return taco_time;
+}
+
+public void setTaco_time(int taco_time) {
+	this.taco_time = taco_time;
+}
+
+public boolean isTaco_powerUp() {
+	return taco_powerUp;
+}
+
+public void setTaco_powerUp(boolean taco_powerUp) {
+	this.taco_powerUp = taco_powerUp;
 }
 }

@@ -13,6 +13,8 @@ import com.platformer.game.objects.GameObject;
 import com.platformer.game.objects.LevelEnd;
 import com.platformer.game.objects.PlayerObject;
 import com.platformer.game.objects.SceneryObject;
+import com.platformer.game.objects.TacoObject;
+import com.platformer.game.objects.TequilaBottle;
 
 public class ObjectsHandler {
 
@@ -156,6 +158,14 @@ public void loadLevel(int level)
 				if (tileValues[xx][yy] == 33)
 				{
 					addObject(new BeeObject(ObjectId.BeeEnemy, yy*50, (int) ((xx*50) - MainClass.HEIGHT)));
+				}
+				if (tileValues[xx][yy] == 34)
+				{
+					addObject(new TequilaBottle(ObjectId.Tequila, yy*50, (int) ((xx*50) - MainClass.HEIGHT)));
+				}
+				if (tileValues[xx][yy] == 35)
+				{
+					addObject(new TacoObject(ObjectId.Taco, yy*50, (int) ((xx*50) - MainClass.HEIGHT)));
 				}
 			}
 		}	

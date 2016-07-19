@@ -41,7 +41,7 @@ private Joystick joystick;
 private Controller myGamepad;
 private Component[] gamepadComponents;
 private boolean exit = false;
-public static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_CTRL = false, KEY_SHIFT = false, KEY_DOWN = false, KEY_PAUSE;
+public static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_DOWN = false, KEY_PAUSE = false;
 public static boolean GAMEPAD_LEFT = false, GAMEPAD_RIGHT = false, GAMEPAD_UP = false;
 private Camera cam;
 static Textures tex;
@@ -183,16 +183,12 @@ public void tick()
   	KEY_UP = false;
   	KEY_LEFT = false;
   	KEY_RIGHT = false;
-  	KEY_CTRL = false;
-  	KEY_SHIFT = false;
   	KEY_DOWN = false;
     
     if ((key.isKeyDown(KeyEvent.VK_LEFT)) || (key.isKeyDown(KeyEvent.VK_A))) KEY_LEFT = true;
 	if (((key.isKeyDown(KeyEvent.VK_RIGHT)) || (key.isKeyDown(KeyEvent.VK_D)))) KEY_RIGHT = true;
 	if ((key.isKeyDown(KeyEvent.VK_UP)) || (key.isKeyDown(KeyEvent.VK_W))) KEY_UP = true;
 	if ((key.isKeyDown(KeyEvent.VK_DOWN)) || (key.isKeyDown(KeyEvent.VK_S))) KEY_DOWN = true;
-	if (key.isKeyDown(KeyEvent.VK_CONTROL)) KEY_CTRL = true;
-	if (key.isKeyDown(KeyEvent.VK_SHIFT)) KEY_SHIFT = true;
 	if (key.isKeyDown(KeyEvent.VK_ESCAPE)) exit=true;
 	if (key.isKeyDown(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
 	
@@ -234,16 +230,18 @@ public void render(int fps_count, int ticks_count)
 	g2d.setFont(MainClass.texasFont.deriveFont(18f));
 	g2d.setColor(Color.BLUE);
 	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g.drawImage(backGroundMountains, (int) (MainClass.WIDTH - player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
-	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *3)- player.getLevel1X()), (int) (cam.getY()/1.3) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g.drawImage(backGroundMountains, (int) (MainClass.WIDTH - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
+	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *3)- player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
 	
-	g2d.drawString("LEVEL "+LEVEL, 830, 30);
-	g2d.drawString("COINS: "+COINS, 10, 60);
+	g2d.drawString("LEVEL "+LEVEL, 845, 40);
+	g2d.drawString("COINS: "+COINS, 10, 30);
 	
 	g2d.setFont(new Font("Verdana", 1, 12));
-	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, 10, 20);
+	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
+	if (player.isTequila_powerUp()) g2d.drawImage(tex.tequilaImage, 10, 50, null);
+	if (player.isTaco_powerUp()) g2d.drawImage(tex.tacoImage, 10, 50, null);
 
 	for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*50), 10, 50, 50,null);
 	
