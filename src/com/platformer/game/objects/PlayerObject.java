@@ -1,7 +1,11 @@
 package com.platformer.game.objects;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.util.ArrayList;
 
 import com.platformer.game.graphics.Animation;
@@ -27,17 +31,22 @@ private float level1X = 0f, level1Y = 0f;
 private float level2X = 0f, level2Y = 0f;
 private int turn = 1;
 private int health = 5;
-private final int TEQUILA_COOLDOWN = 300;
+private final int HIT_COOLDOWN = 60*2;
+private int hit_time = HIT_COOLDOWN;
+private boolean hit_by_enemy = false;
+private final int TEQUILA_COOLDOWN = 60*5;
 private int tequila_time = TEQUILA_COOLDOWN;
 private boolean tequila_powerUp = false;
-private final int TACO_COOLDOWN = 500;
+private final int TACO_COOLDOWN = 60*10;
 private int taco_time = TEQUILA_COOLDOWN;
 private boolean taco_powerUp = false;
 
-
-
 private Animation playerWalkRight, playerWalkLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft;
-
+private Animation f_playerWalkRight, f_playerWalkLeft, f_playerIdleRight, f_playerIdleLeft, f_playerJumpRight, f_playerJumpLeft;
+private RescaleOp op;
+private BufferedImage[] f_playerRunR = new BufferedImage[10], f_playerRunL = new BufferedImage[10];
+private BufferedImage[] f_playerIdleR = new BufferedImage[10], f_playerIdleL = new BufferedImage[10];
+private BufferedImage[] f_playerJumpR = new BufferedImage[5], f_playerJumpL = new BufferedImage[5];
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
 	super(id, x, y, playerWidth, playerHeight);
@@ -47,12 +56,29 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	level1Y = y;
 	level2X = x;
 	level2Y = y;
+	
 	playerWalkRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
 	playerWalkLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
 	playerIdleRight = new Animation(3, tex.playerIdleR[0], tex.playerIdleR[1], tex.playerIdleR[2], tex.playerIdleR[3], tex.playerIdleR[4], tex.playerIdleR[5], tex.playerIdleR[6], tex.playerIdleR[7], tex.playerIdleR[8], tex.playerIdleR[9]);
 	playerIdleLeft = new Animation(3, tex.playerIdleL[0], tex.playerIdleL[1], tex.playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
 	playerJumpRight = new Animation(10, tex.playerJumpR[0], tex.playerJumpR[1], tex.playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
 	playerJumpLeft = new Animation(10, tex.playerJumpL[0], tex.playerJumpL[1], tex.playerJumpL[2], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
+
+	op = new RescaleOp(.4f, 10, null);
+	
+	for (int i = 0; i < f_playerRunR.length; i++)
+	{
+		f_playerRunR[i] = tex.playerRunR[i];
+		f_playerRunR[i] = op.filter(f_playerRunR[i], f_playerRunR[i]);
+	}
+	
+	f_playerWalkRight = new Animation(3, f_playerRunR[0], f_playerRunR[1], f_playerRunR[2], f_playerRunR[3], f_playerRunR[4], f_playerRunR[5], f_playerRunR[6], f_playerRunR[7], f_playerRunR[8], f_playerRunR[9]);
+	
+	f_playerWalkLeft = new Animation(3, f_playerRunL[0], f_playerRunL[1], f_playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
+	f_playerIdleRight = new Animation(3, f_playerIdleR[0], f_playerIdleR[1], f_playerIdleR[2], tex.playerIdleR[3], tex.playerIdleR[4], tex.playerIdleR[5], tex.playerIdleR[6], tex.playerIdleR[7], tex.playerIdleR[8], tex.playerIdleR[9]);
+	f_playerIdleLeft = new Animation(3, f_playerIdleL[0], f_playerIdleL[1], f_playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
+	f_playerJumpRight = new Animation(10, f_playerJumpR[0], f_playerJumpR[1], f_playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
+	f_playerJumpLeft = new Animation(10, f_playerJumpL[0], f_playerJumpL[1], f_playerJumpL[2], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
 }
 
 
@@ -116,6 +142,14 @@ public void tick(ArrayList<GameObject> object) {
 		}
 	}
 	
+	if (hit_by_enemy)
+	{
+		if (hit_time > 0) hit_time--;
+		else {
+			hit_time = HIT_COOLDOWN;
+			hit_by_enemy = false;
+		}
+	}
 	
 	collisions(object);
 	
@@ -125,6 +159,13 @@ public void tick(ArrayList<GameObject> object) {
 	playerIdleLeft.runAnimation();
 	playerJumpRight.runAnimation();
 	playerJumpLeft.runAnimation();
+	
+	f_playerWalkRight.runAnimation();
+	f_playerWalkLeft.runAnimation();
+	f_playerIdleRight.runAnimation();
+	f_playerIdleLeft.runAnimation();
+	f_playerJumpRight.runAnimation();
+	f_playerJumpLeft.runAnimation();
 }
 
 
@@ -185,11 +226,12 @@ public void collisions(ArrayList<GameObject> object)
 		}
 		else if (tempObject.getId() == ObjectId.BeeEnemy)
 		{
-			if (getWholeBounds().intersects(tempObject.getBounds()))
+			if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
 			{
 				if (tempObject.getX() > x) x -= 80;
 				else x += 80;
 				health--;
+				hit_by_enemy = true;
 			}
 		}
 		else if (tempObject.getId() == ObjectId.Tequila)
@@ -217,22 +259,37 @@ public void collisions(ArrayList<GameObject> object)
 
 public void render(Graphics g) {
 	
-	//Graphics2D g2d = (Graphics2D) g;
-	//g2d.setColor(Color.BLUE);
+	Graphics2D g2d = (Graphics2D) g;
+	g2d.setColor(Color.BLUE);
 	
-	
-	if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
-	if ((velX < 0) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
+	if (!hit_by_enemy)
+	{
+		if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX < 0) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
+			
+		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
+		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
+			
+		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6);
+		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6);
 		
-	if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
-	if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
+		if (!onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, null);
+		if (!onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, null);
+	
+	}
+	else {
+		if ((velX > 0) && (!jumping) && (onGround)) f_playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX < 0) && (!jumping) && (onGround)) f_playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
+			
+		if (turn == 1 && !jumping && onGround && velX == 0) f_playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
+		if (turn == -1 && !jumping && onGround && velX == 0) f_playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
+			
+		if ((jumping) && (turn == 1)) f_playerJumpRight.drawAnimation(g, (int) x, ( int )y+6);
+		if ((jumping) && (turn == -1)) f_playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6);
 		
-	if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6);
-	if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6);
-	
-	if (!onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, null);
-	if (!onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, null);
-	
+		if (!onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, null);
+		if (!onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, null);
+	}
 	//g2d.draw(getBounds());
 	//g2d.draw(getBoundsTop());
 	//g2d.draw(getBoundsLeft());

@@ -51,6 +51,9 @@ private Properties prop = new Properties();
 private InputStream propInput = null;
 private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
 public static boolean pauseGame = false;
+private int minutes = 0, seconds = 0;
+private float milis = 0f;
+private String time;
 
 
 
@@ -141,8 +144,6 @@ public void tick()
 		{
 			Component comp = event.getComponent();
 			float value = event.getValue();          	
-   		
-			//if (comp.equals(gamepadComponents[14])) exit=true;
     	
 			if (comp.getName().equals(startProp))
 			{
@@ -195,7 +196,23 @@ public void tick()
 	
 	if (!pauseGame) {
 		objectsHandler.tick();
-		cam.tick(player);	
+		cam.tick(player);
+		
+		milis += (1000/60);
+		if (milis >999)
+		{
+			seconds++;
+			milis = 0;
+		}
+		if (seconds > 59)
+		{
+			minutes++;
+			seconds = 0;
+		}
+		if (minutes < 10) time = "0"+minutes;
+		else time = minutes+"";
+		if (seconds < 10) time += ":0" +seconds +":" + (int) milis;
+		else time += ":"+seconds +":" + (int) milis;
 	}
 	
 	if (player.getHealth() < 1)
@@ -203,7 +220,6 @@ public void tick()
 		JOptionPane.showMessageDialog(null, "YOU DIED !!!");
 		System.exit(0);
 	}
-	
 }
 
 public void render(int fps_count, int ticks_count)
@@ -240,10 +256,12 @@ public void render(int fps_count, int ticks_count)
 	
 	g2d.setFont(new Font("Verdana", 1, 12));
 	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
+	g2d.drawString("TIME: "+time, MainClass.WIDTH - 150, 80);
+	
 	if (player.isTequila_powerUp()) g2d.drawImage(tex.tequilaImage, 10, 50, null);
 	if (player.isTaco_powerUp()) g2d.drawImage(tex.tacoImage, 10, 50, null);
 
-	for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*50), 10, 50, 50,null);
+	for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);
 	
 	
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
