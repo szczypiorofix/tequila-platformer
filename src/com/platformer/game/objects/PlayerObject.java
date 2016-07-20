@@ -1,13 +1,8 @@
 package com.platformer.game.objects;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.util.ArrayList;
-
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
@@ -40,13 +35,12 @@ private boolean tequila_powerUp = false;
 private final int TACO_COOLDOWN = 60*10;
 private int taco_time = TEQUILA_COOLDOWN;
 private boolean taco_powerUp = false;
+private final int FINISH_LEVEL_COOLDOWN = 400;
+private int finish_level_time = FINISH_LEVEL_COOLDOWN;
+private boolean finishLevel = false;
 
 private Animation playerWalkRight, playerWalkLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft;
-private Animation f_playerWalkRight, f_playerWalkLeft, f_playerIdleRight, f_playerIdleLeft, f_playerJumpRight, f_playerJumpLeft;
-private RescaleOp op;
-private BufferedImage[] f_playerRunR = new BufferedImage[10], f_playerRunL = new BufferedImage[10];
-private BufferedImage[] f_playerIdleR = new BufferedImage[10], f_playerIdleL = new BufferedImage[10];
-private BufferedImage[] f_playerJumpR = new BufferedImage[5], f_playerJumpL = new BufferedImage[5];
+
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
 	super(id, x, y, playerWidth, playerHeight);
@@ -63,22 +57,6 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	playerIdleLeft = new Animation(3, tex.playerIdleL[0], tex.playerIdleL[1], tex.playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
 	playerJumpRight = new Animation(10, tex.playerJumpR[0], tex.playerJumpR[1], tex.playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
 	playerJumpLeft = new Animation(10, tex.playerJumpL[0], tex.playerJumpL[1], tex.playerJumpL[2], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
-
-	op = new RescaleOp(.4f, 10, null);
-	
-	for (int i = 0; i < f_playerRunR.length; i++)
-	{
-		f_playerRunR[i] = tex.playerRunR[i];
-		f_playerRunR[i] = op.filter(f_playerRunR[i], f_playerRunR[i]);
-	}
-	
-	f_playerWalkRight = new Animation(3, f_playerRunR[0], f_playerRunR[1], f_playerRunR[2], f_playerRunR[3], f_playerRunR[4], f_playerRunR[5], f_playerRunR[6], f_playerRunR[7], f_playerRunR[8], f_playerRunR[9]);
-	
-	f_playerWalkLeft = new Animation(3, f_playerRunL[0], f_playerRunL[1], f_playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
-	f_playerIdleRight = new Animation(3, f_playerIdleR[0], f_playerIdleR[1], f_playerIdleR[2], tex.playerIdleR[3], tex.playerIdleR[4], tex.playerIdleR[5], tex.playerIdleR[6], tex.playerIdleR[7], tex.playerIdleR[8], tex.playerIdleR[9]);
-	f_playerIdleLeft = new Animation(3, f_playerIdleL[0], f_playerIdleL[1], f_playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
-	f_playerJumpRight = new Animation(10, f_playerJumpR[0], f_playerJumpR[1], f_playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
-	f_playerJumpLeft = new Animation(10, f_playerJumpL[0], f_playerJumpL[1], f_playerJumpL[2], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
 }
 
 
@@ -92,23 +70,27 @@ public void tick(ArrayList<GameObject> object) {
 	level2X = x / 2;   // PARALLAX LEVEL 2 !!!
 	level2Y = 0f;
 	
-	if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT)) {
-		velX = -5;
-		turn = -1;
+	if (!finishLevel)
+	{
+		if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT)) {
+			velX = -5;
+			turn = -1;
+		}
+		
+		if ((MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT)) {
+			velX = 5;
+			turn = 1;
+		}
+		
+		if (((MainScreen.KEY_UP || (MainScreen.GAMEPAD_UP))) && (!jumping) && (onGround)) {
+			
+			
+			sounds.playJumpSound();
+			velY = -12;
+			jumping = true;
+		}
 	}
 	
-	if ((MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT)) {
-		velX = 5;
-		turn = 1;
-	}
-	
-	if (((MainScreen.KEY_UP || (MainScreen.GAMEPAD_UP))) && (!jumping) && (onGround)) {
-		
-		
-		sounds.playJumpSound();
-		velY = -12;
-		jumping = true;
-	}
 		
 	if (!onGround) velY += gravity;
 	if (velY > MAX_SPEED) velY = MAX_SPEED;
@@ -151,6 +133,21 @@ public void tick(ArrayList<GameObject> object) {
 		}
 	}
 	
+	if (finishLevel)
+	{
+		if (finish_level_time > 0) finish_level_time--;
+		else {
+			finish_level_time = FINISH_LEVEL_COOLDOWN;
+			finishLevel = false;
+			MainScreen.milis = 0f;
+			MainScreen.minutes = 0;
+			MainScreen.seconds = 0;
+			MainScreen.COINS = 0;
+			MainScreen.SCORE = 0;
+			objectsHandler.switchLevel();
+		}
+	}
+	
 	collisions(object);
 	
 	playerWalkRight.runAnimation();
@@ -160,12 +157,12 @@ public void tick(ArrayList<GameObject> object) {
 	playerJumpRight.runAnimation();
 	playerJumpLeft.runAnimation();
 	
-	f_playerWalkRight.runAnimation();
-	f_playerWalkLeft.runAnimation();
-	f_playerIdleRight.runAnimation();
-	f_playerIdleLeft.runAnimation();
-	f_playerJumpRight.runAnimation();
-	f_playerJumpLeft.runAnimation();
+	//f_playerWalkRight.runAnimation();
+	//f_playerWalkLeft.runAnimation();
+	//f_playerIdleRight.runAnimation();
+	//f_playerIdleLeft.runAnimation();
+	//f_playerJumpRight.runAnimation();
+	//f_playerJumpLeft.runAnimation();
 }
 
 
@@ -212,7 +209,7 @@ public void collisions(ArrayList<GameObject> object)
 		{
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
-				objectsHandler.switchLevel();
+				finishLevel = true;
 			}
 		}
 		else if (tempObject.getId() == ObjectId.Coin)
@@ -221,6 +218,7 @@ public void collisions(ArrayList<GameObject> object)
 			{
 				objectsHandler.removeObject(tempObject);
 				MainScreen.COINS++;
+				MainScreen.SCORE += 10;
 				sounds.playCoinSound();
 			}
 		}
@@ -231,6 +229,8 @@ public void collisions(ArrayList<GameObject> object)
 				if (tempObject.getX() > x) x -= 80;
 				else x += 80;
 				health--;
+				MainScreen.SCORE -=20;
+				sounds.playHitSound();
 				hit_by_enemy = true;
 			}
 		}
@@ -239,6 +239,9 @@ public void collisions(ArrayList<GameObject> object)
 			if (getWholeBounds().intersects(tempObject.getBounds()) && (!isTequila_powerUp()))
 			{
 				objectsHandler.removeObject(tempObject);
+				MainScreen.SCORE += 15;
+				sounds.playDrinkSound();
+				sounds.playPowerUpSound();
 				tequila_powerUp = true;
 				taco_powerUp = false;
 			}
@@ -248,6 +251,8 @@ public void collisions(ArrayList<GameObject> object)
 			if (getWholeBounds().intersects(tempObject.getBounds()) && (health < 5))
 			{
 				objectsHandler.removeObject(tempObject);
+				MainScreen.SCORE += 15;
+				sounds.playPowerUpSound();
 				taco_powerUp = true;
 				tequila_powerUp = false;
 				health++;
@@ -259,8 +264,8 @@ public void collisions(ArrayList<GameObject> object)
 
 public void render(Graphics g) {
 	
-	Graphics2D g2d = (Graphics2D) g;
-	g2d.setColor(Color.BLUE);
+	//Graphics2D g2d = (Graphics2D) g;
+	//g2d.setColor(Color.BLUE);
 	
 	if (!hit_by_enemy)
 	{
@@ -278,17 +283,19 @@ public void render(Graphics g) {
 	
 	}
 	else {
-		if ((velX > 0) && (!jumping) && (onGround)) f_playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
-		if ((velX < 0) && (!jumping) && (onGround)) f_playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
+
+		if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX < 0) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
 			
-		if (turn == 1 && !jumping && onGround && velX == 0) f_playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
-		if (turn == -1 && !jumping && onGround && velX == 0) f_playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
+		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
+		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
 			
-		if ((jumping) && (turn == 1)) f_playerJumpRight.drawAnimation(g, (int) x, ( int )y+6);
-		if ((jumping) && (turn == -1)) f_playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6);
+		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6);
+		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6);
 		
 		if (!onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, null);
 		if (!onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, null);
+		
 	}
 	//g2d.draw(getBounds());
 	//g2d.draw(getBoundsTop());
@@ -372,64 +379,36 @@ public void setVelY(float velY) {
 	this.velY = velY;
 }
 
-
 public boolean isOnGround() {
 	return onGround;
 }
-
-
-public void setOnGround(boolean onGround) {
-	this.onGround = onGround;
-}
-
 
 public boolean isJumping() {
 	return jumping;
 }
 
-
-public void setJumping(boolean jumping) {
-	this.jumping = jumping;
-}
-
-
 public float getGravity() {
 	return gravity;
-}
-
-public void setGravity(float gravity) {
-	this.gravity = gravity;
 }
 
 public int getTequila_time() {
 	return tequila_time;
 }
 
-public void setTequila_time(int tequila_time) {
-	this.tequila_time = tequila_time;
-}
-
 public boolean isTequila_powerUp() {
 	return tequila_powerUp;
-}
-
-public void setTequila_powerUp(boolean tequila_powerUp) {
-	this.tequila_powerUp = tequila_powerUp;
 }
 
 public int getTaco_time() {
 	return taco_time;
 }
 
-public void setTaco_time(int taco_time) {
-	this.taco_time = taco_time;
-}
-
 public boolean isTaco_powerUp() {
 	return taco_powerUp;
 }
 
-public void setTaco_powerUp(boolean taco_powerUp) {
-	this.taco_powerUp = taco_powerUp;
+public boolean isFinishLevel() {
+	return finishLevel;
 }
+
 }

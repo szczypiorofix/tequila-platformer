@@ -32,6 +32,7 @@ private static final long serialVersionUID = -5788122194224852624L;
 private GameWindow gameWindow;
 public static int LEVEL = 1;
 public static int COINS = 0;
+public static int SCORE = 0;
 private BufferStrategy bs;
 private Graphics g;
 private ObjectsHandler objectsHandler;
@@ -51,8 +52,8 @@ private Properties prop = new Properties();
 private InputStream propInput = null;
 private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
 public static boolean pauseGame = false;
-private int minutes = 0, seconds = 0;
-private float milis = 0f;
+public static int minutes = 0, seconds = 0;
+public static float milis = 0f;
 private String time;
 
 
@@ -198,21 +199,24 @@ public void tick()
 		objectsHandler.tick();
 		cam.tick(player);
 		
-		milis += (1000/60);
-		if (milis >999)
+		if (!player.isFinishLevel())
 		{
-			seconds++;
-			milis = 0;
+			milis += (1000/60);
+			if (milis >999)
+			{
+				seconds++;
+				milis = 0;
+			}
+			if (seconds > 59)
+			{
+				minutes++;
+				seconds = 0;
+			}
+			if (minutes < 10) time = "0"+minutes;
+			else time = minutes+"";
+			if (seconds < 10) time += ":0" +seconds +":" + (int) milis;
+			else time += ":"+seconds +":" + (int) milis;	
 		}
-		if (seconds > 59)
-		{
-			minutes++;
-			seconds = 0;
-		}
-		if (minutes < 10) time = "0"+minutes;
-		else time = minutes+"";
-		if (seconds < 10) time += ":0" +seconds +":" + (int) milis;
-		else time += ":"+seconds +":" + (int) milis;
 	}
 	
 	if (player.getHealth() < 1)
@@ -246,13 +250,14 @@ public void render(int fps_count, int ticks_count)
 	g2d.setFont(MainClass.texasFont.deriveFont(18f));
 	g2d.setColor(Color.BLUE);
 	
-	g.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g.drawImage(backGroundMountains, (int) (MainClass.WIDTH - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
-	g.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *3)- player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g2d.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g2d.drawImage(backGroundMountains, (int) (MainClass.WIDTH - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g2d.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
+	g2d.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *3)- player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
 	
 	g2d.drawString("LEVEL "+LEVEL, 845, 40);
 	g2d.drawString("COINS: "+COINS, 10, 30);
+	g2d.drawString("SCORE: "+SCORE, 10, 60);
 	
 	g2d.setFont(new Font("Verdana", 1, 12));
 	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
@@ -260,13 +265,21 @@ public void render(int fps_count, int ticks_count)
 	
 	if (player.isTequila_powerUp()) g2d.drawImage(tex.tequilaImage, 10, 50, null);
 	if (player.isTaco_powerUp()) g2d.drawImage(tex.tacoImage, 10, 50, null);
+	
+	if (player.isFinishLevel())
+	{
+		g2d.setFont(MainClass.texasFont.deriveFont(22f));
+		//g2d.drawRect(350, 150, 300, 300);
+		g2d.drawString("HOWDY PARTNER !!!", 355, 240);
+		g2d.drawString("YOUR SCORE: " +SCORE, 360, 300);
+	}
 
 	for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);
 	
 	
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 	
-	objectsHandler.render(g);
+	if (!player.isFinishLevel()) objectsHandler.render(g);
 	
 	g2d.translate(-cam.getX(), -cam.getY()); // CAM ENGING
 	

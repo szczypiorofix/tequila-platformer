@@ -149,22 +149,6 @@ public Textures()
 	
 	tequilaImage = loader.loadImage("/tequila_bottle.png");
 	
-	tacoImage = loader.loadImage("/taco.png");
-	
-	
-	/**
-	enemy1ImageR = loader.loadImage("/turtleR.png");
-	enemy1SheetR = new SpriteSheet(enemy1ImageR);
-	for (int i = 1; i < 5; i++) {
-		enemy1AnimR[i-1] = enemy1SheetR.grabImage(i, 1, 64, 64);
-	}
-	
-	enemy1ImageL = loader.loadImage("/turtleL.png");
-	enemy1SheetL = new SpriteSheet(enemy1ImageL);
-	for (int i = 1; i < 5; i++) {
-		enemy1AnimL[i-1] = enemy1SheetL.grabImage(i, 1, 64, 64);
-	}
-	**/
-		
+	tacoImage = loader.loadImage("/taco.png");	
 }
 }

@@ -35,7 +35,7 @@ public void runAnimation()
 	}
 }
 
-public void nextFrame()
+private void nextFrame()
 {
 	for (int i = 0; i < frames; i++)
 	{
