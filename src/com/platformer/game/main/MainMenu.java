@@ -2,6 +2,7 @@ package com.platformer.game.main;
 
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,7 @@ import com.platformer.game.sounds.SoundsLoader;
 public class MainMenu {
 
 private JFrame mainMenuFrame;
-private Buttons[] buttons = new Buttons[4];
+private Buttons[] buttons = new Buttons[5];
 private final JPanel centralPanel = new JPanel(null)
 {
 	private static final long serialVersionUID = -3068810529307571296L;
@@ -42,7 +43,9 @@ private LineBorder blueBorder = new LineBorder(Color.BLUE, 2, true);
 private SoundsLoader sounds;
 private int selected = 0;
 private MenuKeyListener keyListener = new MenuKeyListener();
-
+private CreditsWindow creditsWindow;
+private HowToPlayWindow howToPlayWindow;
+private HallOfFameWindow hallOfFameWindow;
 
 public MainMenu(MainClass mainClass)
 {
@@ -55,17 +58,20 @@ public MainMenu(MainClass mainClass)
 	mainMenuFrame.setLayout(null);
 	mainMenuFrame.setIconImage(loader.loadImage("/programIcon.png"));
 
-	buttons[0] = new Buttons("PLAY GAME");
-	buttons[0].setBounds(160, 100, 170, 50);
+	buttons[0] = new Buttons("GRAJ W GRÊ");
+	buttons[0].setBounds(100, 60, 290, 60);
 	
-	buttons[1] = new Buttons("HOW TO PLAY");
-	buttons[1].setBounds(160, 180, 170, 50);
+	buttons[1] = new Buttons("JAK GRAÆ");
+	buttons[1].setBounds(100, 140, 290, 60);
 	
-	buttons[2] = new Buttons("CREDITS");
-	buttons[2].setBounds(160, 260, 170, 50);
+	buttons[2] = new Buttons("NAJLEPSZE WYNIKI");
+	buttons[2].setBounds(100, 220, 290, 60);
 	
-	buttons[3] = new Buttons("EXIT");
-	buttons[3].setBounds(160, 340, 170, 50);
+	buttons[3] = new Buttons("O GRZE");
+	buttons[3].setBounds(100, 300, 290, 60);
+	
+	buttons[4] = new Buttons("ZAKOÑCZ");
+	buttons[4].setBounds(100, 380, 290, 60);
 	
 	mainMenuFrame.addKeyListener(keyListener);
 
@@ -75,8 +81,9 @@ public MainMenu(MainClass mainClass)
 
 	buttons[0].setActionCommand("START");
 	buttons[1].setActionCommand("HOWTO");
-	buttons[2].setActionCommand("CREDITS");
-	buttons[3].setActionCommand("EXIT");
+	buttons[2].setActionCommand("HALLOFFAME");
+	buttons[3].setActionCommand("CREDITS");
+	buttons[4].setActionCommand("EXIT");
 	
 	sounds = new SoundsLoader();
 	selected = 0;
@@ -139,6 +146,15 @@ public class MenuMouseListener implements MouseListener
 				selectMenu(selected);	
 			}
 		}
+		if (e.getComponent() == buttons[4])
+		{
+			if (selected != 4)
+			{
+				deselectMenu(selected);
+				selected = 4;
+				selectMenu(selected);	
+			}
+		}
 	}
 
 	@Override
@@ -167,6 +183,24 @@ private void exitGame()
 	System.exit(0);
 }
 
+private void showCreditsWindow()
+{
+	creditsWindow = new CreditsWindow(mainMenuFrame);
+	creditsWindow.setVisible(true);
+}
+
+private void showHowToPlayWindow()
+{
+	howToPlayWindow = new HowToPlayWindow(mainMenuFrame);
+	howToPlayWindow.setVisible(true);
+}
+
+private void showHallOfFameWindow()
+{
+	hallOfFameWindow = new HallOfFameWindow(mainMenuFrame);
+	hallOfFameWindow.setVisible(true);
+}
+
 public class MenuKeyListener implements KeyListener
 {
 	@Override
@@ -183,7 +217,19 @@ public class MenuKeyListener implements KeyListener
 				showMenu(false);
 				mainClass.gameStart();
 			}
+			if (selected == 1)
+			{
+				showHowToPlayWindow();
+			}
+			if (selected == 2)
+			{
+				showHallOfFameWindow();
+			}
 			if (selected == 3)
+			{
+				showCreditsWindow();
+			}
+			if (selected == 4)
 			{
 				exitGame();
 			}
@@ -204,7 +250,7 @@ public class MenuKeyListener implements KeyListener
 		
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
-			if (selected < 3)
+			if (selected < buttons.length-1)
 			{
 				deselectMenu(selected);
 				selected ++;
@@ -228,7 +274,7 @@ public Buttons(String title)
 	setOpaque(false);
 	setFocusable(false);
 	setContentAreaFilled(false);
-	setFont(MainClass.texasFont.deriveFont(12f));
+	setFont(MainClass.texasFont.deriveFont(Font.BOLD, 46f));
 	addActionListener(mainMenuListener);
 	addMouseListener(menuMouseListener);
 	setBorder(yellowBorder);
@@ -250,6 +296,21 @@ public class MainMenuListener implements ActionListener
 		if (e.getActionCommand().equalsIgnoreCase("EXIT"))
 		{
 			exitGame();
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("HALLOFFAME"))
+		{
+			showHallOfFameWindow();
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("HOWTO"))
+		{
+			showHowToPlayWindow();
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("CREDITS"))
+		{
+			showCreditsWindow();
 		}
 	}	
 }

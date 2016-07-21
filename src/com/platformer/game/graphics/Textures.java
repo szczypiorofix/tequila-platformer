@@ -24,12 +24,7 @@ public BufferedImage heart;
 public BufferedImage tequilaImage;
 public BufferedImage tacoImage;
 
-//public BufferedImage enemy1ImageR;
-//public SpriteSheet enemy1SheetR;
-//public BufferedImage[] enemy1AnimR = new BufferedImage[4];   // http://opengameart.org/content/animated-turtle
-//public BufferedImage enemy1ImageL;
-//public SpriteSheet enemy1SheetL;
-//public BufferedImage[] enemy1AnimL = new BufferedImage[4];
+
 
 
 public Textures()
@@ -37,6 +32,8 @@ public Textures()
 	BufferedImageLoader loader = new BufferedImageLoader();
 		
 	// http://charas-project.net/charas2/  - GENERATOR !!!
+	
+	// http://www.piskelapp.com/  - spritesheet creator
 	
 	sceneryObjects[0] = loader.loadImage("/Bush (1).png");   // TILES http://www.gameart2d.com/free-desert-platformer-tileset.html
 	sceneryObjects[1] = loader.loadImage("/Bush (2).png");

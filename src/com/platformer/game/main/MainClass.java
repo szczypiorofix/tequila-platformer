@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
+
+
 public class MainClass implements Runnable{
 
 private GameWindow gameWindow;
@@ -19,7 +21,7 @@ private boolean running = false;
 private boolean gamepadEnabled = false;
 public static final File gamepadConfigFile = new File("input.cfg");
 private MainMenu mainMenu;
-private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/La Tequila.ttf");  // http://www.1001freefonts.com/la_tequila.font
+private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");  // http://www.1001freefonts.com/la_tequila.font
 public static Font texasFont;
 
 public MainClass()
@@ -68,7 +70,7 @@ public void run() {
 	
 	// GAME LOOP	
 	// FIXED GAME LOOP, FPS = variable, TICKS = 60
-	
+
 	long lastTime = System.nanoTime();
 	double amountOfTicks = 60.0;
 	double ns = 1000000000 / amountOfTicks;

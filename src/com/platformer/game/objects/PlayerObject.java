@@ -112,7 +112,6 @@ public void tick(ArrayList<GameObject> object) {
 		}
 	}
 	
-	
 	if (taco_powerUp)
 	{
 		gravity = 0.9f;
@@ -144,9 +143,12 @@ public void tick(ArrayList<GameObject> object) {
 			MainScreen.seconds = 0;
 			MainScreen.COINS = 0;
 			MainScreen.SCORE = 0;
+			MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
+			MainScreen.TOTAL_SCORE = 0;
 			objectsHandler.switchLevel();
 		}
 	}
+	else MainScreen.time_bonus -= 0.02f;
 	
 	collisions(object);
 	
@@ -218,7 +220,7 @@ public void collisions(ArrayList<GameObject> object)
 			{
 				objectsHandler.removeObject(tempObject);
 				MainScreen.COINS++;
-				MainScreen.SCORE += 10;
+				MainScreen.SCORE += 20;
 				sounds.playCoinSound();
 			}
 		}
@@ -226,10 +228,10 @@ public void collisions(ArrayList<GameObject> object)
 		{
 			if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
 			{
-				if (tempObject.getX() > x) x -= 80;
-				else x += 80;
+				if (tempObject.getX() > x) x -= 50;
+				else x += 50;
 				health--;
-				MainScreen.SCORE -=20;
+				MainScreen.SCORE -=40;
 				sounds.playHitSound();
 				hit_by_enemy = true;
 			}
@@ -239,7 +241,7 @@ public void collisions(ArrayList<GameObject> object)
 			if (getWholeBounds().intersects(tempObject.getBounds()) && (!isTequila_powerUp()))
 			{
 				objectsHandler.removeObject(tempObject);
-				MainScreen.SCORE += 15;
+				MainScreen.SCORE += 35;
 				sounds.playDrinkSound();
 				sounds.playPowerUpSound();
 				tequila_powerUp = true;
@@ -251,7 +253,7 @@ public void collisions(ArrayList<GameObject> object)
 			if (getWholeBounds().intersects(tempObject.getBounds()) && (health < 5))
 			{
 				objectsHandler.removeObject(tempObject);
-				MainScreen.SCORE += 15;
+				MainScreen.SCORE += 35;
 				sounds.playPowerUpSound();
 				taco_powerUp = true;
 				tequila_powerUp = false;
@@ -410,5 +412,4 @@ public boolean isTaco_powerUp() {
 public boolean isFinishLevel() {
 	return finishLevel;
 }
-
 }
