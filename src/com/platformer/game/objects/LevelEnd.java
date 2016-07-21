@@ -10,7 +10,7 @@ import com.platformer.game.main.ObjectId;
 
 public class LevelEnd extends GameObject {
 
-Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getInstance();
 	
 public LevelEnd(ObjectId id, float x, float y) {
 	super(id, x, y, 45, 45);

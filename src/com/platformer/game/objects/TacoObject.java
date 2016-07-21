@@ -9,10 +9,12 @@ import com.platformer.game.main.ObjectId;
 
 public class TacoObject extends GameObject{
 
-Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getInstance();
+private static final int TACO_WIDTH = 43;
+private static final int TACO_HEIGHT = 48;
 	
 public TacoObject(ObjectId id, float x, float y) {
-	super(id, x, y, 43, 48);
+	super(id, x, y, TACO_WIDTH, TACO_HEIGHT);
 }
 
 @Override
@@ -26,6 +28,6 @@ public void tick(ArrayList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, 48, 43);
+	return new Rectangle((int) x, (int) y, TACO_WIDTH, TACO_HEIGHT);
 }	
 }

@@ -9,8 +9,7 @@ import java.io.InputStream;
 
 
 
-
-public class MainClass implements Runnable{
+public class MainClass implements Runnable {
 
 private GameWindow gameWindow;
 private MainScreen mainScreen;
@@ -23,6 +22,8 @@ public static final File gamepadConfigFile = new File("input.cfg");
 private MainMenu mainMenu;
 private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");  // http://www.1001freefonts.com/la_tequila.font
 public static Font texasFont;
+private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");  // http://www.1001freefonts.com/la_tequila.font
+public static Font smokunFont;
 
 public MainClass()
 {	
@@ -30,6 +31,7 @@ public MainClass()
 	
 	try {
 		texasFont = Font.createFont(Font.TRUETYPE_FONT, TEXAS_FONT);
+		smokunFont = Font.createFont(Font.TRUETYPE_FONT, SMOKUN_FONT);
 	}
 	catch (FontFormatException | IOException e)
 	{
@@ -64,8 +66,8 @@ public synchronized void gameThreadStart()
 
 
 @Override
-public void run() {
-	
+public void run()
+{	
 	gameWindow.requestFocus();
 	
 	// GAME LOOP	
@@ -86,8 +88,7 @@ public void run() {
 		lastTime = now;
 		
 		while(delta >= 1)
-		{
-			
+		{	
 			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
 			mainScreen.tick();
 			updates++;

@@ -11,12 +11,14 @@ import com.platformer.game.main.ObjectId;
 
 public class Coin extends GameObject{
 
-Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getInstance();
 private Animation coinRotating;
+private static final int COIN_WIDTH = 32;
+private static final int COIN_HEIGHT = 32;
 
 
 public Coin(ObjectId id, float x, float y) {
-	super(id, x, y, 32, 32);
+	super(id, x, y, COIN_WIDTH, COIN_HEIGHT);
 	coinRotating = new Animation(5, tex.coinAnim[0], tex.coinAnim[1], tex.coinAnim[2], tex.coinAnim[3], tex.coinAnim[4], tex.coinAnim[5]
 			, tex.coinAnim[6], tex.coinAnim[7], tex.coinAnim[8], tex.coinAnim[9], tex.coinAnim[10], tex.coinAnim[11], tex.coinAnim[12], tex.coinAnim[13]
 			, tex.coinAnim[14], tex.coinAnim[15], tex.coinAnim[16], tex.coinAnim[17], tex.coinAnim[18], tex.coinAnim[19], tex.coinAnim[20]
@@ -39,6 +41,6 @@ public void tick(ArrayList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, 32, 32);
+	return new Rectangle((int) x, (int) y, COIN_WIDTH, COIN_HEIGHT);
 }
 }

@@ -28,10 +28,20 @@ import net.java.games.input.Event;
 public class MainScreen extends Canvas{
 
 private static final long serialVersionUID = -5788122194224852624L;
-private GameWindow gameWindow;
+
 public static int LEVEL = 1;
 public static int COINS = 0;
 public static int SCORE = 0;
+public static boolean pauseGame = false;
+public static int minutes = 0, seconds = 0;
+public static float milis = 0f;
+public static final float MAX_TIME_BONUS = 1500f;
+public static float time_bonus = MAX_TIME_BONUS;
+public static float TOTAL_SCORE = 0f;
+public static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_DOWN = false, KEY_PAUSE = false;
+public static boolean GAMEPAD_LEFT = false, GAMEPAD_RIGHT = false, GAMEPAD_UP = false;
+
+private GameWindow gameWindow;
 private BufferStrategy bs;
 private Graphics g;
 private ObjectsHandler objectsHandler;
@@ -41,21 +51,13 @@ private Joystick joystick;
 private Controller myGamepad;
 private Component[] gamepadComponents;
 private boolean exit = false;
-public static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_DOWN = false, KEY_PAUSE = false;
-public static boolean GAMEPAD_LEFT = false, GAMEPAD_RIGHT = false, GAMEPAD_UP = false;
 private Camera cam;
-static Textures tex;
+private static Textures tex;
 private BufferedImage backGroundMountains;
 private boolean gamepadEnabled = false;
 private Properties prop = new Properties();
 private InputStream propInput = null;
 private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
-public static boolean pauseGame = false;
-public static int minutes = 0, seconds = 0;
-public static float milis = 0f;
-public static final float MAX_TIME_BONUS = 1500f;
-public static float time_bonus = MAX_TIME_BONUS;
-public static float TOTAL_SCORE = 0f;
 private String time;
 
 
@@ -244,7 +246,7 @@ public void render(int fps_count, int ticks_count)
 	g.setColor(new Color(184, 220, 254));
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 48f));
+	g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
 	g2d.setColor(Color.BLUE);
 	
 	g2d.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
@@ -263,8 +265,8 @@ public void render(int fps_count, int ticks_count)
 	
 	
 	g2d.drawString("POZIOM "+LEVEL, 845, 40);
-	g2d.drawString("MONETY: "+COINS, 10, 30);
-	g2d.drawString("WYNIK: "+SCORE, 10, 70);
+	g2d.drawString("MONETY: "+COINS, 10, 40);
+	g2d.drawString("WYNIK: "+SCORE, 10, 80);
 	
 	g2d.setFont(new Font("Verdana", 1, 12));
 	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
@@ -277,13 +279,17 @@ public void render(int fps_count, int ticks_count)
 	if (player.isFinishLevel())
 	{
 		TOTAL_SCORE = SCORE + (int) time_bonus;
-		g2d.setFont(MainClass.texasFont.deriveFont(48f));
+		g2d.setColor(Color.GRAY);
+		g2d.fillRect(310, 160, 380, 340);
+		g2d.setColor(Color.YELLOW);
+		g2d.drawRect(309, 159, 382, 342);
+		g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
 		g2d.drawString("POZIOM UKOÑCZONY !!!", 325, 215);
-		g2d.setFont(MainClass.texasFont.deriveFont(18f));
-		g2d.drawString("TWÓJ WYNIK: " +SCORE, 350, 300);
-		g2d.drawString("CZAS: " +time, 350, 360);
-		g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 350, 420);
-		g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 350, 480);
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
+		g2d.drawString("TWÓJ WYNIK: " +SCORE, 375, 300);
+		g2d.drawString("CZAS: " +time, 380, 360);
+		g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 340, 420);
+		g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 340, 480);
 	}
 
 	if (player.getHealth() <= 0)

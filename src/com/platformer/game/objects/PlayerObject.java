@@ -16,12 +16,12 @@ public class PlayerObject extends GameObject{
 private static float playerWidth = 110, playerHeight = 120;
 private ObjectsHandler objectsHandler;
 private final float MAX_SPEED = 20f;
-protected float velX = 0, velY = 0;
-protected float gravity = 0.5f;
-protected boolean onGround = false;
-protected boolean jumping = false;
+private float velX = 0, velY = 0;
+private float gravity = 0.5f;
+private boolean onGround = false;
+private boolean jumping = false;
 private SoundsLoader sounds;
-Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getInstance();
 private float level1X = 0f, level1Y = 0f;
 private float level2X = 0f, level2Y = 0f;
 private int turn = 1;
@@ -63,7 +63,9 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 @Override
 public void tick(ArrayList<GameObject> object) {
 		
-	velX = 0;
+	velX *= 0.8f;
+	
+	if (velX < 0.1 && velX > -0.1) velX = 0;
 	
 	level1X = x /4;   // PARALLAX LEVEL 1 !!!
 	level1Y = 0f;
@@ -168,7 +170,7 @@ public void tick(ArrayList<GameObject> object) {
 }
 
 
-public void collisions(ArrayList<GameObject> object)
+private void collisions(ArrayList<GameObject> object)
 {
 	for (int i = 0; i < objectsHandler.object.size(); i++)
 	{
@@ -181,7 +183,7 @@ public void collisions(ArrayList<GameObject> object)
 			{
 				if (y > (tempObject.getBounds().y - height)) {
 					
-					y = tempObject.getY() + Block.brickHeight-10;
+					y = tempObject.getY() + Block.getBrickHeight() -10;
 					velY = 0;	
 				}
 			}
@@ -191,7 +193,7 @@ public void collisions(ArrayList<GameObject> object)
 				
 				//if (velY == MAX_SPEED) health--;   // FALL DAMAGE
 				
-				y = tempObject.getY() - Block.brickHeight - 53;
+				y = tempObject.getY() - Block.getBrickHeight() -53;
 				jumping = false;
 				velY = 0;
 				onGround = true;
@@ -335,22 +337,22 @@ public Rectangle getBounds() {
 	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-18, (int) ((int) y + (playerHeight / 2))+35, (int) playerWidth / 2 - 5, (int) 10);
 }
 
-public Rectangle getBoundsTop()
+private Rectangle getBoundsTop()
 {
 	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2)-20, (int) y +10, (int) playerWidth / 2, (int) playerHeight /2-50);
 }
 
-public Rectangle getBoundsRight()
+private Rectangle getBoundsRight()
 {
 	return new Rectangle((int) ((int) x+playerWidth-25)-20, (int)y+20, 10, (int) playerHeight -45);
 }
 
-public Rectangle getBoundsLeft()
+private Rectangle getBoundsLeft()
 {
 	return new Rectangle((int) x-5, (int)y+20, 10, (int) playerHeight -45);
 }
 
-public Rectangle getWholeBounds()
+private Rectangle getWholeBounds()
 {
 	return new Rectangle((int) x, (int) y+10, (int) playerWidth-45, (int) playerHeight-20);
 }

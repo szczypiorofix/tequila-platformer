@@ -10,15 +10,15 @@ import com.platformer.game.main.ObjectId;
 
 public class SceneryObject extends GameObject{
 
-protected static final int brickWidth = 45;
-protected static final int brickHeight = 45;
-Textures tex = MainScreen.getInstance();
+private static final int SCENERY_WIDTH = 45;
+private static final int SCENERY_HEIGHT = 45;
+private Textures tex = MainScreen.getInstance();
 private int type;
 
 
 
 public SceneryObject(ObjectId id, float x, float y, int type) {
-	super(id, x, y, brickWidth, brickHeight);
+	super(id, x, y, SCENERY_WIDTH, SCENERY_HEIGHT);
 	this.type = type;
 }
 
@@ -46,6 +46,6 @@ public void tick(ArrayList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, brickWidth, brickHeight);
+	return new Rectangle((int) x, (int) y, SCENERY_WIDTH, SCENERY_HEIGHT);
 }
 }

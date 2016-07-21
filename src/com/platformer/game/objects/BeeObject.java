@@ -11,13 +11,14 @@ import com.platformer.game.main.ObjectId;
 
 public class BeeObject extends GameObject{
 
-Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getInstance();
 private Animation beeMovingR, beeMovingL;
 private int moving = 1;
 private int startPos = 0;
+private static final int BEE_WIDTH = 32, BEE_HEIGHT = 32;
 
 public BeeObject(ObjectId id, float x, float y) {
-	super(id, x, y, 32, 32);
+	super(id, x, y, BEE_WIDTH, BEE_HEIGHT);
 	startPos = (int) x;
 	beeMovingR = new Animation(3, tex.beeR[0], tex.beeR[1], tex.beeR[2], tex.beeR[3], tex.beeR[4]);
 	beeMovingL = new Animation(3, tex.beeL[0], tex.beeL[1], tex.beeL[2], tex.beeL[3], tex.beeL[4]);
@@ -44,6 +45,6 @@ public void tick(ArrayList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, 32, 32);
+	return new Rectangle((int) x, (int) y, BEE_WIDTH, BEE_HEIGHT);
 }
 }

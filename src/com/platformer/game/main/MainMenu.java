@@ -21,6 +21,7 @@ import com.platformer.game.sounds.SoundsLoader;
 
 public class MainMenu {
 
+	
 private JFrame mainMenuFrame;
 private Buttons[] buttons = new Buttons[5];
 private final JPanel centralPanel = new JPanel(null)
@@ -38,14 +39,16 @@ private MainMenuListener mainMenuListener = new MainMenuListener();
 private MenuMouseListener menuMouseListener = new MenuMouseListener();
 private MainClass mainClass;
 private BufferedImageLoader loader = new BufferedImageLoader();
-private LineBorder yellowBorder = new LineBorder(Color.YELLOW, 2, true);
-private LineBorder blueBorder = new LineBorder(Color.BLUE, 2, true);
+private LineBorder yellowBorder = new LineBorder(Color.YELLOW, 3, true);
+private LineBorder blueBorder = new LineBorder(Color.BLUE, 3, true);
 private SoundsLoader sounds;
 private int selected = 0;
 private MenuKeyListener keyListener = new MenuKeyListener();
 private CreditsWindow creditsWindow;
 private HowToPlayWindow howToPlayWindow;
 private HallOfFameWindow hallOfFameWindow;
+
+
 
 public MainMenu(MainClass mainClass)
 {
@@ -245,7 +248,6 @@ public class MenuKeyListener implements KeyListener
 				selected--;
 				selectMenu(selected);	
 			}
-			
 		}
 		
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
@@ -274,7 +276,7 @@ public Buttons(String title)
 	setOpaque(false);
 	setFocusable(false);
 	setContentAreaFilled(false);
-	setFont(MainClass.texasFont.deriveFont(Font.BOLD, 46f));
+	setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 34f));
 	addActionListener(mainMenuListener);
 	addMouseListener(menuMouseListener);
 	setBorder(yellowBorder);
