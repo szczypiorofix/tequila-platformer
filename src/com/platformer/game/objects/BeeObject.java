@@ -25,8 +25,8 @@ public BeeObject(ObjectId id, float x, float y) {
 
 @Override
 public void render(Graphics g) {
-	if (moving == 1) beeMovingR.drawAnimation(g, (int) x, (int) y-20);
-	else beeMovingL.drawAnimation(g, (int) x, (int) y-20);
+	if (moving == 1) beeMovingR.drawAnimation(g, (int) x, (int) y-20, false);
+	else beeMovingL.drawAnimation(g, (int) x, (int) y-20, false);
 }
 
 @Override

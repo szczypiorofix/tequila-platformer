@@ -10,15 +10,23 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
+import javax.imageio.ImageIO;
+
+import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.BufferedImageLoader;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.input.InputManager;
 import com.platformer.game.input.Joystick;
 import com.platformer.game.objects.PlayerObject;
+import com.platformer.game.sounds.SoundsLoader;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
@@ -54,12 +62,16 @@ private boolean exit = false;
 private Camera cam;
 private static Textures tex;
 private BufferedImage backGroundMountains;
+private BufferedImage screenShotImage;
 private boolean gamepadEnabled = false;
+private boolean makeScreenShot = false;
 private Properties prop = new Properties();
 private InputStream propInput = null;
 private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
 private String time;
-
+private File screenShotFile;
+private SoundsLoader sounds;
+private Animation playerDeadR, playerDeadL;
 
 
 public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
@@ -119,7 +131,9 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	key = new InputManager();
 	this.gameWindow.addKeyListener(key);
 	cam = new Camera(0,0);
-	//new Music();
+	sounds = new SoundsLoader();
+	playerDeadR = new Animation(4, tex.playerDeadR[0], tex.playerDeadR[1], tex.playerDeadR[2], tex.playerDeadR[3], tex.playerDeadR[4], tex.playerDeadR[5], tex.playerDeadR[6]);
+	playerDeadL = new Animation(4, tex.playerDeadL[0], tex.playerDeadL[1], tex.playerDeadL[2], tex.playerDeadL[3], tex.playerDeadL[4], tex.playerDeadL[5], tex.playerDeadL[6]);
 }
 
 
@@ -198,6 +212,11 @@ public void tick()
 	if (key.isKeyDown(KeyEvent.VK_ESCAPE)) exit=true;
 	//if (key.isKeyDown(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
 	
+	if (key.isKeyDown(KeyEvent.VK_F12))
+	{
+		// SCREENSHOT !!!
+		makeScreenShot = true;
+	}
 	
 	if (!pauseGame && player.getHealth() > 0) {
 		objectsHandler.tick();
@@ -235,7 +254,13 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	g = bs.getDrawGraphics();
+
 	
+	if (makeScreenShot)
+	{
+		screenShotImage = new BufferedImage(MainClass.WIDTH, MainClass.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		g = screenShotImage.createGraphics();
+	}
 	
 	/////////////////// DRAW HERE ////////////////////////////
 	
@@ -288,25 +313,36 @@ public void render(int fps_count, int ticks_count)
 	{
 		TOTAL_SCORE = SCORE + (int) time_bonus;
 		g2d.setColor(Color.GRAY);
-		g2d.fillRect(310, 160, 380, 340);
+		g2d.fillRect(300, 160, 400, 340);
 		g2d.setColor(Color.YELLOW);
-		g2d.drawRect(309, 159, 382, 342);
+		g2d.drawRect(2999, 159, 402, 342);
 		g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
 		g2d.drawString("POZIOM "+LEVEL +" UKOÑCZONY !!!", 315, 215);
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
 		g2d.drawString("TWÓJ WYNIK: " +SCORE, 375, 300);
 		g2d.drawString("CZAS: " +time, 380, 360);
 		g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 340, 420);
-		g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 340, 480);
+		g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 340, 480);	
 	}
-
+	playerDeadR.drawAnimation(g2d, (int) player.getX(), (int) player.getY(), false);
 	if (player.getHealth() <= 0)
 	{
 		g2d.setFont(MainClass.texasFont.deriveFont(72f));
 		g2d.drawString("NIE ¯YJESZ ...", 355, 220);
+		
+		//playerDeadR.runAnimation();
+		//playerDeadL.runAnimation();
+		//playerDeadR.drawAnimation(g, (int) player.getX(), (int) player.getY(), false);
+		//pauseGame = true;
 	}
 	
 	for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);
+	
+	
+	if (makeScreenShot)
+	{
+		makeScreenShot();
+	}
 	
 	
 	//////////////////////////////////////////////////////////
@@ -323,6 +359,24 @@ public static Textures getInstance()
 	return tex;
 }
 
+public void makeScreenShot()
+{
+	//g.dispose();
+	sounds.playScreenShotSound();
+			
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
+	Calendar cal = Calendar.getInstance();
+			
+	screenShotFile = new File("screenshot "+dateFormat.format(cal.getTime())+".png");
+			
+	try {
+		ImageIO.write(screenShotImage, "png", screenShotFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	makeScreenShot = false;
+}
 
 public boolean isExit()
 {

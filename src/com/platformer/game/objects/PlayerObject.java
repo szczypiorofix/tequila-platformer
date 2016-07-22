@@ -39,7 +39,7 @@ private final int FINISH_LEVEL_COOLDOWN = 400;
 private int finish_level_time = FINISH_LEVEL_COOLDOWN;
 private boolean finishLevel = false;
 
-private Animation playerRunRight, playerRunLeft, playerWalkRight, playerWalkLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft;
+private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
 
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
@@ -53,14 +53,12 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	
 	playerRunRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
 	playerRunLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
-	
-	playerWalkRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[0],tex.playerRunR[1], tex.playerRunR[1]);
-	playerWalkLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[0], tex.playerRunR[1], tex.playerRunR[1]);  /// zamieniæ tex.playerRunR na tex.playerWalkR !!!!
-	
 	playerIdleRight = new Animation(3, tex.playerIdleR[0], tex.playerIdleR[1], tex.playerIdleR[2], tex.playerIdleR[3], tex.playerIdleR[4], tex.playerIdleR[5], tex.playerIdleR[6], tex.playerIdleR[7], tex.playerIdleR[8], tex.playerIdleR[9]);
 	playerIdleLeft = new Animation(3, tex.playerIdleL[0], tex.playerIdleL[1], tex.playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
 	playerJumpRight = new Animation(10, tex.playerJumpR[0], tex.playerJumpR[1], tex.playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
 	playerJumpLeft = new Animation(10, tex.playerJumpL[0], tex.playerJumpL[1], tex.playerJumpL[2], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
+	playerFallingRight = new Animation(10, tex.playerJumpR[3], tex.playerJumpR[3], tex.playerJumpR[3], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
+	playerFallingLeft = new Animation(10, tex.playerJumpL[3], tex.playerJumpL[3], tex.playerJumpL[3], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
 }
 
 
@@ -91,7 +89,7 @@ public void tick(LinkedList<GameObject> object) {
 				}
 			}
 			else {
-				velX *= 0.8f;
+				velX *= 0.75f;
 				if (velX < 0.2 && velX > -0.2) velX = 0;
 			}
 		
@@ -173,6 +171,8 @@ public void tick(LinkedList<GameObject> object) {
 	playerIdleLeft.runAnimation();
 	playerJumpRight.runAnimation();
 	playerJumpLeft.runAnimation();
+	playerFallingRight.runAnimation();
+	playerFallingLeft.runAnimation();
 	
 	//f_playerWalkRight.runAnimation();
 	//f_playerWalkLeft.runAnimation();
@@ -288,6 +288,7 @@ private void collisions(LinkedList<GameObject> object)
 }
 
 
+
 public void render(Graphics g) {
 	
 	//Graphics2D g2d = (Graphics2D) g;
@@ -295,36 +296,30 @@ public void render(Graphics g) {
 	
 	if (!hit_by_enemy)
 	{
-		if ((velX > 3.0f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6);
-		if ((velX < -3.0f) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6);
-		
-		if ((velX > 0.05 && velX <= 3.0f) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
-		if ((velX < -0.05 && velX >= -3.0f) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX > 0.1f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6, false);
+		if ((velX < -0.1f) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6, false);
 			
-		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
-		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
+		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6, false);
+		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6, false);
 			
-		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6);
-		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6);
+		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6, false);
+		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6, false);
 		
-		if (!onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, null);
-		if (!onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, null);
-	
+		if (!onGround && !jumping && turn == 1) playerFallingRight.drawAnimation(g, (int) x, ( int )y+6, false);
+		if (!onGround && !jumping && turn == -1) playerFallingLeft.drawAnimation(g, (int) x, ( int )y+6, false);
 	}
-	else {
-
-		if ((velX > 0) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6);
-		if ((velX < 0) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6);
+	else if (health > 0) {
+		if ((velX > 0.1f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6, true);
+		if ((velX < -0.1f) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6, true);
 			
-		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
-		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
+		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6, true);
+		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6, true);
 			
-		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6);
-		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6);
+		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6, true);
+		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6, true);
 		
-		if (!onGround && !jumping && turn == 1) g.drawImage(tex.playerJumpR[1], (int) x, (int) y, null);
-		if (!onGround && !jumping && turn == -1) g.drawImage(tex.playerJumpL[1], (int) x, (int) y, null);
-		
+		if (!onGround && !jumping && turn == 1) playerFallingRight.drawAnimation(g, (int) x, ( int )y+6, true);
+		if (!onGround && !jumping && turn == -1) playerFallingLeft.drawAnimation(g, (int) x, ( int )y+6, true);
 	}
 	//g2d.draw(getBounds());
 	//g2d.draw(getBoundsTop());

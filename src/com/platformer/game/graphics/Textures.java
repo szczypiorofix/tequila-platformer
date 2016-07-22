@@ -11,6 +11,8 @@ public BufferedImage[] playerIdleR = new BufferedImage[10];
 public BufferedImage[] playerIdleL = new BufferedImage[10];
 public BufferedImage[] playerJumpR = new BufferedImage[5];
 public BufferedImage[] playerJumpL = new BufferedImage[5];
+public BufferedImage[] playerDeadR = new BufferedImage[7];
+public BufferedImage[] playerDeadL = new BufferedImage[7];
 
 public BufferedImage[] sceneryObjects = new BufferedImage[14];
 public BufferedImage[] blocks = new BufferedImage[16];
@@ -105,6 +107,22 @@ public Textures()
 	playerJumpL[2] = loader.loadImage("/Jump02L.png");
 	playerJumpL[3] = loader.loadImage("/Jump03L.png");
 	playerJumpL[4] = loader.loadImage("/Jump04L.png");
+	
+	playerDeadR[0] = loader.loadImage("/Dead00R.png");  // PLAYER DEAD RIGHT
+	playerDeadR[1] = loader.loadImage("/Dead01R.png");
+	playerDeadR[2] = loader.loadImage("/Dead02R.png");
+	playerDeadR[3] = loader.loadImage("/Dead03R.png");
+	playerDeadR[4] = loader.loadImage("/Dead04R.png");
+	playerDeadR[5] = loader.loadImage("/Dead05R.png");
+	playerDeadR[6] = loader.loadImage("/Dead06R.png");
+	
+	playerDeadL[0] = loader.loadImage("/Dead00L.png");  // PLAYER DEAD LEFT
+	playerDeadL[1] = loader.loadImage("/Dead01L.png");
+	playerDeadL[2] = loader.loadImage("/Dead02L.png");
+	playerDeadL[3] = loader.loadImage("/Dead03L.png");
+	playerDeadL[4] = loader.loadImage("/Dead04L.png");
+	playerDeadL[5] = loader.loadImage("/Dead05L.png");
+	playerDeadL[6] = loader.loadImage("/Dead06L.png");
 	
 	blocks[0] = loader.loadImage("/00.png");  // BLOCKS http://www.gameart2d.com/free-desert-platformer-tileset.html
 	blocks[1] = loader.loadImage("/01.png");

@@ -1,6 +1,8 @@
 package com.platformer.game.graphics;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 public class Animation {
@@ -11,7 +13,7 @@ private int index = 0;
 private int count = 0;
 private BufferedImage[] images;
 private BufferedImage currentImage;
-
+private float counter = 0.2f;
 
 public Animation(int speed, BufferedImage... args)
 {
@@ -45,9 +47,28 @@ private void nextFrame()
 	if (count > frames) count = 0;
 }
 
+public static BufferedImage makeImageTranslucent(BufferedImage source, double alpha) {
+    BufferedImage target = new BufferedImage(source.getWidth(),
+        source.getHeight(), java.awt.Transparency.TRANSLUCENT);
+    // Get the images graphics
+    Graphics2D g2d = target.createGraphics();
+    // Set the Graphics composite to Alpha
+    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
+    // Draw the image into the prepared reciver image
+    g2d.drawImage(source, null, 0, 0);
+    // let go of all system resources in this Graphics
+    g2d.dispose();
+    // Return the image
+    return target;
+}
 
-public void drawAnimation(Graphics g,  int x, int y)
+public void drawAnimation(Graphics g,  int x, int y, boolean hit)
 {
-	g.drawImage(currentImage, x, y, null);
+	if (!hit) g.drawImage(currentImage, x, y, null);
+	else {
+		counter += 0.02f;
+		if (counter > 0.8f) counter = 0.2f;
+		g.drawImage(makeImageTranslucent(currentImage, counter), x, y, null);
+	}
 }
 }

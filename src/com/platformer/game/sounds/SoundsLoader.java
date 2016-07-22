@@ -17,17 +17,37 @@ private final URL drinkSoundFile = getClass().getResource("/drink.wav");
 private final URL eatSoundFile = getClass().getResource("/eat.wav");
 private final URL menuSoundFile1 = getClass().getResource("/menusound1.wav");
 private final URL menuSoundFile2 = getClass().getResource("/menusound2.wav");
-private final URL powerup = getClass().getResource("/powerup.wav");
+private final URL powerupSoundFile = getClass().getResource("/powerup.wav");
+private final URL screenShotSoundFile = getClass().getResource("/screenShotSound.wav");
 private FloatControl gainControl;
 
 
 //http://www.bfxr.net/
 
+
+public void playScreenShotSound()
+{
+	try
+	{
+		audioStream = AudioSystem.getAudioInputStream((screenShotSoundFile));
+		clip = AudioSystem.getClip();
+		clip.open(audioStream);
+		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-10.0f);  // VOLUME CONTROL
+		clip.start();
+		audioStream = null;
+    }
+	catch(Exception ex) {
+    	ex.printStackTrace();
+    	System.exit(-1);
+    	}
+}
+
 public void playPowerUpSound()
 {
 	try
 	{
-		audioStream = AudioSystem.getAudioInputStream((powerup));
+		audioStream = AudioSystem.getAudioInputStream((powerupSoundFile));
 		clip = AudioSystem.getClip();
 		clip.open(audioStream);
 		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);

@@ -30,7 +30,7 @@ public Coin(ObjectId id, float x, float y) {
 
 @Override
 public void render(Graphics g) {	
-	coinRotating.drawAnimation(g, (int) x, (int) y);
+	coinRotating.drawAnimation(g, (int) x, (int) y, false);
 }
 
 @Override
