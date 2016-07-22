@@ -2,7 +2,7 @@ package com.platformer.game.objects;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
@@ -32,14 +32,14 @@ private boolean hit_by_enemy = false;
 private final int TEQUILA_COOLDOWN = 60*5;
 private int tequila_time = TEQUILA_COOLDOWN;
 private boolean tequila_powerUp = false;
-private final int TACO_COOLDOWN = 60*10;
-private int taco_time = TEQUILA_COOLDOWN;
+private final int TACO_COOLDOWN = 60*8;
+private int taco_time = TACO_COOLDOWN;
 private boolean taco_powerUp = false;
 private final int FINISH_LEVEL_COOLDOWN = 400;
 private int finish_level_time = FINISH_LEVEL_COOLDOWN;
 private boolean finishLevel = false;
 
-private Animation playerWalkRight, playerWalkLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft;
+private Animation playerRunRight, playerRunLeft, playerWalkRight, playerWalkLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft;
 
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
@@ -51,8 +51,12 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	level2X = x;
 	level2Y = y;
 	
-	playerWalkRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
-	playerWalkLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
+	playerRunRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
+	playerRunLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
+	
+	playerWalkRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[0],tex.playerRunR[1], tex.playerRunR[1]);
+	playerWalkLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[0], tex.playerRunR[1], tex.playerRunR[1]);  /// zamieniæ tex.playerRunR na tex.playerWalkR !!!!
+	
 	playerIdleRight = new Animation(3, tex.playerIdleR[0], tex.playerIdleR[1], tex.playerIdleR[2], tex.playerIdleR[3], tex.playerIdleR[4], tex.playerIdleR[5], tex.playerIdleR[6], tex.playerIdleR[7], tex.playerIdleR[8], tex.playerIdleR[9]);
 	playerIdleLeft = new Animation(3, tex.playerIdleL[0], tex.playerIdleL[1], tex.playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
 	playerJumpRight = new Animation(10, tex.playerJumpR[0], tex.playerJumpR[1], tex.playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
@@ -61,11 +65,10 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 
 
 @Override
-public void tick(ArrayList<GameObject> object) {
+public void tick(LinkedList<GameObject> object) {
 		
-	velX *= 0.8f;
+	//velX *= 0.8f;
 	
-	if (velX < 0.1 && velX > -0.1) velX = 0;
 	
 	level1X = x /4;   // PARALLAX LEVEL 1 !!!
 	level1Y = 0f;
@@ -74,15 +77,24 @@ public void tick(ArrayList<GameObject> object) {
 	
 	if (!finishLevel)
 	{
-		if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT)) {
-			velX = -5;
-			turn = -1;
-		}
 		
-		if ((MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT)) {
-			velX = 5;
-			turn = 1;
-		}
+		
+		if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT) || (MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT))
+			{
+				if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT)) {
+					if (velX > -5) velX -=0.3f;
+					turn = -1;
+				}
+				if ((MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT)) {
+					if (velX < 5) velX +=0.3f;
+					turn = 1;
+				}
+			}
+			else {
+				velX *= 0.8f;
+				if (velX < 0.2 && velX > -0.2) velX = 0;
+			}
+		
 		
 		if (((MainScreen.KEY_UP || (MainScreen.GAMEPAD_UP))) && (!jumping) && (onGround)) {
 			
@@ -147,6 +159,7 @@ public void tick(ArrayList<GameObject> object) {
 			MainScreen.SCORE = 0;
 			MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
 			MainScreen.TOTAL_SCORE = 0;
+			gravity = 0.5f;
 			objectsHandler.switchLevel();
 		}
 	}
@@ -154,8 +167,8 @@ public void tick(ArrayList<GameObject> object) {
 	
 	collisions(object);
 	
-	playerWalkRight.runAnimation();
-	playerWalkLeft.runAnimation();
+	playerRunRight.runAnimation();
+	playerRunLeft.runAnimation();
 	playerIdleRight.runAnimation();
 	playerIdleLeft.runAnimation();
 	playerJumpRight.runAnimation();
@@ -170,11 +183,11 @@ public void tick(ArrayList<GameObject> object) {
 }
 
 
-private void collisions(ArrayList<GameObject> object)
+private void collisions(LinkedList<GameObject> object)
 {
-	for (int i = 0; i < objectsHandler.object.size(); i++)
+	for (int i = 0; i < objectsHandler.first_object.size(); i++)
 	{
-		GameObject tempObject = objectsHandler.object.get(i);
+		GameObject tempObject = objectsHandler.first_object.get(i);
 		
 		if (tempObject.getId() == ObjectId.Block)
 		{		
@@ -213,6 +226,9 @@ private void collisions(ArrayList<GameObject> object)
 		{
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
+				velX = 0f;
+				velY = 0f;
+				gravity = 0f;
 				finishLevel = true;
 			}
 		}
@@ -226,18 +242,6 @@ private void collisions(ArrayList<GameObject> object)
 				sounds.playCoinSound();
 			}
 		}
-		else if (tempObject.getId() == ObjectId.BeeEnemy)
-		{
-			if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
-			{
-				if (tempObject.getX() > x) x -= 50;
-				else x += 50;
-				health--;
-				MainScreen.SCORE -=40;
-				sounds.playHitSound();
-				hit_by_enemy = true;
-			}
-		}
 		else if (tempObject.getId() == ObjectId.Tequila)
 		{
 			if (getWholeBounds().intersects(tempObject.getBounds()) && (!isTequila_powerUp()))
@@ -248,6 +252,7 @@ private void collisions(ArrayList<GameObject> object)
 				sounds.playPowerUpSound();
 				tequila_powerUp = true;
 				taco_powerUp = false;
+				taco_time = TACO_COOLDOWN;
 			}
 		}
 		else if (tempObject.getId() == ObjectId.Taco)
@@ -259,8 +264,25 @@ private void collisions(ArrayList<GameObject> object)
 				sounds.playPowerUpSound();
 				taco_powerUp = true;
 				tequila_powerUp = false;
+				tequila_time = TEQUILA_COOLDOWN;
 				health++;
 			}
+		}
+	}
+	
+	for (int i = 0; i < objectsHandler.second_object.size(); i++)
+	{
+		GameObject tempObject = objectsHandler.second_object.get(i);
+		
+		if (tempObject.getId() == ObjectId.BeeEnemy)
+		if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+		{
+			if (tempObject.getX() > x) x -= 50;
+			else x += 50;
+			health--;
+			MainScreen.SCORE -=40;
+			sounds.playHitSound();
+			hit_by_enemy = true;
 		}
 	}
 }
@@ -273,8 +295,11 @@ public void render(Graphics g) {
 	
 	if (!hit_by_enemy)
 	{
-		if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
-		if ((velX < 0) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX > 3.0f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX < -3.0f) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6);
+		
+		if ((velX > 0.05 && velX <= 3.0f) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX < -0.05 && velX >= -3.0f) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
 			
 		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
 		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);
@@ -288,8 +313,8 @@ public void render(Graphics g) {
 	}
 	else {
 
-		if ((velX > 0) && (!jumping) && (onGround)) playerWalkRight.drawAnimation(g, (int) x, (int) y+6);
-		if ((velX < 0) && (!jumping) && (onGround)) playerWalkLeft.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX > 0) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6);
+		if ((velX < 0) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6);
 			
 		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6);
 		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6);

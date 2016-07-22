@@ -4,8 +4,7 @@ import java.awt.Graphics;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
-
+import java.util.LinkedList;
 import com.platformer.game.objects.Block;
 import com.platformer.game.objects.Coin;
 import com.platformer.game.objects.BeeObject;
@@ -19,15 +18,14 @@ import com.platformer.game.objects.TequilaBottle;
 public class ObjectsHandler {
 
 
-public ArrayList<GameObject> object = new ArrayList<GameObject>();
+public LinkedList<GameObject> first_object = new LinkedList<GameObject>();
+public LinkedList<GameObject> second_object = new LinkedList<GameObject>();
 public final int ROWS = 200, COLS = 40;
-private GameObject tempObject;
 private Camera cam;
 private ObjectInputStream ois;
 private int[][] tileValues;
 private PlayerObject player;
 private InputStream in = null;
-private PlayerObject tempPlayer;
 
 
 public ObjectsHandler(Camera cam)
@@ -37,42 +35,57 @@ public ObjectsHandler(Camera cam)
 
 public void tick()
 {
-	for (int i = 0; i < object.size(); i++)
+	for (int i = 0; i < first_object.size(); i++)
 	{
-		tempObject = object.get(i);
-		tempObject.tick(object);
+		first_object.get(i).tick(first_object);
+	}
+	for (int i = 0; i < second_object.size(); i++)
+	{
+		second_object.get(i).tick(second_object);
 	}
 }
 
 public void render(Graphics g)
 {
-	for (int i = 0; i < object.size(); i++)
+	//for (int i = 0; i < object.size(); i++)
+	//{
+		//tempObject = object.get(i);
+		//if (tempObject.getId() != ObjectId.Player) {
+			//	tempObject.render(g);    // PLAYER NA PIERWSZYM MIEJSCU
+		//}
+		//else {
+		///	tempPlayer = (PlayerObject) tempObject;
+		//}
+	//}
+	//tempPlayer.render(g);
+	
+	for (int i = 0; i < first_object.size(); i++)
 	{
-		tempObject = object.get(i);
-		if (tempObject.getId() != ObjectId.Player) {
-				tempObject.render(g);    // PLAYER NA PIERWSZYM MIEJSCU
-		}
-		else {
-			tempPlayer = (PlayerObject) tempObject;
-		}
+		first_object.get(i).render(g);
 	}
-	tempPlayer.render(g);
+	for (int i = 0; i < second_object.size(); i++)
+	{
+		second_object.get(i).render(g);
+	}
 }
 
 private void clearLevel()
 {
-	object.clear();
+	first_object.clear();
+	second_object.clear();
 }
 
 public void addObject(GameObject object)
 {
-	this.object.add(object);
+	if (object.getId() != ObjectId.BeeEnemy && object.getId() != ObjectId.Player) this.first_object.add(object);
+	else this.second_object.add(object);
 }
 
 
 public void removeObject(GameObject object)
 {
-	this.object.remove(object);
+	this.first_object.remove(object);
+	this.second_object.remove(object);
 }
 
 public PlayerObject getPlayer()

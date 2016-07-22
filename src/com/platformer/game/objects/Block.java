@@ -2,7 +2,7 @@ package com.platformer.game.objects;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
@@ -42,7 +42,7 @@ public void render(Graphics g) {
 }
 
 @Override
-public void tick(ArrayList<GameObject> object) {
+public void tick(LinkedList<GameObject> object) {
 }
 
 @Override

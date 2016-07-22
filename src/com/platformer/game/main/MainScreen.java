@@ -196,7 +196,7 @@ public void tick()
 	if ((key.isKeyDown(KeyEvent.VK_UP)) || (key.isKeyDown(KeyEvent.VK_W))) KEY_UP = true;
 	if ((key.isKeyDown(KeyEvent.VK_DOWN)) || (key.isKeyDown(KeyEvent.VK_S))) KEY_DOWN = true;
 	if (key.isKeyDown(KeyEvent.VK_ESCAPE)) exit=true;
-	if (key.isKeyDown(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
+	//if (key.isKeyDown(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
 	
 	
 	if (!pauseGame && player.getHealth() > 0) {
@@ -273,8 +273,16 @@ public void render(int fps_count, int ticks_count)
 	g2d.drawString("CZAS: "+time, MainClass.WIDTH - 150, 80);
 	g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
 	
-	if (player.isTequila_powerUp()) g2d.drawImage(tex.tequilaImage, 10, 80, null);
-	if (player.isTaco_powerUp()) g2d.drawImage(tex.tacoImage, 10, 80, null);
+	if (player.isTequila_powerUp()) {
+		g2d.drawImage(tex.tequilaImage, 10, 90, null);
+		g2d.setColor(Color.ORANGE);
+		g2d.fillRect(60, 180 - (int)(player.getTequila_time()/3.5), 10, (int) (player.getTequila_time()/3.5));
+	}
+	if (player.isTaco_powerUp()) {
+		g2d.drawImage(tex.tacoImage, 10, 110, null);
+		g2d.setColor(Color.GREEN);
+		g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
+	}
 	
 	if (player.isFinishLevel())
 	{
@@ -284,7 +292,7 @@ public void render(int fps_count, int ticks_count)
 		g2d.setColor(Color.YELLOW);
 		g2d.drawRect(309, 159, 382, 342);
 		g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
-		g2d.drawString("POZIOM UKOÑCZONY !!!", 325, 215);
+		g2d.drawString("POZIOM "+LEVEL +" UKOÑCZONY !!!", 315, 215);
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
 		g2d.drawString("TWÓJ WYNIK: " +SCORE, 375, 300);
 		g2d.drawString("CZAS: " +time, 380, 360);
