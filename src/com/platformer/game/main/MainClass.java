@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.platformer.game.sounds.Music;
+
 
 
 public class MainClass implements Runnable {
@@ -24,6 +26,7 @@ private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_H
 public static Font texasFont;
 private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");  // http://www.1001freefonts.com/la_tequila.font
 public static Font smokunFont;
+
 
 public MainClass()
 {	
@@ -53,7 +56,8 @@ public void gameStart()
 	HEIGHT = mainScreen.getHeight();
 	
 	mainScreen.addElements();
-	gameThreadStart();	
+	new Music();
+	gameThreadStart();
 }
 
 public synchronized void gameThreadStart()

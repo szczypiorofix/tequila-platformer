@@ -5,6 +5,7 @@ import java.awt.DisplayMode;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
 import com.platformer.game.graphics.BufferedImageLoader;
 
 public class GameWindow extends Frame implements WindowListener{

@@ -11,13 +11,16 @@ import com.platformer.game.main.ObjectId;
 
 public class Block extends GameObject{
 
-protected static final int BLOCK_WIDTH = 50;
-protected static final int BLOCK_HEIGHT = 50;
+private static final int BLOCK_WIDTH = 50;
+private static final int BLOCK_HEIGHT = 50;
 private Textures tex = MainScreen.getInstance();
+private float x, y;
 private int type;
 
 public Block(ObjectId id, float x, float y, int type) {
-	super(id, x, y, BLOCK_WIDTH, BLOCK_HEIGHT);
+	super(id, x, y, BLOCK_WIDTH, BLOCK_HEIGHT, 0f, 0f, 1);
+	this.x = x;
+	this.y = y;
 	this.type = type;
 }
 
@@ -50,13 +53,41 @@ public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, BLOCK_WIDTH, BLOCK_HEIGHT);
 }
 
-public static int getBrickWidth()
+public static int getBlockkWidth()
 {
 	return BLOCK_WIDTH;
 }
 
-public static int getBrickHeight()
+public static int getBlockHeight()
 {
 	return BLOCK_HEIGHT;
+}
+
+@Override
+public float getX() {
+	return x;
+}
+
+@Override
+public float getY() {
+	return y;
+}
+
+@Override
+public float getVelX() {
+	return 0;
+}
+
+@Override
+public float getVelY() {
+	return 0;
+}
+
+@Override
+public void setVelX(float velX) {
+}
+
+@Override
+public void setVelY(float velY) {
 }
 }

@@ -2,89 +2,120 @@ package com.platformer.game.input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
-public final class InputManager implements KeyListener {
+public final class InputManager implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
 
 private final int MAX_KEYS = 256;;
-private int keys[] = new int[MAX_KEYS];
-private boolean[] keyUp = new boolean[MAX_KEYS];
-private boolean[] keyDown = new boolean[MAX_KEYS];
-private boolean keypressed;
-private boolean keyreleased;
-private String keyCache = "";
-private int key = 0;
-private static InputManager instance = new InputManager();
 
+private boolean[] keys = null;
+private KeyState[] keyState = null;
+
+
+
+private enum KeyState
+{
+	PRESSED, RELEASED, ONCE;
+}
 
 public InputManager()
 {
+	keys = new boolean[MAX_KEYS];
+	keyState = new KeyState[MAX_KEYS];
+	for (int i = 0; i < MAX_KEYS; i++) keyState[i] = KeyState.RELEASED;
 }
 
-public static InputManager getInstance() {
-	return instance;
-}
 
-public void update() {
-	keyUp = new boolean[MAX_KEYS];
-	keyreleased = false;
-	if( keyCache.length() > 1024 ) {
-		keyCache = "";
-	}
-}
-
-@Override
-public void keyPressed(KeyEvent e) {
-	if (e.getKeyCode() >= 0 && e.getKeyCode() < MAX_KEYS)
+public synchronized void update() {
+	for( int i = 0; i < MAX_KEYS; ++i )
 	{
-		keys[e.getKeyCode()] = (int) System.currentTimeMillis();
-		keyDown[e.getKeyCode()] = true;
-		keyUp[e.getKeyCode()] = false;
-		key = e.getKeyCode();
-		keypressed = true;
-		keyreleased = false;
-	}
+	      if( keys[ i ] ) {
+	        if( keyState[ i ] == KeyState.RELEASED )
+	        	keyState[ i ] = KeyState.ONCE;
+	        else
+	        	keyState[ i ] = KeyState.PRESSED;
+	      } else {
+	    	  keyState[ i ] = KeyState.RELEASED;
+	      }
+	    }
 }
 
+public boolean isKeyPressed(int key)
+{
+	return keyState[key] == KeyState.ONCE || keyState[key] == KeyState.PRESSED;
+}
+
+public boolean isKeyPressedOnce(int key)
+{
+	return keyState[key] == KeyState.ONCE;
+}
+
+
+
 @Override
-public void keyReleased(KeyEvent e) {
-	if (e.getKeyCode() >= 0 && (e.getKeyCode() < MAX_KEYS))
+public synchronized void keyPressed(KeyEvent e) {
+	int keyCode = e.getKeyCode();
+	if (keyCode >= 0 && keyCode < MAX_KEYS)
 	{
-		keys[e.getKeyCode()] = 0;
-		keyDown[e.getKeyCode()] = false;
-		keyUp[e.getKeyCode()] = true;
-		key = 0;
-		keypressed = false;
-		keyreleased = true;
+		keys[keyCode] = true;
 	}
 }
 
 @Override
-public void keyTyped(KeyEvent e) {
-	keyCache += e.getKeyChar();
+public synchronized void keyReleased(KeyEvent e) {
+
+	int keyCode = e.getKeyCode();
+	if (keyCode >= 0 && keyCode < MAX_KEYS)
+	{
+		keys[keyCode] = false;
+	}
 }
 
-public int getKey()
-{
-	return key;
+@Override
+public void keyTyped(KeyEvent e) {}
+
+
+@Override
+public void mouseWheelMoved(MouseWheelEvent m) {
 }
 
-public boolean isKeyDown(int key)
-{
-	return keyDown[key];
+
+@Override
+public void mouseDragged(MouseEvent e) {
 }
 
-public boolean isKeyUp(int key)
-{
-	return keyUp[key];
+
+@Override
+public void mouseMoved(MouseEvent e) {
 }
 
-public boolean isAnyKeyDown()
-{
-	return keypressed;
+
+@Override
+public void mouseClicked(MouseEvent e) {
 }
 
-public boolean isAnyKeyUp()
-{
-	return keyreleased;
+
+@Override
+public void mouseEntered(MouseEvent e) {
 }
+
+
+@Override
+public void mouseExited(MouseEvent e) {
+}
+
+
+@Override
+public void mousePressed(MouseEvent e) {
+}
+
+
+@Override
+public void mouseReleased(MouseEvent e) {
+}
+
 }

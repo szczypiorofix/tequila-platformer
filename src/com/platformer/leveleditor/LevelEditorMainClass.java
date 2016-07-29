@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -35,7 +36,7 @@ private JScrollPane scrollPane;
 private EditorPane editorPane;
 private JPanel leftPane, bottomPane;
 private JLabel selectedLabel;
-private static final int MAX_TILES = 36;
+private static final int MAX_TILES = 42;
 public static BufferedImage[] tileImage = new BufferedImage[MAX_TILES];
 private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
@@ -90,7 +91,12 @@ public LevelEditorMainClass()
 		tileImage[33] = ImageIO.read(getClass().getResource("/BeeR01.png"));
 		tileImage[34] = ImageIO.read(getClass().getResource("/tequila_bottle.png"));
 		tileImage[35] = ImageIO.read(getClass().getResource("/taco.png"));
-		
+		tileImage[36] = ImageIO.read(getClass().getResource("/MovingBlockX.png"));
+		tileImage[37] = ImageIO.read(getClass().getResource("/MovingBlockY.png"));
+		tileImage[38] = ImageIO.read(getClass().getResource("/16.png"));
+		tileImage[39] = ImageIO.read(getClass().getResource("/17.png"));
+		tileImage[40] = ImageIO.read(getClass().getResource("/BadCactusR.png"));
+		tileImage[41] = ImageIO.read(getClass().getResource("/MovingCrate.png"));
 	}
 	catch (Exception e)
 	{
@@ -108,7 +114,7 @@ public LevelEditorMainClass()
 	editorPane = new EditorPane(ROWS, COLS);
 	scrollPane = new JScrollPane(editorPane);
 	
-	leftPane = new JPanel(new GridLayout(12, 3));
+	leftPane = new JPanel(new GridLayout(14, 3));
 	for (int i = 0; i < tileImage.length; i++)
 	{
 		tilesChoose[i] = new TileChoose(tileImage[i]);

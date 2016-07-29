@@ -18,15 +18,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
+
 import javax.imageio.ImageIO;
 
-import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.BufferedImageLoader;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.input.InputManager;
 import com.platformer.game.input.Joystick;
 import com.platformer.game.objects.PlayerObject;
 import com.platformer.game.sounds.SoundsLoader;
+
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.Event;
@@ -46,8 +47,7 @@ public static float milis = 0f;
 public static final float MAX_TIME_BONUS = 1500f;
 public static float time_bonus = MAX_TIME_BONUS;
 public static float TOTAL_SCORE = 0f;
-public static boolean KEY_LEFT = false, KEY_RIGHT = false, KEY_UP = false, KEY_DOWN = false, KEY_PAUSE = false;
-public static boolean GAMEPAD_LEFT = false, GAMEPAD_RIGHT = false, GAMEPAD_UP = false;
+public static boolean PLAYER_LEFT = false, PLAYER_RIGHT = false, PLAYER_JUMP = false, START_EXIT = false;
 
 private GameWindow gameWindow;
 private BufferStrategy bs;
@@ -61,17 +61,18 @@ private Component[] gamepadComponents;
 private boolean exit = false;
 private Camera cam;
 private static Textures tex;
-private BufferedImage backGroundMountains;
+private BufferedImage backGroundMountains, clouds;
 private BufferedImage screenShotImage;
 private boolean gamepadEnabled = false;
 private boolean makeScreenShot = false;
+private float cloudsX = 0f;
 private Properties prop = new Properties();
 private InputStream propInput = null;
 private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
 private String time;
 private File screenShotFile;
-private SoundsLoader sounds;
-private Animation playerDeadR, playerDeadL;
+private SoundsLoader screenShotSound;
+//private Animation playerDeadR, playerDeadL;
 
 
 public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
@@ -79,6 +80,13 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	super();
 	this.setFocusable(false);
 	this.gameWindow = gameWindow;
+	
+	
+	// TODO Kolce z ziemii 
+	// TODO coœ co zrzuca ska³y na g³owê (w³¹cza siê w obszarze jak kaktus
+	// TODO przesuwane bloki
+	// TODO tumbleweed
+	// TODO Achivements & Collectibles np. zrób 100 skoków, ukoñcz poziom nie trac¹æ ¿ycia itd.
 	
 	this.gamepadEnabled = gamepadEnabled;
 	if (this.gamepadEnabled) 
@@ -126,14 +134,22 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	
 	BufferedImageLoader loader = new BufferedImageLoader();
 	tex = new Textures();
+	
 	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
+	clouds = loader.loadImage("/clouds.png");
+	
 	this.gameWindow.add(this);
 	key = new InputManager();
+	
 	this.gameWindow.addKeyListener(key);
+	this.gameWindow.addMouseListener(key);
+	this.gameWindow.addMouseMotionListener(key);
+	this.gameWindow.addMouseWheelListener(key);
+	
 	cam = new Camera(0,0);
-	sounds = new SoundsLoader();
-	playerDeadR = new Animation(4, tex.playerDeadR[0], tex.playerDeadR[1], tex.playerDeadR[2], tex.playerDeadR[3], tex.playerDeadR[4], tex.playerDeadR[5], tex.playerDeadR[6]);
-	playerDeadL = new Animation(4, tex.playerDeadL[0], tex.playerDeadL[1], tex.playerDeadL[2], tex.playerDeadL[3], tex.playerDeadL[4], tex.playerDeadL[5], tex.playerDeadL[6]);
+	screenShotSound = new SoundsLoader("/screenShotSound.wav");
+	//playerDeadR = new Animation(4, tex.playerDeadR[0], tex.playerDeadR[1], tex.playerDeadR[2], tex.playerDeadR[3], tex.playerDeadR[4], tex.playerDeadR[5], tex.playerDeadR[6]);
+	//playerDeadL = new Animation(4, tex.playerDeadL[0], tex.playerDeadL[1], tex.playerDeadL[2], tex.playerDeadL[3], tex.playerDeadL[4], tex.playerDeadL[5], tex.playerDeadL[6]);
 }
 
 
@@ -171,26 +187,26 @@ public void tick()
 			
 			if (comp.getName().equals(jumpProp))
     			{
-				if (Float.toString(value).equals(jumpValueProp)) GAMEPAD_UP = true;
-    				else GAMEPAD_UP = false;
+				if (Float.toString(value).equals(jumpValueProp)) PLAYER_JUMP = true;
+    				else PLAYER_JUMP = false;
     			}
 			
 			if (comp.getName().equals(leftProp))
 			{
 				if (Float.toString(value).equals(leftValueProp))
 				{
-					GAMEPAD_LEFT = true;
+					PLAYER_LEFT = true;
 				}
-				else GAMEPAD_LEFT = false;
+				else PLAYER_LEFT = false;
 			}
 			
 			if (comp.getName().equals(rightProp))
 			{
 				if (Float.toString(value).equals(rightValueProp))
 				{
-					GAMEPAD_RIGHT = true;
+					PLAYER_RIGHT = true;
 				}
-				else GAMEPAD_RIGHT = false;
+				else PLAYER_RIGHT = false;
 			}
 
 		
@@ -198,49 +214,83 @@ public void tick()
 	}
     
     // KEYBOARD
-    //key.update();
-
-  	KEY_UP = false;
-  	KEY_LEFT = false;
-  	KEY_RIGHT = false;
-  	KEY_DOWN = false;
     
-    if ((key.isKeyDown(KeyEvent.VK_LEFT)) || (key.isKeyDown(KeyEvent.VK_A))) KEY_LEFT = true;
-	if (((key.isKeyDown(KeyEvent.VK_RIGHT)) || (key.isKeyDown(KeyEvent.VK_D)))) KEY_RIGHT = true;
-	if ((key.isKeyDown(KeyEvent.VK_UP)) || (key.isKeyDown(KeyEvent.VK_W))) KEY_UP = true;
-	if ((key.isKeyDown(KeyEvent.VK_DOWN)) || (key.isKeyDown(KeyEvent.VK_S))) KEY_DOWN = true;
-	if (key.isKeyDown(KeyEvent.VK_ESCAPE)) exit=true;
-	//if (key.isKeyDown(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
+	key.update();
+
+	PLAYER_JUMP = false;
+  	PLAYER_LEFT = false;
+  	PLAYER_RIGHT = false;
+    
+    if ((key.isKeyPressed(KeyEvent.VK_LEFT)) || (key.isKeyPressed(KeyEvent.VK_A))) PLAYER_LEFT = true;
+	if (((key.isKeyPressed(KeyEvent.VK_RIGHT)) || (key.isKeyPressed(KeyEvent.VK_D)))) PLAYER_RIGHT = true;
+	if ((key.isKeyPressedOnce(KeyEvent.VK_UP)) || (key.isKeyPressedOnce(KeyEvent.VK_W))) PLAYER_JUMP = true;
+	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit=true;
+	if (key.isKeyPressedOnce(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
 	
-	if (key.isKeyDown(KeyEvent.VK_F12))
+	
+	if (key.isKeyPressedOnce(KeyEvent.VK_F12))
 	{
 		// SCREENSHOT !!!
 		makeScreenShot = true;
 	}
 	
-	if (!pauseGame && player.getHealth() > 0) {
+	// RESTART AFTEER DEATH
+	if (player.getHealth() <= 0 && key.isKeyPressedOnce(KeyEvent.VK_SPACE))
+	{
+		pauseGame = false;
+		objectsHandler.clearLevel();
+		objectsHandler.resetLevel();
+		objectsHandler.loadLevel(LEVEL);
+		cam.setX(0);
+		player = objectsHandler.getPlayer();
+		
+	}
+	
+	// PAUSE GAME
+	if (!pauseGame && !player.isFinishLevel() && player.getHealth() > 0) {
 		objectsHandler.tick();
 		cam.tick(player);
 		
-		if (!player.isFinishLevel())
+		cloudsX -= 0.4f;
+		if (cloudsX < -500) cloudsX = 1000;
+		timeTick();
+	}
+	
+	if (pauseGame && player.isFinishLevel() && key.isKeyPressedOnce(KeyEvent.VK_SPACE))
+	{
 		{
-			milis += (1000/60);
-			if (milis >999)
-			{
-				seconds++;
-				milis = 0;
-			}
-			if (seconds > 59)
-			{
-				minutes++;
-				seconds = 0;
-			}
-			if (minutes < 10) time = "0"+minutes;
-			else time = minutes+"";
-			if (seconds < 10) time += ":0" +seconds +":" + (int) milis;
-			else time += ":"+seconds +":" + (int) milis;	
+			pauseGame = false;
+			MainScreen.milis = 0f;
+			MainScreen.minutes = 0;
+			MainScreen.seconds = 0;
+			MainScreen.COINS = 0;
+			MainScreen.SCORE = 0;
+			MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
+			MainScreen.TOTAL_SCORE = 0;
+				
+			objectsHandler.switchLevel();
+			player = objectsHandler.getPlayer();
 		}
 	}
+}
+
+public void timeTick()
+{
+	milis += (1000/60);
+	if (milis >999)
+	{
+		seconds++;
+		milis = 0;
+	}
+	if (seconds > 59)
+	{
+		minutes++;
+		seconds = 0;
+	}
+	if (minutes < 10) time = "0"+minutes;
+	else time = minutes+"";
+	if (seconds < 10) time += ":0" +seconds +":" + (int) milis;
+	else time += ":"+seconds +":" + (int) milis;	
 }
 
 public void render(int fps_count, int ticks_count)
@@ -274,10 +324,12 @@ public void render(int fps_count, int ticks_count)
 	g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
 	g2d.setColor(Color.BLUE);
 	
-	g2d.drawImage(backGroundMountains, (int) (0 - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g2d.drawImage(backGroundMountains, (int) (MainClass.WIDTH - player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g2d.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *2)- player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
-	g2d.drawImage(backGroundMountains, (int) ((MainClass.WIDTH *3)- player.getLevel1X()), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.2), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.2) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.2) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
+	
+	
+	g2d.drawImage(clouds, (int) (cam.getX()*0.2 + 500 + cloudsX), (int) (cam.getY() + 600), null);
 	
 	
 	////// CAM MOVING HERE
@@ -286,7 +338,6 @@ public void render(int fps_count, int ticks_count)
 	if (!player.isFinishLevel()) objectsHandler.render(g);
 	
 	g2d.translate(-cam.getX(), -cam.getY()); // CAM ENGING	
-	
 	
 	
 	g2d.drawString("POZIOM "+LEVEL, 845, 40);
@@ -309,27 +360,40 @@ public void render(int fps_count, int ticks_count)
 		g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
 	}
 	
+	if (pauseGame && !player.isFinishLevel())
+	{
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 64f));
+		g2d.drawString("PAUZA", 400, 320);
+	}
+	
 	if (player.isFinishLevel())
 	{
 		TOTAL_SCORE = SCORE + (int) time_bonus;
 		g2d.setColor(Color.GRAY);
-		g2d.fillRect(300, 160, 400, 340);
+		g2d.fillRect(300, 100, 400, 400);
 		g2d.setColor(Color.YELLOW);
-		g2d.drawRect(2999, 159, 402, 342);
+		g2d.drawRect(2999, 99, 402, 342);
 		g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
-		g2d.drawString("POZIOM "+LEVEL +" UKOÑCZONY !!!", 315, 215);
+		g2d.drawString("POZIOM "+LEVEL +" UKOÑCZONY !!!", 315, 155);
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
-		g2d.drawString("TWÓJ WYNIK: " +SCORE, 375, 300);
-		g2d.drawString("CZAS: " +time, 380, 360);
-		g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 340, 420);
-		g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 340, 480);	
+		g2d.drawString("TWÓJ WYNIK: " +SCORE, 375, 240);
+		g2d.drawString("CZAS: " +time, 380, 300);
+		g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 340, 370);
+		g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 340, 430);
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 24f));
+		g2d.setColor(Color.WHITE);
+		g2d.drawString("NACIŒNIJ SPACJÊ ...", 420, 480);
+
 	}
-	playerDeadR.drawAnimation(g2d, (int) player.getX(), (int) player.getY(), false);
+	//playerDeadR.drawAnimation(g2d, (int) player.getX(), (int) player.getY(), false);
 	if (player.getHealth() <= 0)
 	{
-		g2d.setFont(MainClass.texasFont.deriveFont(72f));
+		g2d.setColor(Color.RED);
+		g2d.setFont(MainClass.texasFont.deriveFont(68f));
 		g2d.drawString("NIE ¯YJESZ ...", 355, 220);
-		
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
+		g2d.drawString("SPACJA - RESTART", 340, 320);
+		g2d.drawString("ESC - KONIEC", 370, 380);
 		//playerDeadR.runAnimation();
 		//playerDeadL.runAnimation();
 		//playerDeadR.drawAnimation(g, (int) player.getX(), (int) player.getY(), false);
@@ -362,8 +426,7 @@ public static Textures getInstance()
 public void makeScreenShot()
 {
 	//g.dispose();
-	sounds.playScreenShotSound();
-			
+	screenShotSound.play();
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
 	Calendar cal = Calendar.getInstance();
 			

@@ -1,8 +1,11 @@
 package com.platformer.game.objects;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
+
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
@@ -13,43 +16,49 @@ import com.platformer.game.sounds.SoundsLoader;
 public class PlayerObject extends GameObject{
 
 	
-private static float playerWidth = 110, playerHeight = 120;
 private ObjectsHandler objectsHandler;
+private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound;
+private Textures tex = MainScreen.getInstance();
+private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
+private static final int MAX_HEALTH = 5;
+private static final float NORMAL_GRAVITY = 0.5f;
 private final float MAX_SPEED = 20f;
-private float velX = 0, velY = 0;
-private float gravity = 0.5f;
+private final int HIT_COOLDOWN = 60*2;
+private final int TEQUILA_COOLDOWN = 60*5;
+private final int TACO_COOLDOWN = 60*8;
+private static float playerWidth = 110, playerHeight = 120;
+private float velX = 0;
+private float velY = 0;
+private float gravity;
 private boolean onGround = false;
 private boolean jumping = false;
-private SoundsLoader sounds;
-private Textures tex = MainScreen.getInstance();
-private float level1X = 0f, level1Y = 0f;
-private float level2X = 0f, level2Y = 0f;
+private float x, y;
 private int turn = 1;
-private int health = 5;
-private final int HIT_COOLDOWN = 60*2;
+private int health;
 private int hit_time = HIT_COOLDOWN;
 private boolean hit_by_enemy = false;
-private final int TEQUILA_COOLDOWN = 60*5;
 private int tequila_time = TEQUILA_COOLDOWN;
 private boolean tequila_powerUp = false;
-private final int TACO_COOLDOWN = 60*8;
 private int taco_time = TACO_COOLDOWN;
 private boolean taco_powerUp = false;
-private final int FINISH_LEVEL_COOLDOWN = 400;
-private int finish_level_time = FINISH_LEVEL_COOLDOWN;
 private boolean finishLevel = false;
 
-private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
+
 
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
-	super(id, x, y, playerWidth, playerHeight);
+	super(id, x, y, playerWidth, playerHeight, 0, 0, 0);
+	this.x = x;
+	this.y = y;
+	velX = 0;
+	velY = 0;
 	this.objectsHandler = objectsHandler;
-	sounds = new SoundsLoader();
-	level1X = x;
-	level1Y = y;
-	level2X = x;
-	level2Y = y;
+	health = MAX_HEALTH;
+	gravity = NORMAL_GRAVITY;
+	jumpSound = new SoundsLoader("/jump.wav");
+	powerUpSound = new SoundsLoader("/powerup.wav");
+	coinSound = new SoundsLoader("/coin10.wav");
+	hitSound = new SoundsLoader("/hit.wav");
 	
 	playerRunRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
 	playerRunLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
@@ -64,55 +73,49 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 
 @Override
 public void tick(LinkedList<GameObject> object) {
-		
-	//velX *= 0.8f;
-	
-	
-	level1X = x /4;   // PARALLAX LEVEL 1 !!!
-	level1Y = 0f;
-	level2X = x / 2;   // PARALLAX LEVEL 2 !!!
-	level2Y = 0f;
 	
 	if (!finishLevel)
 	{
-		
-		
-		if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT) || (MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT))
+		if ((MainScreen.PLAYER_LEFT) || (MainScreen.PLAYER_RIGHT))
 			{
-				if ((MainScreen.KEY_LEFT) || (MainScreen.GAMEPAD_LEFT)) {
+				if ((MainScreen.PLAYER_LEFT)) {
 					if (velX > -5) velX -=0.3f;
 					turn = -1;
 				}
-				if ((MainScreen.KEY_RIGHT) || (MainScreen.GAMEPAD_RIGHT)) {
+				if (MainScreen.PLAYER_RIGHT) {
 					if (velX < 5) velX +=0.3f;
 					turn = 1;
 				}
 			}
 			else {
 				velX *= 0.75f;
-				if (velX < 0.2 && velX > -0.2) velX = 0;
+				if (velX < 0.25 && velX > -0.25) velX = 0;
 			}
 		
-		
-		if (((MainScreen.KEY_UP || (MainScreen.GAMEPAD_UP))) && (!jumping) && (onGround)) {
+		if ((MainScreen.PLAYER_JUMP) && (!jumping) && (onGround)) {
 			
-			
-			sounds.playJumpSound();
+			jumpSound.play();
 			velY = -12;
 			jumping = true;
 		}
 	}
 	
-		
 	if (!onGround) velY += gravity;
 	if (velY > MAX_SPEED) velY = MAX_SPEED;
 
 	x += velX;
 	y += velY;
 	
+	// GRANICE PORUSZANIA SIÊ PO POZIOMIE
+	if (x < 10) x = 10;
+	if (x > 154 * 64) x = 154*64;
+	
+	//ŒMIERÆ PRZY SPADNIÊCIU W DÓ£
+	if (y > 1150) health = 0;
+	
 	onGround = false;
 	
-	gravity = 0.5f;
+	gravity = NORMAL_GRAVITY;
 	if (tequila_powerUp)
 	{
 		gravity = 0.2f;
@@ -144,26 +147,7 @@ public void tick(LinkedList<GameObject> object) {
 		}
 	}
 	
-	if (finishLevel)
-	{
-		if (finish_level_time > 0) finish_level_time--;
-		else {
-			finish_level_time = FINISH_LEVEL_COOLDOWN;
-			finishLevel = false;
-			MainScreen.milis = 0f;
-			MainScreen.minutes = 0;
-			MainScreen.seconds = 0;
-			MainScreen.COINS = 0;
-			MainScreen.SCORE = 0;
-			MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
-			MainScreen.TOTAL_SCORE = 0;
-			gravity = 0.5f;
-			objectsHandler.switchLevel();
-		}
-	}
-	else MainScreen.time_bonus -= 0.02f;
-	
-	collisions(object);
+	if (!finishLevel) MainScreen.time_bonus -= 0.02f;
 	
 	playerRunRight.runAnimation();
 	playerRunLeft.runAnimation();
@@ -174,152 +158,242 @@ public void tick(LinkedList<GameObject> object) {
 	playerFallingRight.runAnimation();
 	playerFallingLeft.runAnimation();
 	
-	//f_playerWalkRight.runAnimation();
-	//f_playerWalkLeft.runAnimation();
-	//f_playerIdleRight.runAnimation();
-	//f_playerIdleLeft.runAnimation();
-	//f_playerJumpRight.runAnimation();
-	//f_playerJumpLeft.runAnimation();
+	collisions();
 }
 
 
-private void collisions(LinkedList<GameObject> object)
+private void collisions()
 {
-	for (int i = 0; i < objectsHandler.first_object.size(); i++)
-	{
-		GameObject tempObject = objectsHandler.first_object.get(i);
-		
-		if (tempObject.getId() == ObjectId.Block)
-		{		
-			
+	/// BLOCK LIST
+		for (int i = 0; i < objectsHandler.getBlock_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getBlock_List().get(i);
 			if (getBoundsTop().intersects(tempObject.getBounds()))
 			{
-				if (y > (tempObject.getBounds().y - height)) {
+				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
 					
-					y = tempObject.getY() + Block.getBrickHeight() -10;
+					y = tempObject.getY() + 49;
 					velY = 0;	
 				}
 			}
-			
+				
 			if (getBounds().intersects(tempObject.getBounds()))
-			{
-				
-				//if (velY == MAX_SPEED) health--;   // FALL DAMAGE
-				
-				y = tempObject.getY() - Block.getBrickHeight() -53;
+			{			
+				y = tempObject.getY() - 103;
 				jumping = false;
 				velY = 0;
 				onGround = true;
 			}
+				
+			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
 			
-			if (getBoundsRight().intersects(tempObject.getBounds()))
-			{
-				x = tempObject.getX() - width+32;
-			}
-			
-			if (getBoundsLeft().intersects(tempObject.getBounds()))
-			{					
-				x = tempObject.getX() + width-55;
-			}
+			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
 		}
-		else if (tempObject.getId() == ObjectId.LevelEnd)
+		
+		/// MOVING BLOCK Y LIST
+		for (int i = 0; i < objectsHandler.getMovingBlockY_List().size(); i++)
 		{
+			GameObject tempObject = objectsHandler.getMovingBlockY_List().get(i);
+			if (getBoundsTop().intersects(tempObject.getBounds()))
+			{
+				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
+					y = tempObject.getY() + 41;
+					velY = 0;	
+				}
+			}
+				
+			if (getBounds().intersects(tempObject.getBounds()))
+			{
+				y = tempObject.getY() -103;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+				if (velY == 0) y += tempObject.getVelY();
+			}
+				
+			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
+				
+			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
+		}
+		
+		/// MOVING BLOCK X LIST
+		for (int i = 0; i < objectsHandler.getMovingBlockX_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getMovingBlockX_List().get(i);
+			if (getBoundsTop().intersects(tempObject.getBounds()))
+			{
+				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
+					y = tempObject.getY() + 41;
+					velY = 0;
+					x += tempObject.getVelX();
+				}
+			}
+					
+			if (getBounds().intersects(tempObject.getBounds()))
+			{
+				y = tempObject.getY() -103;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+				if (velX == 0) x += tempObject.getVelX();
+			}
+						
+			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
+				
+			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
+		}
+		
+		/// LEVEL END LIST
+		for (int i = 0; i < objectsHandler.getLevelEnd_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getLevelEnd_List().get(i);
 			if (getBounds().intersects(tempObject.getBounds()))
 			{
 				velX = 0f;
 				velY = 0f;
-				gravity = 0f;
 				finishLevel = true;
 			}
 		}
-		else if (tempObject.getId() == ObjectId.Coin)
+
+		/// COIN LIST
+		for (int i = 0; i < objectsHandler.getCoin_List().size(); i++)
 		{
+			GameObject tempObject = objectsHandler.getCoin_List().get(i);
 			if (getWholeBounds().intersects(tempObject.getBounds()))
 			{
-				objectsHandler.removeObject(tempObject);
+				objectsHandler.getCoin_List().remove(tempObject);
 				MainScreen.COINS++;
 				MainScreen.SCORE += 20;
-				sounds.playCoinSound();
+				coinSound.play();
 			}
 		}
-		else if (tempObject.getId() == ObjectId.Tequila)
+		
+		/// TEQUILA LIST
+		for (int i = 0; i < objectsHandler.getTequila_List().size(); i++)
 		{
+			GameObject tempObject = objectsHandler.getTequila_List().get(i);
 			if (getWholeBounds().intersects(tempObject.getBounds()) && (!isTequila_powerUp()))
 			{
-				objectsHandler.removeObject(tempObject);
+				objectsHandler.getTequila_List().remove(tempObject);
 				MainScreen.SCORE += 35;
-				sounds.playDrinkSound();
-				sounds.playPowerUpSound();
+				powerUpSound.play();
 				tequila_powerUp = true;
 				taco_powerUp = false;
 				taco_time = TACO_COOLDOWN;
 			}
 		}
-		else if (tempObject.getId() == ObjectId.Taco)
+		
+		
+		/// TACO LIST
+		for (int i = 0; i < objectsHandler.getTaco_List().size(); i++)
 		{
-			if (getWholeBounds().intersects(tempObject.getBounds()) && (health < 5))
+			GameObject tempObject = objectsHandler.getTaco_List().get(i);
+			if (getWholeBounds().intersects(tempObject.getBounds()) && (health < MAX_HEALTH))
 			{
-				objectsHandler.removeObject(tempObject);
+				objectsHandler.getTaco_List().remove(tempObject);
 				MainScreen.SCORE += 35;
-				sounds.playPowerUpSound();
+				powerUpSound.play();
 				taco_powerUp = true;
 				tequila_powerUp = false;
 				tequila_time = TEQUILA_COOLDOWN;
 				health++;
 			}
 		}
-	}
-	
-	for (int i = 0; i < objectsHandler.second_object.size(); i++)
-	{
-		GameObject tempObject = objectsHandler.second_object.get(i);
-		
-		if (tempObject.getId() == ObjectId.BeeEnemy)
-		if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+			
+		/// DART LIST
+		for (int i = 0; i < objectsHandler.getDart_List().size(); i++)
 		{
-			if (tempObject.getX() > x) x -= 50;
-			else x += 50;
-			health--;
-			MainScreen.SCORE -=40;
-			sounds.playHitSound();
-			hit_by_enemy = true;
+			GameObject tempObject = objectsHandler.getDart_List().get(i);
+			if (getWholeBounds().intersects(tempObject.getBounds()))
+			{
+				if (tempObject.getX() > x) x -= 50;
+				else x += 50;
+				health--;
+				MainScreen.SCORE -=40;
+				hitSound.play();
+				hit_by_enemy = true;
+				objectsHandler.getDart_List().remove(tempObject);
+			}
+			
+			if (tempObject.getVelX() == 0) {
+				objectsHandler.getDart_List().remove(tempObject);
+			}
 		}
-	}
+		
+		/// ANGRY CACTUS LIST
+		for (int i = 0; i < objectsHandler.getAngryCactus_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getAngryCactus_List().get(i);
+			if (getWholeBounds().intersects(tempObject.getBounds()))
+			{
+				if (tempObject.getX() > x) tempObject.setDirection(-1);
+				else tempObject.setDirection(1);
+				
+				if (!tempObject.isShooting()) {
+					objectsHandler.getDart_List().add(new Dart(ObjectId.Dart, (int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection()));
+					tempObject.setShooting(true);
+				}
+			}
+		}
+		
+		/// MOVING CRATE LIST
+		for (int i = 0; i < objectsHandler.getMovingCrate_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getMovingCrate_List().get(i);
+			tempObject.setVelX(0);		
+			if (getBounds().intersects(tempObject.getBounds()))
+			{			
+				y = tempObject.getY() - 119;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+			}
+			if (getBoundsRight().intersects(tempObject.getBounds())) {
+				x = tempObject.getX() - 77;
+				tempObject.setVelX(2);
+			}
+			if (getBoundsLeft().intersects(tempObject.getBounds())) {
+				x = tempObject.getX() + 67;
+				tempObject.setVelX(-2);
+			}
+		}
+
+		/// BEE LIST
+		for (int i = 0; i < objectsHandler.getBee_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getBee_List().get(i);
+			if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+			{
+				if (tempObject.getX() > x) x -= 50;
+				else x += 50;
+				health--;
+				MainScreen.SCORE -=40;
+				hitSound.play();
+				hit_by_enemy = true;
+			}
+		}
 }
 
 
 
+@Override
 public void render(Graphics g) {
 	
-	//Graphics2D g2d = (Graphics2D) g;
-	//g2d.setColor(Color.BLUE);
-	
-	if (!hit_by_enemy)
-	{
-		if ((velX > 0.1f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6, false);
-		if ((velX < -0.1f) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6, false);
-			
-		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6, false);
-		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6, false);
-			
-		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6, false);
-		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6, false);
+	Graphics2D g2d = (Graphics2D) g;
+	g2d.setColor(Color.BLUE);
 		
-		if (!onGround && !jumping && turn == 1) playerFallingRight.drawAnimation(g, (int) x, ( int )y+6, false);
-		if (!onGround && !jumping && turn == -1) playerFallingLeft.drawAnimation(g, (int) x, ( int )y+6, false);
-	}
-	else if (health > 0) {
-		if ((velX > 0.1f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6, true);
-		if ((velX < -0.1f) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6, true);
+	if (health > 0) {
+		if ((velX > 0.1f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
+		if ((velX < -0.1f) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
 			
-		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6, true);
-		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6, true);
+		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
+		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
 			
-		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6, true);
-		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6, true);
+		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
+		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
 		
-		if (!onGround && !jumping && turn == 1) playerFallingRight.drawAnimation(g, (int) x, ( int )y+6, true);
-		if (!onGround && !jumping && turn == -1) playerFallingLeft.drawAnimation(g, (int) x, ( int )y+6, true);
+		if (!onGround && !jumping && turn == 1) playerFallingRight.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
+		if (!onGround && !jumping && turn == -1) playerFallingLeft.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
 	}
 	//g2d.draw(getBounds());
 	//g2d.draw(getBoundsTop());
@@ -328,33 +402,11 @@ public void render(Graphics g) {
 	//g2d.draw(getWholeBounds());
 }
 
-// PARALLAX !
-public float getLevel1X()
-{
-	return level1X;
-}
-
-public float getLevel1Y()
-{
-	return level1Y;
-}
-
-public float getLevel2X()
-{
-	return level2X;
-}
-
-public float getLevel2Y()
-{
-	return level2Y;
-}
-
-
 /// COLLISION BOUNDS !!!
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-18, (int) ((int) y + (playerHeight / 2))+35, (int) playerWidth / 2 - 5, (int) 10);
+	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-18, (int) ((int) y + (playerHeight / 2))+35, (int) playerWidth / 2 - 5, 10);
 }
 
 private Rectangle getBoundsTop()
@@ -364,12 +416,12 @@ private Rectangle getBoundsTop()
 
 private Rectangle getBoundsRight()
 {
-	return new Rectangle((int) ((int) x+playerWidth-25)-20, (int)y+20, 10, (int) playerHeight -45);
+	return new Rectangle((int) ((int) x+playerWidth-25)-20, (int)y+20, 10, (int) playerHeight -42);
 }
 
 private Rectangle getBoundsLeft()
 {
-	return new Rectangle((int) x-5, (int)y+20, 10, (int) playerHeight -45);
+	return new Rectangle((int) x-5, (int)y+20, 10, (int) playerHeight -42);
 }
 
 private Rectangle getWholeBounds()
@@ -377,7 +429,32 @@ private Rectangle getWholeBounds()
 	return new Rectangle((int) x, (int) y+10, (int) playerWidth-45, (int) playerHeight-20);
 }
 
+
 //OTHER
+
+@Override
+public float getX()
+{
+	return x;
+}
+
+@Override
+public void setX(float x)
+{
+	this.x = x;
+}
+
+@Override
+public float getY()
+{
+	return y;
+}
+
+@Override
+public void setY(float y)
+{
+	this.y = y;
+}
 
 public int getHealth() {
 	return health;
@@ -387,18 +464,22 @@ public void setHealth(int health) {
 	this.health = health;
 }
 
+@Override
 public float getVelX() {
 	return velX;
 }
 
+@Override
 public void setVelX(float velX) {
 	this.velX = velX;
 }
 
+@Override
 public float getVelY() {
 	return velY;
 }
 
+@Override
 public void setVelY(float velY) {
 	this.velY = velY;
 }
@@ -433,5 +514,9 @@ public boolean isTaco_powerUp() {
 
 public boolean isFinishLevel() {
 	return finishLevel;
+}
+
+public void setFinishLevel(boolean finishLevel) {
+	this.finishLevel = finishLevel;
 }
 }

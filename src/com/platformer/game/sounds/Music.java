@@ -2,6 +2,7 @@ package com.platformer.game.sounds;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+
 import javazoom.jl.player.Player;
 
 public class Music {

@@ -8,23 +8,26 @@ import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
 import com.platformer.game.main.ObjectId;
 
-public class TacoObject extends GameObject{
-
-private Textures tex = MainScreen.getInstance();
-private static final int TACO_WIDTH = 43;
-private static final int TACO_HEIGHT = 48;
-private float x, y;
+public class WaterObject extends GameObject{
 
 	
-public TacoObject(ObjectId id, float x, float y) {
-	super(id, x, y, TACO_WIDTH, TACO_HEIGHT, 0f, 0f, 0);
+protected static final int WATER_BLOCK_WIDTH = 64;
+protected static final int WATER_BLOCK_HEIGHT = 64;
+private Textures tex = MainScreen.getInstance();
+private int type;
+private float x, y;
+
+public WaterObject(ObjectId id, float x, float y, int type) {
+	super(id, x, y, WATER_BLOCK_WIDTH, WATER_BLOCK_HEIGHT, 0, 0, 0);
 	this.x = x;
 	this.y = y;
+	this.type = type;
 }
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.tacoImage, (int) x, (int) y, null);
+	if (type == 0) g.drawImage(tex.water, (int)x, (int)y, WATER_BLOCK_WIDTH, WATER_BLOCK_HEIGHT, null);
+	else g.drawImage(tex.waterDeep, (int)x, (int)y, WATER_BLOCK_WIDTH, WATER_BLOCK_HEIGHT, null);
 }
 
 @Override
@@ -33,7 +36,7 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, TACO_WIDTH, TACO_HEIGHT);
+	return new Rectangle((int) x, (int) y, WATER_BLOCK_WIDTH, WATER_BLOCK_HEIGHT);
 }
 
 @Override
@@ -62,5 +65,5 @@ public void setVelX(float velX) {
 
 @Override
 public void setVelY(float velY) {	
-}	
+}
 }

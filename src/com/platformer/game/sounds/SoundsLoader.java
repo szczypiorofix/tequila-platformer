@@ -1,131 +1,43 @@
 package com.platformer.game.sounds;
 
-import java.net.URL;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
+
 public class SoundsLoader {
 
-private AudioInputStream audioStream;
 private Clip clip;
-private final URL jumpSoundFile = getClass().getResource("/jump.wav");
-private final URL coinSoundFile = getClass().getResource("/coin10.wav");
-private final URL hitSoundFile = getClass().getResource("/hit.wav");
-private final URL drinkSoundFile = getClass().getResource("/drink.wav");
-private final URL eatSoundFile = getClass().getResource("/eat.wav");
-private final URL menuSoundFile1 = getClass().getResource("/menusound1.wav");
-private final URL menuSoundFile2 = getClass().getResource("/menusound2.wav");
-private final URL powerupSoundFile = getClass().getResource("/powerup.wav");
-private final URL screenShotSoundFile = getClass().getResource("/screenShotSound.wav");
-private FloatControl gainControl;
+private FloatControl gainControl; 
+
 
 
 //http://www.bfxr.net/
 
-
-public void playScreenShotSound()
+public SoundsLoader(String path)
 {
 	try
 	{
-		audioStream = AudioSystem.getAudioInputStream((screenShotSoundFile));
+		InputStream audioSrc = getClass().getResourceAsStream(path);
+		InputStream bufferedIn = new BufferedInputStream(audioSrc);
+		AudioInputStream ais = AudioSystem.getAudioInputStream(bufferedIn);
+		AudioFormat baseFormat = ais.getFormat();
+		AudioFormat decodeFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED
+				, baseFormat.getSampleRate()
+				, 16
+				, baseFormat.getChannels()
+				, baseFormat.getChannels() *2
+				, baseFormat.getSampleRate()
+				, false);
+		AudioInputStream dais = AudioSystem.getAudioInputStream(decodeFormat, ais);
 		clip = AudioSystem.getClip();
-		clip.open(audioStream);
+		clip.open(dais);
 		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f);  // VOLUME CONTROL
-		clip.start();
-		audioStream = null;
-    }
-	catch(Exception ex) {
-    	ex.printStackTrace();
-    	System.exit(-1);
-    	}
-}
-
-public void playPowerUpSound()
-{
-	try
-	{
-		audioStream = AudioSystem.getAudioInputStream((powerupSoundFile));
-		clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f);  // VOLUME CONTROL
-		clip.start();
-		audioStream = null;
-    }
-	catch(Exception ex) {
-    	ex.printStackTrace();
-    	System.exit(-1);
-    	}
-}
-
-public void playMenuSound2()
-{
-	try
-	{
-		audioStream = AudioSystem.getAudioInputStream((menuSoundFile2));
-		clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f);  // VOLUME CONTROL
-		clip.start();
-		audioStream = null;
-    }
-	catch(Exception ex) {
-    	ex.printStackTrace();
-    	System.exit(-1);
-    	}
-}
-
-public void playMenuSound1()
-{
-	try
-	{
-		audioStream = AudioSystem.getAudioInputStream((menuSoundFile1));
-		clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f);  // VOLUME CONTROL
-		clip.start();
-		audioStream = null;
-    }
-	catch(Exception ex) {
-    	ex.printStackTrace();
-    	System.exit(-1);
-    	}
-}
-
-public void playEatSound()
-{
-	try
-	{
-		audioStream = AudioSystem.getAudioInputStream((eatSoundFile));
-		clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f);  // VOLUME CONTROL
-		clip.start();
-		audioStream = null;
-    }
-	catch(Exception ex) {
-    	ex.printStackTrace();
-    	System.exit(-1);
-    	}
-}
-
-public void playDrinkSound()
-{
-	try
-	{
-		audioStream = AudioSystem.getAudioInputStream((drinkSoundFile));
-		clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(+5.0f);  // VOLUME CONTROL
-		clip.start();
-		audioStream = null;
     }
 	catch(Exception ex) {
     	ex.printStackTrace();
@@ -134,59 +46,42 @@ public void playDrinkSound()
 }
 
 
-public void playHitSound()
+public void play()
 {
-	try
+	if (clip == null) return;
+
+	clip.stop();
+	clip.setFramePosition(0);
+	
+	while (!clip.isRunning())
 	{
-		audioStream = AudioSystem.getAudioInputStream((hitSoundFile));
-		clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f);  // VOLUME CONTROL
 		clip.start();
-		audioStream = null;
-    }
-	catch(Exception ex) {
-    	ex.printStackTrace();
-    	System.exit(-1);
-    	}
+	}
 }
 
-
-public void playCoinSound()
+public void stop()
 {
-	try
-	{
-		audioStream = AudioSystem.getAudioInputStream((coinSoundFile));
-		clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f);  // VOLUME CONTROL
-		clip.start();
-		audioStream = null;
-    }
-	catch(Exception ex) {
-    	ex.printStackTrace();
-    	System.exit(-1);
-    	}
+	if (clip.isRunning()) clip.stop();
 }
 
-
-public void playJumpSound()
+public void close()
 {
-	try
+	stop();
+	clip.drain();
+	clip.close();
+}
+
+public void loop()
+{
+	clip.loop(Clip.LOOP_CONTINUOUSLY);
+	while (!clip.isRunning())
 	{
-		audioStream = AudioSystem.getAudioInputStream((jumpSoundFile));
-		clip = AudioSystem.getClip();
-		clip.open(audioStream);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f);  // VOLUME CONTROL
 		clip.start();
-		audioStream = null;
-    }
-	catch(Exception ex) {
-    	ex.printStackTrace();
-    	System.exit(-1);
-    	}
+	}
+}
+
+public void setVolume(Float volume)
+{
+	gainControl.setValue(volume);
 }
 }

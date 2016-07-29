@@ -3,6 +3,7 @@ package com.platformer.game.objects;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
+
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
@@ -14,10 +15,12 @@ private Textures tex = MainScreen.getInstance();
 private Animation coinRotating;
 private static final int COIN_WIDTH = 32;
 private static final int COIN_HEIGHT = 32;
-
+private float x, y;
 
 public Coin(ObjectId id, float x, float y) {
-	super(id, x, y, COIN_WIDTH, COIN_HEIGHT);
+	super(id, x, y, COIN_WIDTH, COIN_HEIGHT, 0f, 0f, 0);
+	this.x = x;
+	this.y = y;
 	coinRotating = new Animation(5, tex.coinAnim[0], tex.coinAnim[1], tex.coinAnim[2], tex.coinAnim[3], tex.coinAnim[4], tex.coinAnim[5]
 			, tex.coinAnim[6], tex.coinAnim[7], tex.coinAnim[8], tex.coinAnim[9], tex.coinAnim[10], tex.coinAnim[11], tex.coinAnim[12], tex.coinAnim[13]
 			, tex.coinAnim[14], tex.coinAnim[15], tex.coinAnim[16], tex.coinAnim[17], tex.coinAnim[18], tex.coinAnim[19], tex.coinAnim[20]
@@ -41,5 +44,33 @@ public void tick(LinkedList<GameObject> object) {
 @Override
 public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, COIN_WIDTH, COIN_HEIGHT);
+}
+
+@Override
+public float getX() {
+	return x;
+}
+
+@Override
+public float getY() {
+	return y;
+}
+
+@Override
+public float getVelX() {
+	return 0;
+}
+
+@Override
+public float getVelY() {
+	return 0;
+}
+
+@Override
+public void setVelX(float velX) {	
+}
+
+@Override
+public void setVelY(float velY) {	
 }
 }

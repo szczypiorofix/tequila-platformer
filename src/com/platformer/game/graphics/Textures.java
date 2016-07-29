@@ -16,6 +16,8 @@ public BufferedImage[] playerDeadL = new BufferedImage[7];
 
 public BufferedImage[] sceneryObjects = new BufferedImage[14];
 public BufferedImage[] blocks = new BufferedImage[16];
+public BufferedImage movingBlockX, movingBlockY;
+public BufferedImage water, waterDeep;
 public BufferedImage levelend;
 private BufferedImage coinImage;
 public SpriteSheet coinSheet;  // http://opengameart.org/content/coins-asset
@@ -25,7 +27,9 @@ public BufferedImage[] beeL = new BufferedImage[5];
 public BufferedImage heart;
 public BufferedImage tequilaImage;
 public BufferedImage tacoImage;
-
+public BufferedImage dartThrowerR, dartThrowerL;
+public BufferedImage dartR, dartL;
+public BufferedImage movingCrate;
 
 
 
@@ -143,6 +147,12 @@ public Textures()
 	
 	levelend = loader.loadImage("/level_end.png");
 	
+	movingBlockX = loader.loadImage("/MovingBlockX.png");
+	movingBlockY = loader.loadImage("/MovingBlockY.png");
+	
+	water = loader.loadImage("/16.png");
+	waterDeep = loader.loadImage("/17.png");
+	
 	coinImage = loader.loadImage("/coin32.png");
 	coinSheet = new SpriteSheet(coinImage);
 	
@@ -165,5 +175,13 @@ public Textures()
 	tequilaImage = loader.loadImage("/tequila_bottle.png");
 	
 	tacoImage = loader.loadImage("/taco.png");	
+	
+	dartThrowerR = loader.loadImage("/BadCactusR.png");
+	dartThrowerL = loader.loadImage("/BadCactusL.png");
+	
+	dartR = loader.loadImage("/dartRight.png");
+	dartL = loader.loadImage("/dartLeft.png");
+	
+	movingCrate = loader.loadImage("/MovingCrate.png");
 }
 }

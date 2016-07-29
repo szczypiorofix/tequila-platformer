@@ -15,8 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
 import com.platformer.game.graphics.BufferedImageLoader;
-import com.platformer.game.sounds.Music;
 import com.platformer.game.sounds.SoundsLoader;
 
 public class MainMenu {
@@ -32,7 +32,10 @@ private final JPanel centralPanel = new JPanel(null)
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		g.drawImage(new BufferedImageLoader().loadImage("/BG.png"), 0, 0, 500, 500, null);
+		
+		g.setColor(new Color(100,225,250));
+		g.fillRect(0, 0, 500, 500);
+		//g.drawImage(new BufferedImageLoader().loadImage("/BG.png"), 0, 0, 500, 500, null);
 	}
 };
 private MainMenuListener mainMenuListener = new MainMenuListener();
@@ -41,7 +44,7 @@ private MainClass mainClass;
 private BufferedImageLoader loader = new BufferedImageLoader();
 private LineBorder yellowBorder = new LineBorder(Color.YELLOW, 3, true);
 private LineBorder blueBorder = new LineBorder(Color.BLUE, 3, true);
-private SoundsLoader sounds;
+private SoundsLoader menuSound1, menuSound2;
 private int selected = 0;
 private MenuKeyListener keyListener = new MenuKeyListener();
 private CreditsWindow creditsWindow;
@@ -83,15 +86,15 @@ public MainMenu(MainClass mainClass)
 	
 
 	buttons[0].setActionCommand("START");
-	buttons[1].setActionCommand("HOWTO");
-	buttons[2].setActionCommand("HALLOFFAME");
-	buttons[3].setActionCommand("CREDITS");
+	//buttons[1].setActionCommand("HOWTO");
+	//buttons[2].setActionCommand("HALLOFFAME");
+	//buttons[3].setActionCommand("CREDITS");
 	buttons[4].setActionCommand("EXIT");
 	
-	sounds = new SoundsLoader();
+	menuSound1 = new SoundsLoader("/menusound1.wav");
+	menuSound2 = new SoundsLoader("/menusound2.wav");
 	selected = 0;
 	buttons[selected].setBorder(blueBorder);
-	new Music();
 }
 
 public void showMenu(boolean b)
@@ -167,7 +170,7 @@ public class MenuMouseListener implements MouseListener
 private void selectMenu(int s)
 {
 	buttons[s].setBorder(blueBorder);
-	sounds.playMenuSound1();
+	menuSound1.play();
 }
 
 private void deselectMenu(int s)
@@ -177,7 +180,7 @@ private void deselectMenu(int s)
 
 private void exitGame()
 {
-	sounds.playMenuSound2();
+	menuSound2.play();
 	try {
 		Thread.sleep(70);
 	} catch (InterruptedException e1) {
@@ -216,7 +219,7 @@ public class MenuKeyListener implements KeyListener
 		{
 			if (selected == 0)
 			{
-				sounds.playMenuSound2();
+				menuSound2.play();
 				showMenu(false);
 				mainClass.gameStart();
 			}
@@ -290,7 +293,7 @@ public class MainMenuListener implements ActionListener
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equalsIgnoreCase("START"))
 		{
-			sounds.playMenuSound2();
+			menuSound2.play();
 			showMenu(false);
 			mainClass.gameStart();
 		}

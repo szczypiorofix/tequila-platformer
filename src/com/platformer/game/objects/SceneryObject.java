@@ -3,6 +3,7 @@ package com.platformer.game.objects;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
+
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
 import com.platformer.game.main.ObjectId;
@@ -12,12 +13,15 @@ public class SceneryObject extends GameObject{
 private static final int SCENERY_WIDTH = 45;
 private static final int SCENERY_HEIGHT = 45;
 private Textures tex = MainScreen.getInstance();
+private float x, y;
 private int type;
 
 
 
 public SceneryObject(ObjectId id, float x, float y, int type) {
-	super(id, x, y, SCENERY_WIDTH, SCENERY_HEIGHT);
+	super(id, x, y, SCENERY_WIDTH, SCENERY_HEIGHT, 0f, 0f, 0);
+	this.x = x;
+	this.y = y;
 	this.type = type;
 }
 
@@ -46,5 +50,33 @@ public void tick(LinkedList<GameObject> object) {
 @Override
 public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, SCENERY_WIDTH, SCENERY_HEIGHT);
+}
+
+@Override
+public float getX() {
+	return x;
+}
+
+@Override
+public float getY() {
+	return y;
+}
+
+@Override
+public float getVelX() {
+	return 0;
+}
+
+@Override
+public float getVelY() {
+	return 0;
+}
+
+@Override
+public void setVelX(float velX) {	
+}
+
+@Override
+public void setVelY(float velY) {	
 }
 }
