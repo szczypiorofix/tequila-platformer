@@ -1,13 +1,12 @@
 package com.platformer.game.objects;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
+import com.platformer.game.main.Achievements;
 import com.platformer.game.main.MainScreen;
 import com.platformer.game.main.ObjectId;
 import com.platformer.game.main.ObjectsHandler;
@@ -17,7 +16,7 @@ public class PlayerObject extends GameObject{
 
 	
 private ObjectsHandler objectsHandler;
-private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound;
+private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound;
 private Textures tex = MainScreen.getInstance();
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
 private static final int MAX_HEALTH = 5;
@@ -42,6 +41,7 @@ private boolean tequila_powerUp = false;
 private int taco_time = TACO_COOLDOWN;
 private boolean taco_powerUp = false;
 private boolean finishLevel = false;
+private Achievements achievements = MainScreen.getAchievementsInstance();
 
 
 
@@ -59,6 +59,12 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	powerUpSound = new SoundsLoader("/powerup.wav");
 	coinSound = new SoundsLoader("/coin10.wav");
 	hitSound = new SoundsLoader("/hit.wav");
+	cactusShotSound = new SoundsLoader("/cactusShot.wav");
+	jumpSound.setVolume(-15f);
+	powerUpSound.setVolume(-20f);
+	coinSound.setVolume(-15f);
+	hitSound.setVolume(-15f);
+	cactusShotSound.setVolume(-15f);
 	
 	playerRunRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
 	playerRunLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
@@ -108,7 +114,7 @@ public void tick(LinkedList<GameObject> object) {
 	
 	// GRANICE PORUSZANIA SIÊ PO POZIOMIE
 	if (x < 10) x = 10;
-	if (x > 154 * 64) x = 154*64;
+	if (x > 232 * 64) x = 232*64;
 	
 	//ŒMIERÆ PRZY SPADNIÊCIU W DÓ£
 	if (y > 1150) health = 0;
@@ -164,7 +170,7 @@ public void tick(LinkedList<GameObject> object) {
 
 private void collisions()
 {
-	/// BLOCK LIST
+		/// BLOCK LIST
 		for (int i = 0; i < objectsHandler.getBlock_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getBlock_List().get(i);
@@ -264,6 +270,8 @@ private void collisions()
 				objectsHandler.getCoin_List().remove(tempObject);
 				MainScreen.COINS++;
 				MainScreen.SCORE += 20;
+				achievements.addCoin20Count();
+				if (achievements.isCoinCount20Complete()) achievements.addCoin50Count();
 				coinSound.play();
 			}
 		}
@@ -277,6 +285,7 @@ private void collisions()
 				objectsHandler.getTequila_List().remove(tempObject);
 				MainScreen.SCORE += 35;
 				powerUpSound.play();
+				achievements.addPowerup3Count();
 				tequila_powerUp = true;
 				taco_powerUp = false;
 				taco_time = TACO_COOLDOWN;
@@ -293,6 +302,7 @@ private void collisions()
 				objectsHandler.getTaco_List().remove(tempObject);
 				MainScreen.SCORE += 35;
 				powerUpSound.play();
+				achievements.addPowerup3Count();
 				taco_powerUp = true;
 				tequila_powerUp = false;
 				tequila_time = TEQUILA_COOLDOWN;
@@ -306,8 +316,8 @@ private void collisions()
 			GameObject tempObject = objectsHandler.getDart_List().get(i);
 			if (getWholeBounds().intersects(tempObject.getBounds()))
 			{
-				if (tempObject.getX() > x) x -= 50;
-				else x += 50;
+				if (tempObject.getX() > x) x -= 10;
+				else x += 10;
 				health--;
 				MainScreen.SCORE -=40;
 				hitSound.play();
@@ -326,14 +336,16 @@ private void collisions()
 			GameObject tempObject = objectsHandler.getAngryCactus_List().get(i);
 			if (getWholeBounds().intersects(tempObject.getBounds()))
 			{
+				tempObject.setVelX(1);
 				if (tempObject.getX() > x) tempObject.setDirection(-1);
 				else tempObject.setDirection(1);
 				
 				if (!tempObject.isShooting()) {
 					objectsHandler.getDart_List().add(new Dart(ObjectId.Dart, (int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection()));
+					cactusShotSound.play();
 					tempObject.setShooting(true);
 				}
-			}
+			} else tempObject.setVelX(0);
 		}
 		
 		/// MOVING CRATE LIST
@@ -349,11 +361,11 @@ private void collisions()
 				onGround = true;
 			}
 			if (getBoundsRight().intersects(tempObject.getBounds())) {
-				x = tempObject.getX() - 77;
+				x = tempObject.getX() - 75;
 				tempObject.setVelX(2);
 			}
 			if (getBoundsLeft().intersects(tempObject.getBounds())) {
-				x = tempObject.getX() + 67;
+				x = tempObject.getX() + 68;
 				tempObject.setVelX(-2);
 			}
 		}
@@ -364,14 +376,95 @@ private void collisions()
 			GameObject tempObject = objectsHandler.getBee_List().get(i);
 			if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
 			{
-				if (tempObject.getX() > x) x -= 50;
-				else x += 50;
+				if (tempObject.getX() > x) x -= 25;
+				else x += 25;
 				health--;
 				MainScreen.SCORE -=40;
 				hitSound.play();
 				hit_by_enemy = true;
 			}
 		}
+		
+		/// PUSHING MOVING BLOCK X LIST
+		for (int i = 0; i < objectsHandler.getPushingMovingBlockX_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getPushingMovingBlockX_List().get(i);
+			if (getBoundsTop().intersects(tempObject.getBounds()))
+			{
+				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
+					y = tempObject.getY() + 41;
+					velY = 0;
+					x += tempObject.getVelX();
+				}
+			}
+					
+			if (getBounds().intersects(tempObject.getBounds()))
+			{
+				y = tempObject.getY() -103;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+				if (velX == 0 && tempObject.isShooting()) x += tempObject.getVelX();
+			}
+						
+			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
+				
+			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
+		}
+		
+		/// PUSHING MOVING BLOCK Y LIST
+		for (int i = 0; i < objectsHandler.getPushingMovingBlockY_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getPushingMovingBlockY_List().get(i);
+			if (getBoundsTop().intersects(tempObject.getBounds()))
+			{
+				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
+					y = tempObject.getY() + 41;
+					velY = 0;	
+				}
+			}
+				
+			if (getBounds().intersects(tempObject.getBounds()))
+			{
+				y = tempObject.getY() -103;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+				if (velY == 0) y += tempObject.getVelY();
+			}
+				
+			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
+				
+			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
+		}
+		
+		/// BUTTON BLOCK LIST
+		for (int i = 0; i < objectsHandler.getButtonBlock_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getButtonBlock_List().get(i);
+			if (getBoundsTop().intersects(tempObject.getBounds()))
+			{
+				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
+					
+					y = tempObject.getY() + 49;
+					velY = 0;	
+				}
+			}
+				
+			if (getBounds().intersects(tempObject.getBounds()))
+			{			
+				y = tempObject.getY() - 103;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+				tempObject.setShooting(true);
+			} else tempObject.setShooting(false);
+						
+			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
+			
+			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
+		}
+
 }
 
 
@@ -379,8 +472,8 @@ private void collisions()
 @Override
 public void render(Graphics g) {
 	
-	Graphics2D g2d = (Graphics2D) g;
-	g2d.setColor(Color.BLUE);
+	//Graphics2D g2d = (Graphics2D) g;
+	//g2d.setColor(Color.BLUE);
 		
 	if (health > 0) {
 		if ((velX > 0.1f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
@@ -406,7 +499,7 @@ public void render(Graphics g) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-18, (int) ((int) y + (playerHeight / 2))+35, (int) playerWidth / 2 - 5, 10);
+	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-18, (int) ((int) y + (playerHeight / 2))+35, (int) playerWidth / 2-15, 10);
 }
 
 private Rectangle getBoundsTop()
@@ -518,5 +611,16 @@ public boolean isFinishLevel() {
 
 public void setFinishLevel(boolean finishLevel) {
 	this.finishLevel = finishLevel;
+}
+
+
+@Override
+public void setShooting(boolean shooting) {	
+}
+
+
+@Override
+public boolean isShooting() {
+	return false;
 }
 }

@@ -13,9 +13,9 @@ private static final long serialVersionUID = -1517430710709041807L;
 private BufferedImage image;
 
 
-public Tile(String name)
+public Tile()
 {
-	super(name);
+	super();
 	setPreferredSize(new Dimension(50,30));
 	setMinimumSize(new Dimension(50,30));
 	setMaximumSize(new Dimension(50,30));

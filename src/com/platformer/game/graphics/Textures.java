@@ -14,7 +14,7 @@ public BufferedImage[] playerJumpL = new BufferedImage[5];
 public BufferedImage[] playerDeadR = new BufferedImage[7];
 public BufferedImage[] playerDeadL = new BufferedImage[7];
 
-public BufferedImage[] sceneryObjects = new BufferedImage[14];
+public BufferedImage[] sceneryObjects = new BufferedImage[12];
 public BufferedImage[] blocks = new BufferedImage[16];
 public BufferedImage movingBlockX, movingBlockY;
 public BufferedImage water, waterDeep;
@@ -27,9 +27,12 @@ public BufferedImage[] beeL = new BufferedImage[5];
 public BufferedImage heart;
 public BufferedImage tequilaImage;
 public BufferedImage tacoImage;
-public BufferedImage dartThrowerR, dartThrowerL;
+public BufferedImage angryCactusR, angryCactusL, angryCactus0;
 public BufferedImage dartR, dartL;
 public BufferedImage movingCrate;
+public BufferedImage buttonBlock;
+public BufferedImage pushingMovingBlockXOff, pushingMovingBlockXOn, pushingMovingBlockYOff, pushingMovingBlockYOn;
+
 
 
 
@@ -46,15 +49,15 @@ public Textures()
 	sceneryObjects[2] = loader.loadImage("/Cactus (1).png");
 	sceneryObjects[3] = loader.loadImage("/Cactus (2).png");
 	sceneryObjects[4] = loader.loadImage("/Cactus (3).png");
-	sceneryObjects[5] = loader.loadImage("/Crate.png");
-	sceneryObjects[6] = loader.loadImage("/Grass (1).png");
-	sceneryObjects[7] = loader.loadImage("/Grass (2).png");
-	sceneryObjects[8] = loader.loadImage("/Sign.png");
-	sceneryObjects[9] = loader.loadImage("/SignArrow.png");
-	sceneryObjects[10] = loader.loadImage("/Skeleton.png");
-	sceneryObjects[11] = loader.loadImage("/Stone.png");
-	sceneryObjects[12] = loader.loadImage("/StoneBlock.png");
-	sceneryObjects[13] = loader.loadImage("/Tree.png");
+	//sceneryObjects[5] = loader.loadImage("/Crate.png");
+	sceneryObjects[5] = loader.loadImage("/Grass (1).png");
+	sceneryObjects[6] = loader.loadImage("/Grass (2).png");
+	sceneryObjects[7] = loader.loadImage("/Sign.png");
+	sceneryObjects[8] = loader.loadImage("/SignArrow.png");
+	sceneryObjects[9] = loader.loadImage("/Skeleton.png");
+	sceneryObjects[10] = loader.loadImage("/Stone.png");
+	//sceneryObjects[12] = loader.loadImage("/StoneBlock.png");
+	sceneryObjects[11] = loader.loadImage("/Tree.png");
 	
 	playerRunR[0] = loader.loadImage("/Run00R.png"); // http://www.gameart2d.com/temple-run---free-sprites.html
 	playerRunR[1] = loader.loadImage("/Run01R.png"); // RUN RIGHT
@@ -176,12 +179,19 @@ public Textures()
 	
 	tacoImage = loader.loadImage("/taco.png");	
 	
-	dartThrowerR = loader.loadImage("/BadCactusR.png");
-	dartThrowerL = loader.loadImage("/BadCactusL.png");
+	angryCactusR = loader.loadImage("/BadCactusR.png");
+	angryCactusL = loader.loadImage("/BadCactusL.png");
+	angryCactus0 = loader.loadImage("/BadCactus0.png");
 	
 	dartR = loader.loadImage("/dartRight.png");
 	dartL = loader.loadImage("/dartLeft.png");
 	
 	movingCrate = loader.loadImage("/MovingCrate.png");
+	
+	buttonBlock = loader.loadImage("/ButtonBlock.png");
+	pushingMovingBlockXOff = loader.loadImage("/PushingMovingBlockX Off.png");
+	pushingMovingBlockXOn = loader.loadImage("/PushingMovingBlockX On.png");
+	pushingMovingBlockYOff = loader.loadImage("/PushingMovingBlockY Off.png");
+	pushingMovingBlockYOn = loader.loadImage("/PushingMovingBlockY On.png");
 }
 }

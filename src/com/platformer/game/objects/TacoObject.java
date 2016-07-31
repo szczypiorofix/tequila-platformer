@@ -62,5 +62,14 @@ public void setVelX(float velX) {
 
 @Override
 public void setVelY(float velY) {	
+}
+
+@Override
+public void setShooting(boolean shooting) {	
+}
+
+@Override
+public boolean isShooting() {
+	return false;
 }	
 }

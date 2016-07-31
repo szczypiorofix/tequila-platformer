@@ -17,7 +17,8 @@ public Camera(float x, float y)
 
 public void tick(GameObject player)
 {
-	if ((player.getX() > MainClass.WIDTH/2) && (player.getX() < 148*64)) x = -player.getX() + MainClass.WIDTH / 2;
+	if ((player.getX() > MainClass.WIDTH/2) && (player.getX() < 226*64))
+		x = -player.getX() + MainClass.WIDTH / 2;
 	if (player.getY() < 915) y = -player.getY()/4 - 320;
 }
 

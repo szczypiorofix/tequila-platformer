@@ -74,8 +74,7 @@ public void run()
 {	
 	gameWindow.requestFocus();
 	
-	// GAME LOOP	
-	// FIXED GAME LOOP, FPS = variable, TICKS = 60
+	// GAME LOOPd
 
 	long lastTime = System.nanoTime();
 	double amountOfTicks = 60.0;

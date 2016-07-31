@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import com.platformer.game.objects.AngryCactus;
 import com.platformer.game.objects.BeeObject;
 import com.platformer.game.objects.Block;
+import com.platformer.game.objects.ButtonBlock;
 import com.platformer.game.objects.Coin;
 import com.platformer.game.objects.GameObject;
 import com.platformer.game.objects.LevelEnd;
@@ -16,6 +17,8 @@ import com.platformer.game.objects.MovingBlockX;
 import com.platformer.game.objects.MovingBlockY;
 import com.platformer.game.objects.MovingCrate;
 import com.platformer.game.objects.PlayerObject;
+import com.platformer.game.objects.PushingMovingBlockX;
+import com.platformer.game.objects.PushingMovingBlockY;
 import com.platformer.game.objects.SceneryObject;
 import com.platformer.game.objects.TacoObject;
 import com.platformer.game.objects.TequilaBottle;
@@ -38,10 +41,13 @@ private LinkedList<GameObject> scenery_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> taco_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> tequila_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> water_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> buttonBlock_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> pushingMovingBlockX_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> pushingMovingBlockY_List = new LinkedList<GameObject>();
 
 
 
-private final int ROWS = 200, COLS = 40;
+private final int ROWS = 300, COLS = 12;
 private Camera cam;
 private ObjectInputStream ois;
 private int[][] tileValues;
@@ -69,13 +75,15 @@ public void tick()
 	iteratingTick(levelEnd_List);
 	iteratingTick(movingBlockX_List);
 	iteratingTick(movingBlockY_List);
+	iteratingTick(pushingMovingBlockX_List);
+	iteratingTick(pushingMovingBlockY_List);
 	iteratingTick(movingCrate_List);
 	iteratingTick(player_List);
 	iteratingTick(scenery_List);
 	iteratingTick(taco_List);
 	iteratingTick(tequila_List);
 	iteratingTick(water_List);
-
+	iteratingTick(buttonBlock_List);
 }
 
 public void iteratingRender(Graphics g, LinkedList<GameObject> list)
@@ -85,18 +93,21 @@ public void iteratingRender(Graphics g, LinkedList<GameObject> list)
 
 public void render(Graphics g)
 {
+	iteratingRender(g, scenery_List);
 	iteratingRender(g, angryCactus_List);
-	iteratingRender(g, bee_List);
 	iteratingRender(g, block_List);
+	iteratingRender(g, buttonBlock_List);
 	iteratingRender(g, coin_List);
-	iteratingRender(g, dart_List);
 	iteratingRender(g, levelEnd_List);
 	iteratingRender(g, movingBlockX_List);
 	iteratingRender(g, movingBlockY_List);
+	iteratingRender(g, pushingMovingBlockX_List);
+	iteratingRender(g, pushingMovingBlockY_List);
 	iteratingRender(g, movingCrate_List);
-	iteratingRender(g, scenery_List);
 	iteratingRender(g, taco_List);
 	iteratingRender(g, tequila_List);
+	iteratingRender(g, bee_List);
+	iteratingRender(g, dart_List);
 	iteratingRender(g, player_List);
 	iteratingRender(g, water_List);
 }
@@ -106,11 +117,14 @@ public void clearLevel()
 	angryCactus_List.clear();
 	bee_List.clear();
 	block_List.clear();
+	buttonBlock_List.clear();
 	coin_List.clear();
 	dart_List.clear();
 	levelEnd_List.clear();
 	movingBlockX_List.clear();
 	movingBlockY_List.clear();
+	pushingMovingBlockX_List.clear();
+	pushingMovingBlockY_List.clear();
 	movingCrate_List.clear();
 	player_List.clear();
 	scenery_List.clear();
@@ -184,71 +198,84 @@ public void loadLevel(int level)
 		System.exit(0);
 	}
 	
-	for (int xx = 0; xx < COLS; xx++)
-		for (int yy = 0; yy < ROWS; yy++)
+
+		for (int xx = 0; xx < ROWS; xx++)
+		for (int yy = 0; yy < COLS; yy++)
 		{
 			
-			if (tileValues[xx][yy] != -1)
+			if (tileValues[yy][xx] != -1)
 			{
-				if (tileValues[xx][yy] < 16)
+				if (tileValues[yy][xx] < 16)
 				{
-					block_List.add(new Block(ObjectId.Block, yy*50, (xx*50) - MainClass.HEIGHT, tileValues[xx][yy]));
+					block_List.add(new Block(ObjectId.Block, xx*50, (yy*50)+550, tileValues[yy][xx]));
 				}
 					
-				if (tileValues[xx][yy] >= 16 && tileValues[xx][yy] < 30)
+				if (tileValues[yy][xx] >= 16 && tileValues[yy][xx] < 30)
 				{
-					scenery_List.add(new SceneryObject(ObjectId.Scenery, yy*50, (xx*50) - MainClass.HEIGHT, tileValues[xx][yy]));
+					scenery_List.add(new SceneryObject(ObjectId.Scenery, xx*50, (yy*50)+550, tileValues[yy][xx]));
 				}
 					
-				if (tileValues[xx][yy] == 30)
+				if (tileValues[yy][xx] == 28)
 				{
-					player = new PlayerObject(ObjectId.Player, yy*50, (xx*50) - MainClass.HEIGHT, this);
+					player = new PlayerObject(ObjectId.Player, xx*50, (yy*50) +440, this);
 					player_List.add(player);					
 				}
-				if (tileValues[xx][yy] == 31)
+				if (tileValues[yy][xx] == 29)
 				{
-					levelEnd_List.add(new LevelEnd(ObjectId.LevelEnd, yy*50, (xx*50) - MainClass.HEIGHT));
+					levelEnd_List.add(new LevelEnd(ObjectId.LevelEnd, xx*50, (yy*50)+550));
 				}
 				
-				if (tileValues[xx][yy] == 32)
+				if (tileValues[yy][xx] == 30)
 				{
-					coin_List.add(new Coin(ObjectId.Coin, yy*50, (xx*50) - MainClass.HEIGHT));
+					coin_List.add(new Coin(ObjectId.Coin, xx*50, (yy*50)+550));
 				}
-				if (tileValues[xx][yy] == 33)
+				if (tileValues[yy][xx] == 31)
 				{
-					bee_List.add(new BeeObject(ObjectId.BeeEnemy, yy*50, (xx*50) - MainClass.HEIGHT));
+					bee_List.add(new BeeObject(ObjectId.BeeEnemy, xx*50, (yy*50)+550));
 				}
-				if (tileValues[xx][yy] == 34)
+				if (tileValues[yy][xx] == 32)
 				{
-					tequila_List.add(new TequilaBottle(ObjectId.Tequila, yy*50, (xx*50) - MainClass.HEIGHT));
+					tequila_List.add(new TequilaBottle(ObjectId.Tequila, xx*50, (yy*50)+550));
 				}
-				if (tileValues[xx][yy] == 35)
+				if (tileValues[yy][xx] == 33)
 				{
-					taco_List.add(new TacoObject(ObjectId.Taco, yy*50, (xx*50) - MainClass.HEIGHT));
+					taco_List.add(new TacoObject(ObjectId.Taco, xx*50, (yy*50)+550));
 				}
-				if (tileValues[xx][yy] == 36)
+				if (tileValues[yy][xx] == 34)
 				{
-					movingBlockX_List.add(new MovingBlockX(ObjectId.MovingBlockX, yy*50, (xx*50) - MainClass.HEIGHT));
+					movingBlockX_List.add(new MovingBlockX(ObjectId.MovingBlockX, xx*50, (yy*50)+550));
 				}
-				if (tileValues[xx][yy] == 37)
+				if (tileValues[yy][xx] == 35)
 				{
-					movingBlockY_List.add(new MovingBlockY(ObjectId.MovingBlockY, yy*50, (xx*50) - MainClass.HEIGHT));
+					movingBlockY_List.add(new MovingBlockY(ObjectId.MovingBlockY, xx*50, (yy*50)+550));
 				}
-				if (tileValues[xx][yy] == 38)
+				if (tileValues[yy][xx] == 36)
 				{
-					water_List.add(new WaterObject(ObjectId.Water, yy*50, (xx*50) - MainClass.HEIGHT, 0));
+					water_List.add(new WaterObject(ObjectId.Water, xx*50, (yy*50)+550, 0));
 				}
-				if (tileValues[xx][yy] == 39)
+				if (tileValues[yy][xx] == 37)
 				{
-					water_List.add(new WaterObject(ObjectId.Water, yy*50, (xx*50) - MainClass.HEIGHT, 1));
+					water_List.add(new WaterObject(ObjectId.Water, xx*50, (yy*50)+550, 1));
 				}
-				if (tileValues[xx][yy] == 40)
+				if (tileValues[yy][xx] == 38)
 				{
-					angryCactus_List.add(new AngryCactus(ObjectId.AngryCactus, yy*50, (xx*50) - MainClass.HEIGHT, 1));
+					angryCactus_List.add(new AngryCactus(ObjectId.AngryCactus, xx*50, (yy*50)+550, 1));
 				}
-				if (tileValues[xx][yy] == 41)
+				if (tileValues[yy][xx] == 39)
 				{
-					movingCrate_List.add(new MovingCrate(ObjectId.MovingCrate, yy*50, (xx*50) - MainClass.HEIGHT, this));
+					movingCrate_List.add(new MovingCrate(ObjectId.MovingCrate, xx*50, (yy*50)+550, this));
+				}
+				if (tileValues[yy][xx] == 40)
+				{
+					buttonBlock_List.add(new ButtonBlock(ObjectId.ButtonBlock, xx*50, (yy*50)+550, this));
+				}
+				if (tileValues[yy][xx] == 41)
+				{
+					pushingMovingBlockX_List.add(new PushingMovingBlockX(ObjectId.PushingMovingBlockX, xx*50, (yy*50)+550));
+				}
+				if (tileValues[yy][xx] == 42)
+				{
+					pushingMovingBlockY_List.add(new PushingMovingBlockY(ObjectId.PushingMovingBlockY, xx*50, (yy*50)+550));
 				}
 			}
 		}	
@@ -308,5 +335,17 @@ public LinkedList<GameObject> getTequila_List() {
 
 public LinkedList<GameObject> getWater_List() {
 	return water_List;
+}
+
+public LinkedList<GameObject> getButtonBlock_List() {
+	return buttonBlock_List;
+}
+
+public LinkedList<GameObject> getPushingMovingBlockX_List() {
+	return pushingMovingBlockX_List;
+}
+
+public LinkedList<GameObject> getPushingMovingBlockY_List() {
+	return pushingMovingBlockY_List;
 }
 }

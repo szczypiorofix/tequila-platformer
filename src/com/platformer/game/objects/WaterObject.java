@@ -11,8 +11,8 @@ import com.platformer.game.main.ObjectId;
 public class WaterObject extends GameObject{
 
 	
-protected static final int WATER_BLOCK_WIDTH = 64;
-protected static final int WATER_BLOCK_HEIGHT = 64;
+protected static final int WATER_BLOCK_WIDTH = 50;
+protected static final int WATER_BLOCK_HEIGHT = 50;
 private Textures tex = MainScreen.getInstance();
 private int type;
 private float x, y;
@@ -65,5 +65,14 @@ public void setVelX(float velX) {
 
 @Override
 public void setVelY(float velY) {	
+}
+
+@Override
+public void setShooting(boolean shooting) {	
+}
+
+@Override
+public boolean isShooting() {
+	return false;
 }
 }

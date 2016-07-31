@@ -31,12 +31,12 @@ import javax.swing.border.LineBorder;
 public class LevelEditorMainClass extends JFrame{
 
 private static final long serialVersionUID = -518719736058824960L;
-public final int ROWS = 40, COLS = 200;
+public final int ROWS = 12, COLS = 300;
 private JScrollPane scrollPane;
 private EditorPane editorPane;
 private JPanel leftPane, bottomPane;
 private JLabel selectedLabel;
-private static final int MAX_TILES = 42;
+private static final int MAX_TILES = 43;
 public static BufferedImage[] tileImage = new BufferedImage[MAX_TILES];
 private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
@@ -76,27 +76,28 @@ public LevelEditorMainClass()
 		tileImage[18] = ImageIO.read(getClass().getResource("/Cactus (1).png"));
 		tileImage[19] = ImageIO.read(getClass().getResource("/Cactus (2).png"));
 		tileImage[20] = ImageIO.read(getClass().getResource("/Cactus (3).png"));
-		tileImage[21] = ImageIO.read(getClass().getResource("/Crate.png"));
-		tileImage[22] = ImageIO.read(getClass().getResource("/Grass (1).png"));
-		tileImage[23] = ImageIO.read(getClass().getResource("/Grass (2).png"));
-		tileImage[24] = ImageIO.read(getClass().getResource("/Sign.png"));
-		tileImage[25] = ImageIO.read(getClass().getResource("/SignArrow.png"));
-		tileImage[26] = ImageIO.read(getClass().getResource("/Skeleton.png"));
-		tileImage[27] = ImageIO.read(getClass().getResource("/Stone.png"));
-		tileImage[28] = ImageIO.read(getClass().getResource("/StoneBlock.png"));
-		tileImage[29] = ImageIO.read(getClass().getResource("/Tree.png"));
-		tileImage[30] = ImageIO.read(getClass().getResource("/Idle00R.png"));
-		tileImage[31] = ImageIO.read(getClass().getResource("/level_end.png"));
-		tileImage[32] = ImageIO.read(getClass().getResource("/coin32.png")).getSubimage(0, 0, 32, 32);
-		tileImage[33] = ImageIO.read(getClass().getResource("/BeeR01.png"));
-		tileImage[34] = ImageIO.read(getClass().getResource("/tequila_bottle.png"));
-		tileImage[35] = ImageIO.read(getClass().getResource("/taco.png"));
-		tileImage[36] = ImageIO.read(getClass().getResource("/MovingBlockX.png"));
-		tileImage[37] = ImageIO.read(getClass().getResource("/MovingBlockY.png"));
-		tileImage[38] = ImageIO.read(getClass().getResource("/16.png"));
-		tileImage[39] = ImageIO.read(getClass().getResource("/17.png"));
-		tileImage[40] = ImageIO.read(getClass().getResource("/BadCactusR.png"));
-		tileImage[41] = ImageIO.read(getClass().getResource("/MovingCrate.png"));
+		tileImage[21] = ImageIO.read(getClass().getResource("/Grass (1).png"));
+		tileImage[22] = ImageIO.read(getClass().getResource("/Grass (2).png"));
+		tileImage[23] = ImageIO.read(getClass().getResource("/Sign.png"));
+		tileImage[24] = ImageIO.read(getClass().getResource("/SignArrow.png"));
+		tileImage[25] = ImageIO.read(getClass().getResource("/Skeleton.png"));
+		tileImage[26] = ImageIO.read(getClass().getResource("/Stone.png"));
+		tileImage[27] = ImageIO.read(getClass().getResource("/Tree.png"));
+		tileImage[28] = ImageIO.read(getClass().getResource("/Idle00R.png"));
+		tileImage[29] = ImageIO.read(getClass().getResource("/level_end.png"));
+		tileImage[30] = ImageIO.read(getClass().getResource("/coin32.png")).getSubimage(0, 0, 32, 32);
+		tileImage[31] = ImageIO.read(getClass().getResource("/BeeR01.png"));
+		tileImage[32] = ImageIO.read(getClass().getResource("/tequila_bottle.png"));
+		tileImage[33] = ImageIO.read(getClass().getResource("/taco.png"));
+		tileImage[34] = ImageIO.read(getClass().getResource("/MovingBlockX.png"));
+		tileImage[35] = ImageIO.read(getClass().getResource("/MovingBlockY.png"));
+		tileImage[36] = ImageIO.read(getClass().getResource("/16.png"));
+		tileImage[37] = ImageIO.read(getClass().getResource("/17.png"));
+		tileImage[38] = ImageIO.read(getClass().getResource("/BadCactusR.png"));
+		tileImage[39] = ImageIO.read(getClass().getResource("/MovingCrate.png"));
+		tileImage[40] = ImageIO.read(getClass().getResource("/ButtonBlock.png"));
+		tileImage[41] = ImageIO.read(getClass().getResource("/PushingMovingBlockX Off.png"));
+		tileImage[42] = ImageIO.read(getClass().getResource("/PushingMovingBlockY Off.png"));
 	}
 	catch (Exception e)
 	{
@@ -109,12 +110,18 @@ public LevelEditorMainClass()
 	
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setSize(800,600);
+	//setResizable(false);
 	setLocationRelativeTo(null);
 	setLayout(new BorderLayout());
 	editorPane = new EditorPane(ROWS, COLS);
 	scrollPane = new JScrollPane(editorPane);
+	scrollPane.getHorizontalScrollBar().setUnitIncrement(26);
+	scrollPane.getVerticalScrollBar().setUnitIncrement(26);
 	
-	leftPane = new JPanel(new GridLayout(14, 3));
+	leftPane = new JPanel(new GridLayout(Math.round((tileImage.length / 3))+1, 3));
+	leftPane.setPreferredSize(new Dimension(150, 1600));
+	leftPane.setMinimumSize(new Dimension(150, 1600));
+	leftPane.setMaximumSize(new Dimension(150, 1600));
 	for (int i = 0; i < tileImage.length; i++)
 	{
 		tilesChoose[i] = new TileChoose(tileImage[i]);
@@ -199,18 +206,15 @@ public class MenuListener implements ActionListener
 				System.exit(0);
 			}
 			
-			//editorPane.revalidate();
-			//editorPane.repaint();
-			
 			for (int a = 0; a < ROWS; a++)
 				for (int b = 0; b < COLS; b++)
 				{
-					editorPane.editorTiles[a][b].setText(a+"");
+					//editorPane.editorTiles[a][b].setText(a+"");
 					editorPane.editorTiles[a][b].setIcon(null);
 					
 					if (editorPane.tileValues[a][b] >= 0) 
 					{
-						Image newImage = tileImage[editorPane.tileValues[a][b]].getScaledInstance(50, 30, Image.SCALE_DEFAULT);
+						Image newImage = tileImage[editorPane.tileValues[a][b]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
 						editorPane.editorTiles[a][b].setIcon(new ImageIcon(newImage));
 					}
 				}
@@ -276,9 +280,9 @@ public EditorPane(int row, int col)
 	super(new GridLayout(row, col));
 	this.row = row;
 	this.col = col;
-	setPreferredSize(new Dimension(row * 240, col * 10));
-	setMinimumSize(new Dimension(row * 240, col * 10));
-	setMaximumSize(new Dimension(row * 240, col * 10));
+	setPreferredSize(new Dimension(row * 1000, col));
+	setMinimumSize(new Dimension(row * 1000, col));
+	setMaximumSize(new Dimension(row * 1000, col));
 	
 	tileValues = new int[this.row][this.col];
 	editorTiles = new Tile[this.row][this.col];
@@ -287,7 +291,7 @@ public EditorPane(int row, int col)
 	for (int a = 0; a < row; a++)
 		for (int b = 0; b < col; b++)
 		{
-			editorTiles[a][b] = new Tile(a+"");
+			editorTiles[a][b] = new Tile();
 			editorTiles[a][b].addActionListener(editorTilesListener);
 			editorTiles[a][b].setActionCommand(a+":"+b);
 			tileValues[a][b] = -1;
@@ -315,7 +319,7 @@ public class EditorTilesListener implements ActionListener
 		
 		if (editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].getIcon() == null)
 		{
-			Image newImage = tileImage[selectedTile].getScaledInstance(50, 30, Image.SCALE_DEFAULT);
+			Image newImage = tileImage[selectedTile].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
 			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(newImage));
 			tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = selectedTile;	
 		}

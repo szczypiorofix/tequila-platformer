@@ -18,6 +18,7 @@ private boolean shooting = false;
 private static final int SHOOTING_MAX = 100;
 private int shooting_time = SHOOTING_MAX;
 private float x, y;
+private int watching;
 
 
 	
@@ -25,13 +26,18 @@ private float x, y;
 		super(id, x, y-15, DART_THROWER_WIDTH, DART_THROWER_HEIGHT, 0, 0, direction);
 		this.x = x;
 		this.y = y;
+		watching = 0;
 		this.direction = direction;
 	}
 
 	@Override
 	public void render(Graphics g) {
-		if (direction == 1) g.drawImage(tex.dartThrowerR, (int) x, (int) y-30, null);
-		else g.drawImage(tex.dartThrowerL, (int) x, (int) y-30, null);
+		if (watching == 1)
+		{
+			if (direction == 1) g.drawImage(tex.angryCactusR, (int) x, (int) y-30, null);
+			else g.drawImage(tex.angryCactusL, (int) x, (int) y-30, null);	
+		}
+		else g.drawImage(tex.angryCactus0, (int) x, (int) y-30, null);
 	}
 
 	@Override
@@ -94,7 +100,8 @@ private float x, y;
 	}
 
 	@Override
-	public void setVelX(float velX) {		
+	public void setVelX(float velX) {
+		watching = (int) velX;
 	}
 
 	@Override

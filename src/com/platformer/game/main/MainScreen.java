@@ -53,6 +53,7 @@ private GameWindow gameWindow;
 private BufferStrategy bs;
 private Graphics g;
 private ObjectsHandler objectsHandler;
+private static Achievements achievements;
 private PlayerObject player;
 private InputManager key;
 private Joystick joystick;
@@ -65,6 +66,9 @@ private BufferedImage backGroundMountains, clouds;
 private BufferedImage screenShotImage;
 private boolean gamepadEnabled = false;
 private boolean makeScreenShot = false;
+private boolean showMessage = false;
+private int messageCount = 0;
+private final int MESSAGE_TIME = 300;
 private float cloudsX = 0f;
 private Properties prop = new Properties();
 private InputStream propInput = null;
@@ -82,6 +86,8 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	this.gameWindow = gameWindow;
 	
 	
+	// TODO Switched movingBlock X & Y - switch który po naskoczeniu/wejœciu/postawieniu skrzynki w³¹cza przesuwanie bloków - jeœli nic nie stoi - bloki siê nie ruszaj¹
+	// TODO Trampolina - klocek który wyrzuca gracza w powietrze
 	// TODO Kolce z ziemii 
 	// TODO coœ co zrzuca ska³y na g³owê (w³¹cza siê w obszarze jak kaktus
 	// TODO przesuwane bloki
@@ -155,6 +161,7 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 
 public void addElements()
 {
+	achievements = new Achievements();
 	objectsHandler = new ObjectsHandler(cam);
 	objectsHandler.loadLevel(LEVEL);
 	player = objectsHandler.getPlayer();
@@ -223,10 +230,26 @@ public void tick()
     
     if ((key.isKeyPressed(KeyEvent.VK_LEFT)) || (key.isKeyPressed(KeyEvent.VK_A))) PLAYER_LEFT = true;
 	if (((key.isKeyPressed(KeyEvent.VK_RIGHT)) || (key.isKeyPressed(KeyEvent.VK_D)))) PLAYER_RIGHT = true;
-	if ((key.isKeyPressedOnce(KeyEvent.VK_UP)) || (key.isKeyPressedOnce(KeyEvent.VK_W))) PLAYER_JUMP = true;
+	if ((key.isKeyPressedOnce(KeyEvent.VK_UP)) || (key.isKeyPressedOnce(KeyEvent.VK_W))) {
+		PLAYER_JUMP = true;
+		achievements.addJump10Count();
+		if (achievements.isJumpCount10Complete()) achievements.addJump25Count();
+	}
 	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit=true;
 	if (key.isKeyPressedOnce(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
+	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
+		showMessage = true;
+	}
 	
+	
+	if (showMessage)
+	{
+		if (messageCount > 0) messageCount--;
+		else {
+			messageCount = MESSAGE_TIME;
+			showMessage = false;
+		}
+	}
 	
 	if (key.isKeyPressedOnce(KeyEvent.VK_F12))
 	{
@@ -243,7 +266,7 @@ public void tick()
 		objectsHandler.loadLevel(LEVEL);
 		cam.setX(0);
 		player = objectsHandler.getPlayer();
-		
+		achievements.restartLevel();
 	}
 	
 	// PAUSE GAME
@@ -270,8 +293,22 @@ public void tick()
 				
 			objectsHandler.switchLevel();
 			player = objectsHandler.getPlayer();
+			achievements.restartLevel();
 		}
 	}
+	
+	if (achievements.isShowAchievement())
+	{
+		if (achievements.getAchievementCount() > 0) {
+			achievements.setAchievementCount(achievements.getAchievementCount() -1);
+			showMessage = true;
+		}
+		else {
+			achievements.setAchievementCount(achievements.getShowAchievementCooldown());
+			achievements.setShowAchievement(false);			
+		}
+	}
+	
 }
 
 public void timeTick()
@@ -292,6 +329,15 @@ public void timeTick()
 	if (seconds < 10) time += ":0" +seconds +":" + (int) milis;
 	else time += ":"+seconds +":" + (int) milis;	
 }
+
+
+public void showMessage(Graphics2D g2d, String msg)
+{
+	g2d.setColor(Color.RED);
+	g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 34f));
+	g2d.drawString(msg, 315, 100);
+}
+
 
 public void render(int fps_count, int ticks_count)
 {
@@ -324,9 +370,10 @@ public void render(int fps_count, int ticks_count)
 	g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
 	g2d.setColor(Color.BLUE);
 	
-	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.2), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.2) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.2) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
+	/// MOUNTAING & PARALLAX
+	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
 	
 	
 	g2d.drawImage(clouds, (int) (cam.getX()*0.2 + 500 + cloudsX), (int) (cam.getY() + 600), null);
@@ -347,7 +394,7 @@ public void render(int fps_count, int ticks_count)
 	g2d.setFont(new Font("Verdana", 1, 12));
 	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
 	g2d.drawString("CZAS: "+time, MainClass.WIDTH - 150, 80);
-	g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
+	//g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
 	
 	if (player.isTequila_powerUp()) {
 		g2d.drawImage(tex.tequilaImage, 10, 90, null);
@@ -363,8 +410,13 @@ public void render(int fps_count, int ticks_count)
 	if (pauseGame && !player.isFinishLevel())
 	{
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 64f));
+		g2d.setColor(Color.BLUE);
 		g2d.drawString("PAUZA", 400, 320);
 	}
+	
+	
+	if (showMessage) showMessage(g2d, achievements.getAchievementsText());
+	
 	
 	if (player.isFinishLevel())
 	{
@@ -417,6 +469,10 @@ public void render(int fps_count, int ticks_count)
 	bs.show();
 }
 
+public static Achievements getAchievementsInstance()
+{
+	return achievements;
+}
 
 public static Textures getInstance()
 {

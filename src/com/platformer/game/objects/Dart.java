@@ -98,6 +98,13 @@ private int howLondToRun = 75;
 	@Override
 	public void setVelY(float velY) {		
 	}
-	
-	
+
+	@Override
+	public void setShooting(boolean shooting) {		
+	}
+
+	@Override
+	public boolean isShooting() {
+		return false;
+	}
 }

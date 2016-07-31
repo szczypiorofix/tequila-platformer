@@ -39,7 +39,6 @@ public void render(Graphics g) {
 @Override
 public void tick(LinkedList<GameObject> object) {
 
-	
 	if (x > startPos + 240) velX = -1.0f;
 	else if (x <= startPos) velX = 1.0f;
 	
@@ -78,6 +77,15 @@ public void setVelX(float velX) {
 
 @Override
 public void setVelY(float velY) {	
+}
+
+@Override
+public void setShooting(boolean shooting) {	
+}
+
+@Override
+public boolean isShooting() {
+	return false;
 }
 
 }

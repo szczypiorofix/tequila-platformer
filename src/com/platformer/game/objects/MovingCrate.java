@@ -18,6 +18,8 @@ private Textures tex = MainScreen.getInstance();
 private ObjectsHandler objectsHandler;
 private float x, y;
 private float velX, velY;
+private boolean onGround;
+private float gravity;
 
 
 public MovingCrate(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
@@ -25,6 +27,8 @@ public MovingCrate(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 	this.x = x;
 	this.y = y;
 	this.objectsHandler = objectsHandler;
+	onGround = false;
+	gravity = 0.5f;
 	velX = 0;
 	velY = 0;
 }
@@ -32,10 +36,10 @@ public MovingCrate(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 @Override
 public void render(Graphics g) {
 	g.drawImage(tex.movingCrate, (int) x, (int) y-16, null);
-	//Graphics2D g2d = (Graphics2D) g;
-	
+
 	//g2d.draw(getBoundsLeft());
 	//g2d.draw(getBoundsRight());
+	//g2d.draw(getBoundsBottom());
 }
 
 @Override
@@ -43,15 +47,31 @@ public void tick(LinkedList<GameObject> object) {
 	x += velX;
 	y += velY;
 	
+	if (!onGround) velY += gravity;
+	
+	if (y > 2000)
+	{
+		objectsHandler.getMovingCrate_List().remove(this);
+	}
+			
 	collisions();
 }
 
 private void collisions()
 {
+	GameObject tempObject = null;
+	
 	for (int i = 0; i < objectsHandler.getBlock_List().size(); i++)
 	{
-		GameObject tempObject = objectsHandler.getBlock_List().get(i);
-					
+		tempObject = objectsHandler.getBlock_List().get(i);
+		if (getBoundsBottom().intersects(tempObject.getBounds()))
+		{			
+			velY = 0;
+			y = tempObject.getY() - 48;
+			onGround = true;
+		}
+		else onGround = false;
+		
 		if (getBoundsRight().intersects(tempObject.getBounds()))
 		{			
 			x = tempObject.getX() - 65;
@@ -63,6 +83,54 @@ private void collisions()
 			velX = 0;
 		}
 	}
+	
+	for (int i = 0; i < objectsHandler.getButtonBlock_List().size(); i++)
+	{
+		tempObject = objectsHandler.getButtonBlock_List().get(i);
+		if (getBoundsBottom().intersects(tempObject.getBounds()))
+		{			
+			velY = 0;
+			y = tempObject.getY() - 48;
+			onGround = true;			
+			tempObject.setShooting(true);
+			System.out.println(tempObject.isShooting());
+		}
+		else onGround = false;
+		
+		if (getBoundsRight().intersects(tempObject.getBounds()))
+		{			
+			x = tempObject.getX() - 65;
+			velX = 0;
+		}
+		if (getBoundsLeft().intersects(tempObject.getBounds()))
+		{			
+			x = tempObject.getX() + 55;
+			velX = 0;
+		}
+	}
+	
+	GameObject tempObject2 = null;
+	for (int i = 0; i < objectsHandler.getMovingCrate_List().size(); i++)
+	{
+		tempObject2 = objectsHandler.getMovingCrate_List().get(i);
+
+		if (getBoundsBottom().intersects(tempObject2.getBounds()) && this != tempObject2)
+		{			
+			velY = 0;
+			y = tempObject2.getY() - 64;
+			onGround = true;
+		}
+		if (getBoundsRight().intersects(tempObject2.getBounds()) && this != tempObject2)
+		{			
+			x = tempObject2.getX() - 67;
+			velX = 0;
+		}
+		if (getBoundsLeft().intersects(tempObject2.getBounds()) && this != tempObject2)
+		{			
+			x = tempObject2.getX() + 67;
+			velX = 0;
+		}
+	}	
 }
 
 @Override
@@ -76,6 +144,10 @@ public Rectangle getBoundsLeft() {
 
 public Rectangle getBoundsRight() {
 	return new Rectangle((int) x+57, (int) y-16, 10, 60);
+}
+
+public Rectangle getBoundsBottom() {
+	return new Rectangle((int) x+10, (int) y+40, 45, 10);
 }
 
 @Override
@@ -106,5 +178,14 @@ public void setVelX(float velX) {
 @Override
 public void setVelY(float velY) {
 	this.velY = velY;
+}
+
+@Override
+public void setShooting(boolean shooting) {	
+}
+
+@Override
+public boolean isShooting() {
+	return false;
 }
 }

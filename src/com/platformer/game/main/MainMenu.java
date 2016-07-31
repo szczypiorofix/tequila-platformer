@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +24,8 @@ public class MainMenu {
 
 	
 private JFrame mainMenuFrame;
-private Buttons[] buttons = new Buttons[5];
+private Buttons[] buttons = new Buttons[6];
+private BufferedImage bg_image = new BufferedImageLoader().loadImage("/BG.png");
 private final JPanel centralPanel = new JPanel(null)
 {
 	private static final long serialVersionUID = -3068810529307571296L;
@@ -34,8 +36,8 @@ private final JPanel centralPanel = new JPanel(null)
 		super.paintComponent(g);
 		
 		g.setColor(new Color(100,225,250));
-		g.fillRect(0, 0, 500, 500);
-		//g.drawImage(new BufferedImageLoader().loadImage("/BG.png"), 0, 0, 500, 500, null);
+		//g.fillRect(0, 0, 500, 600);
+		g.drawImage(bg_image.getSubimage(0, bg_image.getHeight() - 600, 500, 600), 0, 0, null);
 	}
 };
 private MainMenuListener mainMenuListener = new MainMenuListener();
@@ -50,7 +52,7 @@ private MenuKeyListener keyListener = new MenuKeyListener();
 private CreditsWindow creditsWindow;
 private HowToPlayWindow howToPlayWindow;
 private HallOfFameWindow hallOfFameWindow;
-
+private AchievementsWindow achievementsWindow;
 
 
 public MainMenu(MainClass mainClass)
@@ -58,7 +60,7 @@ public MainMenu(MainClass mainClass)
 	this.mainClass = mainClass;
 	mainMenuFrame = new JFrame("TEQUILA PLATFORMER");
 	mainMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	mainMenuFrame.setSize(500, 500);
+	mainMenuFrame.setSize(500, 600);
 	mainMenuFrame.setResizable(false);
 	mainMenuFrame.setLocationRelativeTo(null);
 	mainMenuFrame.setLayout(null);
@@ -73,26 +75,32 @@ public MainMenu(MainClass mainClass)
 	buttons[2] = new Buttons("NAJLEPSZE WYNIKI");
 	buttons[2].setBounds(100, 220, 290, 60);
 	
-	buttons[3] = new Buttons("O GRZE");
+	buttons[3] = new Buttons("OSI¥GNIÊCIA");
 	buttons[3].setBounds(100, 300, 290, 60);
 	
-	buttons[4] = new Buttons("ZAKOÑCZ");
+	buttons[4] = new Buttons("O GRZE");
 	buttons[4].setBounds(100, 380, 290, 60);
+	
+	buttons[5] = new Buttons("ZAKOÑCZ");
+	buttons[5].setBounds(100, 460, 290, 60);
 	
 	mainMenuFrame.addKeyListener(keyListener);
 
-	centralPanel.setSize(500, 500);
+	centralPanel.setSize(500, 600);
 	mainMenuFrame.add(centralPanel);
 	
 
 	buttons[0].setActionCommand("START");
-	//buttons[1].setActionCommand("HOWTO");
-	//buttons[2].setActionCommand("HALLOFFAME");
-	//buttons[3].setActionCommand("CREDITS");
-	buttons[4].setActionCommand("EXIT");
+	buttons[1].setActionCommand("HOWTO");
+	buttons[2].setActionCommand("HALLOFFAME");
+	buttons[3].setActionCommand("ACHIEVEMENTS");
+	buttons[4].setActionCommand("CREDITS");
+	buttons[5].setActionCommand("EXIT");
 	
 	menuSound1 = new SoundsLoader("/menusound1.wav");
 	menuSound2 = new SoundsLoader("/menusound2.wav");
+	menuSound1.setVolume(-25f);
+	menuSound2.setVolume(-25f);
 	selected = 0;
 	buttons[selected].setBorder(blueBorder);
 }
@@ -161,6 +169,15 @@ public class MenuMouseListener implements MouseListener
 				selectMenu(selected);	
 			}
 		}
+		if (e.getComponent() == buttons[5])
+		{
+			if (selected != 5)
+			{
+				deselectMenu(selected);
+				selected = 5;
+				selectMenu(selected);	
+			}
+		}
 	}
 
 	@Override
@@ -207,6 +224,12 @@ private void showHallOfFameWindow()
 	hallOfFameWindow.setVisible(true);
 }
 
+private void showAchievementsWindow()
+{
+	achievementsWindow = new AchievementsWindow(mainMenuFrame);
+	achievementsWindow.setVisible(true);
+}
+
 public class MenuKeyListener implements KeyListener
 {
 	@Override
@@ -233,9 +256,13 @@ public class MenuKeyListener implements KeyListener
 			}
 			if (selected == 3)
 			{
-				showCreditsWindow();
+				showAchievementsWindow();
 			}
 			if (selected == 4)
+			{
+				showCreditsWindow();
+			}
+			if (selected == 5)
 			{
 				exitGame();
 			}
@@ -306,6 +333,11 @@ public class MainMenuListener implements ActionListener
 		if (e.getActionCommand().equalsIgnoreCase("HALLOFFAME"))
 		{
 			showHallOfFameWindow();
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("ACHIEVEMENTS"))
+		{
+			showAchievementsWindow();
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("HOWTO"))

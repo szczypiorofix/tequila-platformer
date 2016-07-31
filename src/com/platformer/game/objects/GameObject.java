@@ -47,7 +47,8 @@ public abstract float getVelX();
 public abstract float getVelY();
 public abstract void setVelX(float velX);
 public abstract void setVelY(float velY);
-
+public abstract void setShooting(boolean shooting);
+public abstract boolean isShooting();
 
 public void setX(float x) {
 	this.x = x;
@@ -89,13 +90,5 @@ public int getDirection()
 public void setDirection(int direction)
 {
 	this.direction = direction;
-}
-
-public boolean isShooting() {
-	return shooting;
-}
-
-public void setShooting(boolean shooting) {
-	this.shooting = shooting;
 }
 }
