@@ -11,29 +11,35 @@ import com.platformer.game.main.ObjectId;
 public class MovingBlockY extends GameObject{
 
 	
-private final static int MOVING_BLOCK_WIDTH = 74;
-private final static int MOVING_BLOCK_HEIGHT = 50;
+
 private Textures tex = MainScreen.getInstance();
 private float x, y;
-private float velX = 0;
-private float velY = 0;
-private int startPos = 0;
-
+private float velX;
+private float velY;
+private ObjectId id;
+private float width, height;
+private int startPos ;
+private boolean action;
+private int direction;
 
 
 
 public MovingBlockY(ObjectId id, float x, float y) {
-	super(id, x, y, MOVING_BLOCK_WIDTH, MOVING_BLOCK_HEIGHT, 0, 0, 0);
+	super();
 	this.x = x;
 	this.y = y + 15;
 	velX = 0;
 	velY = 0;
+	width = 74;
+	height = 50;
+	direction = 0;
+	action = false;
 	startPos = (int) (this.y);
 }
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.movingBlockY, (int)x, (int) y, MOVING_BLOCK_WIDTH, MOVING_BLOCK_HEIGHT, null);
+	g.drawImage(tex.movingBlockY, (int)x, (int) y, (int) width, (int) height, null);
 }
 
 @Override
@@ -47,7 +53,7 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, MOVING_BLOCK_WIDTH, MOVING_BLOCK_HEIGHT);
+	return new Rectangle((int) x, (int) y, (int) width, (int) height);
 }
 
 @Override
@@ -61,8 +67,7 @@ public float getVelY() {
 }
 
 @Override
-public float getY()
-{
+public float getY(){
 	return y;
 }
 
@@ -72,19 +77,72 @@ public float getX() {
 }
 
 @Override
-public void setVelX(float velX) {	
+public ObjectId getId() {
+	return id;
 }
 
 @Override
-public void setVelY(float velY) {	
+public void setId(ObjectId id) {
+	this.id = id;
 }
 
 @Override
-public void setShooting(boolean shooting) {	
+public void setX(float x) {
+	this.x = x;
 }
 
 @Override
-public boolean isShooting() {
-	return false;
+public void setY(float y) {
+	this.y = y;
+}
+
+@Override
+public float getWidth() {
+	return width;
+}
+
+@Override
+public void setWidth(float width) {
+	this.width = width;
+}
+
+@Override
+public float getHeight() {
+	return height;
+}
+
+@Override
+public void setHeight(float height) {
+	this.height = height;
+}
+
+@Override
+public void setVelX(float velX) {
+	this.velX = velX;
+}
+
+@Override
+public void setVelY(float velY) {
+	this.velY = velY;
+}
+
+@Override
+public boolean isAction() {
+	return action;
+}
+
+@Override
+public void setAction(boolean action) {
+	this.action = action;
+}
+
+@Override
+public int getDirection() {
+	return direction;
+}
+
+@Override
+public void setDirection(int direction) {
+	this.direction = direction;
 }
 }

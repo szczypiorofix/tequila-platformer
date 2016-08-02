@@ -11,37 +11,47 @@ import com.platformer.game.main.ObjectId;
 
 public class Block extends GameObject{
 
-private static final int BLOCK_WIDTH = 50;
-private static final int BLOCK_HEIGHT = 50;
+private float width, height;
 private Textures tex = MainScreen.getInstance();
 private float x, y;
+private float velX, velY;
+private int direction;
+private boolean action;
 private int type;
+private ObjectId id;
 
 public Block(ObjectId id, float x, float y, int type) {
-	super(id, x, y, BLOCK_WIDTH, BLOCK_HEIGHT, 0f, 0f, 1);
+	super();
 	this.x = x;
 	this.y = y;
+	this.id = id;
+	width = 50;
+	height = 50;
+	velX = 0;
+	velY = 0;
+	action = false;
+	direction = 1;
 	this.type = type;
 }
 
 @Override
 public void render(Graphics g) {
-	if (type == 0) g.drawImage(tex.blocks[0], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 1) g.drawImage(tex.blocks[1], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 2) g.drawImage(tex.blocks[2], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 3) g.drawImage(tex.blocks[3], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 4) g.drawImage(tex.blocks[4], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 5) g.drawImage(tex.blocks[5], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 6) g.drawImage(tex.blocks[6], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 7) g.drawImage(tex.blocks[7], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 8) g.drawImage(tex.blocks[8], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 9) g.drawImage(tex.blocks[9], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 10) g.drawImage(tex.blocks[10], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 11) g.drawImage(tex.blocks[11], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 12) g.drawImage(tex.blocks[12], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 13) g.drawImage(tex.blocks[13], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 14) g.drawImage(tex.blocks[14], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
-	if (type == 15) g.drawImage(tex.blocks[15], (int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT, null);
+	if (type == 0) g.drawImage(tex.blocks[0], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 1) g.drawImage(tex.blocks[1], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 2) g.drawImage(tex.blocks[2], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 3) g.drawImage(tex.blocks[3], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 4) g.drawImage(tex.blocks[4], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 5) g.drawImage(tex.blocks[5], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 6) g.drawImage(tex.blocks[6], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 7) g.drawImage(tex.blocks[7], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 8) g.drawImage(tex.blocks[8], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 9) g.drawImage(tex.blocks[9], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 10) g.drawImage(tex.blocks[10], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 11) g.drawImage(tex.blocks[11], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 12) g.drawImage(tex.blocks[12], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 13) g.drawImage(tex.blocks[13], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 14) g.drawImage(tex.blocks[14], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 15) g.drawImage(tex.blocks[15], (int)x, (int)y, (int) width, (int) height, null);
 }
 
 @Override
@@ -50,17 +60,17 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, BLOCK_WIDTH, BLOCK_HEIGHT);
+	return new Rectangle((int) x, (int) y, (int) width, (int) height);
 }
 
-public static int getBlockkWidth()
-{
-	return BLOCK_WIDTH;
+@Override
+public ObjectId getId() {
+	return id;
 }
 
-public static int getBlockHeight()
-{
-	return BLOCK_HEIGHT;
+@Override
+public void setId(ObjectId id) {
+	this.id = id;
 }
 
 @Override
@@ -69,34 +79,77 @@ public float getX() {
 }
 
 @Override
+public void setX(float x) {
+	this.x = x;
+}
+
+@Override
 public float getY() {
 	return y;
 }
 
 @Override
-public float getVelX() {
-	return 0;
+public void setY(float y) {
+	this.y = y;
 }
 
 @Override
-public float getVelY() {
-	return 0;
+public float getWidth() {
+	return width;
+}
+
+@Override
+public void setWidth(float width) {
+	this.width = width;
+}
+
+@Override
+public float getHeight() {
+	return height;
+}
+
+@Override
+public void setHeight(float height) {
+	this.height = height;
+}
+
+@Override
+public float getVelX() {
+	return velX;
 }
 
 @Override
 public void setVelX(float velX) {
+	this.velX = velX;
+}
+
+@Override
+public float getVelY() {
+	return velY;
 }
 
 @Override
 public void setVelY(float velY) {
+	this.velY = velY;
 }
 
 @Override
-public void setShooting(boolean shooting) {	
+public boolean isAction() {
+	return action;
 }
 
 @Override
-public boolean isShooting() {
-	return false;
+public void setAction(boolean action) {
+	this.action = action;
+}
+
+@Override
+public int getDirection() {
+	return direction;
+}
+
+@Override
+public void setDirection(int direction) {
+	this.direction = direction;
 }
 }

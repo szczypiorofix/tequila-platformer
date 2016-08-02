@@ -12,12 +12,24 @@ public class LevelEnd extends GameObject {
 
 private Textures tex = MainScreen.getInstance();
 private float x, y;
+private float velX, velY;
+private float width, height;
+private boolean action;
+private int direction;
+private ObjectId id;
 
 
 public LevelEnd(ObjectId id, float x, float y) {
-	super(id, x, y, 45, 45, 0f, 0f, 0);
+	super();
 	this.x = x;
 	this.y = y;
+	this.id = id;
+	velX = 0;
+	velY = 0;
+	width = 45;
+	height = 45;
+	direction = 0;
+	action = false;
 }
 
 @Override
@@ -31,7 +43,7 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, 45, 45);
+	return new Rectangle((int) x, (int) y, (int) width, (int) height);
 }
 
 @Override
@@ -46,28 +58,81 @@ public float getY() {
 
 @Override
 public float getVelX() {
-	return 0;
+	return velX;
 }
 
 @Override
 public float getVelY() {
-	return 0;
+	return velY;
 }
 
 @Override
-public void setVelX(float velX) {	
+public ObjectId getId() {
+	return id;
 }
 
 @Override
-public void setVelY(float velY) {	
+public void setId(ObjectId id) {
+	this.id = id;
 }
 
 @Override
-public void setShooting(boolean shooting) {	
+public void setX(float x) {
+	this.x = x;
 }
 
 @Override
-public boolean isShooting() {
-	return false;
+public void setY(float y) {
+	this.y = y;
+}
+
+@Override
+public float getWidth() {
+	return width;
+}
+
+@Override
+public void setWidth(float width) {
+	this.width = width;
+}
+
+@Override
+public float getHeight() {
+	return height;
+}
+
+@Override
+public void setHeight(float height) {
+	this.height = height;
+}
+
+@Override
+public void setVelX(float velX) {
+	this.velX = velX;
+}
+
+@Override
+public void setVelY(float velY) {
+	this.velY = velY;
+}
+
+@Override
+public boolean isAction() {
+	return action;
+}
+
+@Override
+public void setAction(boolean action) {
+	this.action = action;
+}
+
+@Override
+public int getDirection() {
+	return direction;
+}
+
+@Override
+public void setDirection(int direction) {
+	this.direction = direction;
 }
 }

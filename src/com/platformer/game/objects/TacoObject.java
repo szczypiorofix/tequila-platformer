@@ -11,15 +11,25 @@ import com.platformer.game.main.ObjectId;
 public class TacoObject extends GameObject{
 
 private Textures tex = MainScreen.getInstance();
-private static final int TACO_WIDTH = 43;
-private static final int TACO_HEIGHT = 48;
 private float x, y;
+private float velX, velY;
+private float width, height;
+private ObjectId id;
+private int direction;
+private boolean action;
 
 	
 public TacoObject(ObjectId id, float x, float y) {
-	super(id, x, y, TACO_WIDTH, TACO_HEIGHT, 0f, 0f, 0);
+	super();
 	this.x = x;
 	this.y = y;
+	this.id = id;
+	width = 43;
+	height = 48;
+	direction = 1;
+	action = false;
+	velX = 0;
+	velY = 0;
 }
 
 @Override
@@ -33,7 +43,7 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, TACO_WIDTH, TACO_HEIGHT);
+	return new Rectangle((int) x, (int) y, (int) width, (int) height);
 }
 
 @Override
@@ -47,29 +57,82 @@ public float getY() {
 }
 
 @Override
+public ObjectId getId() {
+	return id;
+}
+
+@Override
+public void setId(ObjectId id) {
+	this.id = id;
+}
+
+@Override
+public void setX(float x) {
+	this.x = x;
+}
+
+@Override
+public void setY(float y) {
+	this.y = y;
+}
+
+@Override
+public float getWidth() {
+	return width;
+}
+
+@Override
+public void setWidth(float width) {
+	this.width = width;
+}
+
+@Override
+public float getHeight() {
+	return height;
+}
+
+@Override
+public void setHeight(float height) {
+	this.height = height;
+}
+
+@Override
 public float getVelX() {
-	return 0;
+	return velX;
+}
+
+@Override
+public void setVelX(float velX) {
+	this.velX = velX;
 }
 
 @Override
 public float getVelY() {
-	return 0;
+	return velY;
 }
 
 @Override
-public void setVelX(float velX) {	
+public void setVelY(float velY) {
+	this.velY = velY;
 }
 
 @Override
-public void setVelY(float velY) {	
+public boolean isAction() {
+	return action;
 }
 
 @Override
-public void setShooting(boolean shooting) {	
+public void setAction(boolean action) {
+	this.action = action;
 }
 
 @Override
-public boolean isShooting() {
-	return false;
-}	
+public int getDirection() {
+	return direction;
+}
+
+@Override
+public void setDirection(int direction) {
+	this.direction = direction;
+}
 }

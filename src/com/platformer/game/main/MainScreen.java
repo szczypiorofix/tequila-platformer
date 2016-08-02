@@ -86,13 +86,9 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	this.gameWindow = gameWindow;
 	
 	
-	// TODO Switched movingBlock X & Y - switch który po naskoczeniu/wejœciu/postawieniu skrzynki w³¹cza przesuwanie bloków - jeœli nic nie stoi - bloki siê nie ruszaj¹
 	// TODO Trampolina - klocek który wyrzuca gracza w powietrze
-	// TODO Kolce z ziemii 
 	// TODO coœ co zrzuca ska³y na g³owê (w³¹cza siê w obszarze jak kaktus
-	// TODO przesuwane bloki
 	// TODO tumbleweed
-	// TODO Achivements & Collectibles np. zrób 100 skoków, ukoñcz poziom nie trac¹æ ¿ycia itd.
 	
 	this.gamepadEnabled = gamepadEnabled;
 	if (this.gamepadEnabled) 
@@ -238,7 +234,7 @@ public void tick()
 	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit=true;
 	if (key.isKeyPressedOnce(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
 	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
-		showMessage = true;
+		System.out.println("W¹tki: "+Thread.activeCount());
 	}
 	
 	

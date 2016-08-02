@@ -11,23 +11,34 @@ import com.platformer.game.main.ObjectId;
 public class WaterObject extends GameObject{
 
 	
-protected static final int WATER_BLOCK_WIDTH = 50;
-protected static final int WATER_BLOCK_HEIGHT = 50;
+
 private Textures tex = MainScreen.getInstance();
 private int type;
 private float x, y;
+private float velX, velY;
+private float width, height;
+private ObjectId id;
+private boolean action;
+private int direction;
 
 public WaterObject(ObjectId id, float x, float y, int type) {
-	super(id, x, y, WATER_BLOCK_WIDTH, WATER_BLOCK_HEIGHT, 0, 0, 0);
+	super();
 	this.x = x;
 	this.y = y;
+	this.id = id;
+	width = 50;
+	height = 50;
+	action = false;
+	direction = 1;
+	velX = 0;
+	velY = 0;
 	this.type = type;
 }
 
 @Override
 public void render(Graphics g) {
-	if (type == 0) g.drawImage(tex.water, (int)x, (int)y, WATER_BLOCK_WIDTH, WATER_BLOCK_HEIGHT, null);
-	else g.drawImage(tex.waterDeep, (int)x, (int)y, WATER_BLOCK_WIDTH, WATER_BLOCK_HEIGHT, null);
+	if (type == 0) g.drawImage(tex.water, (int)x, (int)y, (int) width, (int) height, null);
+	else g.drawImage(tex.waterDeep, (int)x, (int)y, (int) width, (int) height, null);
 }
 
 @Override
@@ -36,7 +47,17 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, WATER_BLOCK_WIDTH, WATER_BLOCK_HEIGHT);
+	return new Rectangle((int) x, (int) y, (int) width, (int) height);
+}
+
+@Override
+public ObjectId getId() {
+	return id;
+}
+
+@Override
+public void setId(ObjectId id) {
+	this.id = id;
 }
 
 @Override
@@ -45,34 +66,77 @@ public float getX() {
 }
 
 @Override
+public void setX(float x) {
+	this.x = x;
+}
+
+@Override
 public float getY() {
 	return y;
 }
 
 @Override
+public void setY(float y) {
+	this.y = y;
+}
+
+@Override
+public float getWidth() {
+	return width;
+}
+
+@Override
+public void setWidth(float width) {
+	this.width = width;
+}
+
+@Override
+public float getHeight() {
+	return height;
+}
+
+@Override
+public void setHeight(float height) {
+	this.height = height;
+}
+
+@Override
 public float getVelX() {
-	return 0;
+	return velX;
+}
+
+@Override
+public void setVelX(float velX) {
+	this.velX = velX;
 }
 
 @Override
 public float getVelY() {
-	return 0;
+	return velY;
 }
 
 @Override
-public void setVelX(float velX) {	
+public void setVelY(float velY) {
+	this.velY = velY;
 }
 
 @Override
-public void setVelY(float velY) {	
+public boolean isAction() {
+	return action;
 }
 
 @Override
-public void setShooting(boolean shooting) {	
+public void setAction(boolean action) {
+	this.action = action;
 }
 
 @Override
-public boolean isShooting() {
-	return false;
+public int getDirection() {
+	return direction;
+}
+
+@Override
+public void setDirection(int direction) {
+	this.direction = direction;
 }
 }

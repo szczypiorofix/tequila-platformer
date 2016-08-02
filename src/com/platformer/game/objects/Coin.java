@@ -13,14 +13,26 @@ public class Coin extends GameObject{
 
 private Textures tex = MainScreen.getInstance();
 private Animation coinRotating;
-private static final int COIN_WIDTH = 32;
-private static final int COIN_HEIGHT = 32;
 private float x, y;
+private float width, height;
+private float velX, velY;
+private boolean action;
+private int direction;
+private ObjectId id;
+
 
 public Coin(ObjectId id, float x, float y) {
-	super(id, x, y, COIN_WIDTH, COIN_HEIGHT, 0f, 0f, 0);
+	super();
 	this.x = x;
 	this.y = y;
+	this.id = id;
+	velX = 0;
+	velY = 0;
+	width = 32;
+	height = 32;
+	action = false;
+	direction = 0;
+	
 	coinRotating = new Animation(5, tex.coinAnim[0], tex.coinAnim[1], tex.coinAnim[2], tex.coinAnim[3], tex.coinAnim[4], tex.coinAnim[5]
 			, tex.coinAnim[6], tex.coinAnim[7], tex.coinAnim[8], tex.coinAnim[9], tex.coinAnim[10], tex.coinAnim[11], tex.coinAnim[12], tex.coinAnim[13]
 			, tex.coinAnim[14], tex.coinAnim[15], tex.coinAnim[16], tex.coinAnim[17], tex.coinAnim[18], tex.coinAnim[19], tex.coinAnim[20]
@@ -43,7 +55,17 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, COIN_WIDTH, COIN_HEIGHT);
+	return new Rectangle((int) x, (int) y, (int) width, (int) height);
+}
+
+@Override
+public ObjectId getId() {
+	return id;
+}
+
+@Override
+public void setId(ObjectId id) {
+	this.id = id;
 }
 
 @Override
@@ -52,34 +74,77 @@ public float getX() {
 }
 
 @Override
+public void setX(float x) {
+	this.x = x;
+}
+
+@Override
 public float getY() {
 	return y;
 }
 
 @Override
+public void setY(float y) {
+	this.y = y;
+}
+
+@Override
+public float getWidth() {
+	return width;
+}
+
+@Override
+public void setWidth(float width) {
+	this.width = width;
+}
+
+@Override
+public float getHeight() {
+	return height;
+}
+
+@Override
+public void setHeight(float height) {
+	this.height = height;
+}
+
+@Override
 public float getVelX() {
-	return 0;
+	return velX;
+}
+
+@Override
+public void setVelX(float velX) {
+	this.velX = velX;
 }
 
 @Override
 public float getVelY() {
-	return 0;
+	return velY;
 }
 
 @Override
-public void setVelX(float velX) {	
+public void setVelY(float velY) {
+	this.velY = velY;	
 }
 
 @Override
-public void setVelY(float velY) {	
+public boolean isAction() {
+	return action;
 }
 
 @Override
-public void setShooting(boolean shooting) {	
+public void setAction(boolean action) {
+	this.action = action;
 }
 
 @Override
-public boolean isShooting() {
-	return false;
+public int getDirection() {
+	return direction;
+}
+
+@Override
+public void setDirection(int direction) {
+	this.direction = direction;
 }
 }

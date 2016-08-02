@@ -20,8 +20,10 @@ import com.platformer.game.objects.PlayerObject;
 import com.platformer.game.objects.PushingMovingBlockX;
 import com.platformer.game.objects.PushingMovingBlockY;
 import com.platformer.game.objects.SceneryObject;
+import com.platformer.game.objects.SpikeBlock;
 import com.platformer.game.objects.TacoObject;
 import com.platformer.game.objects.TequilaBottle;
+import com.platformer.game.objects.Tumbleweed;
 import com.platformer.game.objects.WaterObject;
 
 public class ObjectsHandler {
@@ -44,6 +46,8 @@ private LinkedList<GameObject> water_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> buttonBlock_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> pushingMovingBlockX_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> pushingMovingBlockY_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> spikeBlock_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> tumbleweed_List = new LinkedList<GameObject>();
 
 
 
@@ -84,6 +88,8 @@ public void tick()
 	iteratingTick(tequila_List);
 	iteratingTick(water_List);
 	iteratingTick(buttonBlock_List);
+	iteratingTick(spikeBlock_List);
+	iteratingTick(tumbleweed_List);
 }
 
 public void iteratingRender(Graphics g, LinkedList<GameObject> list)
@@ -110,6 +116,8 @@ public void render(Graphics g)
 	iteratingRender(g, dart_List);
 	iteratingRender(g, player_List);
 	iteratingRender(g, water_List);
+	iteratingRender(g, spikeBlock_List);
+	iteratingRender(g, tumbleweed_List);
 }
 
 public void clearLevel()
@@ -131,6 +139,8 @@ public void clearLevel()
 	taco_List.clear();
 	tequila_List.clear();
 	water_List.clear();
+	spikeBlock_List.clear();
+	tumbleweed_List.clear();
 }
 
 public void resetLevel()
@@ -259,7 +269,7 @@ public void loadLevel(int level)
 				}
 				if (tileValues[yy][xx] == 38)
 				{
-					angryCactus_List.add(new AngryCactus(ObjectId.AngryCactus, xx*50, (yy*50)+550, 1));
+					angryCactus_List.add(new AngryCactus(ObjectId.AngryCactus, xx*50, (yy*50)+550));
 				}
 				if (tileValues[yy][xx] == 39)
 				{
@@ -276,6 +286,14 @@ public void loadLevel(int level)
 				if (tileValues[yy][xx] == 42)
 				{
 					pushingMovingBlockY_List.add(new PushingMovingBlockY(ObjectId.PushingMovingBlockY, xx*50, (yy*50)+550));
+				}
+				if (tileValues[yy][xx] == 43)
+				{
+					spikeBlock_List.add(new SpikeBlock(ObjectId.SpikeBlock, xx*50, (yy*50)+550));
+				}
+				if (tileValues[yy][xx] == 44)
+				{
+					tumbleweed_List.add(new Tumbleweed(ObjectId.Tumbleweed, xx*50, (yy*50)+550, this));
 				}
 			}
 		}	
@@ -347,5 +365,13 @@ public LinkedList<GameObject> getPushingMovingBlockX_List() {
 
 public LinkedList<GameObject> getPushingMovingBlockY_List() {
 	return pushingMovingBlockY_List;
+}
+
+public LinkedList<GameObject> getSpikeBlock_List() {
+	return spikeBlock_List;
+}
+
+public LinkedList<GameObject> getTumbleweed_List() {
+	return tumbleweed_List;
 }
 }

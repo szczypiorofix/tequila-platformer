@@ -36,7 +36,7 @@ private JScrollPane scrollPane;
 private EditorPane editorPane;
 private JPanel leftPane, bottomPane;
 private JLabel selectedLabel;
-private static final int MAX_TILES = 43;
+private static final int MAX_TILES = 45;
 public static BufferedImage[] tileImage = new BufferedImage[MAX_TILES];
 private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
@@ -98,6 +98,8 @@ public LevelEditorMainClass()
 		tileImage[40] = ImageIO.read(getClass().getResource("/ButtonBlock.png"));
 		tileImage[41] = ImageIO.read(getClass().getResource("/PushingMovingBlockX Off.png"));
 		tileImage[42] = ImageIO.read(getClass().getResource("/PushingMovingBlockY Off.png"));
+		tileImage[43] = ImageIO.read(getClass().getResource("/Spike1.png"));
+		tileImage[44] = ImageIO.read(getClass().getResource("/Tumbleweed.png"));
 	}
 	catch (Exception e)
 	{

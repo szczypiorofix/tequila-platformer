@@ -12,20 +12,29 @@ import com.platformer.game.main.ObjectsHandler;
 public class MovingCrate extends GameObject{
 
 	
-private static final int MOVINGCRATE_WIDTH  = 64;
-private static final int MOVINGCRATE_HEIGHT = 64;
+private float width;
+private float height;
 private Textures tex = MainScreen.getInstance();
 private ObjectsHandler objectsHandler;
 private float x, y;
 private float velX, velY;
 private boolean onGround;
 private float gravity;
+private boolean action;
+private ObjectId id;
+private int direction;
+
 
 
 public MovingCrate(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
-	super(id, x, y, MOVINGCRATE_WIDTH, MOVINGCRATE_HEIGHT, 0, 0, 0);
+	super();
 	this.x = x;
 	this.y = y;
+	this.id = id;
+	width = 64;
+	height = 64;
+	action = false;
+	direction = 1;
 	this.objectsHandler = objectsHandler;
 	onGround = false;
 	gravity = 0.5f;
@@ -35,11 +44,7 @@ public MovingCrate(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.movingCrate, (int) x, (int) y-16, null);
-
-	//g2d.draw(getBoundsLeft());
-	//g2d.draw(getBoundsRight());
-	//g2d.draw(getBoundsBottom());
+	g.drawImage(tex.movingCrate, (int) x, (int) y-16, null);	
 }
 
 @Override
@@ -88,14 +93,15 @@ private void collisions()
 	{
 		tempObject = objectsHandler.getButtonBlock_List().get(i);
 		if (getBoundsBottom().intersects(tempObject.getBounds()))
-		{			
+		{
+			tempObject.setAction(true);
 			velY = 0;
 			y = tempObject.getY() - 48;
-			onGround = true;			
-			tempObject.setShooting(true);
-			System.out.println(tempObject.isShooting());
+			onGround = true;
 		}
-		else onGround = false;
+		else {
+			onGround = false;
+		}
 		
 		if (getBoundsRight().intersects(tempObject.getBounds()))
 		{			
@@ -135,7 +141,7 @@ private void collisions()
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y-16, MOVINGCRATE_WIDTH, MOVINGCRATE_HEIGHT);
+	return new Rectangle((int) x, (int) y-16, (int) width, (int) height);
 }
 
 public Rectangle getBoundsLeft() {
@@ -181,11 +187,62 @@ public void setVelY(float velY) {
 }
 
 @Override
-public void setShooting(boolean shooting) {	
+public ObjectId getId() {
+	return id;
 }
 
 @Override
-public boolean isShooting() {
-	return false;
+public void setId(ObjectId id) {
+	this.id = id;
+}
+
+@Override
+public void setX(float x) {
+	this.x = x;
+}
+
+@Override
+public void setY(float y) {
+	this.y = y;
+}
+
+@Override
+public float getWidth() {
+	return width;
+}
+
+@Override
+public void setWidth(float width) {
+	this.width = width;
+}
+
+@Override
+public float getHeight() {
+	return height;
+}
+
+@Override
+public void setHeight(float height) {
+	this.height = height;
+}
+
+@Override
+public boolean isAction() {
+	return action;
+}
+
+@Override
+public void setAction(boolean action) {
+	this.action = action;
+}
+
+@Override
+public int getDirection() {
+	return direction;
+}
+
+@Override
+public void setDirection(int direction) {
+	this.direction = direction;
 }
 }

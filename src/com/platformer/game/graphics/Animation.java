@@ -44,7 +44,7 @@ private void nextFrame()
 		if (count == i) currentImage = images[i];
 	}
 	count ++;
-	if (count > frames) count = 0;
+	if (count >= frames) count = 0;
 }
 
 public static BufferedImage makeImageTranslucent(BufferedImage source, double alpha) {

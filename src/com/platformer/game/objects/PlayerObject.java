@@ -19,20 +19,22 @@ private ObjectsHandler objectsHandler;
 private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound;
 private Textures tex = MainScreen.getInstance();
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
+private Achievements achievements = MainScreen.getAchievementsInstance();
 private static final int MAX_HEALTH = 5;
 private static final float NORMAL_GRAVITY = 0.5f;
 private final float MAX_SPEED = 20f;
 private final int HIT_COOLDOWN = 60*2;
 private final int TEQUILA_COOLDOWN = 60*5;
 private final int TACO_COOLDOWN = 60*8;
-private static float playerWidth = 110, playerHeight = 120;
+private float width, height;
 private float velX = 0;
 private float velY = 0;
 private float gravity;
 private boolean onGround = false;
 private boolean jumping = false;
+private boolean action;
 private float x, y;
-private int turn = 1;
+private int direction;
 private int health;
 private int hit_time = HIT_COOLDOWN;
 private boolean hit_by_enemy = false;
@@ -41,18 +43,24 @@ private boolean tequila_powerUp = false;
 private int taco_time = TACO_COOLDOWN;
 private boolean taco_powerUp = false;
 private boolean finishLevel = false;
-private Achievements achievements = MainScreen.getAchievementsInstance();
+private ObjectId id;
+
 
 
 
 
 public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
-	super(id, x, y, playerWidth, playerHeight, 0, 0, 0);
+	super();
 	this.x = x;
 	this.y = y;
 	velX = 0;
 	velY = 0;
+	width = 110;
+	height = 120;
 	this.objectsHandler = objectsHandler;
+	action = false;
+	direction = 1;
+	this.id = id;
 	health = MAX_HEALTH;
 	gravity = NORMAL_GRAVITY;
 	jumpSound = new SoundsLoader("/jump.wav");
@@ -86,11 +94,11 @@ public void tick(LinkedList<GameObject> object) {
 			{
 				if ((MainScreen.PLAYER_LEFT)) {
 					if (velX > -5) velX -=0.3f;
-					turn = -1;
+					direction = -1;
 				}
 				if (MainScreen.PLAYER_RIGHT) {
 					if (velX < 5) velX +=0.3f;
-					turn = 1;
+					direction = 1;
 				}
 			}
 			else {
@@ -340,10 +348,10 @@ private void collisions()
 				if (tempObject.getX() > x) tempObject.setDirection(-1);
 				else tempObject.setDirection(1);
 				
-				if (!tempObject.isShooting()) {
+				if (!tempObject.isAction()) {
 					objectsHandler.getDart_List().add(new Dart(ObjectId.Dart, (int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection()));
 					cactusShotSound.play();
-					tempObject.setShooting(true);
+					tempObject.setAction(true);
 				}
 			} else tempObject.setVelX(0);
 		}
@@ -404,7 +412,7 @@ private void collisions()
 				jumping = false;
 				velY = 0;
 				onGround = true;
-				if (velX == 0 && tempObject.isShooting()) x += tempObject.getVelX();
+				if (velX == 0 && tempObject.isAction()) x += tempObject.getVelX();
 			}
 						
 			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
@@ -457,14 +465,48 @@ private void collisions()
 				jumping = false;
 				velY = 0;
 				onGround = true;
-				tempObject.setShooting(true);
-			} else tempObject.setShooting(false);
-						
+				tempObject.setVelX(1);
+				tempObject.setAction(true);
+			}
+
 			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
 			
 			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
 		}
+		
+		/// SPIKE BLOCK LIST
+		for (int i = 0; i < objectsHandler.getSpikeBlock_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getSpikeBlock_List().get(i);
+			if (getBoundsTop().intersects(tempObject.getBounds()))
+			{
+				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
+						
+					y = tempObject.getY() + 49;
+					velY = 0;	
+				}
+			}
+						
+			if (getBounds().intersects(tempObject.getBounds()))
+			{			
+				y = tempObject.getY() - 153;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+				if (!hit_by_enemy)
+				{
+					y -= 70;
+					health--;
+					MainScreen.SCORE -=40;
+					hitSound.play();
+					hit_by_enemy = true;	
+				}
+			}
 
+			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
+				
+			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
+		}
 }
 
 
@@ -479,14 +521,14 @@ public void render(Graphics g) {
 		if ((velX > 0.1f) && (!jumping) && (onGround)) playerRunRight.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
 		if ((velX < -0.1f) && (!jumping) && (onGround)) playerRunLeft.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
 			
-		if (turn == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
-		if (turn == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
+		if (direction == 1 && !jumping && onGround && velX == 0) playerIdleRight.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
+		if (direction == -1 && !jumping && onGround && velX == 0) playerIdleLeft.drawAnimation(g, (int) x, (int) y+6, hit_by_enemy);
 			
-		if ((jumping) && (turn == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
-		if ((jumping) && (turn == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
+		if ((jumping) && (direction == 1)) playerJumpRight.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
+		if ((jumping) && (direction == -1)) playerJumpLeft.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
 		
-		if (!onGround && !jumping && turn == 1) playerFallingRight.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
-		if (!onGround && !jumping && turn == -1) playerFallingLeft.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
+		if (!onGround && !jumping && direction == 1) playerFallingRight.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
+		if (!onGround && !jumping && direction == -1) playerFallingLeft.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
 	}
 	//g2d.draw(getBounds());
 	//g2d.draw(getBoundsTop());
@@ -499,27 +541,27 @@ public void render(Graphics g) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) ((int) x + (playerWidth/2) - (playerWidth /2)/2)-18, (int) ((int) y + (playerHeight / 2))+35, (int) playerWidth / 2-15, 10);
+	return new Rectangle((int) ((int) x + (width/2) - (width /2)/2)-18, (int) ((int) y + (height / 2))+35, (int) width / 2-15, 10);
 }
 
 private Rectangle getBoundsTop()
 {
-	return new Rectangle((int) ((int) x + (playerWidth /2) - (playerWidth/2)/2)-20, (int) y +10, (int) playerWidth / 2, (int) playerHeight /2-50);
+	return new Rectangle((int) ((int) x + (width /2) - (width/2)/2)-20, (int) y +10, (int) width / 2, (int) height /2-50);
 }
 
 private Rectangle getBoundsRight()
 {
-	return new Rectangle((int) ((int) x+playerWidth-25)-20, (int)y+20, 10, (int) playerHeight -42);
+	return new Rectangle((int) ((int) x+width-25)-20, (int)y+20, 10, (int) height -42);
 }
 
 private Rectangle getBoundsLeft()
 {
-	return new Rectangle((int) x-5, (int)y+20, 10, (int) playerHeight -42);
+	return new Rectangle((int) x-5, (int)y+20, 10, (int) height -42);
 }
 
 private Rectangle getWholeBounds()
 {
-	return new Rectangle((int) x, (int) y+10, (int) playerWidth-45, (int) playerHeight-20);
+	return new Rectangle((int) x, (int) y+10, (int) width-45, (int) height-20);
 }
 
 
@@ -613,14 +655,53 @@ public void setFinishLevel(boolean finishLevel) {
 	this.finishLevel = finishLevel;
 }
 
-
 @Override
-public void setShooting(boolean shooting) {	
+public ObjectId getId() {
+	return id;
 }
 
+@Override
+public void setId(ObjectId id) {
+	this.id = id;
+}
 
 @Override
-public boolean isShooting() {
-	return false;
+public boolean isAction() {
+	return action;
+}
+
+@Override
+public void setAction(boolean action) {
+	this.action = action;
+}
+
+@Override
+public int getDirection() {
+	return direction;
+}
+
+@Override
+public void setDirection(int direction) {
+	this.direction = direction;
+}
+
+@Override
+public float getWidth() {
+	return width;
+}
+
+@Override
+public void setWidth(float width) {
+	this.width = width;
+}
+
+@Override
+public float getHeight() {
+	return height;
+}
+
+@Override
+public void setHeight(float height) {	
+	this.height = height;
 }
 }

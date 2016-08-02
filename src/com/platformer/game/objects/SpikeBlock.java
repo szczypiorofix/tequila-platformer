@@ -8,52 +8,44 @@ import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
 import com.platformer.game.main.ObjectId;
 
-public class TequilaBottle extends GameObject{
+public class SpikeBlock extends GameObject{
 
-	
 private Textures tex = MainScreen.getInstance();
 private float x, y;
-private ObjectId id;
-private float velX, velY;
 private float width, height;
+private float velX, velY;
 private int direction;
 private boolean action;
+private ObjectId id;
+
 
 	
-public TequilaBottle(ObjectId id, float x, float y) {
-		super();
-		this.x = x;
-		this.y = y;
-		direction = 0;
-		action = false;
-		width = 32;
-		height = 60;
-		velX = 0;
-		velY = 0;
+public SpikeBlock(ObjectId id, float x, float y)
+{
+	super();
+	this.x = x;
+	this.y = y;
+	this.id = id;
+	width = 64;
+	height = 90;
+	velX = 0;
+	velY = 0;
+	direction = 1;
+	action = false;
 }
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.tequilaImage.getScaledInstance((int) width, (int) height, 0), (int) x, (int) y-40, null);
+	g.drawImage(tex.spikeBlock, (int) x, (int) y-28, null);
 }
 
 @Override
-public void tick(LinkedList<GameObject> object) {	
+public void tick(LinkedList<GameObject> object) {
 }
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y-40, (int) width, (int) height);
-}
-
-@Override
-public float getX() {
-	return x;
-}
-
-@Override
-public float getY() {
-	return y;
+	return new Rectangle((int) x, (int) y, (int )width, (int) height-30);
 }
 
 @Override
@@ -67,8 +59,18 @@ public void setId(ObjectId id) {
 }
 
 @Override
+public float getX() {
+	return x;
+}
+
+@Override
 public void setX(float x) {
 	this.x = x;
+}
+
+@Override
+public float getY() {
+	return y;
 }
 
 @Override

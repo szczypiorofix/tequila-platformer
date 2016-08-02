@@ -1,5 +1,7 @@
 package com.platformer.game.graphics;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Textures {
@@ -32,6 +34,8 @@ public BufferedImage dartR, dartL;
 public BufferedImage movingCrate;
 public BufferedImage buttonBlock;
 public BufferedImage pushingMovingBlockXOff, pushingMovingBlockXOn, pushingMovingBlockYOff, pushingMovingBlockYOn;
+public BufferedImage spikeBlock;
+public BufferedImage tumbleweed, tumbleweed1, tumbleweed2, tumbleweed3, tumbleweed4, tumbleweed5, tumbleweed6, tumbleweed7;
 
 
 
@@ -193,5 +197,40 @@ public Textures()
 	pushingMovingBlockXOn = loader.loadImage("/PushingMovingBlockX On.png");
 	pushingMovingBlockYOff = loader.loadImage("/PushingMovingBlockY Off.png");
 	pushingMovingBlockYOn = loader.loadImage("/PushingMovingBlockY On.png");
+	
+	spikeBlock = loader.loadImage("/Spike1.png");
+	
+	tumbleweed = loader.loadImage("/tumbleweed.png");
+	double rotationRequired = Math.toRadians (45);
+	double locationX = tumbleweed.getWidth() / 2;
+	double locationY = tumbleweed.getHeight() / 2;
+	AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	
+	tumbleweed1 = op.filter(tumbleweed, null);
+	rotationRequired = Math.toRadians (90);
+	tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+	op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	tumbleweed2 = op.filter(tumbleweed, null);
+	rotationRequired = Math.toRadians (135);
+	tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+	op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	tumbleweed3 = op.filter(tumbleweed, null);
+	rotationRequired = Math.toRadians (180);
+	tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+	op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	tumbleweed4 = op.filter(tumbleweed, null);
+	rotationRequired = Math.toRadians (225);
+	tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+	op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	tumbleweed5 = op.filter(tumbleweed, null);
+	rotationRequired = Math.toRadians (270);
+	tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+	op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	tumbleweed6 = op.filter(tumbleweed, null);
+	rotationRequired = Math.toRadians (315);
+	tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+	op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	tumbleweed7 = op.filter(tumbleweed, null);
 }
 }
