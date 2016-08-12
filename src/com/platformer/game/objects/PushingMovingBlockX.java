@@ -19,6 +19,8 @@ private int startPos = 0;
 private boolean action;
 private int direction;
 private ObjectId id;
+private int counter;
+private int WAITING_TIME = 30;
 
 
 	
@@ -33,6 +35,7 @@ public PushingMovingBlockX(ObjectId id, float x, float y)
 	width = 74;
 	height = 50;
 	direction = 1;
+	counter = 0;
 	action = false;
 	startPos = (int) this.x;
 }
@@ -46,9 +49,21 @@ public void render(Graphics g) {
 @Override
 public void tick(LinkedList<GameObject> object) {
 
-	if (x > startPos + 240) velX = -1.0f;
-	else if (x <= startPos) velX = 1.0f;
+	if (x > startPos + 240) {
+		counter++;
+		velX = 0;
+		if (counter > WAITING_TIME) 
+			velX = -1f;
+	}
+	if (x <= startPos) {
+		counter--;
+		velX = 0;
+		if (counter < 0)
+			velX = 1f;
+	}
+	
 	if (action) x += velX;
+	action = false;
 }
 
 @Override

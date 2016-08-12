@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
+import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
 import com.platformer.game.main.ObjectId;
@@ -17,6 +18,9 @@ private float velX, velY;
 private int direction;
 private boolean action;
 private ObjectId id;
+private Animation spikeAnimation;
+private int hurts;
+private int animationTempo;
 
 
 	
@@ -26,21 +30,32 @@ public SpikeBlock(ObjectId id, float x, float y)
 	this.x = x;
 	this.y = y;
 	this.id = id;
-	width = 64;
-	height = 90;
+	width = 50;
+	height = 70;
 	velX = 0;
 	velY = 0;
+	hurts = 1;
 	direction = 1;
 	action = false;
+	animationTempo = 10;
+	spikeAnimation = new Animation(animationTempo, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock2
+			, tex.spikeBlock3, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock3, tex.spikeBlock2);
 }
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.spikeBlock, (int) x, (int) y-28, null);
+	spikeAnimation.drawAnimation(g, (int) x, (int) y-20, false);
+	//Graphics2D g2d = (Graphics2D) g;
+	//g2d.draw(getBounds());
 }
 
 @Override
 public void tick(LinkedList<GameObject> object) {
+	spikeAnimation.runAnimation();
+	
+	hurts++;
+	//System.out.println(hurts);
+	if (hurts > (spikeAnimation.getFrames() * animationTempo)) hurts = 1;
 }
 
 @Override

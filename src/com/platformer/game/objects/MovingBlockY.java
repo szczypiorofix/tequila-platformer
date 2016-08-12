@@ -21,6 +21,8 @@ private float width, height;
 private int startPos ;
 private boolean action;
 private int direction;
+private int counter;
+private int WAITING_TIME = 30;
 
 
 
@@ -33,20 +35,29 @@ public MovingBlockY(ObjectId id, float x, float y) {
 	width = 74;
 	height = 50;
 	direction = 0;
+	counter = 0;
 	action = false;
 	startPos = (int) (this.y);
 }
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.movingBlockY, (int)x, (int) y, (int) width, (int) height, null);
+	g.drawImage(tex.movingBlockY, (int)x, (int) y, null);
 }
 
 @Override
 public void tick(LinkedList<GameObject> object) {
 
-	if (y >= startPos) velY = -1;
-	if (y < startPos - 160) velY = 1;
+	if (y >= startPos) {
+		counter++;
+		velY = 0;
+		if (counter > WAITING_TIME) velY = -1f;
+	}
+	if (y < startPos - 160) {
+		counter--;
+		velY = 0;
+		if (counter==0) velY = 1f;
+	}
 	
 	y += velY;
 }

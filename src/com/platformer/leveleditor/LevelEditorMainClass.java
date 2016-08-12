@@ -36,7 +36,7 @@ private JScrollPane scrollPane;
 private EditorPane editorPane;
 private JPanel leftPane, bottomPane;
 private JLabel selectedLabel;
-private static final int MAX_TILES = 45;
+private static final int MAX_TILES = 50;
 public static BufferedImage[] tileImage = new BufferedImage[MAX_TILES];
 private JMenuBar menuBar = new JMenuBar();
 private JMenu mainMenu = new JMenu("Plik");
@@ -91,7 +91,7 @@ public LevelEditorMainClass()
 		tileImage[33] = ImageIO.read(getClass().getResource("/taco.png"));
 		tileImage[34] = ImageIO.read(getClass().getResource("/MovingBlockX.png"));
 		tileImage[35] = ImageIO.read(getClass().getResource("/MovingBlockY.png"));
-		tileImage[36] = ImageIO.read(getClass().getResource("/16.png"));
+		tileImage[36] = ImageIO.read(getClass().getResource("/16_5.png"));
 		tileImage[37] = ImageIO.read(getClass().getResource("/17.png"));
 		tileImage[38] = ImageIO.read(getClass().getResource("/BadCactusR.png"));
 		tileImage[39] = ImageIO.read(getClass().getResource("/MovingCrate.png"));
@@ -100,6 +100,11 @@ public LevelEditorMainClass()
 		tileImage[42] = ImageIO.read(getClass().getResource("/PushingMovingBlockY Off.png"));
 		tileImage[43] = ImageIO.read(getClass().getResource("/Spike1.png"));
 		tileImage[44] = ImageIO.read(getClass().getResource("/Tumbleweed.png"));
+		tileImage[45] = ImageIO.read(getClass().getResource("/SpringBlock.png"));
+		tileImage[46] = ImageIO.read(getClass().getResource("/FallingBlock.png"));
+		tileImage[47] = ImageIO.read(getClass().getResource("/clouds1.png"));
+		tileImage[48] = ImageIO.read(getClass().getResource("/clouds2.png"));
+		tileImage[49] = ImageIO.read(getClass().getResource("/clouds3.png"));
 	}
 	catch (Exception e)
 	{
@@ -121,9 +126,7 @@ public LevelEditorMainClass()
 	scrollPane.getVerticalScrollBar().setUnitIncrement(26);
 	
 	leftPane = new JPanel(new GridLayout(Math.round((tileImage.length / 3))+1, 3));
-	leftPane.setPreferredSize(new Dimension(150, 1600));
-	leftPane.setMinimumSize(new Dimension(150, 1600));
-	leftPane.setMaximumSize(new Dimension(150, 1600));
+	
 	for (int i = 0; i < tileImage.length; i++)
 	{
 		tilesChoose[i] = new TileChoose(tileImage[i]);
@@ -131,6 +134,7 @@ public LevelEditorMainClass()
 		tilesChoose[i].setActionCommand(i+"");
 		leftPane.add(tilesChoose[i]);
 	}
+	
 	tilesChoose[selectedTile].setBorder(new LineBorder(Color.RED, 2, true));
 	
 	bottomPane = new JPanel(new FlowLayout());
@@ -285,6 +289,7 @@ public EditorPane(int row, int col)
 	setPreferredSize(new Dimension(row * 1000, col));
 	setMinimumSize(new Dimension(row * 1000, col));
 	setMaximumSize(new Dimension(row * 1000, col));
+	setBackground(new Color(150, 220, 255));
 	
 	tileValues = new int[this.row][this.col];
 	editorTiles = new Tile[this.row][this.col];

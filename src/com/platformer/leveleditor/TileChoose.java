@@ -1,5 +1,6 @@
 package com.platformer.leveleditor;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -18,10 +19,10 @@ public TileChoose(BufferedImage image)
 	super();
 	this.setImage(image);
 	Image newImage = image.getScaledInstance(50, 30, Image.SCALE_DEFAULT);
-	setPreferredSize(new Dimension(50,30));
-	setMinimumSize(new Dimension(50,30));
-	setMaximumSize(new Dimension(50,30));
-	setContentAreaFilled(false);
+	setPreferredSize(new Dimension(50, 30));
+	setMinimumSize(new Dimension(50, 30));
+	setMaximumSize(new Dimension(50, 30));
+	setBackground(new Color(150, 220, 255));
 	setIcon(new ImageIcon(newImage));
 }
 

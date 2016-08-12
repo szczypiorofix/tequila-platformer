@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
+import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
 import com.platformer.game.main.ObjectId;
@@ -20,6 +21,8 @@ private float width, height;
 private ObjectId id;
 private boolean action;
 private int direction;
+private Animation waterAnim;
+
 
 public WaterObject(ObjectId id, float x, float y, int type) {
 	super();
@@ -32,17 +35,21 @@ public WaterObject(ObjectId id, float x, float y, int type) {
 	direction = 1;
 	velX = 0;
 	velY = 0;
+	waterAnim = new Animation(10, tex.water5, tex.water4, tex.water3, tex.water2, tex.water1);
 	this.type = type;
 }
 
 @Override
 public void render(Graphics g) {
-	if (type == 0) g.drawImage(tex.water, (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 0) {
+		waterAnim.drawAnimation(g, (int) x, (int) y, false);
+	}
 	else g.drawImage(tex.waterDeep, (int)x, (int)y, (int) width, (int) height, null);
 }
 
 @Override
 public void tick(LinkedList<GameObject> object) {
+	waterAnim.runAnimation();
 }
 
 @Override

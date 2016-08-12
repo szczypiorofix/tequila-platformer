@@ -12,8 +12,10 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -53,7 +55,8 @@ private GameWindow gameWindow;
 private BufferStrategy bs;
 private Graphics g;
 private ObjectsHandler objectsHandler;
-private static Achievements achievements;
+private static Achievements achievements = MainClass.getAchievementsInstance();
+private ObjectOutputStream oos;
 private PlayerObject player;
 private InputManager key;
 private Joystick joystick;
@@ -62,20 +65,27 @@ private Component[] gamepadComponents;
 private boolean exit = false;
 private Camera cam;
 private static Textures tex;
-private BufferedImage backGroundMountains, clouds;
+private BufferedImage backGroundMountains;
 private BufferedImage screenShotImage;
+private BufferedImage sun;
+private BufferedImage achievementBg;
 private boolean gamepadEnabled = false;
 private boolean makeScreenShot = false;
 private boolean showMessage = false;
+private boolean saveAchievementsToFile;
 private int messageCount = 0;
+private int msgY;
 private final int MESSAGE_TIME = 300;
-private float cloudsX = 0f;
 private Properties prop = new Properties();
 private InputStream propInput = null;
 private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
 private String time;
 private File screenShotFile;
 private SoundsLoader screenShotSound;
+ 
+
+
+
 //private Animation playerDeadR, playerDeadL;
 
 
@@ -85,10 +95,7 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	this.setFocusable(false);
 	this.gameWindow = gameWindow;
 	
-	
-	// TODO Trampolina - klocek który wyrzuca gracza w powietrze
 	// TODO coœ co zrzuca ska³y na g³owê (w³¹cza siê w obszarze jak kaktus
-	// TODO tumbleweed
 	
 	this.gamepadEnabled = gamepadEnabled;
 	if (this.gamepadEnabled) 
@@ -138,7 +145,8 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	tex = new Textures();
 	
 	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
-	clouds = loader.loadImage("/clouds.png");
+	sun = loader.loadImage("/sun.png");
+	achievementBg = loader.loadImage("/achievementBg.png");
 	
 	this.gameWindow.add(this);
 	key = new InputManager();
@@ -150,6 +158,9 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	
 	cam = new Camera(0,0);
 	screenShotSound = new SoundsLoader("/screenShotSound.wav");
+	
+	msgY = 0;
+	saveAchievementsToFile = false;
 	//playerDeadR = new Animation(4, tex.playerDeadR[0], tex.playerDeadR[1], tex.playerDeadR[2], tex.playerDeadR[3], tex.playerDeadR[4], tex.playerDeadR[5], tex.playerDeadR[6]);
 	//playerDeadL = new Animation(4, tex.playerDeadL[0], tex.playerDeadL[1], tex.playerDeadL[2], tex.playerDeadL[3], tex.playerDeadL[4], tex.playerDeadL[5], tex.playerDeadL[6]);
 }
@@ -157,7 +168,6 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 
 public void addElements()
 {
-	achievements = new Achievements();
 	objectsHandler = new ObjectsHandler(cam);
 	objectsHandler.loadLevel(LEVEL);
 	player = objectsHandler.getPlayer();
@@ -228,8 +238,12 @@ public void tick()
 	if (((key.isKeyPressed(KeyEvent.VK_RIGHT)) || (key.isKeyPressed(KeyEvent.VK_D)))) PLAYER_RIGHT = true;
 	if ((key.isKeyPressedOnce(KeyEvent.VK_UP)) || (key.isKeyPressedOnce(KeyEvent.VK_W))) {
 		PLAYER_JUMP = true;
-		achievements.addJump10Count();
-		if (achievements.isJumpCount10Complete()) achievements.addJump25Count();
+		
+		if (player.isOnGround()) {
+			if (!achievements.isJumpCount10Complete()) achievements.addJump10Count();
+			if (achievements.isJumpCount10Complete()) achievements.addJump25Count();
+		}
+		
 	}
 	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit=true;
 	if (key.isKeyPressedOnce(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
@@ -269,9 +283,6 @@ public void tick()
 	if (!pauseGame && !player.isFinishLevel() && player.getHealth() > 0) {
 		objectsHandler.tick();
 		cam.tick(player);
-		
-		cloudsX -= 0.4f;
-		if (cloudsX < -500) cloudsX = 1000;
 		timeTick();
 	}
 	
@@ -327,11 +338,41 @@ public void timeTick()
 }
 
 
-public void showMessage(Graphics2D g2d, String msg)
+public void showMessage(Graphics2D g2d, String msg, BufferedImage image, int counter)
 {
+	
+	if (!saveAchievementsToFile)
+	{
+		if(MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
+		{
+			System.out.println("Zapis achievementów do pliku");
+			try {
+			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
+		    oos.writeObject(MainClass.ac);
+		    oos.close();
+			}
+			catch (IOException ioe)
+			{
+				ioe.printStackTrace();
+				System.exit(-1);
+			}
+			saveAchievementsToFile = true;
+		}
+		else
+			System.out.println("Brak pliku!!!");
+		saveAchievementsToFile = true;
+	}
+	
 	g2d.setColor(Color.RED);
 	g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 34f));
-	g2d.drawString(msg, 315, 100);
+	
+	if (msgY < 100 && counter < achievements.getShowAchievementCooldown()) msgY++;
+	if (counter == achievements.getShowAchievementCooldown())
+		if (msgY > -20) msgY--;
+	
+	g2d.drawImage(achievementBg, 280, msgY-40, null);
+	g2d.drawImage(image, 300, msgY - 35, null);
+	g2d.drawString(msg, 365, msgY);
 }
 
 
@@ -369,11 +410,9 @@ public void render(int fps_count, int ticks_count)
 	/// MOUNTAING & PARALLAX
 	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
 	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);	
+	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
 	
-	
-	g2d.drawImage(clouds, (int) (cam.getX()*0.2 + 500 + cloudsX), (int) (cam.getY() + 600), null);
-	
+	g2d.drawImage(sun, 210, (int) (cam.getY()/1.33) + 420, null);
 	
 	////// CAM MOVING HERE
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
@@ -382,7 +421,7 @@ public void render(int fps_count, int ticks_count)
 	
 	g2d.translate(-cam.getX(), -cam.getY()); // CAM ENGING	
 	
-	
+
 	g2d.drawString("POZIOM "+LEVEL, 845, 40);
 	g2d.drawString("MONETY: "+COINS, 10, 40);
 	g2d.drawString("WYNIK: "+SCORE, 10, 80);
@@ -411,8 +450,8 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	
-	if (showMessage) showMessage(g2d, achievements.getAchievementsText());
-	
+	if (showMessage) showMessage(g2d, achievements.getAchievementText(), achievements.getAchievementImage(), achievements.getAchievementCount());
+	else saveAchievementsToFile = false;
 	
 	if (player.isFinishLevel())
 	{
@@ -463,11 +502,6 @@ public void render(int fps_count, int ticks_count)
 	
 	g.dispose();
 	bs.show();
-}
-
-public static Achievements getAchievementsInstance()
-{
-	return achievements;
 }
 
 public static Textures getInstance()

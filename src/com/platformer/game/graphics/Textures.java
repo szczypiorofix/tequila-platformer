@@ -19,7 +19,7 @@ public BufferedImage[] playerDeadL = new BufferedImage[7];
 public BufferedImage[] sceneryObjects = new BufferedImage[12];
 public BufferedImage[] blocks = new BufferedImage[16];
 public BufferedImage movingBlockX, movingBlockY;
-public BufferedImage water, waterDeep;
+public BufferedImage waterDeep, water1, water2, water3, water4, water5;
 public BufferedImage levelend;
 private BufferedImage coinImage;
 public SpriteSheet coinSheet;  // http://opengameart.org/content/coins-asset
@@ -34,9 +34,11 @@ public BufferedImage dartR, dartL;
 public BufferedImage movingCrate;
 public BufferedImage buttonBlock;
 public BufferedImage pushingMovingBlockXOff, pushingMovingBlockXOn, pushingMovingBlockYOff, pushingMovingBlockYOn;
-public BufferedImage spikeBlock;
+public BufferedImage spikeBlock1, spikeBlock2, spikeBlock3, spikeBlock4;
 public BufferedImage tumbleweed, tumbleweed1, tumbleweed2, tumbleweed3, tumbleweed4, tumbleweed5, tumbleweed6, tumbleweed7;
-
+public BufferedImage springBlock;
+public BufferedImage fallingBlock;
+public BufferedImage clouds1, clouds2, clouds3;
 
 
 
@@ -53,7 +55,6 @@ public Textures()
 	sceneryObjects[2] = loader.loadImage("/Cactus (1).png");
 	sceneryObjects[3] = loader.loadImage("/Cactus (2).png");
 	sceneryObjects[4] = loader.loadImage("/Cactus (3).png");
-	//sceneryObjects[5] = loader.loadImage("/Crate.png");
 	sceneryObjects[5] = loader.loadImage("/Grass (1).png");
 	sceneryObjects[6] = loader.loadImage("/Grass (2).png");
 	sceneryObjects[7] = loader.loadImage("/Sign.png");
@@ -157,7 +158,13 @@ public Textures()
 	movingBlockX = loader.loadImage("/MovingBlockX.png");
 	movingBlockY = loader.loadImage("/MovingBlockY.png");
 	
-	water = loader.loadImage("/16.png");
+	//water = loader.loadImage("/16.png");
+	water1 = loader.loadImage("/16_1.png");
+	water2 = loader.loadImage("/16_2.png");
+	water3 = loader.loadImage("/16_3.png");
+	water4 = loader.loadImage("/16_4.png");
+	water5 = loader.loadImage("/16_5.png");
+	
 	waterDeep = loader.loadImage("/17.png");
 	
 	coinImage = loader.loadImage("/coin32.png");
@@ -198,7 +205,10 @@ public Textures()
 	pushingMovingBlockYOff = loader.loadImage("/PushingMovingBlockY Off.png");
 	pushingMovingBlockYOn = loader.loadImage("/PushingMovingBlockY On.png");
 	
-	spikeBlock = loader.loadImage("/Spike1.png");
+	spikeBlock1 = loader.loadImage("/Spike1.png");
+	spikeBlock2 = loader.loadImage("/Spike2.png");
+	spikeBlock3 = loader.loadImage("/Spike3.png");
+	spikeBlock4 = loader.loadImage("/Spike4.png");
 	
 	tumbleweed = loader.loadImage("/tumbleweed.png");
 	double rotationRequired = Math.toRadians (45);
@@ -232,5 +242,13 @@ public Textures()
 	tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
 	op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 	tumbleweed7 = op.filter(tumbleweed, null);
+	
+	springBlock = loader.loadImage("/SpringBlock.png");
+	
+	fallingBlock = loader.loadImage("/FallingBlock.png");
+	
+	clouds1 = loader.loadImage("/clouds1.png");
+	clouds2 = loader.loadImage("/clouds2.png");
+	clouds3 = loader.loadImage("/clouds3.png");
 }
 }

@@ -10,7 +10,9 @@ import com.platformer.game.objects.AngryCactus;
 import com.platformer.game.objects.BeeObject;
 import com.platformer.game.objects.Block;
 import com.platformer.game.objects.ButtonBlock;
+import com.platformer.game.objects.Clouds;
 import com.platformer.game.objects.Coin;
+import com.platformer.game.objects.FallingBlock;
 import com.platformer.game.objects.GameObject;
 import com.platformer.game.objects.LevelEnd;
 import com.platformer.game.objects.MovingBlockX;
@@ -21,6 +23,7 @@ import com.platformer.game.objects.PushingMovingBlockX;
 import com.platformer.game.objects.PushingMovingBlockY;
 import com.platformer.game.objects.SceneryObject;
 import com.platformer.game.objects.SpikeBlock;
+import com.platformer.game.objects.SpringBlock;
 import com.platformer.game.objects.TacoObject;
 import com.platformer.game.objects.TequilaBottle;
 import com.platformer.game.objects.Tumbleweed;
@@ -48,7 +51,9 @@ private LinkedList<GameObject> pushingMovingBlockX_List = new LinkedList<GameObj
 private LinkedList<GameObject> pushingMovingBlockY_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> spikeBlock_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> tumbleweed_List = new LinkedList<GameObject>();
-
+private LinkedList<GameObject> springBlock_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> fallingBlock_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> clouds_List = new LinkedList<GameObject>();
 
 
 private final int ROWS = 300, COLS = 12;
@@ -73,6 +78,7 @@ public void tick()
 {
 	iteratingTick(angryCactus_List);
 	iteratingTick(bee_List);
+	iteratingTick(springBlock_List);
 	iteratingTick(block_List);
 	iteratingTick(coin_List);
 	iteratingTick(dart_List);
@@ -90,6 +96,8 @@ public void tick()
 	iteratingTick(buttonBlock_List);
 	iteratingTick(spikeBlock_List);
 	iteratingTick(tumbleweed_List);
+	iteratingTick(fallingBlock_List);
+	iteratingTick(clouds_List);
 }
 
 public void iteratingRender(Graphics g, LinkedList<GameObject> list)
@@ -99,10 +107,10 @@ public void iteratingRender(Graphics g, LinkedList<GameObject> list)
 
 public void render(Graphics g)
 {
+	iteratingRender(g, clouds_List);
 	iteratingRender(g, scenery_List);
 	iteratingRender(g, angryCactus_List);
 	iteratingRender(g, block_List);
-	iteratingRender(g, buttonBlock_List);
 	iteratingRender(g, coin_List);
 	iteratingRender(g, levelEnd_List);
 	iteratingRender(g, movingBlockX_List);
@@ -111,12 +119,15 @@ public void render(Graphics g)
 	iteratingRender(g, pushingMovingBlockY_List);
 	iteratingRender(g, movingCrate_List);
 	iteratingRender(g, taco_List);
+	iteratingRender(g, buttonBlock_List);
 	iteratingRender(g, tequila_List);
 	iteratingRender(g, bee_List);
 	iteratingRender(g, dart_List);
 	iteratingRender(g, player_List);
+	iteratingRender(g, fallingBlock_List);
 	iteratingRender(g, water_List);
 	iteratingRender(g, spikeBlock_List);
+	iteratingRender(g, springBlock_List);
 	iteratingRender(g, tumbleweed_List);
 }
 
@@ -141,6 +152,9 @@ public void clearLevel()
 	water_List.clear();
 	spikeBlock_List.clear();
 	tumbleweed_List.clear();
+	springBlock_List.clear();
+	fallingBlock_List.clear();
+	clouds_List.clear();
 }
 
 public void resetLevel()
@@ -152,10 +166,6 @@ public void resetLevel()
 	MainScreen.seconds = 0;
 	MainScreen.milis = 0f;
 	MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
-	//player.setX(100);
-	//player.setY(100);
-	
-	//player.setHealth(5);
 }
 
 public PlayerObject getPlayer()
@@ -215,86 +225,57 @@ public void loadLevel(int level)
 			
 			if (tileValues[yy][xx] != -1)
 			{
-				if (tileValues[yy][xx] < 16)
-				{
-					block_List.add(new Block(ObjectId.Block, xx*50, (yy*50)+550, tileValues[yy][xx]));
-				}
+				
+				if (tileValues[yy][xx] < 16) block_List.add(new Block(ObjectId.Block, xx*50, (yy*50)+550, tileValues[yy][xx]));
 					
-				if (tileValues[yy][xx] >= 16 && tileValues[yy][xx] < 30)
-				{
-					scenery_List.add(new SceneryObject(ObjectId.Scenery, xx*50, (yy*50)+550, tileValues[yy][xx]));
-				}
+				if (tileValues[yy][xx] >= 16 && tileValues[yy][xx] < 30) scenery_List.add(new SceneryObject(ObjectId.Scenery, xx*50, (yy*50)+550, tileValues[yy][xx]));
 					
 				if (tileValues[yy][xx] == 28)
 				{
 					player = new PlayerObject(ObjectId.Player, xx*50, (yy*50) +440, this);
 					player_List.add(player);					
 				}
-				if (tileValues[yy][xx] == 29)
-				{
-					levelEnd_List.add(new LevelEnd(ObjectId.LevelEnd, xx*50, (yy*50)+550));
-				}
+				if (tileValues[yy][xx] == 29) levelEnd_List.add(new LevelEnd(ObjectId.LevelEnd, xx*50, (yy*50)+550));
 				
-				if (tileValues[yy][xx] == 30)
-				{
-					coin_List.add(new Coin(ObjectId.Coin, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 31)
-				{
-					bee_List.add(new BeeObject(ObjectId.BeeEnemy, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 32)
-				{
-					tequila_List.add(new TequilaBottle(ObjectId.Tequila, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 33)
-				{
-					taco_List.add(new TacoObject(ObjectId.Taco, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 34)
-				{
-					movingBlockX_List.add(new MovingBlockX(ObjectId.MovingBlockX, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 35)
-				{
-					movingBlockY_List.add(new MovingBlockY(ObjectId.MovingBlockY, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 36)
-				{
-					water_List.add(new WaterObject(ObjectId.Water, xx*50, (yy*50)+550, 0));
-				}
-				if (tileValues[yy][xx] == 37)
-				{
-					water_List.add(new WaterObject(ObjectId.Water, xx*50, (yy*50)+550, 1));
-				}
-				if (tileValues[yy][xx] == 38)
-				{
-					angryCactus_List.add(new AngryCactus(ObjectId.AngryCactus, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 39)
-				{
-					movingCrate_List.add(new MovingCrate(ObjectId.MovingCrate, xx*50, (yy*50)+550, this));
-				}
-				if (tileValues[yy][xx] == 40)
-				{
-					buttonBlock_List.add(new ButtonBlock(ObjectId.ButtonBlock, xx*50, (yy*50)+550, this));
-				}
-				if (tileValues[yy][xx] == 41)
-				{
-					pushingMovingBlockX_List.add(new PushingMovingBlockX(ObjectId.PushingMovingBlockX, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 42)
-				{
-					pushingMovingBlockY_List.add(new PushingMovingBlockY(ObjectId.PushingMovingBlockY, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 43)
-				{
-					spikeBlock_List.add(new SpikeBlock(ObjectId.SpikeBlock, xx*50, (yy*50)+550));
-				}
-				if (tileValues[yy][xx] == 44)
-				{
-					tumbleweed_List.add(new Tumbleweed(ObjectId.Tumbleweed, xx*50, (yy*50)+550, this));
-				}
+				if (tileValues[yy][xx] == 30) coin_List.add(new Coin(ObjectId.Coin, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 31) bee_List.add(new BeeObject(ObjectId.BeeEnemy, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 32) tequila_List.add(new TequilaBottle(ObjectId.Tequila, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 33) taco_List.add(new TacoObject(ObjectId.Taco, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 34) movingBlockX_List.add(new MovingBlockX(ObjectId.MovingBlockX, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 35) movingBlockY_List.add(new MovingBlockY(ObjectId.MovingBlockY, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 36) water_List.add(new WaterObject(ObjectId.Water, xx*50, (yy*50)+550, 0));
+				
+				if (tileValues[yy][xx] == 37) water_List.add(new WaterObject(ObjectId.Water, xx*50, (yy*50)+550, 1));
+				
+				if (tileValues[yy][xx] == 38) angryCactus_List.add(new AngryCactus(ObjectId.AngryCactus, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 39) movingCrate_List.add(new MovingCrate(ObjectId.MovingCrate, xx*50, (yy*50)+550, this));
+				
+				if (tileValues[yy][xx] == 40) buttonBlock_List.add(new ButtonBlock(ObjectId.ButtonBlock, xx*50, (yy*50)+550, this));
+				
+				if (tileValues[yy][xx] == 41) pushingMovingBlockX_List.add(new PushingMovingBlockX(ObjectId.PushingMovingBlockX, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 42) pushingMovingBlockY_List.add(new PushingMovingBlockY(ObjectId.PushingMovingBlockY, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 43) spikeBlock_List.add(new SpikeBlock(ObjectId.SpikeBlock, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 44) tumbleweed_List.add(new Tumbleweed(ObjectId.Tumbleweed, xx*50, (yy*50)+550, this));
+				
+				if (tileValues[yy][xx] == 45) springBlock_List.add(new SpringBlock(ObjectId.SpringBlock, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 46) fallingBlock_List.add(new FallingBlock(ObjectId.FallingBlock, xx*50, (yy*50)+550));
+				
+				if (tileValues[yy][xx] == 47) clouds_List.add(new Clouds(ObjectId.Clouds, xx*50, (yy*50)+550, cam, 1));
+				
+				if (tileValues[yy][xx] == 48) clouds_List.add(new Clouds(ObjectId.Clouds, xx*50, (yy*50)+550, cam, 2));
+				
+				if (tileValues[yy][xx] == 49) clouds_List.add(new Clouds(ObjectId.Clouds, xx*50, (yy*50)+550, cam, 3));
 			}
 		}	
 }
@@ -373,5 +354,17 @@ public LinkedList<GameObject> getSpikeBlock_List() {
 
 public LinkedList<GameObject> getTumbleweed_List() {
 	return tumbleweed_List;
+}
+
+public LinkedList<GameObject> getSpringBlock_List() {
+	return springBlock_List;
+}
+
+public LinkedList<GameObject> getFallingBlock_List() {
+	return fallingBlock_List;
+}
+
+public LinkedList<GameObject> getClouds_List() {
+	return clouds_List;
 }
 }

@@ -4,8 +4,12 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import com.platformer.game.sounds.Music;
 
@@ -13,20 +17,32 @@ import com.platformer.game.sounds.Music;
 
 public class MainClass implements Runnable {
 
-private GameWindow gameWindow;
-private MainScreen mainScreen;
-public static int WIDTH = 0, HEIGHT = 0;
-private Thread thread;
-private int fps_count = 0, ticks_count = 0;
-private boolean running = false;
-private boolean gamepadEnabled = false;
+	
+public static boolean[] ac;
+public static final File achievementsFile = new File("achievements.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
-private MainMenu mainMenu;
-private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");  // http://www.1001freefonts.com/la_tequila.font
-public static Font texasFont;
-private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");  // http://www.1001freefonts.com/la_tequila.font
 public static Font smokunFont;
+public static Font texasFont;
+public static int WIDTH = 0, HEIGHT = 0;
 
+private static Achievements achievements = null;
+
+private int fps_count = 0, ticks_count = 0;
+private boolean gamepadEnabled = false;
+private GameWindow gameWindow;
+private MainMenu mainMenu;
+private MainScreen mainScreen;
+private ObjectInputStream ois = null;
+private ObjectOutputStream oos = null;
+private boolean running = false;
+private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");  // http://www.1001freefonts.com/la_tequila.font
+
+
+
+
+private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");  // http://www.1001freefonts.com/la_tequila.font
+
+private Thread thread;
 
 public MainClass()
 {	
@@ -42,9 +58,14 @@ public MainClass()
 		System.exit(-1);
 	}
 	
+	//achievements = new Achievements();
+	
+	prepareAchievements();
+	
 	mainMenu = new MainMenu(this);
 	mainMenu.showMenu(true);
 }
+
 
 public void gameStart()
 {
@@ -67,7 +88,6 @@ public synchronized void gameThreadStart()
 	thread = new Thread(this);
 	thread.start();
 }
-
 
 @Override
 public void run()
@@ -110,6 +130,50 @@ public void run()
 			updates = 0;
 		}
 	}
+}
+
+private void prepareAchievements()
+{
+	
+	ac = new boolean[Achievements.maxAchievements];
+	
+	if(!MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
+	{
+		System.out.println("Brak pliku: " +MainClass.achievementsFile.getName());
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
+		    oos.writeObject(ac);
+		    oos.close();
+			}
+			catch (IOException ioe)
+			{
+				ioe.printStackTrace();
+				System.exit(-1);
+			}
+	}
+	
+	try {
+	ois = new ObjectInputStream(new FileInputStream(MainClass.achievementsFile));
+	ac = (boolean[]) ois.readObject();
+	ois.close();
+	}
+	catch (IOException | ClassNotFoundException e)
+	{
+		e.printStackTrace();
+		System.exit(-1);
+	}
+	
+	achievements = new Achievements();
+	achievements.setJumpCount10Complete(ac[0]);
+	achievements.setJumpCount25Complete(ac[1]);
+	achievements.setCoinCount20Complete(ac[2]);
+	achievements.setCoinCount50Complete(ac[3]);
+	achievements.setPowerupCount3Complete(ac[4]);
+}
+
+public static Achievements getAchievementsInstance()
+{
+	return achievements;
 }
 
 public static void main(String[] args) {

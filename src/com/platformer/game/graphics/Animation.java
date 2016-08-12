@@ -37,6 +37,11 @@ public void runAnimation()
 	}
 }
 
+public int getFrames()
+{
+	return frames;
+}
+
 private void nextFrame()
 {
 	for (int i = 0; i < frames; i++)

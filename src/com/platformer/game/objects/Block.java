@@ -36,22 +36,22 @@ public Block(ObjectId id, float x, float y, int type) {
 
 @Override
 public void render(Graphics g) {
-	if (type == 0) g.drawImage(tex.blocks[0], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 1) g.drawImage(tex.blocks[1], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 2) g.drawImage(tex.blocks[2], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 3) g.drawImage(tex.blocks[3], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 4) g.drawImage(tex.blocks[4], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 5) g.drawImage(tex.blocks[5], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 6) g.drawImage(tex.blocks[6], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 7) g.drawImage(tex.blocks[7], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 8) g.drawImage(tex.blocks[8], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 9) g.drawImage(tex.blocks[9], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 10) g.drawImage(tex.blocks[10], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 11) g.drawImage(tex.blocks[11], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 12) g.drawImage(tex.blocks[12], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 13) g.drawImage(tex.blocks[13], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 14) g.drawImage(tex.blocks[14], (int)x, (int)y, (int) width, (int) height, null);
-	if (type == 15) g.drawImage(tex.blocks[15], (int)x, (int)y, (int) width, (int) height, null);
+	if (type == 0) g.drawImage(tex.blocks[0], (int)x, (int)y, null);
+	if (type == 1) g.drawImage(tex.blocks[1], (int)x, (int)y, null);
+	if (type == 2) g.drawImage(tex.blocks[2], (int)x, (int)y, null);
+	if (type == 3) g.drawImage(tex.blocks[3], (int)x, (int)y, null);
+	if (type == 4) g.drawImage(tex.blocks[4], (int)x, (int)y, null);
+	if (type == 5) g.drawImage(tex.blocks[5], (int)x, (int)y, null);
+	if (type == 6) g.drawImage(tex.blocks[6], (int)x, (int)y, null);
+	if (type == 7) g.drawImage(tex.blocks[7], (int)x, (int)y, null);
+	if (type == 8) g.drawImage(tex.blocks[8], (int)x, (int)y, null);
+	if (type == 9) g.drawImage(tex.blocks[9], (int)x, (int)y, null);
+	if (type == 10) g.drawImage(tex.blocks[10], (int)x, (int)y, null);
+	if (type == 11) g.drawImage(tex.blocks[11], (int)x, (int)y, null);
+	if (type == 12) g.drawImage(tex.blocks[12], (int)x, (int)y, null);
+	if (type == 13) g.drawImage(tex.blocks[13], (int)x, (int)y, null);
+	if (type == 14) g.drawImage(tex.blocks[14], (int)x, (int)y, null);
+	if (type == 15) g.drawImage(tex.blocks[15], (int)x, (int)y, null);
 }
 
 @Override

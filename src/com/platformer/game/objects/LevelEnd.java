@@ -34,7 +34,7 @@ public LevelEnd(ObjectId id, float x, float y) {
 
 @Override
 public void render(Graphics g) {	
-	g.drawImage(tex.levelend, (int)x-tex.levelend.getWidth() /2 +23, (int)y-tex.levelend.getHeight()/2+18, null);
+	g.drawImage(tex.levelend, (int) (x), (int) (y-15), null);
 }
 
 @Override

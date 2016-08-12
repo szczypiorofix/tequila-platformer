@@ -22,7 +22,6 @@ private float width, height;
 private boolean action;
 private int direction;
 private Animation tumbling;
-private int jumpStep;
 private boolean jumping;
 private float gravity;
 private boolean onGround;
@@ -41,7 +40,6 @@ public Tumbleweed(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 	velX = 0;
 	velY = 0;
 	direction = 1;
-	jumpStep = 0;
 	action = false;
 	onGround = false;
 	jumping = false;
@@ -95,7 +93,7 @@ public void collisions()
 
 		if (getBounds().intersects(tempObject.getBounds()))
 		{			
-			y = tempObject.getY() - 50;
+			y = tempObject.getY() - 55;
 			jumping = false;
 			velY = 0;
 			onGround = true;
@@ -134,35 +132,6 @@ public void collisions()
 			x = tempObject.getX() + 78;
 		}
 	}
-	
-	for (int i = 0; i < objectsHandler.getButtonBlock_List().size(); i++)
-	{
-		tempObject = objectsHandler.getButtonBlock_List().get(i);
-		if (getBounds().intersects(tempObject.getBounds()))
-		{
-			tempObject.setAction(true);
-			velY = 0;
-			y = tempObject.getY() - 80;
-			onGround = true;
-			System.out.println("OK");
-		}
-		else {
-			//onGround = false;
-		}
-		
-		if (getBoundsRight().intersects(tempObject.getBounds()))
-		{			
-			x = tempObject.getX() - 65;
-			velX = 0;
-		}
-		if (getBoundsLeft().intersects(tempObject.getBounds()))
-		{			
-			x = tempObject.getX() + 55;
-			velX = 0;
-		}
-		if (tempObject.isAction()) System.out.println("OK");
-	}
-	
 }
 
 @Override
