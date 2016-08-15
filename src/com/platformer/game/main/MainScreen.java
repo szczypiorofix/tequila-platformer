@@ -97,6 +97,8 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	this.gameWindow = gameWindow;
 	
 	// TODO coœ co zrzuca ska³y na g³owê (w³¹cza siê w obszarze jak kaktus
+	// TODO coœ w rodzaju przycisku - podchodzisz stajesz/dotykasz i coœ siê w³¹cza/otwiera np. przejœcie
+	// TODO coœ w rodzaju pracuj¹cych no¿yc-drzwi jak z Prince of Persia
 	
 	this.gamepadEnabled = gamepadEnabled;
 	if (this.gamepadEnabled) 
@@ -431,8 +433,8 @@ public void render(int fps_count, int ticks_count)
 	g2d.setFont(new Font("Verdana", 1, 12));
 	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
 	g2d.drawString("CZAS: "+time, MainClass.WIDTH - 150, 80);
-	g2d.drawString("CAM X "+ cam.getX(), MainClass.WIDTH - 170, 120);
 	
+	//g2d.drawString("CAM X "+ cam.getX(), MainClass.WIDTH - 170, 120);
 	//g2d.drawString("GROUND "+ player.isOnGround(), MainClass.WIDTH - 170, 120);
 	//g2d.drawString("JUMP "+ player.isJumping(), MainClass.WIDTH - 170, 170);
 	//g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
