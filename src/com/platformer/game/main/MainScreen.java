@@ -63,6 +63,7 @@ private Joystick joystick;
 private Controller myGamepad;
 private Component[] gamepadComponents;
 private boolean exit = false;
+private Graphics2D g2d;
 private Camera cam;
 private static Textures tex;
 private BufferedImage backGroundMountains;
@@ -248,7 +249,7 @@ public void tick()
 	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit=true;
 	if (key.isKeyPressedOnce(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
 	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
-		System.out.println("W¹tki: "+Thread.activeCount());
+		player.setHealth(5);
 	}
 	
 	
@@ -345,7 +346,7 @@ public void showMessage(Graphics2D g2d, String msg, BufferedImage image, int cou
 	{
 		if(MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
 		{
-			System.out.println("Zapis achievementów do pliku");
+			//System.out.println("Zapis achievementów do pliku");
 			try {
 			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
 		    oos.writeObject(MainClass.ac);
@@ -359,7 +360,7 @@ public void showMessage(Graphics2D g2d, String msg, BufferedImage image, int cou
 			saveAchievementsToFile = true;
 		}
 		else
-			System.out.println("Brak pliku!!!");
+			//System.out.println("Brak pliku!!!");
 		saveAchievementsToFile = true;
 	}
 	
@@ -397,10 +398,10 @@ public void render(int fps_count, int ticks_count)
 	
 	/////////////////// DRAW HERE ////////////////////////////
 	
-	Graphics2D g2d = (Graphics2D) g;
+	g2d = (Graphics2D) g;
 	RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	
-    g2d.setRenderingHints(rh);
+	g2d.setRenderingHints(rh);
 	g.setColor(new Color(184, 220, 254));
 	g.fillRect(0,0,getWidth(), getHeight());
 	
@@ -408,9 +409,10 @@ public void render(int fps_count, int ticks_count)
 	g2d.setColor(Color.BLUE);
 	
 	/// MOUNTAING & PARALLAX
-	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
+	
+	if (cam.getX() < 10  && cam.getX() > -6950) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	if (cam.getX() < -15  && cam.getX() > -14000) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+	if (cam.getX() < -7000  && cam.getX() > -14500) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
 	
 	g2d.drawImage(sun, 210, (int) (cam.getY()/1.33) + 420, null);
 	
@@ -429,6 +431,10 @@ public void render(int fps_count, int ticks_count)
 	g2d.setFont(new Font("Verdana", 1, 12));
 	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
 	g2d.drawString("CZAS: "+time, MainClass.WIDTH - 150, 80);
+	g2d.drawString("CAM X "+ cam.getX(), MainClass.WIDTH - 170, 120);
+	
+	//g2d.drawString("GROUND "+ player.isOnGround(), MainClass.WIDTH - 170, 120);
+	//g2d.drawString("JUMP "+ player.isJumping(), MainClass.WIDTH - 170, 170);
 	//g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
 	
 	if (player.isTequila_powerUp()) {
@@ -504,7 +510,7 @@ public void render(int fps_count, int ticks_count)
 	bs.show();
 }
 
-public static Textures getInstance()
+public static Textures getTexturesInstance()
 {
 	return tex;
 }

@@ -10,11 +10,11 @@ import com.platformer.game.main.ObjectId;
 
 public class LevelEnd extends GameObject {
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
-private boolean action;
+private boolean action, visible;
 private int direction;
 private ObjectId id;
 
@@ -30,6 +30,7 @@ public LevelEnd(ObjectId id, float x, float y) {
 	height = 45;
 	direction = 0;
 	action = false;
+	visible = true;
 }
 
 @Override
@@ -134,5 +135,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

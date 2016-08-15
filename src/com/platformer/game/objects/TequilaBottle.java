@@ -11,13 +11,13 @@ import com.platformer.game.main.ObjectId;
 public class TequilaBottle extends GameObject{
 
 	
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float x, y;
 private ObjectId id;
 private float velX, velY;
 private float width, height;
 private int direction;
-private boolean action;
+private boolean action, visible;
 
 	
 public TequilaBottle(ObjectId id, float x, float y) {
@@ -26,6 +26,7 @@ public TequilaBottle(ObjectId id, float x, float y) {
 		this.y = y;
 		direction = 0;
 		action = false;
+		visible = true;
 		width = 32;
 		height = 60;
 		velX = 0;
@@ -134,5 +135,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

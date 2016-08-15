@@ -1,6 +1,7 @@
 package com.platformer.game.objects;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
@@ -16,9 +17,9 @@ private ObjectId id;
 private float x, y;
 private float velX, velY;
 private float width, height;
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private ObjectsHandler objectsHandler;
-private boolean action;
+private boolean action, visible;
 private int direction;
 private GameObject tempObject;
 
@@ -35,11 +36,14 @@ public ButtonBlock(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 	velY = 0;
 	direction = 1;
 	action = false;
+	visible = true;
 }
 
 @Override
 public void render(Graphics g) {
 	g.drawImage(tex.buttonBlock, (int) x, (int) y,  null);
+	//Graphics2D g2d = (Graphics2D) g;
+	//g2d.draw(getImpactBounds());
 }
 
 @Override
@@ -49,14 +53,14 @@ public void tick(LinkedList<GameObject> object) {
 	for (int i = 0; i < objectsHandler.getPushingMovingBlockX_List().size(); i++)
 	{
 		tempObject = objectsHandler.getPushingMovingBlockX_List().get(i);
-		if (getImpactBounds().intersects(tempObject.getBounds()) && action)	tempObject.setAction(true);
+		if (getImpactBounds().intersects(tempObject.getBounds()) && action && tempObject.isVisible())	tempObject.setAction(true);
 	}
 	
 	// PUSHING MOVING BLOCK Y LIST
 	for (int i = 0; i < objectsHandler.getPushingMovingBlockY_List().size(); i++)
 	{
 		tempObject = objectsHandler.getPushingMovingBlockY_List().get(i);
-		if (getImpactBounds().intersects(tempObject.getBounds()) && action)	tempObject.setAction(true);
+		if (getImpactBounds().intersects(tempObject.getBounds()) && action && tempObject.isVisible())	tempObject.setAction(true);
 	}
 	
 	action = false;
@@ -159,5 +163,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

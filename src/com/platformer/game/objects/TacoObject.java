@@ -10,13 +10,13 @@ import com.platformer.game.main.ObjectId;
 
 public class TacoObject extends GameObject{
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
 private ObjectId id;
 private int direction;
-private boolean action;
+private boolean action, visible;
 
 	
 public TacoObject(ObjectId id, float x, float y) {
@@ -28,6 +28,7 @@ public TacoObject(ObjectId id, float x, float y) {
 	height = 48;
 	direction = 1;
 	action = false;
+	visible = true;
 	velX = 0;
 	velY = 0;
 }
@@ -134,5 +135,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

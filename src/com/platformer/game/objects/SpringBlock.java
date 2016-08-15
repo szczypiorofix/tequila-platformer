@@ -12,13 +12,14 @@ import com.platformer.game.main.ObjectId;
 public class SpringBlock extends GameObject{
 
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
 private int direction;
-private boolean action;
+private boolean action, visible;
 private ObjectId id;
+private int counter;
 
 	
 	
@@ -32,28 +33,38 @@ public SpringBlock(ObjectId id, float x, float y)
 	height = 55;
 	velX = 0;
 	velY = 0;
+	counter = 0;
 	direction = 1;
 	action = false;
+	visible = true;
 }
-
-
 
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.springBlock, (int) x, (int) y-5, null);
-	Graphics2D g2d = (Graphics2D) g;
-	g2d.draw(getBounds());
+	if (action) g.drawImage(tex.springBlock2, (int) x, (int) y-10, null);
+	else g.drawImage(tex.springBlock, (int) x, (int) y-5, null);
+	//Graphics2D g2d = (Graphics2D) g;
+	//g2d.draw(getBounds());
 }
 
 @Override
 public void tick(LinkedList<GameObject> object) {
-		
+	if (action)
+	{
+		counter ++;	
+	}
+	if (counter > 12)
+	{
+		action = false;
+		counter = 0;
+	}
+	
 }
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y-8, (int) width, (int) height);
+	return new Rectangle((int) x, (int) y-10, (int) width, (int) height+10);
 }
 
 @Override
@@ -144,5 +155,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

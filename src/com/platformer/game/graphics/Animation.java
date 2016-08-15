@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
 public class Animation {
 
 private int speed;
-private int frames;
+private int maxKlatki;
 private int index = 0;
-private int count = 0;
+private int klatkaAnimacji = 1;
 private BufferedImage[] images;
 private BufferedImage currentImage;
 private float counter = 0.2f;
@@ -24,7 +24,7 @@ public Animation(int speed, BufferedImage... args)
 	{
 		images[i] = args[i];
 	}
-	frames = args.length;
+	maxKlatki = args.length;
 }
 
 public void runAnimation()
@@ -37,19 +37,24 @@ public void runAnimation()
 	}
 }
 
-public int getFrames()
+public int geMaxKlatki()
 {
-	return frames;
+	return maxKlatki;
+}
+
+public int getKlatkaAnimacji()
+{
+	return klatkaAnimacji;
 }
 
 private void nextFrame()
 {
-	for (int i = 0; i < frames; i++)
+	for (int i = 0; i < maxKlatki; i++)
 	{
-		if (count == i) currentImage = images[i];
+		if (klatkaAnimacji == i) currentImage = images[i];
 	}
-	count ++;
-	if (count >= frames) count = 0;
+	klatkaAnimacji ++;
+	if (klatkaAnimacji >= maxKlatki) klatkaAnimacji = 0;
 }
 
 public static BufferedImage makeImageTranslucent(BufferedImage source, double alpha) {

@@ -71,7 +71,12 @@ public ObjectsHandler(Camera cam)
 
 public void iteratingTick(LinkedList<GameObject> list)
 {
-	for (int i = 0; i < list.size(); i++) list.get(i).tick(list);
+	for (int i = 0; i < list.size(); i++) {
+		if (list.get(i).getX() < -cam.getX()+1100  &&  list.get(i).getX() > -cam.getX()-280) list.get(i).setVisible(true);
+		else list.get(i).setVisible(false);
+		
+		list.get(i).tick(list);
+	}
 }
 
 public void tick()
@@ -102,7 +107,9 @@ public void tick()
 
 public void iteratingRender(Graphics g, LinkedList<GameObject> list)
 {
-	for (int i = 0; i < list.size(); i++) list.get(i).render(g);
+	for (int i = 0; i < list.size(); i++) {
+		if (list.get(i).isVisible()) list.get(i).render(g);
+	}
 }
 
 public void render(Graphics g)

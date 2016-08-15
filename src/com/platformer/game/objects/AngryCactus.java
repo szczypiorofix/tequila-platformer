@@ -12,9 +12,9 @@ public class AngryCactus extends GameObject{
 
 
 private float width, height;
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private int direction;
-private boolean action;
+private boolean action, visible;
 private static final int SHOOTING_MAX = 100;
 private int shooting_time = SHOOTING_MAX;
 private float x, y;
@@ -34,6 +34,7 @@ public AngryCactus(ObjectId id, float x, float y) {
 	velY = 0;
 	direction = 1;
 	action = false;
+	visible = true;
 	this.id = id;
 }
 
@@ -152,5 +153,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

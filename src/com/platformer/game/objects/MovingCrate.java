@@ -14,13 +14,13 @@ public class MovingCrate extends GameObject{
 	
 private float width;
 private float height;
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private ObjectsHandler objectsHandler;
 private float x, y;
 private float velX, velY;
 private boolean onGround;
 private float gravity;
-private boolean action;
+private boolean action, visible;
 private ObjectId id;
 private int direction;
 
@@ -34,6 +34,7 @@ public MovingCrate(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 	width = 64;
 	height = 64;
 	action = false;
+	visible = true;
 	direction = 1;
 	this.objectsHandler = objectsHandler;
 	onGround = false;
@@ -244,5 +245,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

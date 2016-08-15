@@ -13,13 +13,13 @@ public class WaterObject extends GameObject{
 
 	
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private int type;
 private float x, y;
 private float velX, velY;
 private float width, height;
 private ObjectId id;
-private boolean action;
+private boolean action, visible;
 private int direction;
 private Animation waterAnim;
 
@@ -32,6 +32,7 @@ public WaterObject(ObjectId id, float x, float y, int type) {
 	width = 50;
 	height = 50;
 	action = false;
+	visible = true;
 	direction = 1;
 	velX = 0;
 	velY = 0;
@@ -145,5 +146,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

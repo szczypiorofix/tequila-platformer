@@ -36,7 +36,7 @@ public BufferedImage buttonBlock;
 public BufferedImage pushingMovingBlockXOff, pushingMovingBlockXOn, pushingMovingBlockYOff, pushingMovingBlockYOn;
 public BufferedImage spikeBlock1, spikeBlock2, spikeBlock3, spikeBlock4;
 public BufferedImage tumbleweed, tumbleweed1, tumbleweed2, tumbleweed3, tumbleweed4, tumbleweed5, tumbleweed6, tumbleweed7;
-public BufferedImage springBlock;
+public BufferedImage springBlock, springBlock2;
 public BufferedImage fallingBlock;
 public BufferedImage clouds1, clouds2, clouds3;
 
@@ -244,6 +244,7 @@ public Textures()
 	tumbleweed7 = op.filter(tumbleweed, null);
 	
 	springBlock = loader.loadImage("/SpringBlock.png");
+	springBlock2 = loader.loadImage("/SpringBlock2.png");
 	
 	fallingBlock = loader.loadImage("/FallingBlock.png");
 	

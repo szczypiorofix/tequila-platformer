@@ -11,12 +11,12 @@ import com.platformer.game.main.ObjectId;
 public class SceneryObject extends GameObject{
 
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private ObjectId id;
 private float x, y;
 private float velX, velY;
 private float width, height;
-private boolean action;
+private boolean action, visible;
 private int direction;
 private int type;
 
@@ -31,6 +31,7 @@ public SceneryObject(ObjectId id, float x, float y, int type) {
 	velY = 0;
 	direction = 1;
 	action = false;
+	visible = true;
 	width = 45;
 	height = 45;
 	this.type = type;
@@ -149,5 +150,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

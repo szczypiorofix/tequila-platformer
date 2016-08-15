@@ -11,7 +11,7 @@ import com.platformer.game.main.ObjectId;
 
 public class BeeObject extends GameObject{
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private Animation beeMovingR, beeMovingL;
 private int direction;
 private int startPos = 0;
@@ -19,7 +19,7 @@ private float x, y;
 private float velX;
 private float velY;
 private float width, height;
-private boolean action;
+private boolean action, visible;
 private ObjectId id;
 
 
@@ -34,6 +34,7 @@ public BeeObject(ObjectId id, float x, float y) {
 	width = 32;
 	height = 32;
 	action = false;
+	visible = true;
 	startPos = (int) x;
 	beeMovingR = new Animation(3, tex.beeR[0], tex.beeR[1], tex.beeR[2], tex.beeR[3], tex.beeR[4]);
 	beeMovingL = new Animation(3, tex.beeL[0], tex.beeL[1], tex.beeL[2], tex.beeL[3], tex.beeL[4]);
@@ -151,5 +152,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

@@ -12,14 +12,14 @@ public class MovingBlockY extends GameObject{
 
 	
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float x, y;
 private float velX;
 private float velY;
 private ObjectId id;
 private float width, height;
 private int startPos ;
-private boolean action;
+private boolean action, visible;
 private int direction;
 private int counter;
 private int WAITING_TIME = 30;
@@ -37,6 +37,7 @@ public MovingBlockY(ObjectId id, float x, float y) {
 	direction = 0;
 	counter = 0;
 	action = false;
+	visible = true;
 	startPos = (int) (this.y);
 }
 
@@ -155,5 +156,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

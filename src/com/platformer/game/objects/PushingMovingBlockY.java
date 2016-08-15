@@ -14,9 +14,9 @@ public class PushingMovingBlockY extends GameObject{
 private float x, y;
 private float velX, velY;
 private float width, height;
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private int startPos = 0;
-private boolean action;
+private boolean action, visible;
 private int direction;
 private ObjectId id;
 private int counter;
@@ -36,6 +36,7 @@ public PushingMovingBlockY(ObjectId id, float x, float y)
 	direction = 0;
 	counter = 0;
 	action = false;
+	visible = true;
 	startPos = (int) (this.y);
 }
 
@@ -49,15 +50,15 @@ public void render(Graphics g) {
 public void tick(LinkedList<GameObject> object) {
 	
 	if (y >= startPos) {
-		counter++;
-		velY = 0;
-		if (counter > WAITING_TIME) 
+		//counter++;
+		//velY = 0;
+		//if (counter >= WAITING_TIME) 
 			velY = -1f;
 	}
-	if (y < startPos - 160) {
-		counter--;
-		velY = 0;
-		if (counter < 0) 
+	if (y <= startPos - 160) {
+		//counter--;
+		//velY = 0;
+		//if (counter < 0) 
 			velY = 1f;
 	}
 	
@@ -158,6 +159,16 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 
 }

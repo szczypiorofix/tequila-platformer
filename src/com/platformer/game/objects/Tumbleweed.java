@@ -1,7 +1,6 @@
 package com.platformer.game.objects;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
@@ -14,12 +13,12 @@ import com.platformer.game.main.ObjectsHandler;
 public class Tumbleweed extends GameObject{
 
 	
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private ObjectId id;
 private float x, y;
 private float velX, velY;
 private float width, height;
-private boolean action;
+private boolean action, visible;
 private int direction;
 private Animation tumbling;
 private boolean jumping;
@@ -41,6 +40,7 @@ public Tumbleweed(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 	velY = 0;
 	direction = 1;
 	action = false;
+	visible = true;
 	onGround = false;
 	jumping = false;
 	gravity = 0.2f;
@@ -53,12 +53,12 @@ public Tumbleweed(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 public void render(Graphics g) {
 	tumbling.drawAnimation(g, (int) x, ( int ) (y - 15), false);
 	
-	Graphics2D g2d = (Graphics2D) g;
+	//Graphics2D g2d = (Graphics2D) g;
 	
-	g2d.draw(getBounds());
-	g2d.draw(getBoundsTop());
-	g2d.draw(getBoundsLeft());
-	g2d.draw(getBoundsRight());
+	//g2d.draw(getBounds());
+	//g2d.draw(getBoundsTop());
+	//g2d.draw(getBoundsLeft());
+	//g2d.draw(getBoundsRight());
 }
 
 @Override
@@ -91,45 +91,48 @@ public void collisions()
 	{
 		tempObject = objectsHandler.getBlock_List().get(i);
 
-		if (getBounds().intersects(tempObject.getBounds()))
-		{			
-			y = tempObject.getY() - 55;
-			jumping = false;
-			velY = 0;
-			onGround = true;
-		}
+			if (getBounds().intersects(tempObject.getBounds()))
+			{			
+				y = tempObject.getY() - 55;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+			}
+			
+			if (getBoundsRight().intersects(tempObject.getBounds())) {
+				velX = -2f;
+				x = tempObject.getX() -65;
+			}
+			
+			if (getBoundsLeft().intersects(tempObject.getBounds())) {
+				velX = 2f;
+				x = tempObject.getX() + 65;
+			}	
 		
-		if (getBoundsRight().intersects(tempObject.getBounds())) {
-			velX = -2f;
-			x = tempObject.getX() -65;
-		}
-		
-		if (getBoundsLeft().intersects(tempObject.getBounds())) {
-			velX = 2f;
-			x = tempObject.getX() + 65;
-		}
 	}
 	
 	for (int i = 0; i < objectsHandler.getMovingCrate_List().size(); i++)
 	{
 		tempObject = objectsHandler.getMovingCrate_List().get(i);
-
-		if (getBounds().intersects(tempObject.getBounds()))
-		{			
-			y = tempObject.getY() - 51;
-			jumping = false;
-			velY = 0;
-			onGround = true;
-		}
-		
-		if (getBoundsRight().intersects(tempObject.getBounds())) {
-			velX = -2f;
-			x = tempObject.getX() -78;
-		}
-		
-		if (getBoundsLeft().intersects(tempObject.getBounds())) {
-			velX = 2f;
-			x = tempObject.getX() + 78;
+		if (tempObject.isVisible())
+		{
+			if (getBounds().intersects(tempObject.getBounds()))
+			{			
+				y = tempObject.getY() - 51;
+				jumping = false;
+				velY = 0;
+				onGround = true;
+			}
+			
+			if (getBoundsRight().intersects(tempObject.getBounds())) {
+				velX = -2f;
+				x = tempObject.getX() -78;
+			}
+			
+			if (getBoundsLeft().intersects(tempObject.getBounds())) {
+				velX = 2f;
+				x = tempObject.getX() + 78;
+			}
 		}
 	}
 }
@@ -239,5 +242,17 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

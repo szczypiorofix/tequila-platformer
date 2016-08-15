@@ -19,6 +19,9 @@ public abstract void tick(LinkedList<GameObject> object);
 public abstract Rectangle getBounds();
 
 
+public abstract boolean isVisible();
+public abstract void setVisible(boolean visible);
+
 public abstract ObjectId getId();
 public abstract void setId(ObjectId id);
 

@@ -11,15 +11,14 @@ import com.platformer.game.main.ObjectId;
 
 public class SpikeBlock extends GameObject{
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float x, y;
 private float width, height;
 private float velX, velY;
 private int direction;
-private boolean action;
+private boolean action, visible;
 private ObjectId id;
 private Animation spikeAnimation;
-private int hurts;
 private int animationTempo;
 
 
@@ -34,9 +33,9 @@ public SpikeBlock(ObjectId id, float x, float y)
 	height = 70;
 	velX = 0;
 	velY = 0;
-	hurts = 1;
 	direction = 1;
 	action = false;
+	visible = true;
 	animationTempo = 10;
 	spikeAnimation = new Animation(animationTempo, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock2
 			, tex.spikeBlock3, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock3, tex.spikeBlock2);
@@ -52,10 +51,10 @@ public void render(Graphics g) {
 @Override
 public void tick(LinkedList<GameObject> object) {
 	spikeAnimation.runAnimation();
+
+	if (spikeAnimation.getKlatkaAnimacji() > 8 && spikeAnimation.getKlatkaAnimacji() < 15) action = false;
+	else action = true;
 	
-	hurts++;
-	//System.out.println(hurts);
-	if (hurts > (spikeAnimation.getFrames() * animationTempo)) hurts = 1;
 }
 
 @Override
@@ -151,5 +150,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

@@ -12,11 +12,11 @@ import com.platformer.game.main.ObjectId;
 public class Block extends GameObject{
 
 private float width, height;
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private int direction;
-private boolean action;
+private boolean action, visible;
 private int type;
 private ObjectId id;
 
@@ -30,6 +30,7 @@ public Block(ObjectId id, float x, float y, int type) {
 	velX = 0;
 	velY = 0;
 	action = false;
+	visible = true;
 	direction = 1;
 	this.type = type;
 }
@@ -151,5 +152,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

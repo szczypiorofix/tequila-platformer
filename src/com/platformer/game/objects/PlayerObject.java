@@ -19,13 +19,13 @@ public class PlayerObject extends GameObject{
 
 	
 private ObjectsHandler objectsHandler;
-private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound;
-private Textures tex = MainScreen.getInstance();
+private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound;
+private Textures tex = MainScreen.getTexturesInstance();
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
 private Achievements achievements = MainClass.getAchievementsInstance();
 private static final int MAX_HEALTH = 5;
 private static final float NORMAL_GRAVITY = 0.5f;
-private final float MAX_SPEED = 20f;
+private final float MAX_SPEED = 13f;
 private final int HIT_COOLDOWN = 60*2;
 private final int TEQUILA_COOLDOWN = 60*5;
 private final int TACO_COOLDOWN = 60*8;
@@ -35,6 +35,7 @@ private float velY = 0;
 private float gravity;
 private boolean onGround = false;
 private boolean jumping = false;
+private boolean visible;
 private boolean action;
 private float x, y;
 private int direction;
@@ -62,6 +63,7 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	height = 120;
 	this.objectsHandler = objectsHandler;
 	action = false;
+	visible = true;
 	direction = 1;
 	this.id = id;
 	health = MAX_HEALTH;
@@ -71,11 +73,13 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	coinSound = new SoundsLoader("/coin10.wav");
 	hitSound = new SoundsLoader("/hit.wav");
 	cactusShotSound = new SoundsLoader("/cactusShot.wav");
+	springJumpSound = new SoundsLoader("/SpringJump.wav");
 	jumpSound.setVolume(-15f);
 	powerUpSound.setVolume(-20f);
 	coinSound.setVolume(-15f);
 	hitSound.setVolume(-15f);
 	cactusShotSound.setVolume(-15f);
+	springJumpSound.setVolume(-15f);
 	
 	playerRunRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
 	playerRunLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
@@ -96,17 +100,17 @@ public void tick(LinkedList<GameObject> object) {
 		if ((MainScreen.PLAYER_LEFT) || (MainScreen.PLAYER_RIGHT))
 			{
 				if ((MainScreen.PLAYER_LEFT)) {
-					if (velX > -5) velX -=0.4f;
+					if (velX > -5) velX -=0.5f;
 					direction = -1;
 				}
 				if (MainScreen.PLAYER_RIGHT) {
-					if (velX < 5) velX +=0.4f;
+					if (velX < 5) velX +=0.5f;
 					direction = 1;
 				}
 			}
 			else {
-				velX *= 0.75f;
-				if (velX < 0.24 && velX > -0.24) velX = 0;
+				velX *= 0.80f;
+				if (velX < 0.15 && velX > -0.15) velX = 0;
 			}
 		
 		if ((MainScreen.PLAYER_JUMP) && (!jumping) && (onGround)) {
@@ -120,6 +124,8 @@ public void tick(LinkedList<GameObject> object) {
 	if (!onGround) velY += gravity;
 	if (velY > MAX_SPEED) velY = MAX_SPEED;
 
+	if (velY != 0) jumping = true;
+	
 	x += velX;
 	y += velY;
 	
@@ -185,90 +191,102 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getBlock_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getBlock_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
-					
-					y = tempObject.getY() + 40;
-					velY = 0;	
+				if (getBoundsTop().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
+						
+						y = tempObject.getY() + 40;
+						velY = 0;	
+					}
 				}
-			}
+					
+				if (getBounds().intersects(tempObject.getBounds()))
+				{			
+					y = tempObject.getY() - 103;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+				}
+					
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
 				
-			if (getBounds().intersects(tempObject.getBounds()))
-			{			
-				y = tempObject.getY() - 103;
-				jumping = false;
-				velY = 0;
-				onGround = true;
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
 			}
-				
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
-			
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
 		}
 		
 		/// MOVING BLOCK Y LIST
 		for (int i = 0; i < objectsHandler.getMovingBlockY_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getMovingBlockY_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
-					y = tempObject.getY() + 41;
-					velY = 0;	
+				if (getBoundsTop().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
+						y = tempObject.getY() + 41;
+						velY = 0;	
+					}
 				}
+					
+				if (getBounds().intersects(tempObject.getBounds()))
+				{
+					y = tempObject.getY() -103;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+					if (velY == 0) y += tempObject.getVelY();
+				}
+					
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
+					
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
 			}
-				
-			if (getBounds().intersects(tempObject.getBounds()))
-			{
-				y = tempObject.getY() -103;
-				jumping = false;
-				velY = 0;
-				onGround = true;
-				if (velY == 0) y += tempObject.getVelY();
-			}
-				
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
-				
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
 		}
 		
 		/// MOVING BLOCK X LIST
 		for (int i = 0; i < objectsHandler.getMovingBlockX_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getMovingBlockX_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
-					y = tempObject.getY() + 41;
-					velY = 0;
-					x += tempObject.getVelX();
+				if (getBoundsTop().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
+						y = tempObject.getY() + 41;
+						velY = 0;
+						x += tempObject.getVelX();
+					}
 				}
-			}
-					
-			if (getBounds().intersects(tempObject.getBounds()))
-			{
-				y = tempObject.getY() -103;
-				jumping = false;
-				velY = 0;
-				onGround = true;
-				if (velX == 0) x += tempObject.getVelX();
-			}
 						
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
-				
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
+				if (getBounds().intersects(tempObject.getBounds()))
+				{
+					y = tempObject.getY() -103;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+					if (velX == 0) x += tempObject.getVelX();
+				}
+							
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
+					
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
+			}
 		}
 		
 		/// LEVEL END LIST
 		for (int i = 0; i < objectsHandler.getLevelEnd_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getLevelEnd_List().get(i);
-			if (getBounds().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				velX = 0f;
-				velY = 0f;
-				finishLevel = true;
+				if (getBounds().intersects(tempObject.getBounds()))
+				{
+					velX = 0f;
+					velY = 0f;
+					finishLevel = true;
+				}				
 			}
 		}
 
@@ -276,14 +294,17 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getCoin_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getCoin_List().get(i);
-			if (getWholeBounds().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				objectsHandler.getCoin_List().remove(tempObject);
-				MainScreen.COINS++;
-				MainScreen.SCORE += 20;
-				achievements.addCoin20Count();
-				if (achievements.isCoinCount20Complete()) achievements.addCoin50Count();
-				coinSound.play();
+				if (getWholeBounds().intersects(tempObject.getBounds()))
+				{
+					objectsHandler.getCoin_List().remove(tempObject);
+					MainScreen.COINS++;
+					MainScreen.SCORE += 20;
+					achievements.addCoin20Count();
+					if (achievements.isCoinCount20Complete()) achievements.addCoin50Count();
+					coinSound.play();
+				}
 			}
 		}
 		
@@ -291,15 +312,18 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getTequila_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getTequila_List().get(i);
-			if (getWholeBounds().intersects(tempObject.getBounds()) && (!isTequila_powerUp()))
+			if (tempObject.isVisible())
 			{
-				objectsHandler.getTequila_List().remove(tempObject);
-				MainScreen.SCORE += 35;
-				powerUpSound.play();
-				achievements.addPowerup3Count();
-				tequila_powerUp = true;
-				taco_powerUp = false;
-				taco_time = TACO_COOLDOWN;
+				if (getWholeBounds().intersects(tempObject.getBounds()) && (!isTequila_powerUp()))
+				{
+					objectsHandler.getTequila_List().remove(tempObject);
+					MainScreen.SCORE += 35;
+					powerUpSound.play();
+					achievements.addPowerup3Count();
+					tequila_powerUp = true;
+					taco_powerUp = false;
+					taco_time = TACO_COOLDOWN;
+				}
 			}
 		}
 		
@@ -308,16 +332,19 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getTaco_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getTaco_List().get(i);
-			if (getWholeBounds().intersects(tempObject.getBounds()) && (health < MAX_HEALTH))
+			if (tempObject.isVisible())
 			{
-				objectsHandler.getTaco_List().remove(tempObject);
-				MainScreen.SCORE += 35;
-				powerUpSound.play();
-				achievements.addPowerup3Count();
-				taco_powerUp = true;
-				tequila_powerUp = false;
-				tequila_time = TEQUILA_COOLDOWN;
-				health++;
+				if (getWholeBounds().intersects(tempObject.getBounds()) && (health < MAX_HEALTH))
+				{
+					objectsHandler.getTaco_List().remove(tempObject);
+					MainScreen.SCORE += 35;
+					powerUpSound.play();
+					achievements.addPowerup3Count();
+					taco_powerUp = true;
+					tequila_powerUp = false;
+					tequila_time = TEQUILA_COOLDOWN;
+					health++;
+				}
 			}
 		}
 			
@@ -325,19 +352,22 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getDart_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getDart_List().get(i);
-			if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+			if (tempObject.isVisible())
 			{
-				if (tempObject.getX() > x) x -= 10;
-				else x += 10;
-				health--;
-				MainScreen.SCORE -=40;
-				hitSound.play();
-				hit_by_enemy = true;
-				objectsHandler.getDart_List().remove(tempObject);
-			}
-			
-			if (tempObject.getVelX() == 0) {
-				objectsHandler.getDart_List().remove(tempObject);
+				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+				{
+					if (tempObject.getX() > x) x -= 10;
+					else x += 10;
+					health--;
+					MainScreen.SCORE -=40;
+					hitSound.play();
+					hit_by_enemy = true;
+					objectsHandler.getDart_List().remove(tempObject);
+				}
+				
+				if (tempObject.getVelX() == 0) {
+					objectsHandler.getDart_List().remove(tempObject);
+				}
 			}
 		}
 		
@@ -345,39 +375,45 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getAngryCactus_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getAngryCactus_List().get(i);
-			if (getWholeBounds().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				tempObject.setVelX(1);
-				if (tempObject.getX() > x) tempObject.setDirection(-1);
-				else tempObject.setDirection(1);
-				
-				if (!tempObject.isAction()) {
-					objectsHandler.getDart_List().add(new Dart(ObjectId.Dart, (int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection()));
-					cactusShotSound.play();
-					tempObject.setAction(true);
-				}
-			} else tempObject.setVelX(0);
+				if (getWholeBounds().intersects(tempObject.getBounds()))
+				{
+					tempObject.setVelX(1);
+					if (tempObject.getX() > x) tempObject.setDirection(-1);
+					else tempObject.setDirection(1);
+					
+					if (!tempObject.isAction()) {
+						objectsHandler.getDart_List().add(new Dart(ObjectId.Dart, (int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection(), objectsHandler));
+						cactusShotSound.play();
+						tempObject.setAction(true);
+					}
+				} else tempObject.setVelX(0);
+			}
 		}
 		
 		/// MOVING CRATE LIST
 		for (int i = 0; i < objectsHandler.getMovingCrate_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getMovingCrate_List().get(i);
-			tempObject.setVelX(0);		
-			if (getBounds().intersects(tempObject.getBounds()))
-			{			
-				y = tempObject.getY() - 119;
-				jumping = false;
-				velY = 0;
-				onGround = true;
-			}
-			if (getBoundsRight().intersects(tempObject.getBounds())) {
-				x = tempObject.getX() - 75;
-				tempObject.setVelX(2);
-			}
-			if (getBoundsLeft().intersects(tempObject.getBounds())) {
-				x = tempObject.getX() + 68;
-				tempObject.setVelX(-2);
+			tempObject.setVelX(0);
+			if (tempObject.isVisible())
+			{
+				if (getBounds().intersects(tempObject.getBounds()))
+				{			
+					y = tempObject.getY() - 119;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+				}
+				if (getBoundsRight().intersects(tempObject.getBounds())) {
+					x = tempObject.getX() - 75;
+					tempObject.setVelX(2);
+				}
+				if (getBoundsLeft().intersects(tempObject.getBounds())) {
+					x = tempObject.getX() + 68;
+					tempObject.setVelX(-2);
+				}
 			}
 		}
 
@@ -385,14 +421,17 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getBee_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getBee_List().get(i);
-			if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+			if (tempObject.isVisible())
 			{
-				if (tempObject.getX() > x) x -= 25;
-				else x += 25;
-				health--;
-				MainScreen.SCORE -=40;
-				hitSound.play();
-				hit_by_enemy = true;
+				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+				{
+					if (tempObject.getX() > x) x -= 25;
+					else x += 25;
+					health--;
+					MainScreen.SCORE -=40;
+					hitSound.play();
+					hit_by_enemy = true;
+				}
 			}
 		}
 		
@@ -400,128 +439,143 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getPushingMovingBlockX_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getPushingMovingBlockX_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
-					y = tempObject.getY() + 41;
-					velY = 0;
-					x += tempObject.getVelX();
+				if (getBoundsTop().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
+						y = tempObject.getY() + 41;
+						velY = 0;
+						x += tempObject.getVelX();
+					}
 				}
-			}
-					
-			if (getBounds().intersects(tempObject.getBounds()))
-			{
-				y = tempObject.getY() -103;
-				jumping = false;
-				velY = 0;
-				onGround = true;
-				if (velX == 0 && tempObject.isAction()) x += tempObject.getVelX();
-			}
 						
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
-				
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
+				if (getBounds().intersects(tempObject.getBounds()))
+				{
+					y = tempObject.getY() -103;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+					if (velX == 0 && tempObject.isAction()) x += tempObject.getVelX();
+				}
+							
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
+					
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
+			}
 		}
 		
 		/// PUSHING MOVING BLOCK Y LIST
 		for (int i = 0; i < objectsHandler.getPushingMovingBlockY_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getPushingMovingBlockY_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
-					y = tempObject.getY() + 41;
-					velY = 0;	
+				if (getBoundsTop().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {				
+						y = tempObject.getY() + 41;
+						velY = 0;	
+					}
 				}
+					
+				if (getBounds().intersects(tempObject.getBounds()))
+				{
+					y = tempObject.getY() -103;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+					if (velY == 0) y += tempObject.getVelY();
+				}
+					
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
+					
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
 			}
-				
-			if (getBounds().intersects(tempObject.getBounds()))
-			{
-				y = tempObject.getY() -103;
-				jumping = false;
-				velY = 0;
-				onGround = true;
-				if (velY == 0) y += tempObject.getVelY();
-			}
-				
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
-				
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 79;
 		}
 		
 		/// BUTTON BLOCK LIST
 		for (int i = 0; i < objectsHandler.getButtonBlock_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getButtonBlock_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
-					
-					y = tempObject.getY() + 49;
-					velY = 0;	
+				if (getBoundsTop().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
+						
+						y = tempObject.getY() + 49;
+						velY = 0;	
+					}
 				}
-			}
-				
-			if (getBounds().intersects(tempObject.getBounds()))
-			{			
-				y = tempObject.getY() - 103;
-				jumping = false;
-				velY = 0;
-				onGround = true;
-				tempObject.setAction(true);
-			}
+					
+				if (getBounds().intersects(tempObject.getBounds()))
+				{			
+					y = tempObject.getY() - 103;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+					tempObject.setAction(true);
+				}
 
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
-			
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
+				
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
+			}
 		}
 		
 		/// SPIKE BLOCK LIST
 		for (int i = 0; i < objectsHandler.getSpikeBlock_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getSpikeBlock_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
-						
-					y = tempObject.getY() + 49;
-					velY = 0;	
-				}
-			}
-						
-			if (getBounds().intersects(tempObject.getBounds()))
-			{			
-				y = tempObject.getY() - 153;
-				jumping = false;
-				velY = 0;
-				onGround = true;
-				if (!hit_by_enemy)
+				if (getBoundsTop().intersects(tempObject.getBounds()))
 				{
-					y -= 70;
-					health--;
-					MainScreen.SCORE -=40;
-					hitSound.play();
-					hit_by_enemy = true;	
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
+							
+						y = tempObject.getY() + 49;
+						velY = 0;	
+					}
 				}
-			}
+							
+				if (getBounds().intersects(tempObject.getBounds()))
+				{			
+					y = tempObject.getY() - 103;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+					if (!hit_by_enemy && tempObject.isAction())
+					{
+						y -= 90;
+						health--;
+						MainScreen.SCORE -=40;
+						hitSound.play();
+						hit_by_enemy = true;	
+					}
+				}
 
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
-				
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
+					
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
+			}
 		}
 		
 		/// TUMBLEWEED LIST
 		for (int i = 0; i < objectsHandler.getTumbleweed_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getTumbleweed_List().get(i);
-			if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+			if (tempObject.isVisible())
 			{
-				if (tempObject.getX() > x) x -= 25;
-				else x += 25;
-				health--;
-				MainScreen.SCORE -=40;
-				hitSound.play();
-				hit_by_enemy = true;
+				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+				{
+					if (tempObject.getX() > x) x -= 25;
+					else x += 25;
+					health--;
+					MainScreen.SCORE -=40;
+					hitSound.play();
+					hit_by_enemy = true;
+				}
 			}
 		}
 		
@@ -529,53 +583,62 @@ private void collisions()
 		for (int i = 0; i < objectsHandler.getSpringBlock_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getSpringBlock_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
-						
-					y = tempObject.getY() + 49;
-					velY = 0;	
+				if (getBoundsTop().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
+							
+						y = tempObject.getY() + 49;
+						velY = 0;	
+					}
 				}
-			}
-								
-			if (getBounds().intersects(tempObject.getBounds()))
-			{			
-				y = tempObject.getY() - 105;
-				jumping = false;
-				if (velY > 0) velY = -18;
-				onGround = true;
-			}
+									
+				if (getBounds().intersects(tempObject.getBounds()))
+				{			
+					y = tempObject.getY() - 107;
+					if (jumping) {
+						velY = -18;
+						springJumpSound.play();
+						tempObject.setAction(true);
+					}
+					onGround = true;
+				}
 
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
-						
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
+							
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
+			}
 		}
 		
 		/// FALLING BLOCK LIST
 		for (int i = 0; i < objectsHandler.getFallingBlock_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getFallingBlock_List().get(i);
-			if (getBoundsTop().intersects(tempObject.getBounds()))
+			if (tempObject.isVisible())
 			{
-				if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
-					
-					y = tempObject.getY() + 20;
-					velY = 0;	
+				if (getBoundsTop().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
+						
+						y = tempObject.getY() + 20;
+						velY = 0;	
+					}
 				}
+							
+				if (getBounds().intersects(tempObject.getBounds()))
+				{			
+					y = tempObject.getY() - 103;
+					jumping = false;
+					velY = 0;
+					onGround = true;
+					tempObject.setAction(true);
+				}
+							
+				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
+					
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;	
 			}
-						
-			if (getBounds().intersects(tempObject.getBounds()))
-			{			
-				y = tempObject.getY() - 103;
-				jumping = false;
-				velY = 0;
-				onGround = true;
-				tempObject.setAction(true);
-			}
-						
-			if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
-				
-			if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;
 		}
 }
 
@@ -611,7 +674,7 @@ public void render(Graphics g) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) (x +15), (int) (y+95), 45, 12);
+	return new Rectangle((int) (x +13), (int) (y+93), 40, 14);
 }
 
 private Rectangle getBoundsTop() {
@@ -619,11 +682,11 @@ private Rectangle getBoundsTop() {
 }
 
 private Rectangle getBoundsRight() {
-	return new Rectangle((int) ((int) x+width-25)-20, (int)y+20, 10, (int) height -49);
+	return new Rectangle((int) ((int) x+width-25)-20, (int)y+20, 10, (int) height -48);
 }
 
 private Rectangle getBoundsLeft() {
-	return new Rectangle((int) x-5, (int)y+20, 10, (int) height -49);
+	return new Rectangle((int) x-5, (int)y+20, 10, (int) height -48);
 }
 
 private Rectangle getWholeBounds() {
@@ -769,5 +832,17 @@ public float getHeight() {
 @Override
 public void setHeight(float height) {	
 	this.height = height;
+}
+
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

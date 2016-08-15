@@ -11,12 +11,12 @@ import com.platformer.game.main.ObjectId;
 
 public class Coin extends GameObject{
 
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private Animation coinRotating;
 private float x, y;
 private float width, height;
 private float velX, velY;
-private boolean action;
+private boolean action, visible;
 private int direction;
 private ObjectId id;
 
@@ -31,6 +31,7 @@ public Coin(ObjectId id, float x, float y) {
 	width = 32;
 	height = 32;
 	action = false;
+	visible = true;
 	direction = 0;
 	
 	coinRotating = new Animation(5, tex.coinAnim[0], tex.coinAnim[1], tex.coinAnim[2], tex.coinAnim[3], tex.coinAnim[4], tex.coinAnim[5]
@@ -146,5 +147,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

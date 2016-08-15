@@ -11,12 +11,12 @@ import com.platformer.game.main.ObjectId;
 public class FallingBlock extends GameObject{
 
 	
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
 private int direction;
-private boolean action;
+private boolean action, visible;
 private ObjectId id;
 
 	
@@ -33,6 +33,7 @@ public FallingBlock(ObjectId id, float x, float y)
 	velY = 0;
 	direction = 1;
 	action = false;
+	visible = true;
 }
 
 	
@@ -150,5 +151,17 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }

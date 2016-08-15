@@ -11,14 +11,14 @@ import com.platformer.game.main.ObjectId;
 public class MovingBlockX extends GameObject{
 
 	
-private Textures tex = MainScreen.getInstance();
+private Textures tex = MainScreen.getTexturesInstance();
 private float velX;
 private float velY;
 private float x, y;
 private float width, height;
 private int direction;
 private ObjectId id;
-private boolean action;
+private boolean action, visible;
 private int startPos = 0;
 private int counter;
 private int WAITING_TIME = 30;
@@ -156,5 +156,15 @@ public int getDirection() {
 @Override
 public void setDirection(int direction) {
 	this.direction = direction;
+}
+
+@Override
+public boolean isVisible() {
+	return visible;
+}
+
+@Override
+public void setVisible(boolean visible) {
+	this.visible = visible;
 }
 }
