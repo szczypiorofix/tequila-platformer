@@ -283,6 +283,8 @@ private void collisions()
 			{
 				if (getBounds().intersects(tempObject.getBounds()))
 				{
+					if (MainScreen.LEVEL == 1) achievements.addComplete1LevelCount();
+					if (MainScreen.LEVEL == 2) achievements.addComplete2LevelCount();
 					velX = 0f;
 					velY = 0f;
 					finishLevel = true;

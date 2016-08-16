@@ -36,12 +36,7 @@ private ObjectInputStream ois = null;
 private ObjectOutputStream oos = null;
 private boolean running;
 private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");  // http://www.1001freefonts.com/la_tequila.font
-
-
-
-
 private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");  // http://www.1001freefonts.com/la_tequila.font
-
 private Thread thread;
 
 public MainClass()
@@ -189,7 +184,6 @@ private void prepareAchievements()
 	
 	if(!MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
 	{
-		//System.out.println("Brak pliku: " +MainClass.achievementsFile.getName());
 		try {
 			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
 		    oos.writeObject(ac);
@@ -219,6 +213,11 @@ private void prepareAchievements()
 	achievements.setCoinCount20Complete(ac[2]);
 	achievements.setCoinCount50Complete(ac[3]);
 	achievements.setPowerupCount3Complete(ac[4]);
+	achievements.setComplete1LevelComplete(ac[5]);
+	achievements.setComplete2LevelComplete(ac[6]);
+	achievements.setComplete3LevelComplete(ac[7]);
+	achievements.setComplete4LevelComplete(ac[8]);
+	achievements.setComplete5LevelComplete(ac[9]);
 }
 
 public static Achievements getAchievementsInstance()

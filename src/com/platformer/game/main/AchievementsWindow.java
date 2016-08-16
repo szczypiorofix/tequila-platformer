@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
@@ -18,6 +19,7 @@ private static final long serialVersionUID = -6287250283593155470L;
 
 private JPanel mainPanel;
 private Achievements achievements = MainClass.getAchievementsInstance();
+private JScrollPane scroll;
 
 public AchievementsWindow(JFrame parent)
 {
@@ -25,16 +27,27 @@ public AchievementsWindow(JFrame parent)
 	setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	setSize(400,400);
 	setLocationRelativeTo(parent);
-	setResizable(false);
+	//setResizable(false);
 	setLayout(new BorderLayout());
-	mainPanel = new JPanel(new GridLayout(5, 1));
-	add(mainPanel, BorderLayout.CENTER);
+	mainPanel = new JPanel(new GridLayout(Achievements.maxAchievements, 1));
 		
 	mainPanel.add(new Button(achievements.getJump10Text(), achievements.getJump10Image(), achievements.isJumpCount10Complete()));
 	mainPanel.add(new Button(achievements.getJump25Text(), achievements.getJump25Image(), achievements.isJumpCount25Complete()));
 	mainPanel.add(new Button(achievements.getCoin20Text(), achievements.getCoin20Image(), achievements.isCoinCount20Complete()));
 	mainPanel.add(new Button(achievements.getCoin50Text(), achievements.getCoin50Image(), achievements.isCoinCount50Complete()));
 	mainPanel.add(new Button(achievements.getPowerup3Text(), achievements.getPowerup3Image(), achievements.isPowerupCount3Complete()));
+	mainPanel.add(new Button(achievements.getComplete1LevelText(), achievements.getComplete1LevelImage(), achievements.isComplete1LevelComplete()));
+	mainPanel.add(new Button(achievements.getComplete2LevelText(), achievements.getComplete2LevelImage(), achievements.isComplete2LevelComplete()));
+	mainPanel.add(new Button(achievements.getComplete3LevelText(), achievements.getComplete3LevelImage(), achievements.isComplete3LevelComplete()));
+	mainPanel.add(new Button(achievements.getComplete4LevelText(), achievements.getComplete4LevelImage(), achievements.isComplete4LevelComplete()));
+	mainPanel.add(new Button(achievements.getComplete5LevelText(), achievements.getComplete5LevelImage(), achievements.isComplete5LevelComplete()));
+	
+	
+	
+	scroll = new JScrollPane(mainPanel);
+	scroll.getVerticalScrollBar().setUnitIncrement(16);
+	
+	add(scroll, BorderLayout.CENTER);
 }
 
 
