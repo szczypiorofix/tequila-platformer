@@ -50,19 +50,24 @@ public void render(Graphics g) {
 @Override
 public void tick(LinkedList<GameObject> object) {
 
-	if (x > startPos + 240) {
-		//counter++;
-		//velX = 0;
-		//if (counter > WAITING_TIME) 
-			velX = -1f;
-	}
-	if (x <= startPos) {
-		//counter--;
-		//velX = 0;
-		//if (counter < 0)
-			velX = 1f;
-	}
 	
+	if (action)
+	{
+		if (x > startPos + 240) {
+			counter++;
+			velX = 0;
+			if (counter > WAITING_TIME) 
+				velX = -1f;
+		}
+		if (x <= startPos) {
+			counter--;
+			velX = 0;
+			if (counter < 0)
+				velX = 1f;
+		}
+
+	}
+		
 	if (action) x += velX;
 	action = false;
 }

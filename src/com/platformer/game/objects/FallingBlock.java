@@ -16,6 +16,7 @@ private float x, y;
 private float velX, velY;
 private float width, height;
 private int direction;
+private int startPos;
 private boolean action, visible;
 private ObjectId id;
 
@@ -31,6 +32,7 @@ public FallingBlock(ObjectId id, float x, float y)
 	height = 30;
 	velX = 0;
 	velY = 0;
+	startPos = (int) y;
 	direction = 1;
 	action = false;
 	visible = true;
@@ -47,11 +49,12 @@ public void render(Graphics g) {
 @Override
 public void tick(LinkedList<GameObject> object) {
 
-	if (action)
-	{
-		// TODO naliczanie np. 120 klatek a potem opadanie (albo na sta³e, albo powrót do pozycji bierz¹cej po np. 3 sekundach)
-		velY = 2;
-	} else velY = 0;
+	if (action)	velY = 2f;
+	else 
+		{
+			if (y > startPos) velY = -0.75f;
+			else velY = 0f;
+		}
 
 	y += velY;
 	

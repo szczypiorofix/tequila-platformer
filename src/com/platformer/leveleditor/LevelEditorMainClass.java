@@ -46,7 +46,7 @@ private ActionListener tileListener, menuListener;
 public int selectedTile = 0;
 private ObjectOutputStream oos;
 private ObjectInputStream ois;
-private String currentFile = "";
+private String currentFile = "", currentLevelName = "level1";
 
 
 
@@ -188,7 +188,7 @@ public class MenuListener implements ActionListener
 			String filename = "";
 			
 			do {
-				filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", "level1");	
+				filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", currentLevelName);	
 			}
 			
 			while(filename.length() == 0);
@@ -196,7 +196,7 @@ public class MenuListener implements ActionListener
 			for (int i = 0; i < ROWS; i++)
 				for (int j = 0; j < COLS; j++)
 					editorPane.tileValues[i][j] = -1;
-			
+			currentLevelName = filename;
 			filename = "res/Other/" +filename +".lvl";
 			currentFile = filename;
 			setTitle("Platformer - Level Editor: "+currentFile);
@@ -230,12 +230,11 @@ public class MenuListener implements ActionListener
 		{
 			String filename = "";
 			do {
-				filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", "level1");	
+				filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", currentLevelName);	
 			}	
 			while(filename.length() == 0);
-			
-			//filename += ".lvl";
-			
+
+			currentLevelName = filename;
 			filename = "res/Other/" +filename +".lvl";
 			currentFile = filename;
 			setTitle("Platformer - Level Editor: "+currentFile);
