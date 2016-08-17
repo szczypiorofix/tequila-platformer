@@ -39,6 +39,7 @@ public BufferedImage tumbleweed, tumbleweed1, tumbleweed2, tumbleweed3, tumblewe
 public BufferedImage springBlock, springBlock2;
 public BufferedImage fallingBlock;
 public BufferedImage clouds1, clouds2, clouds3;
+public BufferedImage[] collectible = new BufferedImage[5];
 
 
 
@@ -251,5 +252,11 @@ public Textures()
 	clouds1 = loader.loadImage("/clouds1.png");
 	clouds2 = loader.loadImage("/clouds2.png");
 	clouds3 = loader.loadImage("/clouds3.png");
+	
+	collectible[0] = loader.loadImage("/collectibles0.png");
+	collectible[1] = loader.loadImage("/collectibles1.png");
+	collectible[2] = loader.loadImage("/collectibles2.png");
+	collectible[3] = loader.loadImage("/collectibles3.png");
+	collectible[4] = loader.loadImage("/collectibles4.png");
 }
 }

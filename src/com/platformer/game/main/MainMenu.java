@@ -24,7 +24,7 @@ public class MainMenu {
 
 	
 private JFrame mainMenuFrame;
-private Buttons[] buttons = new Buttons[6];
+private Buttons[] buttons = new Buttons[7];
 private BufferedImage bg_image = new BufferedImageLoader().loadImage("/BG.png");
 private final JPanel centralPanel = new JPanel(null)
 {
@@ -36,7 +36,6 @@ private final JPanel centralPanel = new JPanel(null)
 		super.paintComponent(g);
 		
 		g.setColor(new Color(100,225,250));
-		//g.fillRect(0, 0, 500, 600);
 		g.drawImage(bg_image.getSubimage(0, bg_image.getHeight() - 600, 500, 600), 0, 0, null);
 	}
 };
@@ -53,6 +52,7 @@ private CreditsWindow creditsWindow;
 private HowToPlayWindow howToPlayWindow;
 private HallOfFameWindow hallOfFameWindow;
 private AchievementsWindow achievementsWindow;
+private CollectiblesWindow collectiblesWindow;
 
 
 public MainMenu(MainClass mainClass)
@@ -67,22 +67,25 @@ public MainMenu(MainClass mainClass)
 	mainMenuFrame.setIconImage(loader.loadImage("/programIcon.png"));
 
 	buttons[0] = new Buttons("GRAJ W GR ");
-	buttons[0].setBounds(100, 60, 290, 60);
+	buttons[0].setBounds(100, 20, 290, 60);
 	
 	buttons[1] = new Buttons("JAK GRA∆");
-	buttons[1].setBounds(100, 140, 290, 60);
+	buttons[1].setBounds(100, 100, 290, 60);
 	
 	buttons[2] = new Buttons("NAJLEPSZE WYNIKI");
-	buttons[2].setBounds(100, 220, 290, 60);
+	buttons[2].setBounds(100, 180, 290, 60);
 	
 	buttons[3] = new Buttons("OSI•GNI CIA");
-	buttons[3].setBounds(100, 300, 290, 60);
+	buttons[3].setBounds(100, 260, 290, 60);
 	
-	buttons[4] = new Buttons("O GRZE");
-	buttons[4].setBounds(100, 380, 290, 60);
+	buttons[4] = new Buttons("ZNAJDèKI");
+	buttons[4].setBounds(100, 340, 290, 60);
 	
-	buttons[5] = new Buttons("ZAKO—CZ");
-	buttons[5].setBounds(100, 460, 290, 60);
+	buttons[5] = new Buttons("O GRZE");
+	buttons[5].setBounds(100, 420, 290, 60);
+	
+	buttons[6] = new Buttons("ZAKO—CZ");
+	buttons[6].setBounds(100, 500, 290, 60);
 	
 	mainMenuFrame.addKeyListener(keyListener);
 
@@ -94,8 +97,9 @@ public MainMenu(MainClass mainClass)
 	buttons[1].setActionCommand("HOWTO");
 	buttons[2].setActionCommand("HALLOFFAME");
 	buttons[3].setActionCommand("ACHIEVEMENTS");
-	buttons[4].setActionCommand("CREDITS");
-	buttons[5].setActionCommand("EXIT");
+	buttons[4].setActionCommand("COLLECTIBLES");
+	buttons[5].setActionCommand("CREDITS");
+	buttons[6].setActionCommand("EXIT");
 	
 	menuSound1 = new SoundsLoader("/menusound1.wav");
 	menuSound2 = new SoundsLoader("/menusound2.wav");
@@ -178,6 +182,15 @@ public class MenuMouseListener implements MouseListener
 				selectMenu(selected);	
 			}
 		}
+		if (e.getComponent() == buttons[6])
+		{
+			if (selected != 6)
+			{
+				deselectMenu(selected);
+				selected = 6;
+				selectMenu(selected);	
+			}
+		}
 	}
 
 	@Override
@@ -230,6 +243,15 @@ private void showAchievementsWindow()
 	achievementsWindow.setVisible(true);
 }
 
+private void showCollectiblesWindow()
+{
+	collectiblesWindow = new CollectiblesWindow(mainMenuFrame);
+	collectiblesWindow.setVisible(true);
+}
+
+
+
+
 public class MenuKeyListener implements KeyListener
 {
 	@Override
@@ -260,9 +282,13 @@ public class MenuKeyListener implements KeyListener
 			}
 			if (selected == 4)
 			{
-				showCreditsWindow();
+				showCollectiblesWindow();
 			}
 			if (selected == 5)
+			{
+				showCreditsWindow();
+			}
+			if (selected == 6)
 			{
 				exitGame();
 			}
@@ -338,6 +364,11 @@ public class MainMenuListener implements ActionListener
 		if (e.getActionCommand().equalsIgnoreCase("ACHIEVEMENTS"))
 		{
 			showAchievementsWindow();
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("COLLECTIBLES"))
+		{
+			showCollectiblesWindow();
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("HOWTO"))

@@ -29,8 +29,8 @@ private final BufferedImage jump10Image;
 private int jump25Count;
 private static final int A_25JUMPS = 25;
 private boolean jumpCount25Complete = false;
-private final String jump25Text = "25 skoków - ¿aba";
-private final String jump25TextShort = "";
+private final String jump25Text = "Wykona³eœ 25 skoków w ci¹gu jednego poziomu";
+private final String jump25TextShort = "25 skoków - ¿aba";
 private final BufferedImage jump25Image;
 
 private int jump50Count;
@@ -114,14 +114,14 @@ private int findAllCoinsCount;
 private static final int A_FINDALLCOINS = 1;
 private boolean findAllCoinsComplete = false;
 private final String findAllCoinsText = "Znalaz³eœ wszystkie monety na danym poziomie";
-private final String findAllCoinsTextShort = "Znalaz³eœ wszystkie monety";
+private final String findAllCoinsTextShort = "Zbieracz monet ... wszystkich!";
 private final BufferedImage findAllCoinsImage;
 
 private int findAllPowerupsCount;
 private static final int A_FINDALLPOWERUPS = 1;
 private boolean findAllPowerupsComplete = false;
 private final String findAllPowerupsText = "Znalaz³eœ wszystkie powerupy na danym poziomie";
-private final String findAllPowerupsTextShort = "Znalaz³eœ wszystkie powerupy";
+private final String findAllPowerupsTextShort = "Na wysokich obrotach!";
 private final BufferedImage findAllPowerupsImage;
 
 private int noHarmCount;
@@ -556,65 +556,130 @@ public String getJump10Text() {
 	return jump10Text;
 }
 
+public String getJump10TextShort() {
+	return jump10TextShort;
+}
+
 public String getJump25Text() {
 	return jump25Text;
+}
+
+public String getJump25TextShort() {
+	return jump25TextShort;
 }
 
 public String getJump50Text() {
 	return jump50Text;
 }
 
+public String getJump50TextShort() {
+	return jump50TextShort;
+}
+
 public String getCoin20Text() {
 	return coin20Text;
+}
+
+public String getCoin20TextShort() {
+	return coin20TextShort;
 }
 
 public String getCoin50Text() {
 	return coin50Text;
 }
 
+public String getCoin50TextShort() {
+	return coin50TextShort;
+}
+
 public String getCoin100Text() {
 	return coin100Text;
+}
+
+public String getCoin100TextShort() {
+	return coin100TextShort;
 }
 
 public String getCoin150Text() {
 	return coin150Text;
 }
 
+public String getCoin150TextShort() {
+	return coin150TextShort;
+}
+
 public String getPowerup3Text() {
 	return powerup3Text;
+}
+
+public String getPowerup3TextShort() {
+	return powerup3TextShort;
 }
 
 public String getComplete1LevelText() {
 	return complete1LevelText;
 }
 
+public String getComplete1LevelTextShort() {
+	return complete1LevelTextShort;
+}
+
 public String getComplete2LevelText() {
 	return complete2LevelText;
+}
+
+public String getComplete2LevelTextShort() {
+	return complete2LevelTextShort;
 }
 
 public String getComplete3LevelText() {
 	return complete3LevelText;
 }
 
+public String getComplete3LevelTextShort() {
+	return complete3LevelTextShort;
+}
+
 public String getComplete4LevelText() {
 	return complete4LevelText;
+}
+
+public String getComplete4LevelTextShort() {
+	return complete4LevelTextShort;
 }
 
 public String getComplete5LevelText() {
 	return complete5LevelText;
 }
 
+public String getComplete5LevelTextShort() {
+	return complete5LevelTextShort;
+}
+
 public String getFindAllCoinsText() {
 	return findAllCoinsText;
+}
+
+public String getFindAllCoinsTextShort() {
+	return findAllCoinsTextShort;
 }
 
 public String getFindAllPowerupsText() {
 	return findAllPowerupsText;
 }
 
+public String getFindAllPowerupsTextShort() {
+	return findAllPowerupsTextShort;
+}
+
 public String getNoHarmText() {
 	return noHarmText;
 }
+
+public String getNoHarmTextShort() {
+	return noHarmTextShort;
+}
+
 
 
 

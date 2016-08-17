@@ -22,5 +22,6 @@ public enum ObjectId {
 	Tumbleweed,
 	SpringBlock,
 	FallingBlock,
-	Clouds;
+	Clouds,
+	Collectible;
 }

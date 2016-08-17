@@ -668,6 +668,26 @@ private void collisions()
 				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 75;	
 			}
 		}
+		
+		/// TEQUILA LIST
+		for (int i = 0; i < objectsHandler.getCollectibles_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getCollectibles_List().get(i);
+			if (tempObject.isVisible())
+			{
+				if (getWholeBounds().intersects(tempObject.getBounds()))
+				{
+					objectsHandler.getCollectibles_List().remove(tempObject);
+					MainScreen.SCORE += 50;
+					powerUpSound.play();
+					//achievements.addPowerup3Count();
+					//tequila_powerUp = true;
+					//powerups++;
+					//taco_powerUp = false;
+					//taco_time = TACO_COOLDOWN;
+				}
+			}
+		}
 }
 
 

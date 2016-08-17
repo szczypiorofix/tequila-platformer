@@ -12,6 +12,7 @@ import com.platformer.game.objects.Block;
 import com.platformer.game.objects.ButtonBlock;
 import com.platformer.game.objects.Clouds;
 import com.platformer.game.objects.Coin;
+import com.platformer.game.objects.Collectibles;
 import com.platformer.game.objects.FallingBlock;
 import com.platformer.game.objects.GameObject;
 import com.platformer.game.objects.LevelEnd;
@@ -54,6 +55,7 @@ private LinkedList<GameObject> tumbleweed_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> springBlock_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> fallingBlock_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> clouds_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> collectibles_List = new LinkedList<GameObject>();
 
 
 private final int ROWS = 300, COLS = 12;
@@ -103,6 +105,7 @@ public void tick()
 	iteratingTick(tumbleweed_List);
 	iteratingTick(fallingBlock_List);
 	iteratingTick(clouds_List);
+	iteratingTick(collectibles_List);
 }
 
 public void iteratingRender(Graphics g, LinkedList<GameObject> list)
@@ -130,6 +133,7 @@ public void render(Graphics g)
 	iteratingRender(g, tequila_List);
 	iteratingRender(g, bee_List);
 	iteratingRender(g, dart_List);
+	iteratingRender(g, collectibles_List);
 	iteratingRender(g, player_List);
 	iteratingRender(g, fallingBlock_List);
 	iteratingRender(g, water_List);
@@ -162,6 +166,7 @@ public void clearLevel()
 	springBlock_List.clear();
 	fallingBlock_List.clear();
 	clouds_List.clear();
+	collectibles_List.clear();
 }
 
 public void resetLevel()
@@ -283,6 +288,8 @@ public void loadLevel(int level)
 				if (tileValues[yy][xx] == 48) clouds_List.add(new Clouds(ObjectId.Clouds, xx*50, (yy*50)+550, cam, 2));
 				
 				if (tileValues[yy][xx] == 49) clouds_List.add(new Clouds(ObjectId.Clouds, xx*50, (yy*50)+550, cam, 3));
+				
+				if (tileValues[yy][xx] == 50) collectibles_List.add(new Collectibles(ObjectId.Collectible, xx*50, (yy*50)+550, this));
 			}
 		}
 		
@@ -376,5 +383,9 @@ public LinkedList<GameObject> getFallingBlock_List() {
 
 public LinkedList<GameObject> getClouds_List() {
 	return clouds_List;
+}
+
+public LinkedList<GameObject> getCollectibles_List() {
+	return collectibles_List;
 }
 }
