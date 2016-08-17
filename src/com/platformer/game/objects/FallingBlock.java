@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainScreen;
 import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.ObjectsHandler;
 
 public class FallingBlock extends GameObject{
 
@@ -19,15 +20,17 @@ private int direction;
 private int startPos;
 private boolean action, visible;
 private ObjectId id;
+private ObjectsHandler objectsHandler;
 
 	
 	
-public FallingBlock(ObjectId id, float x, float y)
+public FallingBlock(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
 {
 	super();
 	this.x = x;
 	this.y = y;
 	this.id = id;
+	this.objectsHandler = objectsHandler;
 	width = 70;
 	height = 30;
 	velX = 0;
@@ -49,13 +52,35 @@ public void render(Graphics g) {
 @Override
 public void tick(LinkedList<GameObject> object) {
 
-	if (action)	velY = 2f;
+	if (action)	{
+		velY = 2f;
+		/// BLOCK LIST
+		for (int i = 0; i < objectsHandler.getBlock_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getBlock_List().get(i);
+			if (tempObject.isVisible())
+			{
+				if (getBounds().intersects(tempObject.getBounds()))
+				{
+					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
+							
+						y = tempObject.getY() - height+2;
+						velY = 0;	
+					}
+				}
+			}
+		}
+	}
 	else 
 		{
 			if (y > startPos) velY = -0.75f;
 			else velY = 0f;
 		}
 
+	
+	
+	
+	
 	y += velY;
 	
 	action = false;

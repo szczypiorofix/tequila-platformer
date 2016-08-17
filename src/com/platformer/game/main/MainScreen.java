@@ -244,7 +244,8 @@ public void tick()
 		
 		if (player.isOnGround()) {
 			if (!achievements.isJumpCount10Complete()) achievements.addJump10Count();
-			if (achievements.isJumpCount10Complete()) achievements.addJump25Count();
+			if (achievements.isJumpCount10Complete() && !achievements.isJumpCount50Complete()) achievements.addJump25Count();
+			if (achievements.isJumpCount25Complete()) achievements.addJump50Count();
 		}
 		
 	}
@@ -341,7 +342,7 @@ public void timeTick()
 }
 
 
-public void showMessage(Graphics2D g2d, String msg, BufferedImage image, int counter)
+public void showMessage(Graphics2D g2d, String msg, BufferedImage achievementImage, int counter)
 {
 	
 	if (!saveAchievementsToFile)
@@ -374,8 +375,8 @@ public void showMessage(Graphics2D g2d, String msg, BufferedImage image, int cou
 		if (msgY > -20) msgY--;
 	
 	g2d.drawImage(achievementBg, 280, msgY-40, null);
-	g2d.drawImage(image, 300, msgY - 35, null);
-	g2d.drawString(msg, 365, msgY);
+	g2d.drawImage(achievementImage, 295, msgY - 35, null);
+	g2d.drawString(msg, 355, msgY);
 }
 
 
@@ -458,7 +459,7 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	
-	if (showMessage) showMessage(g2d, achievements.getAchievementText(), achievements.getAchievementImage(), achievements.getAchievementCount());
+	if (showMessage) showMessage(g2d, achievements.getAchievementTextShort(), achievements.getAchievementImage(), achievements.getAchievementCount());
 	else saveAchievementsToFile = false;
 	
 	if (player.isFinishLevel())

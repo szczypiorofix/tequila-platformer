@@ -47,6 +47,10 @@ private boolean tequila_powerUp = false;
 private int taco_time = TACO_COOLDOWN;
 private boolean taco_powerUp = false;
 private boolean finishLevel = false;
+private int maxCoins;
+private int maxPowerups;
+private int powerups;
+private boolean noHarm;
 private ObjectId id;
 
 
@@ -57,15 +61,18 @@ public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler
 	super();
 	this.x = x;
 	this.y = y;
+	this.id = id;
 	velX = 0;
 	velY = 0;
 	width = 110;
 	height = 120;
 	this.objectsHandler = objectsHandler;
 	action = false;
+	noHarm = true;
 	visible = true;
 	direction = 1;
-	this.id = id;
+	maxCoins = 0;
+	powerups = 0;
 	health = MAX_HEALTH;
 	gravity = NORMAL_GRAVITY;
 	jumpSound = new SoundsLoader("/jump.wav");
@@ -283,8 +290,15 @@ private void collisions()
 			{
 				if (getBounds().intersects(tempObject.getBounds()))
 				{
+					if (MainScreen.COINS == maxCoins) achievements.addFindAllCoinsCount();
+					if (powerups == maxPowerups) achievements.addFindAllPowerupsCount();
+					if (noHarm) achievements.addNoHarmCount();
+					
 					if (MainScreen.LEVEL == 1) achievements.addComplete1LevelCount();
 					if (MainScreen.LEVEL == 2) achievements.addComplete2LevelCount();
+					if (MainScreen.LEVEL == 3) achievements.addComplete3LevelCount();
+					if (MainScreen.LEVEL == 4) achievements.addComplete4LevelCount();
+					if (MainScreen.LEVEL == 5) achievements.addComplete5LevelCount();
 					velX = 0f;
 					velY = 0f;
 					finishLevel = true;
@@ -303,8 +317,14 @@ private void collisions()
 					objectsHandler.getCoin_List().remove(tempObject);
 					MainScreen.COINS++;
 					MainScreen.SCORE += 20;
-					achievements.addCoin20Count();
-					if (achievements.isCoinCount20Complete()) achievements.addCoin50Count();
+					if (!achievements.isCoinCount20Complete()) achievements.addCoin20Count();
+
+					if (!achievements.isCoinCount50Complete()) achievements.addCoin50Count();
+					
+					if (!achievements.isCoinCount100Complete()) achievements.addCoin100Count();
+					
+					if (!achievements.isCoinCount150Complete()) achievements.addCoin150Count();
+					
 					coinSound.play();
 				}
 			}
@@ -323,6 +343,7 @@ private void collisions()
 					powerUpSound.play();
 					achievements.addPowerup3Count();
 					tequila_powerUp = true;
+					powerups++;
 					taco_powerUp = false;
 					taco_time = TACO_COOLDOWN;
 				}
@@ -343,6 +364,7 @@ private void collisions()
 					powerUpSound.play();
 					achievements.addPowerup3Count();
 					taco_powerUp = true;
+					powerups++;
 					tequila_powerUp = false;
 					tequila_time = TEQUILA_COOLDOWN;
 					health++;
@@ -361,6 +383,7 @@ private void collisions()
 					if (tempObject.getX() > x) x -= 10;
 					else x += 10;
 					health--;
+					noHarm = false;
 					MainScreen.SCORE -=40;
 					hitSound.play();
 					hit_by_enemy = true;
@@ -430,6 +453,7 @@ private void collisions()
 					if (tempObject.getX() > x) x -= 25;
 					else x += 25;
 					health--;
+					noHarm = false;
 					MainScreen.SCORE -=40;
 					hitSound.play();
 					hit_by_enemy = true;
@@ -551,6 +575,7 @@ private void collisions()
 					{
 						y -= 90;
 						health--;
+						noHarm = false;
 						MainScreen.SCORE -=40;
 						hitSound.play();
 						hit_by_enemy = true;	
@@ -574,6 +599,7 @@ private void collisions()
 					if (tempObject.getX() > x) x -= 25;
 					else x += 25;
 					health--;
+					noHarm = false;
 					MainScreen.SCORE -=40;
 					hitSound.play();
 					hit_by_enemy = true;
@@ -639,7 +665,7 @@ private void collisions()
 							
 				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() -75;
 					
-				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 55;	
+				if (getBoundsLeft().intersects(tempObject.getBounds())) x = tempObject.getX() + 75;	
 			}
 		}
 }
@@ -836,15 +862,30 @@ public void setHeight(float height) {
 	this.height = height;
 }
 
-
 @Override
 public boolean isVisible() {
 	return visible;
 }
 
-
 @Override
 public void setVisible(boolean visible) {
 	this.visible = visible;
+}
+
+
+
+public void setMaxCoins(int maxCoins)
+{
+	this.maxCoins = maxCoins;
+}
+
+public void setMaxPowerups(int maxPowerups)
+{
+	this.maxPowerups = maxPowerups;
+}
+
+public int getMaxPowerups()
+{
+	return maxPowerups;
 }
 }

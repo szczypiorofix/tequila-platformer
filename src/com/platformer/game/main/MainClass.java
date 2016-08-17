@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 import com.platformer.game.sounds.Music;
 
@@ -17,8 +18,8 @@ import com.platformer.game.sounds.Music;
 
 public class MainClass implements Runnable {
 
-	
-public static boolean[] ac;
+
+public static HashMap<Integer, Boolean> ac;
 public static final File achievementsFile = new File("achievements.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
 public static Font smokunFont;
@@ -177,17 +178,19 @@ public void run()
 	}
 }
 
+@SuppressWarnings("unchecked")
 private void prepareAchievements()
 {
 	
-	ac = new boolean[Achievements.maxAchievements];
+	ac = new HashMap<Integer, Boolean>(Achievements.maxAchievements);
+	for (int i = 0; i < Achievements.maxAchievements; i++) ac.put(i, false);
 	
-	if(!MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
+	if (!MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
 	{
 		try {
-			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
-		    oos.writeObject(ac);
-		    oos.close();
+				oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
+				oos.writeObject(ac);
+				oos.close();
 			}
 			catch (IOException ioe)
 			{
@@ -198,7 +201,7 @@ private void prepareAchievements()
 	
 	try {
 	ois = new ObjectInputStream(new FileInputStream(MainClass.achievementsFile));
-	ac = (boolean[]) ois.readObject();
+	ac = (HashMap<Integer, Boolean>) ois.readObject();
 	ois.close();
 	}
 	catch (IOException | ClassNotFoundException e)
@@ -206,18 +209,24 @@ private void prepareAchievements()
 		e.printStackTrace();
 		System.exit(-1);
 	}
-	
+
 	achievements = new Achievements();
-	achievements.setJumpCount10Complete(ac[0]);
-	achievements.setJumpCount25Complete(ac[1]);
-	achievements.setCoinCount20Complete(ac[2]);
-	achievements.setCoinCount50Complete(ac[3]);
-	achievements.setPowerupCount3Complete(ac[4]);
-	achievements.setComplete1LevelComplete(ac[5]);
-	achievements.setComplete2LevelComplete(ac[6]);
-	achievements.setComplete3LevelComplete(ac[7]);
-	achievements.setComplete4LevelComplete(ac[8]);
-	achievements.setComplete5LevelComplete(ac[9]);
+	achievements.setJumpCount10Complete(ac.get(0));
+	achievements.setJumpCount25Complete(ac.get(1));
+	achievements.setJumpCount50Complete(ac.get(2));
+	achievements.setCoinCount20Complete(ac.get(3));
+	achievements.setCoinCount50Complete(ac.get(4));
+	achievements.setCoinCount100Complete(ac.get(5));
+	achievements.setCoinCount150Complete(ac.get(6));
+	achievements.setPowerupCount3Complete(ac.get(7));
+	achievements.setComplete1LevelComplete(ac.get(8));
+	achievements.setComplete2LevelComplete(ac.get(9));
+	achievements.setComplete3LevelComplete(ac.get(10));
+	achievements.setComplete4LevelComplete(ac.get(11));
+	achievements.setComplete5LevelComplete(ac.get(12));
+	achievements.setFindAllCoinsComplete(ac.get(13));
+	achievements.setFindAllPowerupsComplete(ac.get(14));
+	achievements.setNoHarmComplete(ac.get(15));
 }
 
 public static Achievements getAchievementsInstance()

@@ -276,7 +276,7 @@ public void loadLevel(int level)
 				
 				if (tileValues[yy][xx] == 45) springBlock_List.add(new SpringBlock(ObjectId.SpringBlock, xx*50, (yy*50)+550));
 				
-				if (tileValues[yy][xx] == 46) fallingBlock_List.add(new FallingBlock(ObjectId.FallingBlock, xx*50, (yy*50)+550));
+				if (tileValues[yy][xx] == 46) fallingBlock_List.add(new FallingBlock(ObjectId.FallingBlock, xx*50, (yy*50)+550, this));
 				
 				if (tileValues[yy][xx] == 47) clouds_List.add(new Clouds(ObjectId.Clouds, xx*50, (yy*50)+550, cam, 1));
 				
@@ -284,7 +284,10 @@ public void loadLevel(int level)
 				
 				if (tileValues[yy][xx] == 49) clouds_List.add(new Clouds(ObjectId.Clouds, xx*50, (yy*50)+550, cam, 3));
 			}
-		}	
+		}
+		
+		player.setMaxCoins(coin_List.size());
+		player.setMaxPowerups(tequila_List.size() + taco_List.size());
 }
 
 public LinkedList<GameObject> getAngryCactus_List() {
