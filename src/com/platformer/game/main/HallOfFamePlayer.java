@@ -1,6 +1,7 @@
 package com.platformer.game.main;
 
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
 public class HallOfFamePlayer implements Serializable{
 
@@ -9,10 +10,10 @@ private static final long serialVersionUID = -3735618211371928538L;
 
 private String name;
 private int score;
-private float milis;
+private long milis;
 	
 	
-public HallOfFamePlayer(String name, int score, float milis)
+public HallOfFamePlayer(String name, int score, long milis)
 {
 	this.name = name;
 	this.score = score;
@@ -37,11 +38,19 @@ public void setScore(int score) {
 	this.score = score;
 }
 
-public float getMilis() {
+public long getMilis() {
 	return milis;
 }
 
-public void setMilis(float milis) {
+public String getTimeFromMilis(long millis)
+{
+	long second = TimeUnit.MILLISECONDS.toSeconds(millis);
+	long minute = TimeUnit.MILLISECONDS.toMinutes(millis);
+	millis -= TimeUnit.SECONDS.toMillis(second);
+	return String.format("%02d:%02d:%d", minute, second, millis);
+}
+
+public void setMilis(long milis) {
 	this.milis = milis;
 }
 }

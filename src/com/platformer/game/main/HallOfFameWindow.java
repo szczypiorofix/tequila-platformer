@@ -1,6 +1,7 @@
 package com.platformer.game.main;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,10 +30,13 @@ public HallOfFameWindow(JFrame parent, HallOfFame hallOfFame)
 	setResizable(false);
 	
 	mainPanel = new JPanel(new GridLayout(hallOfFame.getHallOfFameList().size(), 1));
+	mainPanel.setPreferredSize(new Dimension(300, (this.hallOfFame.getHallOfFameList().size() * 40)));
 	
 	for (int i = 0; i < this.hallOfFame.getHallOfFameList().size(); i++)
 	{
-		mainPanel.add(new Button(i+1+ ".  "+this.hallOfFame.getHallOfFameList().get(i).getName(), this.hallOfFame.getHallOfFameList().get(i).getScore(), this.hallOfFame.getHallOfFameList().get(i).getMilis()));
+		mainPanel.add(new Button(i+1+ ".  "+this.hallOfFame.getHallOfFameList().get(i).getName()));
+		mainPanel.add(new Button(String.valueOf(this.hallOfFame.getHallOfFameList().get(i).getScore())));
+		mainPanel.add(new Button(this.hallOfFame.getHallOfFameList().get(i).getTimeFromMilis(this.hallOfFame.getHallOfFameList().get(i).getMilis())));
 	}
 	
 	scroll = new JScrollPane(mainPanel);
@@ -46,10 +50,10 @@ private class Button extends JButton
 
 private static final long serialVersionUID = -136714280294712562L;
 
-public Button(String name, int score, float milis)
+public Button(String text)
 {
 	super();
-	setText(name +" " +score +" " +milis);
+	setText(text);
 	setContentAreaFilled(false);
 	setFocusable(false);
 	setHorizontalAlignment(SwingConstants.LEFT);

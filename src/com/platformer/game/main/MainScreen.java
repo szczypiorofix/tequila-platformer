@@ -44,7 +44,7 @@ public static int SCORE = 0;
 public static boolean pauseGame = false;
 public static int minutes = 0, seconds = 0;
 public static float milis = 0f;
-private float milisMax = 0f;
+private long milisMax = 0;
 public static final float MAX_TIME_BONUS = 1500f;
 public static float time_bonus = MAX_TIME_BONUS;
 public static float TOTAL_SCORE = 0f;
@@ -323,7 +323,7 @@ public void tick()
 	{
 		pauseGame = false;
 		MainScreen.milis = 0f;
-		milisMax = 0f;
+		milisMax = 0;
 		MainScreen.minutes = 0;
 		MainScreen.seconds = 0;
 		MainScreen.COINS = 0;
@@ -370,9 +370,10 @@ public void timeTick()
 	else time += ":"+seconds +":" + (int) milis;	
 }
 
-private void writeScore(String name, int score, float milis)
+private void writeScore(String name, int score, long milis)
 {
 	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, milis));
+	System.out.println(hallOfFame.getHallOfFameList().get(hallOfFame.getHallOfFameList().size()-1).getTimeFromMilis(milis));
 	if(MainClass.hallOfFameFile.exists() && !MainClass.hallOfFameFile.isDirectory())
 	{
 		try {

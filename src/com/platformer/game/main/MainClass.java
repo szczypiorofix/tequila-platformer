@@ -40,8 +40,8 @@ private MainScreen mainScreen;
 private ObjectInputStream ois = null;
 private ObjectOutputStream oos = null;
 private boolean running;
-private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");  // http://www.1001freefonts.com/la_tequila.font
-private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");  // http://www.1001freefonts.com/la_tequila.font
+private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");
+private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
 private Thread thread;
 
 public MainClass()
@@ -192,7 +192,7 @@ private void prepareHallOfFame()
 	{
 		// POCZATKOWA INICJALIZACJA TABLICY Z HALL OF FAME;
 		hallOfFameList = new ArrayList<HallOfFamePlayer>(10);
-		for (int i = 0; i < 10; i++) hallOfFameList.add(new HallOfFamePlayer("<empty>", 0, 0f));
+		for (int i = 0; i < 10; i++) hallOfFameList.add(new HallOfFamePlayer("<empty>", 0, 0));
 		
 		try {
 			oos = new ObjectOutputStream(new FileOutputStream(MainClass.hallOfFameFile));
@@ -230,6 +230,7 @@ private void prepareAchievements()
 	
 	if (!MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
 	{
+		// POCZATKOWA INICJALIZACJA HASHMAPY Z ACHIEVEMENTAMI;
 		try {
 				oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
 				oos.writeObject(achievementsList);

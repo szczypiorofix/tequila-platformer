@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -38,15 +39,23 @@ private JPanel leftPane, bottomPane;
 private JLabel selectedLabel;
 private static final int MAX_TILES = 51;
 public static BufferedImage[] tileImage = new BufferedImage[MAX_TILES];
+
 private JMenuBar menuBar = new JMenuBar();
-private JMenu mainMenu = new JMenu("Plik");
-private JMenuItem mainExit = new JMenuItem("Zakoñcz"), mainSave = new JMenuItem("Zapisz"), mainOpen = new JMenuItem("Otwórz"), mainNew = new JMenuItem("Nowy");
+
+private JMenu menuPlik = new JMenu("Plik");
+private JMenuItem menuPlikZakoncz = new JMenuItem("Zakoñcz"), menuPlikZapisz = new JMenuItem("Zapisz"), menuPlikOtworz = new JMenuItem("Otwórz"), menuPlikNowy = new JMenuItem("Nowy");
+
+private JMenu menuGenerator = new JMenu("Generator");
+private JMenuItem menuGeneratorPodloze = new JMenuItem("Generuj pod³o¿e");
+private JMenuItem menuGeneratorTeren = new JMenuItem("Generuj teren");
+
 private TileChoose[] tilesChoose = new TileChoose[MAX_TILES];
 private ActionListener tileListener, menuListener;
 public int selectedTile = 0;
 private ObjectOutputStream oos;
 private ObjectInputStream ois;
 private String currentFile = "", currentLevelName = "level1";
+private Random random;
 
 
 
@@ -54,6 +63,7 @@ public LevelEditorMainClass()
 {
 	super("Platformer - Level Editor");
 	
+	random = new Random();
 	try {
 		tileImage[0] = ImageIO.read(getClass().getResource("/00.png"));
 		tileImage[1] = ImageIO.read(getClass().getResource("/01.png"));
@@ -146,21 +156,28 @@ public LevelEditorMainClass()
 	add(scrollPane, BorderLayout.CENTER);
 	add(leftPane, BorderLayout.WEST);
 	add(bottomPane, BorderLayout.SOUTH);
-	mainMenu.add(mainNew);
-	mainMenu.add(mainSave);
-	mainMenu.add(mainOpen);
-	mainMenu.add(mainExit);
-	menuBar.add(mainMenu);
+	menuPlik.add(menuPlikNowy);
+	menuPlik.add(menuPlikZapisz);
+	menuPlik.add(menuPlikOtworz);
+	menuPlik.add(menuPlikZakoncz);
+	menuGenerator.add(menuGeneratorPodloze);
+	menuGenerator.add(menuGeneratorTeren);
+	menuBar.add(menuPlik);
+	menuBar.add(menuGenerator);
 	setJMenuBar(menuBar);
 	
-	mainNew.addActionListener(menuListener);
-	mainNew.setActionCommand("New");
-	mainSave.addActionListener(menuListener);
-	mainSave.setActionCommand("Save");
-	mainOpen.addActionListener(menuListener);
-	mainOpen.setActionCommand("Open");
-	mainExit.addActionListener(menuListener);
-	mainExit.setActionCommand("Exit");
+	menuPlikNowy.addActionListener(menuListener);
+	menuPlikNowy.setActionCommand("New");
+	menuPlikZapisz.addActionListener(menuListener);
+	menuPlikZapisz.setActionCommand("Save");
+	menuPlikOtworz.addActionListener(menuListener);
+	menuPlikOtworz.setActionCommand("Open");
+	menuPlikZakoncz.addActionListener(menuListener);
+	menuPlikZakoncz.setActionCommand("Exit");
+	menuGeneratorPodloze.addActionListener(menuListener);
+	menuGeneratorPodloze.setActionCommand("Podloze");
+	menuGeneratorTeren.addActionListener(menuListener);
+	menuGeneratorTeren.setActionCommand("Teren");
 	
 	///   ZAPIS DO PLIKU BMP w systemie RGB	
 }
@@ -177,7 +194,6 @@ public class MenuListener implements ActionListener
 			for (int i = 0; i < ROWS; i++)
 				for (int j = 0; j < COLS; j++)
 				{
-					editorPane.editorTiles[i][j].setText(i+"");
 					editorPane.editorTiles[i][j].setIcon(null);
 					editorPane.tileValues[i][j] = -1;
 				}
@@ -216,7 +232,6 @@ public class MenuListener implements ActionListener
 			for (int a = 0; a < ROWS; a++)
 				for (int b = 0; b < COLS; b++)
 				{
-					//editorPane.editorTiles[a][b].setText(a+"");
 					editorPane.editorTiles[a][b].setIcon(null);
 					
 					if (editorPane.tileValues[a][b] >= 0) 
@@ -249,6 +264,64 @@ public class MenuListener implements ActionListener
 			{
 				ioe.printStackTrace();
 				System.exit(-1);
+			}
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("Podloze"))
+		{
+			for (int i = 0; i < ROWS; i++)
+			{
+				for (int j = 0; j < COLS; j++)
+				{
+					
+					if (i == (ROWS-2) & (j!=0) && (j!=COLS-1))
+					{
+						editorPane.tileValues[i][j] = 1;
+						Image newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));						
+					}
+					if (i == (ROWS-1) & (j!=0) && (j!=COLS-1))
+					{
+						editorPane.tileValues[i][j] = 4;
+						Image newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));						
+					}
+					
+				}
+			}
+			editorPane.tileValues[ROWS-2][0] = 0;
+			Image newImage = tileImage[editorPane.tileValues[ROWS-2][0]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+			editorPane.editorTiles[ROWS-2][0].setIcon(new ImageIcon(newImage));	
+			editorPane.tileValues[ROWS-1][0] = 3;
+			newImage = tileImage[editorPane.tileValues[ROWS-1][0]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+			editorPane.editorTiles[ROWS-1][0].setIcon(new ImageIcon(newImage));
+			
+			editorPane.tileValues[ROWS-2][COLS-1] = 2;
+			newImage = tileImage[editorPane.tileValues[ROWS-2][COLS-1]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+			editorPane.editorTiles[ROWS-2][COLS-1].setIcon(new ImageIcon(newImage));	
+			editorPane.tileValues[ROWS-1][COLS-1] = 5;
+			newImage = tileImage[editorPane.tileValues[ROWS-1][COLS-1]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+			editorPane.editorTiles[ROWS-1][COLS-1].setIcon(new ImageIcon(newImage));
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("Teren"))
+		{
+			for (int i = 0; i < ROWS; i++)
+			{
+				for (int j = 0; j < COLS; j++)
+				{
+					
+					int x1 = random.nextInt(20);
+					
+					// http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
+					
+					if (i == (ROWS-3) & (j!=0) && (j!=COLS-1) && (x1 == 1))
+					{
+						editorPane.tileValues[i][j] = 1;
+						Image newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));						
+					}
+				}
 			}
 		}
 	}
