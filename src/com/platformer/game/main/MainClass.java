@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.platformer.game.sounds.Music;
@@ -19,14 +20,17 @@ import com.platformer.game.sounds.Music;
 public class MainClass implements Runnable {
 
 
-public static HashMap<Integer, Boolean> ac;
+private HashMap<Integer, Boolean> achievementsList;
+private ArrayList<HallOfFamePlayer> hallOfFameList = new ArrayList<HallOfFamePlayer>(10);
 public static final File achievementsFile = new File("achievements.dat");
+public static final File hallOfFameFile = new File("halloffame.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
 public static Font smokunFont;
 public static Font texasFont;
 public static int WIDTH = 0, HEIGHT = 0;
 
-private static Achievements achievements = null;
+private Achievements achievements = null;
+private HallOfFame hallOfFame = null;
 
 private int fps_count = 0, ticks_count = 0;
 private boolean gamepadEnabled = false;
@@ -55,8 +59,9 @@ public MainClass()
 	}
 		
 	prepareAchievements();
+	prepareHallOfFame();
 	
-	mainMenu = new MainMenu(this);
+	mainMenu = new MainMenu(this, hallOfFame, achievements);
 	mainMenu.showMenu(true);
 }
 
@@ -64,7 +69,7 @@ public MainClass()
 public void gameStart()
 {
 	gameWindow = new GameWindow();
-	mainScreen = new MainScreen(gameWindow, gamepadEnabled);
+	mainScreen = new MainScreen(gameWindow, gamepadEnabled, hallOfFame, achievements);
 	
 	gameWindow.setVisible(true);
 	WIDTH = mainScreen.getWidth();
@@ -178,18 +183,57 @@ public void run()
 	}
 }
 
+
+
+@SuppressWarnings("unchecked")
+private void prepareHallOfFame()
+{	
+	if (!MainClass.hallOfFameFile.exists() && !MainClass.hallOfFameFile.isDirectory())
+	{
+		// POCZATKOWA INICJALIZACJA TABLICY Z HALL OF FAME;
+		hallOfFameList = new ArrayList<HallOfFamePlayer>(10);
+		for (int i = 0; i < 10; i++) hallOfFameList.add(new HallOfFamePlayer("<empty>", 0, 0f));
+		
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(MainClass.hallOfFameFile));
+			oos.writeObject(hallOfFameList);
+			oos.flush();
+			oos.close();
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+			System.exit(-1);
+		}
+	}
+	
+	try {
+	ois = new ObjectInputStream(new FileInputStream(MainClass.hallOfFameFile));
+	hallOfFameList = (ArrayList<HallOfFamePlayer>) ois.readObject();
+	ois.close();
+	}
+	catch (IOException | ClassNotFoundException 
+			e)
+	{
+		e.printStackTrace();
+		System.exit(-1);
+	}
+	hallOfFame = new HallOfFame(hallOfFameList);
+}
+
 @SuppressWarnings("unchecked")
 private void prepareAchievements()
 {
 	
-	ac = new HashMap<Integer, Boolean>(Achievements.maxAchievements);
-	for (int i = 0; i < Achievements.maxAchievements; i++) ac.put(i, false);
+	achievementsList = new HashMap<Integer, Boolean>(Achievements.maxAchievements);
+	for (int i = 0; i < Achievements.maxAchievements; i++) achievementsList.put(i, false);
 	
 	if (!MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
 	{
 		try {
 				oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
-				oos.writeObject(ac);
+				oos.writeObject(achievementsList);
+				oos.flush();
 				oos.close();
 			}
 			catch (IOException ioe)
@@ -201,7 +245,7 @@ private void prepareAchievements()
 	
 	try {
 	ois = new ObjectInputStream(new FileInputStream(MainClass.achievementsFile));
-	ac = (HashMap<Integer, Boolean>) ois.readObject();
+	achievementsList = (HashMap<Integer, Boolean>) ois.readObject();
 	ois.close();
 	}
 	catch (IOException | ClassNotFoundException e)
@@ -210,28 +254,23 @@ private void prepareAchievements()
 		System.exit(-1);
 	}
 
-	achievements = new Achievements();
-	achievements.setJumpCount10Complete(ac.get(0));
-	achievements.setJumpCount25Complete(ac.get(1));
-	achievements.setJumpCount50Complete(ac.get(2));
-	achievements.setCoinCount20Complete(ac.get(3));
-	achievements.setCoinCount50Complete(ac.get(4));
-	achievements.setCoinCount100Complete(ac.get(5));
-	achievements.setCoinCount150Complete(ac.get(6));
-	achievements.setPowerupCount3Complete(ac.get(7));
-	achievements.setComplete1LevelComplete(ac.get(8));
-	achievements.setComplete2LevelComplete(ac.get(9));
-	achievements.setComplete3LevelComplete(ac.get(10));
-	achievements.setComplete4LevelComplete(ac.get(11));
-	achievements.setComplete5LevelComplete(ac.get(12));
-	achievements.setFindAllCoinsComplete(ac.get(13));
-	achievements.setFindAllPowerupsComplete(ac.get(14));
-	achievements.setNoHarmComplete(ac.get(15));
-}
-
-public static Achievements getAchievementsInstance()
-{
-	return achievements;
+	achievements = new Achievements(achievementsList);
+	achievements.setJumpCount10Complete(achievementsList.get(0));
+	achievements.setJumpCount25Complete(achievementsList.get(1));
+	achievements.setJumpCount50Complete(achievementsList.get(2));
+	achievements.setCoinCount20Complete(achievementsList.get(3));
+	achievements.setCoinCount50Complete(achievementsList.get(4));
+	achievements.setCoinCount100Complete(achievementsList.get(5));
+	achievements.setCoinCount150Complete(achievementsList.get(6));
+	achievements.setPowerupCount3Complete(achievementsList.get(7));
+	achievements.setComplete1LevelComplete(achievementsList.get(8));
+	achievements.setComplete2LevelComplete(achievementsList.get(9));
+	achievements.setComplete3LevelComplete(achievementsList.get(10));
+	achievements.setComplete4LevelComplete(achievementsList.get(11));
+	achievements.setComplete5LevelComplete(achievementsList.get(12));
+	achievements.setFindAllCoinsComplete(achievementsList.get(13));
+	achievements.setFindAllPowerupsComplete(achievementsList.get(14));
+	achievements.setNoHarmComplete(achievementsList.get(15));
 }
 
 public static void main(String[] args) {

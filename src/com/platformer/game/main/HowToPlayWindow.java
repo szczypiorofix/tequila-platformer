@@ -31,6 +31,8 @@ public HowToPlayWindow(JFrame parent)
 	bg = loader.loadImage("/JakGrac.png");
 	panel = new JPanel()
 	{
+		private static final long serialVersionUID = 2311137477487062858L;
+
 		@Override
 		public void paintComponent(Graphics g)
 		{
@@ -41,6 +43,7 @@ public HowToPlayWindow(JFrame parent)
 	};
 	panel.setPreferredSize(new Dimension(285, 1030));
 	scroll = new JScrollPane(panel);
+	scroll.getVerticalScrollBar().setUnitIncrement(8);
 	add(scroll);
 }
 }

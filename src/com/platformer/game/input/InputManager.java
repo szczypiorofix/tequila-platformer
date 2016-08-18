@@ -14,7 +14,8 @@ private final int MAX_KEYS = 256;;
 
 private boolean[] keys = null;
 private KeyState[] keyState = null;
-
+private int keyCode;
+private char key;
 
 
 private enum KeyState
@@ -41,7 +42,7 @@ public synchronized void update() {
 	      } else {
 	    	  keyState[ i ] = KeyState.RELEASED;
 	      }
-	    }
+	}
 }
 
 public boolean isKeyPressed(int key)
@@ -54,11 +55,47 @@ public boolean isKeyPressedOnce(int key)
 	return keyState[key] == KeyState.ONCE;
 }
 
+public boolean isAnyKeyPressedOnce()
+{
+	boolean b = false;
+	for (int i = 0; i < MAX_KEYS; i++)
+	{
+		if (keys[i] == true && keyState[i] == KeyState.ONCE) {
+			b = true;
+			break;
+		}
+	}
+	return b;
+}
 
+public boolean isAnyKeyPressed()
+{
+	boolean b = false;
+	for (int i = 0; i < MAX_KEYS; i++)
+	{
+		if (keys[i] == true && keyState[i] == KeyState.PRESSED) {
+			b = true;
+			break;
+		}
+	}
+	return b;
+}
+
+public int getKeyNumber()
+{
+	return keyCode;
+}
+
+public char getKey()
+{
+	return key;
+}
 
 @Override
 public synchronized void keyPressed(KeyEvent e) {
-	int keyCode = e.getKeyCode();
+	keyCode = e.getKeyCode();
+	keyCode = e.getKeyCode();
+	key = e.getKeyChar();
 	if (keyCode >= 0 && keyCode < MAX_KEYS)
 	{
 		keys[keyCode] = true;
@@ -68,7 +105,7 @@ public synchronized void keyPressed(KeyEvent e) {
 @Override
 public synchronized void keyReleased(KeyEvent e) {
 
-	int keyCode = e.getKeyCode();
+	keyCode = e.getKeyCode();
 	if (keyCode >= 0 && keyCode < MAX_KEYS)
 	{
 		keys[keyCode] = false;

@@ -1,13 +1,14 @@
 package com.platformer.game.main;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import com.platformer.game.graphics.BufferedImageLoader;
 
 
 public class Achievements {
 
-
+private HashMap<Integer, Boolean> achievementsList;
 public static final int maxAchievements = 16;
 private final int showAchievementCooldown = 200;
 private boolean showAchievement = false;
@@ -132,8 +133,10 @@ private final String noHarmTextShort = "Bez utraty zdrowia";
 private final BufferedImage noHarmImage;
 
 
-public Achievements()
+public Achievements(HashMap<Integer, Boolean> achievementsList)
 {
+	this.achievementsList = achievementsList;
+	
 	loader = new BufferedImageLoader();
 	jump10Image = loader.loadImage("/A10jumps.png");
 	jump25Image = loader.loadImage("/A25jumps.png");
@@ -194,7 +197,7 @@ public void addJump10Count()
 		jump10Count++;
 		if (jump10Count>= A_10JUMPS) {
 			jumpCount10Complete = true;
-			MainClass.ac.put(0, true);
+			achievementsList.put(0, true);
 			setAchievementText(jump10Text);
 			setAchievementTextShort(jump10TextShort);
 			setAchievementImage(jump10Image);
@@ -209,7 +212,7 @@ public void addJump25Count()
 		jump25Count++;
 		if (jump25Count>= A_25JUMPS) {
 			jumpCount25Complete = true;
-			MainClass.ac.put(1, true);
+			achievementsList.put(1, true);
 			setAchievementText(jump25Text);
 			setAchievementTextShort(jump25TextShort);
 			setAchievementImage(jump25Image);
@@ -224,7 +227,7 @@ public void addJump50Count()
 		jump50Count++;
 		if (jump50Count>= A_50JUMPS) {
 			jumpCount50Complete = true;
-			MainClass.ac.put(2, true);
+			achievementsList.put(2, true);
 			setAchievementText(jump50Text);
 			setAchievementTextShort(jump50TextShort);
 			setAchievementImage(jump50Image);
@@ -239,7 +242,7 @@ public void addCoin20Count()
 		coin20Count++;
 		if (coin20Count>= A_20COINS) {
 			coinCount20Complete = true;
-			MainClass.ac.put(3, true);
+			achievementsList.put(3, true);
 			setAchievementText(coin20Text);
 			setAchievementTextShort(coin20TextShort);
 			setAchievementImage(coin20Image);
@@ -254,7 +257,7 @@ public void addCoin50Count()
 		coin50Count++;
 		if (coin50Count>= A_50COINS) {
 			coinCount50Complete = true;
-			MainClass.ac.put(4, true);
+			achievementsList.put(4, true);
 			setAchievementText(coin50Text);
 			setAchievementTextShort(coin50TextShort);
 			setAchievementImage(coin50Image);
@@ -269,7 +272,7 @@ public void addCoin100Count()
 		coin100Count++;
 		if (coin100Count>= A_100COINS) {
 			coinCount100Complete = true;
-			MainClass.ac.put(5, true);
+			achievementsList.put(5, true);
 			setAchievementText(coin100Text);
 			setAchievementTextShort(coin100TextShort);
 			setAchievementImage(coin100Image);
@@ -284,7 +287,7 @@ public void addCoin150Count()
 		coin150Count++;
 		if (coin150Count>= A_150COINS) {
 			coinCount150Complete = true;
-			MainClass.ac.put(6, true);
+			achievementsList.put(6, true);
 			setAchievementText(coin150Text);
 			setAchievementTextShort(coin150TextShort);
 			setAchievementImage(coin150Image);
@@ -300,7 +303,7 @@ public void addPowerup3Count()
 		powerup3Count++;
 		if (powerup3Count>= A_3POWERUP) {
 			powerupCount3Complete = true;
-			MainClass.ac.put(7, true);
+			achievementsList.put(7, true);
 			setAchievementText(powerup3Text);
 			setAchievementTextShort(powerup3TextShort);
 			setAchievementImage(powerup3Image);
@@ -315,7 +318,7 @@ public void addComplete1LevelCount()
 		complete1LevelCount++;
 		if (complete1LevelCount>= A_COMPLETE1LEVEL) {
 			complete1LevelComplete = true;
-			MainClass.ac.put(8, true);
+			achievementsList.put(8, true);
 			setAchievementText(complete1LevelText);
 			setAchievementTextShort(complete1LevelTextShort);
 			setAchievementImage(complete1LevelImage);
@@ -330,7 +333,7 @@ public void addComplete2LevelCount()
 		complete2LevelCount++;
 		if (complete2LevelCount>= A_COMPLETE2LEVEL) {
 			complete2LevelComplete = true;
-			MainClass.ac.put(9, true);
+			achievementsList.put(9, true);
 			setAchievementText(complete2LevelText);
 			setAchievementTextShort(complete2LevelTextShort);
 			setAchievementImage(complete2LevelImage);
@@ -345,7 +348,7 @@ public void addComplete3LevelCount()
 		complete3LevelCount++;
 		if (complete3LevelCount>= A_COMPLETE3LEVEL) {
 			complete3LevelComplete = true;
-			MainClass.ac.put(10, true);
+			achievementsList.put(10, true);
 			setAchievementText(complete3LevelText);
 			setAchievementTextShort(complete3LevelTextShort);
 			setAchievementImage(complete3LevelImage);
@@ -360,7 +363,7 @@ public void addComplete4LevelCount()
 		complete4LevelCount++;
 		if (complete4LevelCount>= A_COMPLETE4LEVEL) {
 			complete2LevelComplete = true;
-			MainClass.ac.put(11, true);
+			achievementsList.put(11, true);
 			setAchievementText(complete4LevelText);
 			setAchievementTextShort(complete4LevelTextShort);
 			setAchievementImage(complete4LevelImage);
@@ -375,7 +378,7 @@ public void addComplete5LevelCount()
 		complete5LevelCount++;
 		if (complete5LevelCount>= A_COMPLETE5LEVEL) {
 			complete5LevelComplete = true;
-			MainClass.ac.put(12, true);
+			achievementsList.put(12, true);
 			setAchievementText(complete5LevelText);
 			setAchievementTextShort(complete5LevelTextShort);
 			setAchievementImage(complete5LevelImage);
@@ -390,7 +393,7 @@ public void addFindAllCoinsCount()
 		findAllCoinsCount++;
 		if (findAllCoinsCount>= A_FINDALLCOINS) {
 			findAllCoinsComplete = true;
-			MainClass.ac.put(13, true);
+			achievementsList.put(13, true);
 			setAchievementText(findAllCoinsText);
 			setAchievementTextShort(findAllCoinsTextShort);
 			setAchievementImage(findAllCoinsImage);
@@ -405,7 +408,7 @@ public void addFindAllPowerupsCount()
 		findAllPowerupsCount++;
 		if (findAllPowerupsCount>= A_FINDALLPOWERUPS) {
 			findAllPowerupsComplete = true;
-			MainClass.ac.put(14, true);
+			achievementsList.put(14, true);
 			setAchievementText(findAllPowerupsText);
 			setAchievementTextShort(findAllPowerupsTextShort);
 			setAchievementImage(findAllPowerupsImage);
@@ -420,7 +423,7 @@ public void addNoHarmCount()
 		noHarmCount++;
 		if (noHarmCount>= A_NOHARM) {
 			noHarmComplete = true;
-			MainClass.ac.put(15, true);
+			achievementsList.put(15, true);
 			setAchievementText(noHarmText);
 			setAchievementTextShort(noHarmTextShort);
 			setAchievementImage(noHarmImage);
@@ -432,7 +435,10 @@ public void addNoHarmCount()
 
 
 
-
+public HashMap<Integer, Boolean> getAchievementsList()
+{
+	return achievementsList;
+}
 
 public boolean isShowAchievement() {
 	return showAchievement;

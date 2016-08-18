@@ -20,9 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
-
 import javax.imageio.ImageIO;
-
 import com.platformer.game.graphics.BufferedImageLoader;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.input.InputManager;
@@ -46,6 +44,7 @@ public static int SCORE = 0;
 public static boolean pauseGame = false;
 public static int minutes = 0, seconds = 0;
 public static float milis = 0f;
+private float milisMax = 0f;
 public static final float MAX_TIME_BONUS = 1500f;
 public static float time_bonus = MAX_TIME_BONUS;
 public static float TOTAL_SCORE = 0f;
@@ -55,7 +54,6 @@ private GameWindow gameWindow;
 private BufferStrategy bs;
 private Graphics g;
 private ObjectsHandler objectsHandler;
-private static Achievements achievements = MainClass.getAchievementsInstance();
 private ObjectOutputStream oos;
 private PlayerObject player;
 private InputManager key;
@@ -70,6 +68,7 @@ private BufferedImage backGroundMountains;
 private BufferedImage screenShotImage;
 private BufferedImage sun;
 private BufferedImage achievementBg;
+private BufferedImage menuBg;
 private boolean gamepadEnabled = false;
 private boolean makeScreenShot = false;
 private boolean showMessage = false;
@@ -83,18 +82,22 @@ private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jum
 private String time;
 private File screenShotFile;
 private SoundsLoader screenShotSound;
- 
+private String playerName;
+private HallOfFame hallOfFame;
+private Achievements achievements;
 
 
 
 //private Animation playerDeadR, playerDeadL;
 
 
-public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
+public MainScreen(GameWindow gameWindow, boolean gamepadEnabled, HallOfFame hallOfFame, Achievements achievements)
 {
 	super();
 	this.setFocusable(false);
 	this.gameWindow = gameWindow;
+	this.hallOfFame = hallOfFame;
+	this.achievements = achievements;
 	
 	// TODO coœ co zrzuca ska³y na g³owê (w³¹cza siê w obszarze jak kaktus
 	// TODO coœ w rodzaju przycisku - podchodzisz stajesz/dotykasz i coœ siê w³¹cza/otwiera np. przejœcie
@@ -150,6 +153,7 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	sun = loader.loadImage("/sun.png");
 	achievementBg = loader.loadImage("/achievementBg.png");
+	menuBg = loader.loadImage("/gameMenuBackground.png");
 	
 	this.gameWindow.add(this);
 	key = new InputManager();
@@ -162,6 +166,8 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 	cam = new Camera(0,0);
 	screenShotSound = new SoundsLoader("/screenShotSound.wav");
 	
+	playerName = "";
+	
 	msgY = 0;
 	saveAchievementsToFile = false;
 	//playerDeadR = new Animation(4, tex.playerDeadR[0], tex.playerDeadR[1], tex.playerDeadR[2], tex.playerDeadR[3], tex.playerDeadR[4], tex.playerDeadR[5], tex.playerDeadR[6]);
@@ -171,7 +177,7 @@ public MainScreen(GameWindow gameWindow, boolean gamepadEnabled)
 
 public void addElements()
 {
-	objectsHandler = new ObjectsHandler(cam);
+	objectsHandler = new ObjectsHandler(cam, achievements);
 	objectsHandler.loadLevel(LEVEL);
 	player = objectsHandler.getPlayer();
 	
@@ -249,8 +255,8 @@ public void tick()
 		}
 		
 	}
-	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit=true;
-	if (key.isKeyPressedOnce(KeyEvent.VK_SPACE)) pauseGame = !pauseGame;
+	//if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit=true;
+	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) pauseGame = !pauseGame;
 	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
 		player.setHealth(5);
 	}
@@ -282,30 +288,52 @@ public void tick()
 		player = objectsHandler.getPlayer();
 		achievements.restartLevel();
 	}
+
+	// PO WPISANIU IMIENIA DO LISTY NAJLEPSZYCH - ENTER!
+	if (!pauseGame && player.isFinishLevel()) {
+		
+		
+		if (key.isAnyKeyPressedOnce())
+		{
+			if (((Character.isAlphabetic(key.getKey()) || (key.getKey() == '1' || key.getKey() == '2' || key.getKey() == '3' || key.getKey() == '4')
+					|| key.getKey() == '5' || key.getKey() == '6' || key.getKey() == '7' || key.getKey() == '8' || key.getKey() == '9' || key.getKey() == '0'
+					|| key.getKey() == ' '))
+					&& (playerName.length() < 20))  playerName += key.getKey();
+			else
+				if (key.isKeyPressed(KeyEvent.VK_BACK_SPACE) && playerName.length() > 0) {
+					playerName = playerName.substring(0, playerName.length()-1);
+				}
+		}
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
+			writeScore(playerName, SCORE, milisMax);
+			pauseGame = true;	
+		}
+	}
 	
-	// PAUSE GAME
+	// GRA DZIA£A
 	if (!pauseGame && !player.isFinishLevel() && player.getHealth() > 0) {
 		objectsHandler.tick();
 		cam.tick(player);
 		timeTick();
 	}
 	
-	if (pauseGame && player.isFinishLevel() && key.isKeyPressedOnce(KeyEvent.VK_SPACE))
+	// ENTER TO NEW LEVEL
+	if (pauseGame && player.isFinishLevel())
 	{
-		{
-			pauseGame = false;
-			MainScreen.milis = 0f;
-			MainScreen.minutes = 0;
-			MainScreen.seconds = 0;
-			MainScreen.COINS = 0;
-			MainScreen.SCORE = 0;
-			MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
-			MainScreen.TOTAL_SCORE = 0;
+		pauseGame = false;
+		MainScreen.milis = 0f;
+		milisMax = 0f;
+		MainScreen.minutes = 0;
+		MainScreen.seconds = 0;
+		MainScreen.COINS = 0;
+		MainScreen.SCORE = 0;
+		MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
+		MainScreen.TOTAL_SCORE = 0;
 				
-			objectsHandler.switchLevel();
-			player = objectsHandler.getPlayer();
-			achievements.restartLevel();
-		}
+		objectsHandler.switchLevel();
+		player = objectsHandler.getPlayer();
+		achievements.restartLevel();
 	}
 	
 	if (achievements.isShowAchievement())
@@ -325,6 +353,7 @@ public void tick()
 public void timeTick()
 {
 	milis += (1000/60);
+	milisMax += (1000/60);
 	if (milis >999)
 	{
 		seconds++;
@@ -341,8 +370,25 @@ public void timeTick()
 	else time += ":"+seconds +":" + (int) milis;	
 }
 
+private void writeScore(String name, int score, float milis)
+{
+	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, milis));
+	if(MainClass.hallOfFameFile.exists() && !MainClass.hallOfFameFile.isDirectory())
+	{
+		try {
+		oos = new ObjectOutputStream(new FileOutputStream((MainClass.hallOfFameFile)));
+	    oos.writeObject(hallOfFame.getHallOfFameList());
+	    oos.close();
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+			System.exit(-1);
+		}
+	}
+}
 
-public void showMessage(Graphics2D g2d, String msg, BufferedImage achievementImage, int counter)
+private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementImage, int counter)
 {
 	
 	if (!saveAchievementsToFile)
@@ -352,7 +398,7 @@ public void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIma
 			//System.out.println("Zapis achievementów do pliku");
 			try {
 			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
-		    oos.writeObject(MainClass.ac);
+		    oos.writeObject(achievements.getAchievementsList());
 		    oos.close();
 			}
 			catch (IOException ioe)
@@ -455,18 +501,23 @@ public void render(int fps_count, int ticks_count)
 	{
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 64f));
 		g2d.setColor(Color.BLUE);
-		g2d.drawString("PAUZA", 400, 320);
+		g2d.drawImage(menuBg, 300, 100, null);
+		g2d.drawString("WZNÓW GRÊ", 360, 220);
+		g2d.drawString("MENU G£ÓWNE", 360, 320);
+		g2d.drawString("WYJŒCIE", 360, 420);
 	}
 	
 	
 	if (showMessage) showMessage(g2d, achievements.getAchievementTextShort(), achievements.getAchievementImage(), achievements.getAchievementCount());
 	else saveAchievementsToFile = false;
 	
+	
+	// KONIEC POZIOMU
 	if (player.isFinishLevel())
 	{
 		TOTAL_SCORE = SCORE + (int) time_bonus;
 		g2d.setColor(Color.GRAY);
-		g2d.fillRect(300, 100, 400, 400);
+		g2d.fillRect(300, 100, 400, 450);
 		g2d.setColor(Color.YELLOW);
 		g2d.drawRect(2999, 99, 402, 342);
 		g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
@@ -476,10 +527,14 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawString("CZAS: " +time, 380, 300);
 		g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 340, 370);
 		g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 340, 430);
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 24f));
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 26f));
 		g2d.setColor(Color.WHITE);
-		g2d.drawString("NACIŒNIJ SPACJÊ ...", 420, 480);
-
+		g2d.drawString("PODAJ SWOJE IMIÊ I NACIŒNIJ ENTER:", 320, 480);
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 32f));
+		g2d.setColor(Color.CYAN);
+		g2d.drawString(playerName , 490-(playerName.length() * 8), 520);
+		//key.setKetPressedOnce(KeyEvent.VK_ENTER);
+		//pauseGame = false;
 	}
 	//playerDeadR.drawAnimation(g2d, (int) player.getX(), (int) player.getY(), false);
 	if (player.getHealth() <= 0)

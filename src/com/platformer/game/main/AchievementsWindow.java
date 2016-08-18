@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 
 public class AchievementsWindow extends JFrame{
 
@@ -18,35 +17,36 @@ public class AchievementsWindow extends JFrame{
 private static final long serialVersionUID = -6287250283593155470L;
 
 private JPanel mainPanel;
-private Achievements achievements = MainClass.getAchievementsInstance();
 private JScrollPane scroll;
+private Achievements achievements;
 
-public AchievementsWindow(JFrame parent)
+public AchievementsWindow(JFrame parent, Achievements achievements)
 {
 	super("Osi¹gniêcia");
-	setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	this.achievements = achievements;
+	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	setSize(410,400);
 	setLocationRelativeTo(parent);
 	setResizable(false);
 	setLayout(new BorderLayout());
 	mainPanel = new JPanel(new GridLayout(Achievements.maxAchievements, 1));
 		
-	mainPanel.add(new Button(achievements.getJump10TextShort(), achievements.getJump10Text(), achievements.getJump10Image(), achievements.isJumpCount10Complete()));
-	mainPanel.add(new Button(achievements.getJump25TextShort(), achievements.getJump25Text(), achievements.getJump25Image(), achievements.isJumpCount25Complete()));
-	mainPanel.add(new Button(achievements.getJump50TextShort(), achievements.getJump50Text(), achievements.getJump50Image(), achievements.isJumpCount50Complete()));
-	mainPanel.add(new Button(achievements.getCoin20TextShort(), achievements.getCoin20Text(), achievements.getCoin20Image(), achievements.isCoinCount20Complete()));
-	mainPanel.add(new Button(achievements.getCoin50TextShort(), achievements.getCoin50Text(), achievements.getCoin50Image(), achievements.isCoinCount50Complete()));
-	mainPanel.add(new Button(achievements.getCoin100TextShort(), achievements.getCoin100Text(), achievements.getCoin100Image(), achievements.isCoinCount100Complete()));
-	mainPanel.add(new Button(achievements.getCoin150TextShort(), achievements.getCoin150Text(), achievements.getCoin150Image(), achievements.isCoinCount150Complete()));
-	mainPanel.add(new Button(achievements.getPowerup3TextShort(), achievements.getPowerup3Text(), achievements.getPowerup3Image(), achievements.isPowerupCount3Complete()));
-	mainPanel.add(new Button(achievements.getComplete1LevelTextShort(), achievements.getComplete1LevelText(), achievements.getComplete1LevelImage(), achievements.isComplete1LevelComplete()));
-	mainPanel.add(new Button(achievements.getComplete2LevelTextShort(), achievements.getComplete2LevelText(), achievements.getComplete2LevelImage(), achievements.isComplete2LevelComplete()));
-	mainPanel.add(new Button(achievements.getComplete3LevelTextShort(), achievements.getComplete3LevelText(), achievements.getComplete3LevelImage(), achievements.isComplete3LevelComplete()));
-	mainPanel.add(new Button(achievements.getComplete4LevelTextShort(), achievements.getComplete4LevelText(), achievements.getComplete4LevelImage(), achievements.isComplete4LevelComplete()));
-	mainPanel.add(new Button(achievements.getComplete5LevelTextShort(), achievements.getComplete5LevelText(), achievements.getComplete5LevelImage(), achievements.isComplete5LevelComplete()));
-	mainPanel.add(new Button(achievements.getFindAllCoinsTextShort(), achievements.getFindAllCoinsText(), achievements.getFindAllCoinsImage(), achievements.isFindAllCoinsComplete()));
-	mainPanel.add(new Button(achievements.getFindAllPowerupsTextShort(), achievements.getFindAllPowerupsText(), achievements.getFindAllPowerupsImage(), achievements.isFindAllPowerupsComplete()));
-	mainPanel.add(new Button(achievements.getNoHarmTextShort(), achievements.getNoHarmText(), achievements.getNoHarmImage(), achievements.isNoHarmComplete()));
+	mainPanel.add(new Button(this.achievements.getJump10TextShort(), this.achievements.getJump10Text(), this.achievements.getJump10Image(), this.achievements.isJumpCount10Complete()));
+	mainPanel.add(new Button(this.achievements.getJump25TextShort(), this.achievements.getJump25Text(), this.achievements.getJump25Image(), this.achievements.isJumpCount25Complete()));
+	mainPanel.add(new Button(this.achievements.getJump50TextShort(), this.achievements.getJump50Text(), this.achievements.getJump50Image(), this.achievements.isJumpCount50Complete()));
+	mainPanel.add(new Button(this.achievements.getCoin20TextShort(), this.achievements.getCoin20Text(), this.achievements.getCoin20Image(), this.achievements.isCoinCount20Complete()));
+	mainPanel.add(new Button(this.achievements.getCoin50TextShort(), this.achievements.getCoin50Text(), this.achievements.getCoin50Image(), this.achievements.isCoinCount50Complete()));
+	mainPanel.add(new Button(this.achievements.getCoin100TextShort(), this.achievements.getCoin100Text(), this.achievements.getCoin100Image(), this.achievements.isCoinCount100Complete()));
+	mainPanel.add(new Button(this.achievements.getCoin150TextShort(), this.achievements.getCoin150Text(), this.achievements.getCoin150Image(), this.achievements.isCoinCount150Complete()));
+	mainPanel.add(new Button(this.achievements.getPowerup3TextShort(), this.achievements.getPowerup3Text(), this.achievements.getPowerup3Image(), this.achievements.isPowerupCount3Complete()));
+	mainPanel.add(new Button(this.achievements.getComplete1LevelTextShort(), this.achievements.getComplete1LevelText(), this.achievements.getComplete1LevelImage(), this.achievements.isComplete1LevelComplete()));
+	mainPanel.add(new Button(this.achievements.getComplete2LevelTextShort(), this.achievements.getComplete2LevelText(), this.achievements.getComplete2LevelImage(), this.achievements.isComplete2LevelComplete()));
+	mainPanel.add(new Button(this.achievements.getComplete3LevelTextShort(), this.achievements.getComplete3LevelText(), this.achievements.getComplete3LevelImage(), this.achievements.isComplete3LevelComplete()));
+	mainPanel.add(new Button(this.achievements.getComplete4LevelTextShort(), this.achievements.getComplete4LevelText(), this.achievements.getComplete4LevelImage(), this.achievements.isComplete4LevelComplete()));
+	mainPanel.add(new Button(this.achievements.getComplete5LevelTextShort(), this.achievements.getComplete5LevelText(), this.achievements.getComplete5LevelImage(), this.achievements.isComplete5LevelComplete()));
+	mainPanel.add(new Button(this.achievements.getFindAllCoinsTextShort(), this.achievements.getFindAllCoinsText(), this.achievements.getFindAllCoinsImage(), this.achievements.isFindAllCoinsComplete()));
+	mainPanel.add(new Button(this.achievements.getFindAllPowerupsTextShort(), this.achievements.getFindAllPowerupsText(), this.achievements.getFindAllPowerupsImage(), this.achievements.isFindAllPowerupsComplete()));
+	mainPanel.add(new Button(this.achievements.getNoHarmTextShort(), this.achievements.getNoHarmText(), this.achievements.getNoHarmImage(), this.achievements.isNoHarmComplete()));
 	
 	
 	scroll = new JScrollPane(mainPanel);

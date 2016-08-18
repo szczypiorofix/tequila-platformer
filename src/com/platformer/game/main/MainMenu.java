@@ -53,11 +53,15 @@ private HowToPlayWindow howToPlayWindow;
 private HallOfFameWindow hallOfFameWindow;
 private AchievementsWindow achievementsWindow;
 private CollectiblesWindow collectiblesWindow;
+private HallOfFame hallOfFame;
+private Achievements achievements;
 
-
-public MainMenu(MainClass mainClass)
+public MainMenu(MainClass mainClass, HallOfFame hallOfFame, Achievements achievements)
 {
 	this.mainClass = mainClass;
+	this.hallOfFame = hallOfFame;
+	this.achievements = achievements;
+	
 	mainMenuFrame = new JFrame("TEQUILA PLATFORMER");
 	mainMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	mainMenuFrame.setSize(500, 600);
@@ -233,13 +237,13 @@ private void showHowToPlayWindow()
 
 private void showHallOfFameWindow()
 {
-	hallOfFameWindow = new HallOfFameWindow(mainMenuFrame);
+	hallOfFameWindow = new HallOfFameWindow(mainMenuFrame, hallOfFame);
 	hallOfFameWindow.setVisible(true);
 }
 
 private void showAchievementsWindow()
 {
-	achievementsWindow = new AchievementsWindow(mainMenuFrame);
+	achievementsWindow = new AchievementsWindow(mainMenuFrame, achievements);
 	achievementsWindow.setVisible(true);
 }
 

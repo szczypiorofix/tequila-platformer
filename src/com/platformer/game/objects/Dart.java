@@ -42,8 +42,8 @@ public Dart(ObjectId id, float x, float y, int direction, ObjectsHandler objects
 	height = 12;
 	action = false;
 	visible = true;
-	if (direction == 1) velX = 5;
-	else velX = -5;
+	if (direction == 1) velX = 6;
+	else velX = -6;
 	this.direction = direction;
 }
 
