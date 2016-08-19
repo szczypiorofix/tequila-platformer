@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 
 public class LevelEditorMainClass extends JFrame{
@@ -46,8 +48,9 @@ private JMenu menuPlik = new JMenu("Plik");
 private JMenuItem menuPlikZakoncz = new JMenuItem("Zakoñcz"), menuPlikZapisz = new JMenuItem("Zapisz"), menuPlikOtworz = new JMenuItem("Otwórz"), menuPlikNowy = new JMenuItem("Nowy");
 
 private JMenu menuGenerator = new JMenu("Generator");
-private JMenuItem menuGeneratorPodloze = new JMenuItem("Generuj pod³o¿e");
-private JMenuItem menuGeneratorTeren = new JMenuItem("Generuj teren");
+private JMenuItem menuGeneratorPodloze = new JMenuItem("Pod³o¿e");
+private JMenuItem menuGeneratorLosowyTeren = new JMenuItem("Losowy Teren");
+private JMenuItem menuGeneratorWyrownanieTerenu = new JMenuItem("Wyrównanie teren");
 
 private TileChoose[] tilesChoose = new TileChoose[MAX_TILES];
 private ActionListener tileListener, menuListener;
@@ -56,6 +59,13 @@ private ObjectOutputStream oos;
 private ObjectInputStream ois;
 private String currentFile = "", currentLevelName = "level1";
 private Random random;
+private final KeyStroke ctrl_T = KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK);
+private final KeyStroke ctrl_P = KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK);
+private final KeyStroke ctrl_S = KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK);
+private final KeyStroke ctrl_N = KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK);
+private final KeyStroke ctrl_O = KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK);
+private final KeyStroke ctrl_X = KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK);
+private final KeyStroke ctrl_W = KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK);
 
 
 
@@ -161,29 +171,57 @@ public LevelEditorMainClass()
 	menuPlik.add(menuPlikOtworz);
 	menuPlik.add(menuPlikZakoncz);
 	menuGenerator.add(menuGeneratorPodloze);
-	menuGenerator.add(menuGeneratorTeren);
+	menuGenerator.add(menuGeneratorLosowyTeren);
+	menuGenerator.add(menuGeneratorWyrownanieTerenu);
 	menuBar.add(menuPlik);
 	menuBar.add(menuGenerator);
 	setJMenuBar(menuBar);
 	
 	menuPlikNowy.addActionListener(menuListener);
 	menuPlikNowy.setActionCommand("New");
+	menuPlikNowy.setAccelerator(ctrl_N);
+
+	
 	menuPlikZapisz.addActionListener(menuListener);
 	menuPlikZapisz.setActionCommand("Save");
+	menuPlikZapisz.setAccelerator(ctrl_S);
+
+	
 	menuPlikOtworz.addActionListener(menuListener);
 	menuPlikOtworz.setActionCommand("Open");
+	menuPlikOtworz.setAccelerator(ctrl_O);
+
+	
 	menuPlikZakoncz.addActionListener(menuListener);
 	menuPlikZakoncz.setActionCommand("Exit");
+	menuPlikZakoncz.setAccelerator(ctrl_X);
+	
 	menuGeneratorPodloze.addActionListener(menuListener);
 	menuGeneratorPodloze.setActionCommand("Podloze");
-	menuGeneratorTeren.addActionListener(menuListener);
-	menuGeneratorTeren.setActionCommand("Teren");
+	menuGeneratorPodloze.setAccelerator(ctrl_P);
 	
-	///   ZAPIS DO PLIKU BMP w systemie RGB	
+	menuGeneratorLosowyTeren.addActionListener(menuListener);
+	menuGeneratorLosowyTeren.setActionCommand("LosowyTeren");
+	menuGeneratorLosowyTeren.setAccelerator(ctrl_T);
+	
+	menuGeneratorWyrownanieTerenu.addActionListener(menuListener);
+	menuGeneratorWyrownanieTerenu.setActionCommand("Wyrownanie");
+	menuGeneratorWyrownanieTerenu.setAccelerator(ctrl_W);
 }
 
 public class MenuListener implements ActionListener
 {
+	
+public void clearMap()
+{
+	for (int i = 0; i < ROWS; i++)
+		for (int j = 0; j < COLS; j++)
+		{
+			editorPane.editorTiles[i][j].setIcon(null);
+			editorPane.tileValues[i][j] = -1;
+		}
+}
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -191,12 +229,7 @@ public class MenuListener implements ActionListener
 		
 		if (e.getActionCommand().equalsIgnoreCase("New"))
 		{
-			for (int i = 0; i < ROWS; i++)
-				for (int j = 0; j < COLS; j++)
-				{
-					editorPane.editorTiles[i][j].setIcon(null);
-					editorPane.tileValues[i][j] = -1;
-				}
+			clearMap();
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Open"))
@@ -210,9 +243,8 @@ public class MenuListener implements ActionListener
 			
 			while(filename.length() == 0);
 			
-			for (int i = 0; i < ROWS; i++)
-				for (int j = 0; j < COLS; j++)
-					editorPane.tileValues[i][j] = -1;
+			clearMap();
+			
 			currentLevelName = filename;
 			filename = "res/Other/" +filename +".lvl";
 			currentFile = filename;
@@ -304,27 +336,164 @@ public class MenuListener implements ActionListener
 			editorPane.editorTiles[ROWS-1][COLS-1].setIcon(new ImageIcon(newImage));
 		}
 		
-		if (e.getActionCommand().equalsIgnoreCase("Teren"))
+		if (e.getActionCommand().equalsIgnoreCase("LosowyTeren"))
+		{			
+			int[][] tempMap = new int[ROWS-2][COLS-1];
+			
+			// LOSOWY TEREN
+			for (int i = 0; i < ROWS-2; i++)
+			{
+				for (int j = 0; j < COLS-1; j++)
+				{
+					if (random(3) == 0) tempMap[i][j] = 1;
+					else tempMap[i][j] = -1;
+				}
+			}
+			
+			
+			// DODANIE DO OBECNEGO TERENU - TERENU LOSOWEGO
+			for (int i = 0; i < ROWS-2; i++)
+			{
+				for (int j = 0; j < COLS-1; j++)
+				{
+					editorPane.tileValues[i+1][j+1] = tempMap[i][j];
+					Image newImage = null;
+					if (editorPane.tileValues[i][j] != -1)
+					{
+						newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));	
+					}
+				}
+			}
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("Wyrownanie"))
 		{
+
+			int MX = ROWS;
+			int MY = COLS;
+			int[][] tempMap = new int[MX][MY];
+			
+			// PRZEPISANIE OBECNEJ MAPY NA TEMPMAPE
+			for (int i = 0; i < MX; i++)
+			{
+				for (int j = 0; j < MY; j++)
+				{
+					tempMap[i][j] = editorPane.tileValues[i][j];
+				}
+			}
+			
+			
+			// TUTAJ JEST WYGLADZANIE TERENU
+			int[][] maxT = new int[MX][MY]; // TABLICA BLOKÓW
+			for (int i = 0; i < MX; i++)
+				for (int j = 0; j < MY; j++)
+					maxT[i][j] = -1;
+			
+			
+			
+			for (int i = 0; i < MX; i++)
+			{
+				for (int j = 0; j < MY; j++)
+				{
+					if ((i > 1) && i < (MX-1) && (j > 1) && (j < MY-2))
+					{
+						
+						/// SPRAWDZANIE KONKRETNEGO BLOKU PE£NEGO
+						
+						maxT[i][j] = 1;
+						int[][] temp = new int[3][3];
+						
+						// ZBIERANIE SASIADÓW
+						for (int a = -1; a < 2; a++)
+							for (int b = -1; b < 2; b++)
+								temp[a+1][b+1] = tempMap[i+a][j+b];
+						
+						for (int a = 0; a < 3; a++)
+							for (int b = 0; b < 3; b++)
+							{
+								if (temp[a][b] == 1) maxT[i][j] += 1; // NABIJANIE ILOŒCI SASIADÓW
+							}
+					
+						
+						if (maxT[i][j] > 4)
+						{
+							tempMap[i][j] = 1;
+						} else tempMap[i][j] = -1;
+						
+					}
+				}
+			}
+			
+			/**
 			for (int i = 0; i < ROWS; i++)
 			{
 				for (int j = 0; j < COLS; j++)
 				{
 					
-					int x1 = random.nextInt(20);
-					
-					// http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
-					
-					if (i == (ROWS-3) & (j!=0) && (j!=COLS-1) && (x1 == 1))
+					if (i > 0 && i < ROWS && j > 0 && j < COLS-1)
 					{
-						editorPane.tileValues[i][j] = 1;
-						Image newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));						
+						if (tempMap[i][j] == 1)
+						{
+							/// SPRAWDZANIE KONKRETNEGO BLOKU PE£NEGO
+							
+							maxT[i][j] = 1;
+							int[][] temp = new int[3][3];
+							
+							
+							// ZBIERANIE SASIADÓW
+							for (int a = -1; a < 2; a++)
+								for (int b = -1; b < 2; b++)
+									temp[a+1][b+1] = tempMap[i+a][j+b];
+							
+							
+							for (int a = 0; a < 3; a++)
+								for (int b = 0; b < 3; b++)
+								{
+									if (temp[a][b] == 1) maxT[i][j] += 1; // NABIJANIE ILOŒCI SASIADÓW
+								}
+						
+							
+							if (maxT[i][j] > 3)
+							{
+								tempMap[i][j] = 1;
+							}
+						}
+					}
+				}
+				
+			}**/
+			
+			// TU SIE KONCZY WYGLADZANIE TERENU
+			
+			for (int i = 0; i < ROWS-2; i++)
+			{
+				for (int j = 0; j < COLS-1; j++)
+				{
+					editorPane.tileValues[i][j] = tempMap[i][j];
+					Image newImage = null;
+					if (editorPane.tileValues[i][j] != -1)
+					{
+						newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));	
 					}
 				}
 			}
 		}
 	}
+
+public int random(int number)
+{
+	int i = random.nextInt(number);
+	return i;
+}
+	
+public int random(int start, int end)
+{
+	int i = random.nextInt(end-start+1)+start;
+	return i;
+}
+
 }
 
 
