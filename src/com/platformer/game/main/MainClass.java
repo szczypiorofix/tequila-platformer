@@ -43,6 +43,7 @@ private boolean running;
 private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");
 private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
 private Thread thread;
+private GameState gameState;
 
 public MainClass()
 {	
@@ -69,7 +70,8 @@ public MainClass()
 public void gameStart()
 {
 	gameWindow = new GameWindow();
-	mainScreen = new MainScreen(gameWindow, gamepadEnabled, hallOfFame, achievements);
+	gameState = GameState.Game;
+	mainScreen = new MainScreen(gameState, gameWindow, gamepadEnabled, hallOfFame, achievements);
 	
 	gameWindow.setVisible(true);
 	WIDTH = mainScreen.getWidth();
@@ -92,6 +94,8 @@ public synchronized void gameThreadStart()
 public void run()
 {	
 	gameWindow.requestFocus();
+	
+	gameState = GameState.Game;
 	
 	// GAME LOOPd
 
@@ -144,7 +148,7 @@ public void run()
     }
 	**/
     
-	boolean fpsCap = false;
+	boolean fpsCap = true;
 
 	long lastTime = System.nanoTime();
 	double amountOfTicks = 60.0;
@@ -163,13 +167,25 @@ public void run()
 		while(delta >= 1)
 		{	
 			if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
-			mainScreen.tick();
-			if (fpsCap) mainScreen.render(60, ticks_count);
+			
+			if (gameState == GameState.Game)
+			{
+				mainScreen.tick();
+				
+				if (fpsCap) mainScreen.render(60, ticks_count);
+			}
 			updates++;
 			delta--;
 		}
 		
-		if (!fpsCap) mainScreen.render(fps_count, ticks_count);
+		if (gameState == GameState.Game)
+		{
+			if (!fpsCap) mainScreen.render(fps_count, ticks_count);
+		}
+		else if (gameState == GameState.Menu)
+		{
+			
+		}
 		frames++;
 		
 		if (System.currentTimeMillis() - timer > 1000)

@@ -1,9 +1,7 @@
 package com.platformer.leveleditor;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -16,22 +14,20 @@ private BufferedImage image;
 public Tile()
 {
 	super();
-	setPreferredSize(new Dimension(50,30));
-	setMinimumSize(new Dimension(50,30));
-	setMaximumSize(new Dimension(50,30));
+	setPreferredSize(new Dimension(40,40));
+	setMinimumSize(new Dimension(40,40));
+	setMaximumSize(new Dimension(40,40));
 	setContentAreaFilled(false);
 }
 
 public Tile(BufferedImage image)
 {
 	super();
-	this.setImage(image);
-	Image newImage = image.getScaledInstance(50, 30, Image.SCALE_DEFAULT);
-	setPreferredSize(new Dimension(50,30));
-	setMinimumSize(new Dimension(50,30));
-	setMaximumSize(new Dimension(50,30));
+	setPreferredSize(new Dimension(40,40));
+	setMinimumSize(new Dimension(40,40));
+	setMaximumSize(new Dimension(40,40));
 	setContentAreaFilled(false);
-	setIcon(new ImageIcon(newImage));
+	setIcon(new ImageIcon(image));
 }
 
 public BufferedImage getImage() {

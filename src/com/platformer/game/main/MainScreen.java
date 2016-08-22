@@ -85,16 +85,17 @@ private SoundsLoader screenShotSound;
 private String playerName;
 private HallOfFame hallOfFame;
 private Achievements achievements;
-
+private GameState gameState;
 
 
 //private Animation playerDeadR, playerDeadL;
 
 
-public MainScreen(GameWindow gameWindow, boolean gamepadEnabled, HallOfFame hallOfFame, Achievements achievements)
+public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEnabled, HallOfFame hallOfFame, Achievements achievements)
 {
 	super();
 	this.setFocusable(false);
+	this.gameState = gameState;
 	this.gameWindow = gameWindow;
 	this.hallOfFame = hallOfFame;
 	this.achievements = achievements;
@@ -373,7 +374,9 @@ public void timeTick()
 private void writeScore(String name, int score, long milis)
 {
 	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, milis));
-	System.out.println(hallOfFame.getHallOfFameList().get(hallOfFame.getHallOfFameList().size()-1).getTimeFromMilis(milis));
+	
+	//System.out.println(hallOfFame.getHallOfFameList().get(hallOfFame.getHallOfFameList().size()-1).getTimeFromMilis(milis));
+	
 	if(MainClass.hallOfFameFile.exists() && !MainClass.hallOfFameFile.isDirectory())
 	{
 		try {
@@ -455,50 +458,113 @@ public void render(int fps_count, int ticks_count)
 	g.setColor(new Color(184, 220, 254));
 	g.fillRect(0,0,getWidth(), getHeight());
 	
-	g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
-	g2d.setColor(Color.BLUE);
 	
-	/// MOUNTAING & PARALLAX
-	
-	if (cam.getX() < 10  && cam.getX() > -6950) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	if (cam.getX() < -15  && cam.getX() > -14000) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-	if (cam.getX() < -7000  && cam.getX() > -14500) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
-	
-	g2d.drawImage(sun, 210, (int) (cam.getY()/1.33) + 420, null);
-	
-	////// CAM MOVING HERE
-	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
-	
-	if (!player.isFinishLevel()) objectsHandler.render(g);
-	
-	g2d.translate(-cam.getX(), -cam.getY()); // CAM ENGING	
-	
+	if (gameState == GameState.Game)
+	{
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
+		g2d.setColor(Color.BLUE);
+		
+		/// MOUNTAING & PARALLAX
+		
+		if (cam.getX() < 10  && cam.getX() > -6950) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+		if (cam.getX() < -15  && cam.getX() > -14000) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+		if (cam.getX() < -7000  && cam.getX() > -14500) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
+		
+		g2d.drawImage(sun, 210, (int) (cam.getY()/1.33) + 420, null);
+		
+		////// CAM MOVING HERE
+		g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
+		
+		if (!player.isFinishLevel()) objectsHandler.render(g);
+		
+		g2d.translate(-cam.getX(), -cam.getY()); // CAM ENGING	
+		
 
-	g2d.drawString("POZIOM "+LEVEL, 845, 40);
-	g2d.drawString("MONETY: "+COINS, 10, 40);
-	g2d.drawString("WYNIK: "+SCORE, 10, 80);
-	
-	g2d.setFont(new Font("Verdana", 1, 12));
-	g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
-	g2d.drawString("CZAS: "+time, MainClass.WIDTH - 150, 80);
-	
-	//g2d.drawString("CAM X "+ cam.getX(), MainClass.WIDTH - 170, 120);
-	//g2d.drawString("GROUND "+ player.isOnGround(), MainClass.WIDTH - 170, 120);
-	//g2d.drawString("JUMP "+ player.isJumping(), MainClass.WIDTH - 170, 170);
-	//g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
-	
-	if (player.isTequila_powerUp()) {
-		g2d.drawImage(tex.tequilaImage, 10, 90, null);
-		g2d.setColor(Color.ORANGE);
-		g2d.fillRect(60, 180 - (int)(player.getTequila_time()/3.5), 10, (int) (player.getTequila_time()/3.5));
+		g2d.drawString("POZIOM "+LEVEL, 845, 40);
+		g2d.drawString("MONETY: "+COINS, 10, 40);
+		g2d.drawString("WYNIK: "+SCORE, 10, 80);
+		
+		g2d.setFont(new Font("Verdana", 1, 12));
+		g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
+		g2d.drawString("CZAS: "+time, MainClass.WIDTH - 150, 80);
+		
+
+		if (player.isTequila_powerUp()) {
+			g2d.drawImage(tex.tequilaImage, 10, 90, null);
+			g2d.setColor(Color.ORANGE);
+			g2d.fillRect(60, 180 - (int)(player.getTequila_time()/3.5), 10, (int) (player.getTequila_time()/3.5));
+		}
+		if (player.isTaco_powerUp()) {
+			g2d.drawImage(tex.tacoImage, 10, 110, null);
+			g2d.setColor(Color.GREEN);
+			g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
+		}
+		
+		//g2d.drawString("CAM X "+ cam.getX(), MainClass.WIDTH - 170, 120);
+		//g2d.drawString("GROUND "+ player.isOnGround(), MainClass.WIDTH - 170, 120);
+		//g2d.drawString("JUMP "+ player.isJumping(), MainClass.WIDTH - 170, 170);
+		//g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
+		
+		if (pauseGame && !player.isFinishLevel())
+		{
+			gameState = GameState.Menu;
+		}
+		
+		if (showMessage) showMessage(g2d, achievements.getAchievementTextShort(), achievements.getAchievementImage(), achievements.getAchievementCount());
+		else saveAchievementsToFile = false;
+		
+		
+		// KONIEC POZIOMU
+		if (player.isFinishLevel())
+		{
+			TOTAL_SCORE = SCORE + (int) time_bonus;
+			g2d.setColor(Color.GRAY);
+			g2d.fillRect(300, 100, 400, 450);
+			g2d.setColor(Color.YELLOW);
+			g2d.drawRect(2999, 99, 402, 342);
+			g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
+			g2d.drawString("POZIOM "+LEVEL +" UKOÑCZONY !!!", 315, 155);
+			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
+			g2d.drawString("TWÓJ WYNIK: " +SCORE, 375, 240);
+			g2d.drawString("CZAS: " +time, 380, 300);
+			g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 340, 370);
+			g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 340, 430);
+			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 26f));
+			g2d.setColor(Color.WHITE);
+			g2d.drawString("PODAJ SWOJE IMIÊ I NACIŒNIJ ENTER:", 320, 480);
+			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 32f));
+			g2d.setColor(Color.CYAN);
+			g2d.drawString(playerName , 490-(playerName.length() * 8), 520);
+			//key.setKetPressedOnce(KeyEvent.VK_ENTER);
+			//pauseGame = false;
+		}
+		//playerDeadR.drawAnimation(g2d, (int) player.getX(), (int) player.getY(), false);
+		if (player.getHealth() <= 0)
+		{
+			g2d.setColor(Color.RED);
+			g2d.setFont(MainClass.texasFont.deriveFont(68f));
+			g2d.drawString("NIE ¯YJESZ ...", 355, 220);
+			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
+			g2d.drawString("SPACJA - RESTART", 340, 320);
+			g2d.drawString("ESC - KONIEC", 370, 380);
+			//playerDeadR.runAnimation();
+			//playerDeadL.runAnimation();
+			//playerDeadR.drawAnimation(g, (int) player.getX(), (int) player.getY(), false);
+			//pauseGame = true;
+		}
+		
+		for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);
+		
+		
+		if (makeScreenShot)
+		{
+			makeScreenShot();
+		}
+		
 	}
-	if (player.isTaco_powerUp()) {
-		g2d.drawImage(tex.tacoImage, 10, 110, null);
-		g2d.setColor(Color.GREEN);
-		g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
-	}
 	
-	if (pauseGame && !player.isFinishLevel())
+	
+	if (gameState == GameState.Menu)
 	{
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 64f));
 		g2d.setColor(Color.BLUE);
@@ -508,57 +574,6 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawString("WYJŒCIE", 360, 420);
 	}
 	
-	
-	if (showMessage) showMessage(g2d, achievements.getAchievementTextShort(), achievements.getAchievementImage(), achievements.getAchievementCount());
-	else saveAchievementsToFile = false;
-	
-	
-	// KONIEC POZIOMU
-	if (player.isFinishLevel())
-	{
-		TOTAL_SCORE = SCORE + (int) time_bonus;
-		g2d.setColor(Color.GRAY);
-		g2d.fillRect(300, 100, 400, 450);
-		g2d.setColor(Color.YELLOW);
-		g2d.drawRect(2999, 99, 402, 342);
-		g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
-		g2d.drawString("POZIOM "+LEVEL +" UKOÑCZONY !!!", 315, 155);
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
-		g2d.drawString("TWÓJ WYNIK: " +SCORE, 375, 240);
-		g2d.drawString("CZAS: " +time, 380, 300);
-		g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 340, 370);
-		g2d.drawString("WYNIK KOÑCOWY: " +(int) TOTAL_SCORE, 340, 430);
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 26f));
-		g2d.setColor(Color.WHITE);
-		g2d.drawString("PODAJ SWOJE IMIÊ I NACIŒNIJ ENTER:", 320, 480);
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 32f));
-		g2d.setColor(Color.CYAN);
-		g2d.drawString(playerName , 490-(playerName.length() * 8), 520);
-		//key.setKetPressedOnce(KeyEvent.VK_ENTER);
-		//pauseGame = false;
-	}
-	//playerDeadR.drawAnimation(g2d, (int) player.getX(), (int) player.getY(), false);
-	if (player.getHealth() <= 0)
-	{
-		g2d.setColor(Color.RED);
-		g2d.setFont(MainClass.texasFont.deriveFont(68f));
-		g2d.drawString("NIE ¯YJESZ ...", 355, 220);
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
-		g2d.drawString("SPACJA - RESTART", 340, 320);
-		g2d.drawString("ESC - KONIEC", 370, 380);
-		//playerDeadR.runAnimation();
-		//playerDeadL.runAnimation();
-		//playerDeadR.drawAnimation(g, (int) player.getX(), (int) player.getY(), false);
-		//pauseGame = true;
-	}
-	
-	for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);
-	
-	
-	if (makeScreenShot)
-	{
-		makeScreenShot();
-	}
 	
 	
 	//////////////////////////////////////////////////////////

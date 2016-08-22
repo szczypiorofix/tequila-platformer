@@ -3,8 +3,6 @@ package com.platformer.leveleditor;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -12,25 +10,23 @@ public class TileChoose extends JButton{
 
 
 private static final long serialVersionUID = -3972132080556103583L;
-private BufferedImage image;
+private Image image;
 
-public TileChoose(BufferedImage image)
+public TileChoose(Image image)
 {
 	super();
-	this.setImage(image);
-	Image newImage = image.getScaledInstance(50, 30, Image.SCALE_DEFAULT);
-	setPreferredSize(new Dimension(50, 30));
-	setMinimumSize(new Dimension(50, 30));
-	setMaximumSize(new Dimension(50, 30));
+	setPreferredSize(new Dimension(40, 50));
+	setMinimumSize(new Dimension(40, 50));
+	setMaximumSize(new Dimension(40, 50));
 	setBackground(new Color(150, 220, 255));
-	setIcon(new ImageIcon(newImage));
+	setIcon(new ImageIcon(image));
 }
 
-public BufferedImage getImage() {
+public Image getImage() {
 	return image;
 }
 
-public void setImage(BufferedImage image) {
+public void setImage(Image image) {
 	this.image = image;
 }
 }

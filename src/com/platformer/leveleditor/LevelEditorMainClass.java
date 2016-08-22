@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -40,7 +41,8 @@ private EditorPane editorPane;
 private JPanel leftPane, bottomPane;
 private JLabel selectedLabel;
 private static final int MAX_TILES = 51;
-public static BufferedImage[] tileImage = new BufferedImage[MAX_TILES];
+private BufferedImage[] tempImage = new BufferedImage[MAX_TILES];
+public static Image[] tileImage = new Image[MAX_TILES];
 
 private JMenuBar menuBar = new JMenuBar();
 
@@ -50,7 +52,8 @@ private JMenuItem menuPlikZakoncz = new JMenuItem("Zakoñcz"), menuPlikZapisz = n
 private JMenu menuGenerator = new JMenu("Generator");
 private JMenuItem menuGeneratorPodloze = new JMenuItem("Pod³o¿e");
 private JMenuItem menuGeneratorLosowyTeren = new JMenuItem("Losowy Teren");
-private JMenuItem menuGeneratorWyrownanieTerenu = new JMenuItem("Wyrównanie teren");
+private JMenuItem menuGeneratorWyrownanieTerenu = new JMenuItem("Wyrównanie terenu");
+private JMenuItem menuGeneratorUstawianieTerenu = new JMenuItem("Ustawianie terenu");
 
 private TileChoose[] tilesChoose = new TileChoose[MAX_TILES];
 private ActionListener tileListener, menuListener;
@@ -59,6 +62,7 @@ private ObjectOutputStream oos;
 private ObjectInputStream ois;
 private String currentFile = "", currentLevelName = "level1";
 private Random random;
+private int[][] tempMap = new int[ROWS][COLS];
 private final KeyStroke ctrl_T = KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK);
 private final KeyStroke ctrl_P = KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK);
 private final KeyStroke ctrl_S = KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK);
@@ -66,6 +70,7 @@ private final KeyStroke ctrl_N = KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEve
 private final KeyStroke ctrl_O = KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK);
 private final KeyStroke ctrl_X = KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK);
 private final KeyStroke ctrl_W = KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK);
+private final KeyStroke ctrl_U = KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK);
 
 
 
@@ -75,62 +80,68 @@ public LevelEditorMainClass()
 	
 	random = new Random();
 	try {
-		tileImage[0] = ImageIO.read(getClass().getResource("/00.png"));
-		tileImage[1] = ImageIO.read(getClass().getResource("/01.png"));
-		tileImage[2] = ImageIO.read(getClass().getResource("/02.png"));
-		tileImage[3] = ImageIO.read(getClass().getResource("/03.png"));
-		tileImage[4] = ImageIO.read(getClass().getResource("/04.png"));
-		tileImage[5] = ImageIO.read(getClass().getResource("/05.png"));
-		tileImage[6] = ImageIO.read(getClass().getResource("/06.png"));
-		tileImage[7] = ImageIO.read(getClass().getResource("/07.png"));
-		tileImage[8] = ImageIO.read(getClass().getResource("/08.png"));
-		tileImage[9] = ImageIO.read(getClass().getResource("/09.png"));
-		tileImage[10] = ImageIO.read(getClass().getResource("/10.png"));
-		tileImage[11] = ImageIO.read(getClass().getResource("/11.png"));
-		tileImage[12] = ImageIO.read(getClass().getResource("/12.png"));
-		tileImage[13] = ImageIO.read(getClass().getResource("/13.png"));
-		tileImage[14] = ImageIO.read(getClass().getResource("/14.png"));
-		tileImage[15] = ImageIO.read(getClass().getResource("/15.png"));
-		tileImage[16] = ImageIO.read(getClass().getResource("/Bush (1).png"));
-		tileImage[17] = ImageIO.read(getClass().getResource("/Bush (2).png"));
-		tileImage[18] = ImageIO.read(getClass().getResource("/Cactus (1).png"));
-		tileImage[19] = ImageIO.read(getClass().getResource("/Cactus (2).png"));
-		tileImage[20] = ImageIO.read(getClass().getResource("/Cactus (3).png"));
-		tileImage[21] = ImageIO.read(getClass().getResource("/Grass (1).png"));
-		tileImage[22] = ImageIO.read(getClass().getResource("/Grass (2).png"));
-		tileImage[23] = ImageIO.read(getClass().getResource("/Sign.png"));
-		tileImage[24] = ImageIO.read(getClass().getResource("/SignArrow.png"));
-		tileImage[25] = ImageIO.read(getClass().getResource("/Skeleton.png"));
-		tileImage[26] = ImageIO.read(getClass().getResource("/Stone.png"));
-		tileImage[27] = ImageIO.read(getClass().getResource("/Tree.png"));
-		tileImage[28] = ImageIO.read(getClass().getResource("/Idle00R.png"));
-		tileImage[29] = ImageIO.read(getClass().getResource("/level_end.png"));
-		tileImage[30] = ImageIO.read(getClass().getResource("/coin32.png")).getSubimage(0, 0, 32, 32);
-		tileImage[31] = ImageIO.read(getClass().getResource("/BeeR01.png"));
-		tileImage[32] = ImageIO.read(getClass().getResource("/tequila_bottle.png"));
-		tileImage[33] = ImageIO.read(getClass().getResource("/taco.png"));
-		tileImage[34] = ImageIO.read(getClass().getResource("/MovingBlockX.png"));
-		tileImage[35] = ImageIO.read(getClass().getResource("/MovingBlockY.png"));
-		tileImage[36] = ImageIO.read(getClass().getResource("/16_5.png"));
-		tileImage[37] = ImageIO.read(getClass().getResource("/17.png"));
-		tileImage[38] = ImageIO.read(getClass().getResource("/BadCactusR.png"));
-		tileImage[39] = ImageIO.read(getClass().getResource("/MovingCrate.png"));
-		tileImage[40] = ImageIO.read(getClass().getResource("/ButtonBlock.png"));
-		tileImage[41] = ImageIO.read(getClass().getResource("/PushingMovingBlockX Off.png"));
-		tileImage[42] = ImageIO.read(getClass().getResource("/PushingMovingBlockY Off.png"));
-		tileImage[43] = ImageIO.read(getClass().getResource("/Spike1.png"));
-		tileImage[44] = ImageIO.read(getClass().getResource("/Tumbleweed.png"));
-		tileImage[45] = ImageIO.read(getClass().getResource("/SpringBlock.png"));
-		tileImage[46] = ImageIO.read(getClass().getResource("/FallingBlock.png"));
-		tileImage[47] = ImageIO.read(getClass().getResource("/clouds1.png"));
-		tileImage[48] = ImageIO.read(getClass().getResource("/clouds2.png"));
-		tileImage[49] = ImageIO.read(getClass().getResource("/clouds3.png"));
-		tileImage[50] = ImageIO.read(getClass().getResource("/collectibles0.png"));
+		tempImage[0] = ImageIO.read(getClass().getResource("/00.png"));
+		tempImage[1] = ImageIO.read(getClass().getResource("/01.png"));
+		tempImage[2] = ImageIO.read(getClass().getResource("/02.png"));
+		tempImage[3] = ImageIO.read(getClass().getResource("/03.png"));
+		tempImage[4] = ImageIO.read(getClass().getResource("/04.png"));
+		tempImage[5] = ImageIO.read(getClass().getResource("/05.png"));
+		tempImage[6] = ImageIO.read(getClass().getResource("/06.png"));
+		tempImage[7] = ImageIO.read(getClass().getResource("/07.png"));
+		tempImage[8] = ImageIO.read(getClass().getResource("/08.png"));
+		tempImage[9] = ImageIO.read(getClass().getResource("/09.png"));
+		tempImage[10] = ImageIO.read(getClass().getResource("/10.png"));
+		tempImage[11] = ImageIO.read(getClass().getResource("/11.png"));
+		tempImage[12] = ImageIO.read(getClass().getResource("/12.png"));
+		tempImage[13] = ImageIO.read(getClass().getResource("/13.png"));
+		tempImage[14] = ImageIO.read(getClass().getResource("/14.png"));
+		tempImage[15] = ImageIO.read(getClass().getResource("/15.png"));
+		tempImage[16] = ImageIO.read(getClass().getResource("/Bush (1).png"));
+		tempImage[17] = ImageIO.read(getClass().getResource("/Bush (2).png"));
+		tempImage[18] = ImageIO.read(getClass().getResource("/Cactus (1).png"));
+		tempImage[19] = ImageIO.read(getClass().getResource("/Cactus (2).png"));
+		tempImage[20] = ImageIO.read(getClass().getResource("/Cactus (3).png"));
+		tempImage[21] = ImageIO.read(getClass().getResource("/Grass (1).png"));
+		tempImage[22] = ImageIO.read(getClass().getResource("/Grass (2).png"));
+		tempImage[23] = ImageIO.read(getClass().getResource("/Sign.png"));
+		tempImage[24] = ImageIO.read(getClass().getResource("/SignArrow.png"));
+		tempImage[25] = ImageIO.read(getClass().getResource("/Skeleton.png"));
+		tempImage[26] = ImageIO.read(getClass().getResource("/Stone.png"));
+		tempImage[27] = ImageIO.read(getClass().getResource("/Tree.png"));
+		tempImage[28] = ImageIO.read(getClass().getResource("/Idle00R.png"));
+		tempImage[29] = ImageIO.read(getClass().getResource("/level_end.png"));
+		tempImage[30] = ImageIO.read(getClass().getResource("/coin32.png")).getSubimage(0, 0, 32, 32);
+		tempImage[31] = ImageIO.read(getClass().getResource("/BeeR01.png"));
+		tempImage[32] = ImageIO.read(getClass().getResource("/tequila_bottle.png"));
+		tempImage[33] = ImageIO.read(getClass().getResource("/taco.png"));
+		tempImage[34] = ImageIO.read(getClass().getResource("/MovingBlockX.png"));
+		tempImage[35] = ImageIO.read(getClass().getResource("/MovingBlockY.png"));
+		tempImage[36] = ImageIO.read(getClass().getResource("/16_5.png"));
+		tempImage[37] = ImageIO.read(getClass().getResource("/17.png"));
+		tempImage[38] = ImageIO.read(getClass().getResource("/BadCactusR.png"));
+		tempImage[39] = ImageIO.read(getClass().getResource("/MovingCrate.png"));
+		tempImage[40] = ImageIO.read(getClass().getResource("/ButtonBlock.png"));
+		tempImage[41] = ImageIO.read(getClass().getResource("/PushingMovingBlockX Off.png"));
+		tempImage[42] = ImageIO.read(getClass().getResource("/PushingMovingBlockY Off.png"));
+		tempImage[43] = ImageIO.read(getClass().getResource("/Spike1.png"));
+		tempImage[44] = ImageIO.read(getClass().getResource("/Tumbleweed.png"));
+		tempImage[45] = ImageIO.read(getClass().getResource("/SpringBlock.png"));
+		tempImage[46] = ImageIO.read(getClass().getResource("/FallingBlock.png"));
+		tempImage[47] = ImageIO.read(getClass().getResource("/clouds1.png"));
+		tempImage[48] = ImageIO.read(getClass().getResource("/clouds2.png"));
+		tempImage[49] = ImageIO.read(getClass().getResource("/clouds3.png"));
+		tempImage[50] = ImageIO.read(getClass().getResource("/collectibles0.png"));
 	}
 	catch (Exception e)
 	{
 		e.printStackTrace();
 		System.exit(0);
+	}
+	
+	for (int i = 0; i < MAX_TILES; i++)
+	{
+		tileImage[i] = tempImage[i].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+		tempImage[i].flush();
 	}
 	
 	tileListener = new TileListener();
@@ -143,8 +154,8 @@ public LevelEditorMainClass()
 	setLayout(new BorderLayout());
 	editorPane = new EditorPane(ROWS, COLS);
 	scrollPane = new JScrollPane(editorPane);
-	scrollPane.getHorizontalScrollBar().setUnitIncrement(26);
-	scrollPane.getVerticalScrollBar().setUnitIncrement(26);
+	scrollPane.getHorizontalScrollBar().setUnitIncrement(25);
+	scrollPane.getVerticalScrollBar().setUnitIncrement(25);
 	
 	leftPane = new JPanel(new GridLayout(Math.round((tileImage.length / 3))+1, 3));
 	
@@ -173,6 +184,7 @@ public LevelEditorMainClass()
 	menuGenerator.add(menuGeneratorPodloze);
 	menuGenerator.add(menuGeneratorLosowyTeren);
 	menuGenerator.add(menuGeneratorWyrownanieTerenu);
+	menuGenerator.add(menuGeneratorUstawianieTerenu);
 	menuBar.add(menuPlik);
 	menuBar.add(menuGenerator);
 	setJMenuBar(menuBar);
@@ -207,18 +219,22 @@ public LevelEditorMainClass()
 	menuGeneratorWyrownanieTerenu.addActionListener(menuListener);
 	menuGeneratorWyrownanieTerenu.setActionCommand("Wyrownanie");
 	menuGeneratorWyrownanieTerenu.setAccelerator(ctrl_W);
+	
+	menuGeneratorUstawianieTerenu.addActionListener(menuListener);
+	menuGeneratorUstawianieTerenu.setActionCommand("Ustawianie");
+	menuGeneratorUstawianieTerenu.setAccelerator(ctrl_U);
 }
 
 public class MenuListener implements ActionListener
 {
 	
-public void clearMap()
+public void clearMap(boolean b)
 {
 	for (int i = 0; i < ROWS; i++)
 		for (int j = 0; j < COLS; j++)
 		{
 			editorPane.editorTiles[i][j].setIcon(null);
-			editorPane.tileValues[i][j] = -1;
+			if (b) editorPane.tileValues[i][j] = -1;
 		}
 }
 	
@@ -229,7 +245,7 @@ public void clearMap()
 		
 		if (e.getActionCommand().equalsIgnoreCase("New"))
 		{
-			clearMap();
+			clearMap(true);
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Open"))
@@ -243,7 +259,7 @@ public void clearMap()
 			
 			while(filename.length() == 0);
 			
-			clearMap();
+			clearMap(true);
 			
 			currentLevelName = filename;
 			filename = "res/Other/" +filename +".lvl";
@@ -268,8 +284,7 @@ public void clearMap()
 					
 					if (editorPane.tileValues[a][b] >= 0) 
 					{
-						Image newImage = tileImage[editorPane.tileValues[a][b]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-						editorPane.editorTiles[a][b].setIcon(new ImageIcon(newImage));
+						editorPane.editorTiles[a][b].setIcon(new ImageIcon(tileImage[editorPane.tileValues[a][b]]));
 					}
 				}
 		}
@@ -309,70 +324,86 @@ public void clearMap()
 					if (i == (ROWS-2) & (j!=0) && (j!=COLS-1))
 					{
 						editorPane.tileValues[i][j] = 1;
-						Image newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));						
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));						
 					}
 					if (i == (ROWS-1) & (j!=0) && (j!=COLS-1))
 					{
 						editorPane.tileValues[i][j] = 4;
-						Image newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));						
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));						
 					}
 					
 				}
 			}
 			editorPane.tileValues[ROWS-2][0] = 0;
-			Image newImage = tileImage[editorPane.tileValues[ROWS-2][0]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-			editorPane.editorTiles[ROWS-2][0].setIcon(new ImageIcon(newImage));	
+			editorPane.editorTiles[ROWS-2][0].setIcon(new ImageIcon(tileImage[editorPane.tileValues[ROWS-2][0]]));	
 			editorPane.tileValues[ROWS-1][0] = 3;
-			newImage = tileImage[editorPane.tileValues[ROWS-1][0]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-			editorPane.editorTiles[ROWS-1][0].setIcon(new ImageIcon(newImage));
-			
+			editorPane.editorTiles[ROWS-1][0].setIcon(new ImageIcon(tileImage[editorPane.tileValues[ROWS-1][0]]));
 			editorPane.tileValues[ROWS-2][COLS-1] = 2;
-			newImage = tileImage[editorPane.tileValues[ROWS-2][COLS-1]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-			editorPane.editorTiles[ROWS-2][COLS-1].setIcon(new ImageIcon(newImage));	
+			editorPane.editorTiles[ROWS-2][COLS-1].setIcon(new ImageIcon(tileImage[editorPane.tileValues[ROWS-2][COLS-1]]));	
 			editorPane.tileValues[ROWS-1][COLS-1] = 5;
-			newImage = tileImage[editorPane.tileValues[ROWS-1][COLS-1]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-			editorPane.editorTiles[ROWS-1][COLS-1].setIcon(new ImageIcon(newImage));
+			editorPane.editorTiles[ROWS-1][COLS-1].setIcon(new ImageIcon(tileImage[editorPane.tileValues[ROWS-1][COLS-1]]));
 		}
+		
 		
 		if (e.getActionCommand().equalsIgnoreCase("LosowyTeren"))
 		{			
-			int[][] tempMap = new int[ROWS-2][COLS-1];
+			
+			tempMap = Arrays.copyOf(editorPane.tileValues, editorPane.tileValues.length);
 			
 			// LOSOWY TEREN
-			for (int i = 0; i < ROWS-2; i++)
+			for (int i = 0; i < ROWS; i++)
 			{
-				for (int j = 0; j < COLS-1; j++)
+				for (int j = 0; j < COLS; j++)
 				{
-					if (random(3) == 0) tempMap[i][j] = 1;
-					else tempMap[i][j] = -1;
+					if (random(5) == 0) tempMap[i][j] = 1;
+					//else tempMap[i][j] = -1; // CZY NAK£ADAJA SIÊ NA SIEBIE LOSOWE BLOKI????
 				}
 			}
 			
+			clearMap(false);
+			
+			editorPane.tileValues = Arrays.copyOf(tempMap, tempMap.length);
 			
 			// DODANIE DO OBECNEGO TERENU - TERENU LOSOWEGO
-			for (int i = 0; i < ROWS-2; i++)
+			for (int i = 0; i < ROWS; i++)
 			{
-				for (int j = 0; j < COLS-1; j++)
+				for (int j = 0; j < COLS; j++)
 				{
-					editorPane.tileValues[i+1][j+1] = tempMap[i][j];
-					Image newImage = null;
 					if (editorPane.tileValues[i][j] != -1)
 					{
-						newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));	
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));	
 					}
 				}
 			}
 		}
 		
+		
 		if (e.getActionCommand().equalsIgnoreCase("Wyrownanie"))
 		{
-
+			tempMap = Arrays.copyOf(editorPane.tileValues, editorPane.tileValues.length);
+			
+			editorPane.tileValues = wygladzanie(tempMap, 5, 5, 1, -1);
+			
+			clearMap(false);
+			
+			for (int i = 0; i < ROWS; i++)
+			{
+				for (int j = 0; j < COLS; j++)
+				{
+					if (editorPane.tileValues[i][j] != -1)
+					{
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));	
+					}
+				}
+			}
+		}
+		
+		
+		if (e.getActionCommand().equalsIgnoreCase("Ustawianie"))
+		{
 			int MX = ROWS;
 			int MY = COLS;
-			int[][] tempMap = new int[MX][MY];
+			tempMap = new int[MX][MY];
 			
 			// PRZEPISANIE OBECNEJ MAPY NA TEMPMAPE
 			for (int i = 0; i < MX; i++)
@@ -383,12 +414,7 @@ public void clearMap()
 				}
 			}
 			
-			
-			// TUTAJ JEST WYGLADZANIE TERENU
-			int[][] maxT = new int[MX][MY]; // TABLICA BLOKÓW
-			for (int i = 0; i < MX; i++)
-				for (int j = 0; j < MY; j++)
-					maxT[i][j] = -1;
+			/// USTAWIANIE TERENU
 			
 			
 			
@@ -396,86 +422,36 @@ public void clearMap()
 			{
 				for (int j = 0; j < MY; j++)
 				{
-					if ((i > 1) && i < (MX-1) && (j > 1) && (j < MY-2))
-					{
-						
-						/// SPRAWDZANIE KONKRETNEGO BLOKU PE£NEGO
-						
-						maxT[i][j] = 1;
-						int[][] temp = new int[3][3];
-						
-						// ZBIERANIE SASIADÓW
-						for (int a = -1; a < 2; a++)
-							for (int b = -1; b < 2; b++)
-								temp[a+1][b+1] = tempMap[i+a][j+b];
-						
-						for (int a = 0; a < 3; a++)
-							for (int b = 0; b < 3; b++)
-							{
-								if (temp[a][b] == 1) maxT[i][j] += 1; // NABIJANIE ILOŒCI SASIADÓW
-							}
 					
-						
-						if (maxT[i][j] > 4)
+					if (j < MY-1 && i > 0)  // BEZ OSTATNIEJ KOLUMNT i BEZ PIERWSZEGO (0) WIERSZA - to daje IndexOutOFBoundsE... bo bie¿e 0-1;
+					{
+						if (tempMap[i][j] > -1 && tempMap[i-1][j] != -1)
 						{
-							tempMap[i][j] = 1;
-						} else tempMap[i][j] = -1;
-						
+							tempMap[i][j] = 4;
+						}						
 					}
+					
+					
+					
+					
 				}
 			}
 			
-			/**
-			for (int i = 0; i < ROWS; i++)
-			{
-				for (int j = 0; j < COLS; j++)
-				{
-					
-					if (i > 0 && i < ROWS && j > 0 && j < COLS-1)
-					{
-						if (tempMap[i][j] == 1)
-						{
-							/// SPRAWDZANIE KONKRETNEGO BLOKU PE£NEGO
-							
-							maxT[i][j] = 1;
-							int[][] temp = new int[3][3];
-							
-							
-							// ZBIERANIE SASIADÓW
-							for (int a = -1; a < 2; a++)
-								for (int b = -1; b < 2; b++)
-									temp[a+1][b+1] = tempMap[i+a][j+b];
-							
-							
-							for (int a = 0; a < 3; a++)
-								for (int b = 0; b < 3; b++)
-								{
-									if (temp[a][b] == 1) maxT[i][j] += 1; // NABIJANIE ILOŒCI SASIADÓW
-								}
-						
-							
-							if (maxT[i][j] > 3)
-							{
-								tempMap[i][j] = 1;
-							}
-						}
-					}
-				}
-				
-			}**/
 			
-			// TU SIE KONCZY WYGLADZANIE TERENU
+			
+			
+			// TU SIE KONCZY USTAWIANIE TERENU TERENU
+			
+			clearMap(true);
 			
 			for (int i = 0; i < ROWS-2; i++)
 			{
 				for (int j = 0; j < COLS-1; j++)
 				{
 					editorPane.tileValues[i][j] = tempMap[i][j];
-					Image newImage = null;
 					if (editorPane.tileValues[i][j] != -1)
 					{
-						newImage = tileImage[editorPane.tileValues[i][j]].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-						editorPane.editorTiles[i][j].setIcon(new ImageIcon(newImage));	
+						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));	
 					}
 				}
 			}
@@ -494,6 +470,97 @@ public int random(int start, int end)
 	return i;
 }
 
+public int[][] wygladzanie(int [][] inputMap, int fullBlocks, int emptyBlocks, int defaultBlock, int defaultEmpty)
+{
+	int MX = inputMap.length;
+	int MY = inputMap[0].length;
+	
+	int temp[][] = new int[MX][MY];
+	
+	// PRZEPISANIE OBECNEJ MAPY NA TEMPMAPE
+	for (int i = 0; i < MX; i++)
+	{
+		for (int j = 0; j < MY; j++)
+		{
+			temp[i][j] = inputMap[i][j];
+		}
+	}
+	
+	// TUTAJ JEST WYGLADZANIE TERENU
+	int[][] maxT = new int[MX][MY]; // TABLICA BLOKÓW
+	for (int i = 0; i < MX; i++)
+		for (int j = 0; j < MY; j++)
+			maxT[i][j] = defaultEmpty;
+			
+	int[][] maxE = new int[MX][MY]; // TABLICA BLOKÓW
+	for (int i = 0; i < MX; i++)
+		for (int j = 0; j < MY; j++)
+			maxE[i][j] = defaultEmpty;
+
+	for (int i = 0; i < MX; i++)
+	{
+		for (int j = 0; j < MY; j++)
+		{
+			if ((i > 0) && i < (MX-1) && (j > 0) && (j < MY-1))
+			{			
+				/// SPRAWDZANIE KONKRETNEGO BLOKU PE£NEGO
+				maxT[i][j] = 0;
+				int[][] tempNeighbor = new int[3][3];
+							
+				// ZBIERANIE SASIADÓW
+				for (int a = -1; a < 2; a++)
+					for (int b = -1; b < 2; b++)
+					{
+						tempNeighbor[a+1][b+1] = temp[i+a][j+b];						
+					}
+							
+				for (int a = 0; a < 3; a++)
+					for (int b = 0; b < 3; b++)
+					{
+						if (tempNeighbor[a][b] == 1) maxT[i][j] += 1; // NABIJANIE ILOŒCI SASIADÓW
+					}	
+			}
+
+			if (maxT[i][j] > fullBlocks)
+			{
+				temp[i][j] = defaultBlock;
+			}
+
+		}
+	}
+	
+	for (int i = 0; i < MX; i++)
+	{
+		for (int j = 0; j < MY; j++)
+		{
+			if ((i > 0) && i < (MX-1) && (j > 0) && (j < MY-1))
+			{			
+				/// SPRAWDZANIE KONKRETNEGO BLOKU PE£NEGO
+				maxE[i][j] = 0;
+				int[][] tempNeighbor = new int[3][3];
+							
+				// ZBIERANIE SASIADÓW
+				for (int a = -1; a < 2; a++)
+					for (int b = -1; b < 2; b++)						
+						tempNeighbor[a+1][b+1] = temp[i+a][j+b];
+							
+				for (int a = 0; a < 3; a++)
+					for (int b = 0; b < 3; b++)
+					{
+						if (tempNeighbor[a][b] == 0) maxE[i][j] += 1; // NABIJANIE ILOŒCI SASIADÓW
+					}	
+			}
+
+			if (maxE[i][j] > emptyBlocks)
+			{
+				temp[i][j] = defaultEmpty;
+			}
+		}
+	}
+	
+	return temp;
+}
+
 }
 
 
@@ -509,7 +576,6 @@ public class TileListener implements ActionListener
 		
 		tilesChoose[selectedTile].setBorder(new LineBorder(Color.RED, 2, true));
 		selectedLabel.setText("   Selected: "+selectedTile);
-		//System.out.println(selectedTile);
 	}
 }
 
@@ -568,8 +634,7 @@ public class EditorTilesListener implements ActionListener
 		
 		if (editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].getIcon() == null)
 		{
-			Image newImage = tileImage[selectedTile].getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(newImage));
+			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(tileImage[selectedTile]));
 			tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = selectedTile;	
 		}
 		else
