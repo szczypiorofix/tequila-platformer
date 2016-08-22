@@ -5,14 +5,13 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 import com.platformer.game.sounds.SoundsLoader;
 
 public class Dart extends GameObject{
 
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private ObjectsHandler objectsHandler;
 private SoundsLoader crateHitSound;
 private float width ;
@@ -21,17 +20,15 @@ private float x, y;
 private int direction;
 private float velX, velY;
 private boolean action, visible;
-private ObjectId id;
 private int sx;
 private int howLondToRun = 75;
 
 
 
-public Dart(ObjectId id, float x, float y, int direction, ObjectsHandler objectsHandler) {
+public Dart(float x, float y, int direction, ObjectsHandler objectsHandler) {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	this.objectsHandler = objectsHandler;
 	crateHitSound = new SoundsLoader("/crateHit.wav");
 	crateHitSound.setVolume(-15f);
@@ -125,16 +122,6 @@ public void setVelX(float velX) {
 @Override
 public void setVelY(float velY) {
 	this.velY = velY;
-}
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
 }
 
 @Override

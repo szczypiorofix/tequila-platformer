@@ -6,12 +6,11 @@ import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class BeeObject extends GameObject{
 
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private Animation beeMovingR, beeMovingL;
 private int direction;
 private int startPos = 0;
@@ -20,14 +19,12 @@ private float velX;
 private float velY;
 private float width, height;
 private boolean action, visible;
-private ObjectId id;
 
 
-public BeeObject(ObjectId id, float x, float y) {
+public BeeObject(float x, float y) {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	velX = 0;
 	velY = 0;
 	direction = 1;
@@ -92,16 +89,6 @@ public void setVelX(float velX) {
 @Override
 public void setVelY(float velY) {
 	this.velY = velY;
-}
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
 }
 
 @Override

@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-import com.platformer.game.main.ObjectId;
-
 public abstract class GameObject {
 
 
@@ -21,9 +19,6 @@ public abstract Rectangle getBounds();
 
 public abstract boolean isVisible();
 public abstract void setVisible(boolean visible);
-
-public abstract ObjectId getId();
-public abstract void setId(ObjectId id);
 
 public abstract float getX();
 public abstract void setX(float x);

@@ -437,7 +437,7 @@ public void clearMap(boolean b)
 				}
 			}
 			
-			
+			//http://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664
 			
 			
 			// TU SIE KONCZY USTAWIANIE TERENU TERENU

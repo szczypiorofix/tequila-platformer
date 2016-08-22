@@ -5,29 +5,26 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class SpringBlock extends GameObject{
 
 
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
 private int direction;
 private boolean action, visible;
-private ObjectId id;
 private int counter;
 
 	
 	
-public SpringBlock(ObjectId id, float x, float y)
+public SpringBlock(float x, float y)
 {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	width = 50;
 	height = 55;
 	velX = 0;
@@ -66,15 +63,6 @@ public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y-10, (int) width, (int) height+10);
 }
 
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
-}
 
 @Override
 public float getX() {

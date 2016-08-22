@@ -5,27 +5,24 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
 public class ButtonBlock extends GameObject{
 
 
-private ObjectId id;
 private float x, y;
 private float velX, velY;
 private float width, height;
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private ObjectsHandler objectsHandler;
 private boolean action, visible;
 private int direction;
 private GameObject tempObject;
 
-public ButtonBlock(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
+public ButtonBlock(float x, float y, ObjectsHandler objectsHandler)
 {
 	super();
-	id = ObjectId.ButtonBlock;
 	this.x = x;
 	this.y = y;
 	this.objectsHandler = objectsHandler;
@@ -74,15 +71,6 @@ public Rectangle getImpactBounds() {
 	return new Rectangle((int) x-250, (int) y-500, 700, 500);
 }
 
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
-}
 
 @Override
 public float getX() {

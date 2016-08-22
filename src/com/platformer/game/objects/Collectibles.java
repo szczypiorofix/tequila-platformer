@@ -6,32 +6,29 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
 public class Collectibles extends GameObject{
 
 
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private ObjectsHandler objectsHandler;
 private float x, y;
 private float width, height;
 private float velX, velY;
 private boolean action, visible;
 private int direction;
-private ObjectId id;
 private int type;
 private int show; // 0 - empty, 1 - show
 private Random random;
 
 	
-public Collectibles(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
+public Collectibles(float x, float y, ObjectsHandler objectsHandler)
 {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	this.objectsHandler = objectsHandler;
 	velX = 0;
 	velY = 0;
@@ -64,19 +61,6 @@ public Rectangle getBounds() {
 }
 
 
-
-
-
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
-}
 
 @Override
 public float getX() {

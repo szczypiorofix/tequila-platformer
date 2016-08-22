@@ -6,29 +6,26 @@ import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class SpikeBlock extends GameObject{
 
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float width, height;
 private float velX, velY;
 private int direction;
 private boolean action, visible;
-private ObjectId id;
 private Animation spikeAnimation;
 private int animationTempo;
 
 
 	
-public SpikeBlock(ObjectId id, float x, float y)
+public SpikeBlock(float x, float y)
 {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	width = 50;
 	height = 70;
 	velX = 0;
@@ -62,15 +59,6 @@ public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, (int )width, (int) height-30);
 }
 
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
-}
 
 @Override
 public float getX() {

@@ -9,8 +9,8 @@ import java.util.LinkedList;
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.Achievements;
+import com.platformer.game.main.MainClass;
 import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
 import com.platformer.game.main.ObjectsHandler;
 import com.platformer.game.sounds.SoundsLoader;
 
@@ -19,7 +19,7 @@ public class PlayerObject extends GameObject{
 	
 private ObjectsHandler objectsHandler;
 private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound;
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
 private static final int MAX_HEALTH = 5;
 private static final float NORMAL_GRAVITY = 0.5f;
@@ -49,18 +49,16 @@ private int maxCoins;
 private int maxPowerups;
 private int powerups;
 private boolean noHarm;
-private ObjectId id;
 private Achievements achievements;
 
 
 
 
 
-public PlayerObject(ObjectId id, float x, float y, ObjectsHandler objectsHandler, Achievements achievements) {
+public PlayerObject(float x, float y, ObjectsHandler objectsHandler, Achievements achievements) {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	this.achievements = achievements;
 	velX = 0;
 	velY = 0;
@@ -409,7 +407,7 @@ private void collisions()
 					else tempObject.setDirection(1);
 					
 					if (!tempObject.isAction()) {
-						objectsHandler.getDart_List().add(new Dart(ObjectId.Dart, (int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection(), objectsHandler));
+						objectsHandler.getDart_List().add(new Dart((int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection(), objectsHandler));
 						cactusShotSound.play();
 						tempObject.setAction(true);
 					}
@@ -830,16 +828,6 @@ public boolean isFinishLevel() {
 
 public void setFinishLevel(boolean finishLevel) {
 	this.finishLevel = finishLevel;
-}
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
 }
 
 @Override

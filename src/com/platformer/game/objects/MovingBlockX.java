@@ -5,19 +5,17 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class MovingBlockX extends GameObject{
 
 	
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private float velX;
 private float velY;
 private float x, y;
 private float width, height;
 private int direction;
-private ObjectId id;
 private boolean action, visible;
 private int startPos = 0;
 private int counter;
@@ -26,11 +24,10 @@ private int WAITING_TIME = 30;
 
 
 
-public MovingBlockX(ObjectId id, float x, float y) {
+public MovingBlockX(float x, float y) {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	velX = 0;
 	velY = 0;
 	width = 74;
@@ -86,16 +83,6 @@ public float getX(){
 @Override
 public float getY() {
 	return y;
-}
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
 }
 
 @Override

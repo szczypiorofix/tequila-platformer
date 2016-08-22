@@ -6,29 +6,26 @@ import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class WaterObject extends GameObject{
 
 	
 
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private int type;
 private float x, y;
 private float velX, velY;
 private float width, height;
-private ObjectId id;
 private boolean action, visible;
 private int direction;
 private Animation waterAnim;
 
 
-public WaterObject(ObjectId id, float x, float y, int type) {
+public WaterObject(float x, float y, int type) {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	width = 50;
 	height = 50;
 	action = false;
@@ -58,15 +55,6 @@ public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, (int) width, (int) height);
 }
 
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
-}
 
 @Override
 public float getX() {

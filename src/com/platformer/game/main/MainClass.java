@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.platformer.game.graphics.Textures;
 import com.platformer.game.sounds.Music;
 
 
@@ -36,6 +37,7 @@ private int fps_count = 0, ticks_count = 0;
 private boolean gamepadEnabled = false;
 private GameWindow gameWindow;
 private MainMenu mainMenu;
+private static final Textures tex = new Textures();
 private MainScreen mainScreen;
 private ObjectInputStream ois = null;
 private ObjectOutputStream oos = null;
@@ -63,7 +65,10 @@ public MainClass()
 	prepareHallOfFame();
 	
 	mainMenu = new MainMenu(this, hallOfFame, achievements);
-	mainMenu.showMenu(true);
+	
+	//mainMenu.showMenu(true);
+	
+	gameStart();
 }
 
 
@@ -148,7 +153,7 @@ public void run()
     }
 	**/
     
-	boolean fpsCap = true;
+	boolean fpsCap = false;
 
 	long lastTime = System.nanoTime();
 	double amountOfTicks = 60.0;
@@ -289,6 +294,12 @@ private void prepareAchievements()
 	achievements.setFindAllPowerupsComplete(achievementsList.get(14));
 	achievements.setNoHarmComplete(achievementsList.get(15));
 }
+
+public static Textures getTexturesInstance()
+{
+	return tex;
+}
+
 
 public static void main(String[] args) {
 	EventQueue.invokeLater(new Runnable()

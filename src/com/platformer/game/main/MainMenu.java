@@ -34,7 +34,6 @@ private final JPanel centralPanel = new JPanel(null)
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		
 		g.setColor(new Color(100,225,250));
 		g.drawImage(bg_image.getSubimage(0, bg_image.getHeight() - 600, 500, 600), 0, 0, null);
 	}

@@ -53,6 +53,7 @@ public static boolean PLAYER_LEFT = false, PLAYER_RIGHT = false, PLAYER_JUMP = f
 private GameWindow gameWindow;
 private BufferStrategy bs;
 private Graphics g;
+private Graphics2D g2d;
 private ObjectsHandler objectsHandler;
 private ObjectOutputStream oos;
 private PlayerObject player;
@@ -61,9 +62,8 @@ private Joystick joystick;
 private Controller myGamepad;
 private Component[] gamepadComponents;
 private boolean exit = false;
-private Graphics2D g2d;
 private Camera cam;
-private static Textures tex;
+private static Textures tex = MainClass.getTexturesInstance();
 private BufferedImage backGroundMountains;
 private BufferedImage screenShotImage;
 private BufferedImage sun;
@@ -99,12 +99,8 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	this.gameWindow = gameWindow;
 	this.hallOfFame = hallOfFame;
 	this.achievements = achievements;
-	
-	// TODO coœ co zrzuca ska³y na g³owê (w³¹cza siê w obszarze jak kaktus
-	// TODO coœ w rodzaju przycisku - podchodzisz stajesz/dotykasz i coœ siê w³¹cza/otwiera np. przejœcie
-	// TODO coœ w rodzaju pracuj¹cych no¿yc-drzwi jak z Prince of Persia
-	
 	this.gamepadEnabled = gamepadEnabled;
+	
 	if (this.gamepadEnabled) 
 	{
 		
@@ -149,7 +145,6 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	}
 	
 	BufferedImageLoader loader = new BufferedImageLoader();
-	tex = new Textures();
 	
 	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	sun = loader.loadImage("/sun.png");
@@ -582,11 +577,6 @@ public void render(int fps_count, int ticks_count)
 	
 	g.dispose();
 	bs.show();
-}
-
-public static Textures getTexturesInstance()
-{
-	return tex;
 }
 
 public void makeScreenShot()

@@ -5,22 +5,20 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class TequilaBottle extends GameObject{
 
 	
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
-private ObjectId id;
 private float velX, velY;
 private float width, height;
 private int direction;
 private boolean action, visible;
 
 	
-public TequilaBottle(ObjectId id, float x, float y) {
+public TequilaBottle(float x, float y) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -55,16 +53,6 @@ public float getX() {
 @Override
 public float getY() {
 	return y;
-}
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
 }
 
 @Override

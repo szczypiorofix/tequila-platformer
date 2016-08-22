@@ -5,25 +5,22 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class LevelEnd extends GameObject {
 
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
 private boolean action, visible;
 private int direction;
-private ObjectId id;
 
 
-public LevelEnd(ObjectId id, float x, float y) {
+public LevelEnd(float x, float y) {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	velX = 0;
 	velY = 0;
 	width = 45;
@@ -65,16 +62,6 @@ public float getVelX() {
 @Override
 public float getVelY() {
 	return velY;
-}
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
 }
 
 @Override

@@ -3,28 +3,25 @@ package com.platformer.game.objects;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
-
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class AngryCactus extends GameObject{
 
 
 private float width, height;
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private int direction;
 private boolean action, visible;
 private static final int SHOOTING_MAX = 100;
 private int shooting_time = SHOOTING_MAX;
 private float x, y;
 private float velX, velY;
-private ObjectId id;
 
 
 
 	
-public AngryCactus(ObjectId id, float x, float y) {
+public AngryCactus(float x, float y) {
 	super();
 	this.x = x;
 	this.y = y;
@@ -35,7 +32,6 @@ public AngryCactus(ObjectId id, float x, float y) {
 	direction = 1;
 	action = false;
 	visible = true;
-	this.id = id;
 }
 
 @Override
@@ -65,15 +61,6 @@ public Rectangle getBounds() {
 	return new Rectangle((int) x-300, (int) y-30, 700, 100);
 }
 
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
-}
 
 @Override
 public float getX() {

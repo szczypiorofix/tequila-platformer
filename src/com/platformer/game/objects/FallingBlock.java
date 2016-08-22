@@ -5,31 +5,28 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
 public class FallingBlock extends GameObject{
 
 	
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
 private int direction;
 private int startPos;
 private boolean action, visible;
-private ObjectId id;
 private ObjectsHandler objectsHandler;
 
 	
 	
-public FallingBlock(ObjectId id, float x, float y, ObjectsHandler objectsHandler)
+public FallingBlock(float x, float y, ObjectsHandler objectsHandler)
 {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	this.objectsHandler = objectsHandler;
 	width = 70;
 	height = 30;
@@ -91,15 +88,6 @@ public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, (int) width, (int) height);
 }
 
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
-}
 
 @Override
 public float getX() {

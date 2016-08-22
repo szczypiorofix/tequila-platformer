@@ -5,25 +5,22 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 
 public class TacoObject extends GameObject{
 
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
-private ObjectId id;
 private int direction;
 private boolean action, visible;
 
 	
-public TacoObject(ObjectId id, float x, float y) {
+public TacoObject(float x, float y) {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	width = 43;
 	height = 48;
 	direction = 1;
@@ -55,16 +52,6 @@ public float getX() {
 @Override
 public float getY() {
 	return y;
-}
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
 }
 
 @Override

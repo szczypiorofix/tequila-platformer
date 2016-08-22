@@ -5,8 +5,7 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainScreen;
-import com.platformer.game.main.ObjectId;
+import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
 public class MovingCrate extends GameObject{
@@ -14,23 +13,21 @@ public class MovingCrate extends GameObject{
 	
 private float width;
 private float height;
-private Textures tex = MainScreen.getTexturesInstance();
+private Textures tex = MainClass.getTexturesInstance();
 private ObjectsHandler objectsHandler;
 private float x, y;
 private float velX, velY;
 private boolean onGround;
 private float gravity;
 private boolean action, visible;
-private ObjectId id;
 private int direction;
 
 
 
-public MovingCrate(ObjectId id, float x, float y, ObjectsHandler objectsHandler) {
+public MovingCrate(float x, float y, ObjectsHandler objectsHandler) {
 	super();
 	this.x = x;
 	this.y = y;
-	this.id = id;
 	width = 64;
 	height = 64;
 	action = false;
@@ -185,16 +182,6 @@ public void setVelX(float velX) {
 @Override
 public void setVelY(float velY) {
 	this.velY = velY;
-}
-
-@Override
-public ObjectId getId() {
-	return id;
-}
-
-@Override
-public void setId(ObjectId id) {
-	this.id = id;
 }
 
 @Override
