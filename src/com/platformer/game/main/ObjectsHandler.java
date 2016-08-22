@@ -171,7 +171,7 @@ public void clearLevel()
 	collectibles_List.clear();
 }
 
-public void resetLevel()
+public void resetLevelStatistics()
 {
 	MainScreen.COINS = 0;
 	MainScreen.SCORE = 0;
@@ -190,7 +190,7 @@ public PlayerObject getPlayer()
 public void switchLevel()
 {
 	clearLevel();
-	resetLevel();
+	resetLevelStatistics();
 	
 	switch(MainScreen.LEVEL)
 	{

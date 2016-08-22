@@ -16,6 +16,12 @@ public BufferedImage[] playerJumpL = new BufferedImage[5];
 public BufferedImage[] playerDeadR = new BufferedImage[7];
 public BufferedImage[] playerDeadL = new BufferedImage[7];
 
+public BufferedImage backGroundMountains;
+public BufferedImage screenShotImage;
+public BufferedImage sun;
+public BufferedImage achievementBg;
+public BufferedImage menuBg;
+
 public BufferedImage[] sceneryObjects = new BufferedImage[12];
 public BufferedImage[] blocks = new BufferedImage[16];
 public BufferedImage movingBlockX, movingBlockY;
@@ -40,6 +46,7 @@ public BufferedImage springBlock, springBlock2;
 public BufferedImage fallingBlock;
 public BufferedImage clouds1, clouds2, clouds3;
 public BufferedImage[] collectible = new BufferedImage[5];
+public BufferedImage mainMenuButton;
 
 
 
@@ -136,6 +143,11 @@ public Textures()
 	playerDeadL[4] = loader.loadImage("/Dead04L.png");
 	playerDeadL[5] = loader.loadImage("/Dead05L.png");
 	playerDeadL[6] = loader.loadImage("/Dead06L.png");
+	
+	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
+	sun = loader.loadImage("/sun.png");
+	achievementBg = loader.loadImage("/achievementBg.png");
+	menuBg = loader.loadImage("/gameMenuBackground.png");
 	
 	blocks[0] = loader.loadImage("/00.png");  // BLOCKS http://www.gameart2d.com/free-desert-platformer-tileset.html
 	blocks[1] = loader.loadImage("/01.png");
@@ -258,5 +270,7 @@ public Textures()
 	collectible[2] = loader.loadImage("/collectibles2.png");
 	collectible[3] = loader.loadImage("/collectibles3.png");
 	collectible[4] = loader.loadImage("/collectibles4.png");
+	
+	mainMenuButton = loader.loadImage("/mainMenuButton.png");
 }
 }

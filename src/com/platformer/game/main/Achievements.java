@@ -176,6 +176,7 @@ public Achievements(HashMap<Integer, Boolean> achievementsList)
 	achievementImage = null;
 }
 
+
 public void restartLevel()
 {
 	jump10Count = 0;

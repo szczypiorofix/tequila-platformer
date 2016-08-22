@@ -1,6 +1,5 @@
 package com.platformer.game.main;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
@@ -18,6 +17,12 @@ import com.platformer.game.sounds.Music;
 
 
 
+/** G³ówna klasa uruchamiaj¹ca grê. To tutaj zainicjowane s¹ pocz¹tkowe warunki gry, ³adowane tekstury czy inne pliki
+ * do pamiêci. W MainClass inicjowane jest podstawowe okno gry. Tutaj równie znajduje siê game loop oraz przygotowywane
+ * do u¿ytku s¹ klasy obiekty klas HallOfFame oraz Achievements.
+ * @author Piotrek
+ *
+ */
 public class MainClass implements Runnable {
 
 
@@ -41,14 +46,32 @@ private static final Textures tex = new Textures();
 private MainScreen mainScreen;
 private ObjectInputStream ois = null;
 private ObjectOutputStream oos = null;
-private boolean running;
+private boolean gameRunning;
 private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");
 private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
-private Thread thread;
+private Thread gameThread;
 private GameState gameState;
+private Music music;
+private enum MusicState
+{
+	play, pause, stop;
+}
+private MusicState musicState;
+private Thread musicThread;
+private boolean musicThreadRunning;
+
 
 public MainClass()
-{	
+{
+	gameInit();
+}
+
+/** Inicjuje pocz¹tekowe warunki i stany gry, np. gameWindow, MainScreen (Canvas). W tej metodzie uruchamiany jest w¹tek
+ * renderowania i update'owania gry.
+ * 
+ */
+private void gameInit()
+{
 	if(gamepadConfigFile.exists() && !gamepadConfigFile.isDirectory()) gamepadEnabled = true;
 	
 	try {
@@ -60,39 +83,48 @@ public MainClass()
 		e.printStackTrace();
 		System.exit(-1);
 	}
-		
+	
 	prepareAchievements();
 	prepareHallOfFame();
 	
-	mainMenu = new MainMenu(this, hallOfFame, achievements);
+	//mainMenu = new MainMenu(this, hallOfFame, achievements);
 	
 	//mainMenu.showMenu(true);
-	
-	gameStart();
-}
 
+	//music = new Music();
 
-public void gameStart()
-{
 	gameWindow = new GameWindow();
-	gameState = GameState.Game;
+	gameState = GameState.MainMenu;
 	mainScreen = new MainScreen(gameState, gameWindow, gamepadEnabled, hallOfFame, achievements);
-	
 	gameWindow.setVisible(true);
 	WIDTH = mainScreen.getWidth();
 	HEIGHT = mainScreen.getHeight();
 	
-	mainScreen.addElements();
-	new Music();
+	//musicThreadStart();
 	gameThreadStart();
 }
+	
 
+/** Metoda uruchamiaj¹ca w¹tek muzyki w tle dla gry.
+ * 
+ */
+public synchronized void musicThreadStart()
+{
+	if (musicThreadRunning) return;
+	musicThreadRunning = true;
+	musicThread = new Thread(new MusicThread());
+	musicThread.start();
+}
+
+/** Metoda uruchamiaj¹ca w¹tek renderowania i obliczania logic gry.
+ * 
+ */
 public synchronized void gameThreadStart()
 {
-	if (running) return;
-	running = true;
-	thread = new Thread(this);
-	thread.start();
+	if (gameRunning) return;
+	gameRunning = true;
+	gameThread = new Thread(this);
+	gameThread.start();
 }
 
 @Override
@@ -103,55 +135,6 @@ public void run()
 	gameState = GameState.Game;
 	
 	// GAME LOOPd
-
-	/**
-	
-	double nextTime = (double)System.nanoTime() / 1000000000.0;
-    double maxTimeDiff = 0.5;
-    int skippedFrames = 1;
-    int maxSkippedFrames = 5;
-    double delta = (1.0f / 60.0f);
-    
-    while(running)
-    {
-        double currTime = (double)System.nanoTime() / 1000000000.0;
-        if((currTime - nextTime) > maxTimeDiff) nextTime = currTime;
-        if(currTime >= nextTime)
-        {
-           nextTime += delta;
-           
-           mainScreen.tick();
-           if (mainScreen.isExit()) gameWindow.showWindow(false);  // PROGRAM EXIT
-                      
-           if((currTime < nextTime) || (skippedFrames > maxSkippedFrames))
-           {
-        	   mainScreen.render(60, (int) (delta * 3600));
-           
-        	   skippedFrames = 1;
-           }
-           else
-           {
-               skippedFrames++;
-           }
-        }
-        else
-        {
-            int sleepTime = (int)(1000.0 * (nextTime - currTime));
-            if(sleepTime > 0)
-            {
-                try
-                {
-                    Thread.sleep(sleepTime);
-                }
-                catch(InterruptedException e)
-                {
-                	e.printStackTrace();
-                	System.exit(0);
-                }
-            }
-        }
-    }
-	**/
     
 	boolean fpsCap = false;
 
@@ -163,7 +146,7 @@ public void run()
 	int updates = 0;
 	int frames = 0;
 	
-	while(running)
+	while(gameRunning)
 	{	
 		long now = System.nanoTime();
 		delta += (now - lastTime) / ns;
@@ -300,15 +283,21 @@ public static Textures getTexturesInstance()
 	return tex;
 }
 
+private class MusicThread implements Runnable
+{
+
+	@Override
+	public void run() {
+		
+		
+		while (musicThreadRunning)
+		{
+			music.play();
+		}
+	}
+}
 
 public static void main(String[] args) {
-	EventQueue.invokeLater(new Runnable()
-	{
-		@Override
-		public void run()
-		{
-			new MainClass();
-		}
-	});
+	new MainClass();
 }
 }

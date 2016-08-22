@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 import javax.imageio.ImageIO;
-import com.platformer.game.graphics.BufferedImageLoader;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.input.InputManager;
 import com.platformer.game.input.Joystick;
@@ -38,10 +37,11 @@ public class MainScreen extends Canvas{
 
 private static final long serialVersionUID = -5788122194224852624L;
 
+private static Textures tex = MainClass.getTexturesInstance();
+private int fps_count = 0, ticks_count = 0;
 public static int LEVEL = 1;
 public static int COINS = 0;
 public static int SCORE = 0;
-public static boolean pauseGame = false;
 public static int minutes = 0, seconds = 0;
 public static float milis = 0f;
 private long milisMax = 0;
@@ -49,6 +49,9 @@ public static final float MAX_TIME_BONUS = 1500f;
 public static float time_bonus = MAX_TIME_BONUS;
 public static float TOTAL_SCORE = 0f;
 public static boolean PLAYER_LEFT = false, PLAYER_RIGHT = false, PLAYER_JUMP = false, START_EXIT = false;
+protected static String time;
+protected static String playerName;
+
 
 private GameWindow gameWindow;
 private BufferStrategy bs;
@@ -63,12 +66,7 @@ private Controller myGamepad;
 private Component[] gamepadComponents;
 private boolean exit = false;
 private Camera cam;
-private static Textures tex = MainClass.getTexturesInstance();
-private BufferedImage backGroundMountains;
-private BufferedImage screenShotImage;
-private BufferedImage sun;
-private BufferedImage achievementBg;
-private BufferedImage menuBg;
+private HUD hud;
 private boolean gamepadEnabled = false;
 private boolean makeScreenShot = false;
 private boolean showMessage = false;
@@ -79,16 +77,20 @@ private final int MESSAGE_TIME = 300;
 private Properties prop = new Properties();
 private InputStream propInput = null;
 private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
-private String time;
 private File screenShotFile;
 private SoundsLoader screenShotSound;
-private String playerName;
 private HallOfFame hallOfFame;
 private Achievements achievements;
 private GameState gameState;
-
-
-//private Animation playerDeadR, playerDeadL;
+private int selectedButton;
+private final int maxMainMenuButtons = 7;
+private MenuButton[] mainMenuButtons;
+private float bg_move, circle_move;
+private double orbitX = 0;
+private double orbitY = 0;
+private double orbitRadius = 250;
+private double orbitSpeed = Math.PI / 16;
+private double radian = 0;
 
 
 public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEnabled, HallOfFame hallOfFame, Achievements achievements)
@@ -143,14 +145,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 		}
 		else this.gamepadEnabled = false;
 	}
-	
-	BufferedImageLoader loader = new BufferedImageLoader();
-	
-	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
-	sun = loader.loadImage("/sun.png");
-	achievementBg = loader.loadImage("/achievementBg.png");
-	menuBg = loader.loadImage("/gameMenuBackground.png");
-	
+		
 	this.gameWindow.add(this);
 	key = new InputManager();
 	
@@ -164,29 +159,32 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	
 	playerName = "";
 	
+	bg_move = 0f;
 	msgY = 0;
 	saveAchievementsToFile = false;
-	//playerDeadR = new Animation(4, tex.playerDeadR[0], tex.playerDeadR[1], tex.playerDeadR[2], tex.playerDeadR[3], tex.playerDeadR[4], tex.playerDeadR[5], tex.playerDeadR[6]);
-	//playerDeadL = new Animation(4, tex.playerDeadL[0], tex.playerDeadL[1], tex.playerDeadL[2], tex.playerDeadL[3], tex.playerDeadL[4], tex.playerDeadL[5], tex.playerDeadL[6]);
-}
-
-
-public void addElements()
-{
+	
+	hud = new HUD();
 	objectsHandler = new ObjectsHandler(cam, achievements);
 	objectsHandler.loadLevel(LEVEL);
 	player = objectsHandler.getPlayer();
+	mainMenuButtons = new MenuButton[maxMainMenuButtons];
+	selectedButton = 0;
 	
-	// BUILD JAVA WEB APP QUICKLY AHHAHAHAHAH
-	// https://www.javacodegeeks.com/2016/07/build-java-web-app-quickly-java-servlet-jsp-tags-stormpath.html
-	
+	mainMenuButtons[0] = new MenuButton("NOWA GRA", 350, 50);
+	mainMenuButtons[1] = new MenuButton("JAK GRA∆", 350, 120);
+	mainMenuButtons[2] = new MenuButton("NAJLEPSZE WYNIKI", 350, 190);
+	mainMenuButtons[3] = new MenuButton("OSI•GNI CIA", 350, 260);
+	mainMenuButtons[4] = new MenuButton("ZNAJDèKI", 350, 330);
+	mainMenuButtons[5] = new MenuButton("O GRZE", 350, 400);
+	mainMenuButtons[6] = new MenuButton("ZAKO—CZ", 350, 470);
 }
 
-
+/** Metoda w ktÛrej zawarty jest ca≥y game logic.
+ * 
+ */
 public void tick()
 {
 	// GAMEPAD
-
 	if (this.gamepadEnabled)
 	{
 		myGamepad.poll();    
@@ -226,13 +224,10 @@ public void tick()
 				}
 				else PLAYER_RIGHT = false;
 			}
-
-		
 		}
 	}
     
     // KEYBOARD
-    
 	key.update();
 
 	PLAYER_JUMP = false;
@@ -251,12 +246,26 @@ public void tick()
 		}
 		
 	}
-	//if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit=true;
-	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) pauseGame = !pauseGame;
-	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
-		player.setHealth(5);
+	
+	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) // POKAØ / UKRYJ MENU
+	{
+		if (gameState == GameState.Menu)
+		{
+			gameState = GameState.Game;
+			return;
+		}
+		
+		if (gameState == GameState.Game)
+		{
+			gameState = GameState.Menu;
+			return;
+		}
 	}
 	
+	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
+		player.setHealth(5);
+		System.out.println(Thread.activeCount());
+	}
 	
 	if (showMessage)
 	{
@@ -274,20 +283,40 @@ public void tick()
 	}
 	
 	// RESTART AFTEER DEATH
-	if (player.getHealth() <= 0 && key.isKeyPressedOnce(KeyEvent.VK_SPACE))
+	if (gameState == GameState.Death && key.isKeyPressedOnce(KeyEvent.VK_SPACE))
 	{
-		pauseGame = false;
+		gameState = GameState.Game;
 		objectsHandler.clearLevel();
-		objectsHandler.resetLevel();
+		objectsHandler.resetLevelStatistics();
 		objectsHandler.loadLevel(LEVEL);
 		cam.setX(0);
 		player = objectsHandler.getPlayer();
 		achievements.restartLevel();
+		
 	}
 
-	// PO WPISANIU IMIENIA DO LISTY NAJLEPSZYCH - ENTER!
-	if (!pauseGame && player.isFinishLevel()) {
+	// PRZESUWANIE T£A W MENU G£”WNYM
+	if (gameState == GameState.MainMenu)
+	{
+		bg_move -= 1;
+		if (bg_move < -1000) bg_move = 0;
 		
+
+		// MOVE SUN IN A CIRCLE
+		circle_move += 0.03f;
+		radian = orbitSpeed * circle_move;		
+		
+		
+		if (key.isKeyPressed(KeyEvent.VK_ESCAPE))
+		{
+			exit = true;
+		}
+	}
+	
+	if (key.isKeyPressed(KeyEvent.VK_F1)) gameState = GameState.Game;
+	
+	// PO WPISANIU IMIENIA DO LISTY NAJLEPSZYCH - ENTER!
+	if (player.isFinishLevel()) {
 		
 		if (key.isAnyKeyPressedOnce())
 		{
@@ -303,21 +332,21 @@ public void tick()
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			writeScore(playerName, SCORE, milisMax);
-			pauseGame = true;	
 		}
 	}
 	
 	// GRA DZIA£A
-	if (!pauseGame && !player.isFinishLevel() && player.getHealth() > 0) {
+	if (gameState == GameState.Game && !player.isFinishLevel() && player.getHealth() > 0) {
 		objectsHandler.tick();
 		cam.tick(player);
 		timeTick();
 	}
 	
 	// ENTER TO NEW LEVEL
-	if (pauseGame && player.isFinishLevel())
+	
+	if (gameState == GameState.NextLevel && player.isFinishLevel() && key.isKeyPressedOnce(KeyEvent.VK_ENTER)) // ENTER PO WPISANIU IMIENIA PRZENOSI NA NOWY POZIOM
 	{
-		pauseGame = false;
+		gameState = GameState.Game;
 		MainScreen.milis = 0f;
 		milisMax = 0;
 		MainScreen.minutes = 0;
@@ -343,7 +372,6 @@ public void tick()
 			achievements.setShowAchievement(false);			
 		}
 	}
-	
 }
 
 public void timeTick()
@@ -366,27 +394,25 @@ public void timeTick()
 	else time += ":"+seconds +":" + (int) milis;	
 }
 
+
+/** Metoda dodajπca nowegy wpis na liúcie Najlepsze Wyniki (Hall of Fame)
+ * oraz zapisujπca tÍ listÍ do pliku.
+ * @param name ImiÍ/ksywka obecnego gracza.
+ * @param score Wynik obecnego gracza.
+ * @param milis Czas gry obecnego gracza w milisekundach
+ */
 private void writeScore(String name, int score, long milis)
 {
 	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, milis));
-	
-	//System.out.println(hallOfFame.getHallOfFameList().get(hallOfFame.getHallOfFameList().size()-1).getTimeFromMilis(milis));
-	
-	if(MainClass.hallOfFameFile.exists() && !MainClass.hallOfFameFile.isDirectory())
-	{
-		try {
-		oos = new ObjectOutputStream(new FileOutputStream((MainClass.hallOfFameFile)));
-	    oos.writeObject(hallOfFame.getHallOfFameList());
-	    oos.close();
-		}
-		catch (IOException ioe)
-		{
-			ioe.printStackTrace();
-			System.exit(-1);
-		}
-	}
+	hallOfFame.writeScoreToFile();
 }
 
+/** Metoda wyúwietlajπca osiπgniÍcie na ekranie, w≥πcznie z "najazdem" i "odjazdem" ramki z tekstem u gÛry ekranu.
+ * @param g2d Graphics2D.
+ * @param msg TreúÊ osiπgniÍcia.
+ * @param achievementImage Ikonka osiπgniÍcia.
+ * @param counter Licznik, opisujπcy jednostki czasu przez jaki wiadomoúÊ jest wyúwietlana.
+ */
 private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementImage, int counter)
 {
 	
@@ -394,7 +420,6 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
 	{
 		if(MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
 		{
-			//System.out.println("Zapis achievementÛw do pliku");
 			try {
 			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
 		    oos.writeObject(achievements.getAchievementsList());
@@ -407,9 +432,7 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
 			}
 			saveAchievementsToFile = true;
 		}
-		else
-			//System.out.println("Brak pliku!!!");
-		saveAchievementsToFile = true;
+		else saveAchievementsToFile = true;
 	}
 	
 	g2d.setColor(Color.RED);
@@ -419,14 +442,21 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
 	if (counter == achievements.getShowAchievementCooldown())
 		if (msgY > -20) msgY--;
 	
-	g2d.drawImage(achievementBg, 280, msgY-40, null);
+	g2d.drawImage(tex.achievementBg, 280, msgY-40, null);
 	g2d.drawImage(achievementImage, 295, msgY - 35, null);
 	g2d.drawString(msg, 355, msgY);
 }
 
 
+/** Podstawowa metoda rysowania na ekranie w trakcie trwania gry.
+ * @param fps_count Licznik FPSÛw.
+ * @param ticks_count Licznik update'Ûw (game logic).
+ */
 public void render(int fps_count, int ticks_count)
 {
+	this.fps_count = fps_count;
+	this.ticks_count = ticks_count;
+	
 	bs = this.getBufferStrategy();
 	
 	if (bs == null)
@@ -440,8 +470,8 @@ public void render(int fps_count, int ticks_count)
 	
 	if (makeScreenShot)
 	{
-		screenShotImage = new BufferedImage(MainClass.WIDTH, MainClass.HEIGHT, BufferedImage.TYPE_INT_RGB);
-		g = screenShotImage.createGraphics();
+		tex.screenShotImage = new BufferedImage(MainClass.WIDTH, MainClass.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		g = tex.screenShotImage.createGraphics();
 	}
 	
 	/////////////////// DRAW HERE ////////////////////////////
@@ -450,126 +480,95 @@ public void render(int fps_count, int ticks_count)
 	RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	
 	g2d.setRenderingHints(rh);
-	g.setColor(new Color(184, 220, 254));
-	g.fillRect(0,0,getWidth(), getHeight());
 	
 	
-	if (gameState == GameState.Game)
+		
+	// MOUNTAING & PARALLAX
+	if (gameState != GameState.MainMenu)
 	{
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
+		// BACKGROUND - GÛry i s≥oÒce
+		g.setColor(new Color(184, 220, 254));
+		g.fillRect(0,0,getWidth(), getHeight());
+		if (cam.getX() < 10  && cam.getX() > -6950) g2d.drawImage(tex.backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+		if (cam.getX() < -15  && cam.getX() > -14000) g2d.drawImage(tex.backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
+		if (cam.getX() < -7000  && cam.getX() > -14500) g2d.drawImage(tex.backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
+		g2d.drawImage(tex.sun, 210, (int) (cam.getY()/1.33) + 420, null);		
+	}
+	else if (gameState == GameState.MainMenu)
+	{
+		g.setColor(new Color(184, 220, 254));
+		g.fillRect(0,0,getWidth(), getHeight());
+		
+		g2d.drawImage(tex.backGroundMountains, (int) (bg_move), (int) (0), MainClass.WIDTH, (int) (MainClass.HEIGHT), null);
+		g2d.drawImage(tex.backGroundMountains, (int) (bg_move+1000), (int) (0), MainClass.WIDTH, (int) (MainClass.HEIGHT), null);
+		
 		g2d.setColor(Color.BLUE);
 		
-		/// MOUNTAING & PARALLAX
+		//double drawX = orbitX + orbitRadius * Math.cos(radian);
+		//double drawY = orbitY + orbitRadius * Math.sin(radian);
 		
-		if (cam.getX() < 10  && cam.getX() > -6950) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-		if (cam.getX() < -15  && cam.getX() > -14000) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
-		if (cam.getX() < -7000  && cam.getX() > -14500) g2d.drawImage(backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
+		//g2d.fillRect((int) (150+ orbitX + orbitRadius * Math.cos(radian)), (int) (150 + orbitY + orbitRadius * Math.sin(radian)), 50, 50);
+		g2d.drawImage(tex.sun, (int) (450+ orbitX + orbitRadius * Math.cos(radian)), (int) (220 + orbitY + orbitRadius * Math.sin(radian)), null);
 		
-		g2d.drawImage(sun, 210, (int) (cam.getY()/1.33) + 420, null);
+		for (int i = 0; i < maxMainMenuButtons; i++)
+		mainMenuButtons[i].render(g2d);
+	}
 		
-		////// CAM MOVING HERE
-		g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
+	
+	
+	////// CAM MOVING HERE
+	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 		
-		if (!player.isFinishLevel()) objectsHandler.render(g);
+		if ((!player.isFinishLevel()) && gameState != GameState.MainMenu) objectsHandler.render(g);
+	
+	g2d.translate(-cam.getX(), -cam.getY()); // CAM ENDING	
+
+	
+	
+	// POWERUUPS
+	if (player.isTequila_powerUp()) {
+		g2d.drawImage(tex.tequilaImage, 10, 90, null);
+		g2d.setColor(Color.ORANGE);
+		g2d.fillRect(60, 180 - (int)(player.getTequila_time()/3.5), 10, (int) (player.getTequila_time()/3.5));
+	}
+	if (player.isTaco_powerUp()) {
+		g2d.drawImage(tex.tacoImage, 10, 110, null);
+		g2d.setColor(Color.GREEN);
+		g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
+	}
 		
-		g2d.translate(-cam.getX(), -cam.getY()); // CAM ENGING	
+	//g2d.drawString("CAM X "+ cam.getX(), MainClass.WIDTH - 170, 120);
+	//g2d.drawString("GROUND "+ player.isOnGround(), MainClass.WIDTH - 170, 120);
+	//g2d.drawString("JUMP "+ player.isJumping(), MainClass.WIDTH - 170, 170);
+	//g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
+	
+	// ACHIEVEMENTS
+	if (showMessage) showMessage(g2d, achievements.getAchievementTextShort(), achievements.getAchievementImage(), achievements.getAchievementCount());
+	else saveAchievementsToFile = false;
+		
+	// KONIEC POZIOMU
+	if (player.isFinishLevel())
+	{
+		gameState = GameState.NextLevel;
+		TOTAL_SCORE = SCORE + (int) time_bonus;
+	}
+
+	if (player.getHealth() <= 0) gameState = GameState.Death;
 		
 
-		g2d.drawString("POZIOM "+LEVEL, 845, 40);
-		g2d.drawString("MONETY: "+COINS, 10, 40);
-		g2d.drawString("WYNIK: "+SCORE, 10, 80);
-		
-		g2d.setFont(new Font("Verdana", 1, 12));
-		g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
-		g2d.drawString("CZAS: "+time, MainClass.WIDTH - 150, 80);
-		
-
-		if (player.isTequila_powerUp()) {
-			g2d.drawImage(tex.tequilaImage, 10, 90, null);
-			g2d.setColor(Color.ORANGE);
-			g2d.fillRect(60, 180 - (int)(player.getTequila_time()/3.5), 10, (int) (player.getTequila_time()/3.5));
-		}
-		if (player.isTaco_powerUp()) {
-			g2d.drawImage(tex.tacoImage, 10, 110, null);
-			g2d.setColor(Color.GREEN);
-			g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
-		}
-		
-		//g2d.drawString("CAM X "+ cam.getX(), MainClass.WIDTH - 170, 120);
-		//g2d.drawString("GROUND "+ player.isOnGround(), MainClass.WIDTH - 170, 120);
-		//g2d.drawString("JUMP "+ player.isJumping(), MainClass.WIDTH - 170, 170);
-		//g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
-		
-		if (pauseGame && !player.isFinishLevel())
-		{
-			gameState = GameState.Menu;
-		}
-		
-		if (showMessage) showMessage(g2d, achievements.getAchievementTextShort(), achievements.getAchievementImage(), achievements.getAchievementCount());
-		else saveAchievementsToFile = false;
-		
-		
-		// KONIEC POZIOMU
-		if (player.isFinishLevel())
-		{
-			TOTAL_SCORE = SCORE + (int) time_bonus;
-			g2d.setColor(Color.GRAY);
-			g2d.fillRect(300, 100, 400, 450);
-			g2d.setColor(Color.YELLOW);
-			g2d.drawRect(2999, 99, 402, 342);
-			g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
-			g2d.drawString("POZIOM "+LEVEL +" UKO—CZONY !!!", 315, 155);
-			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
-			g2d.drawString("TW”J WYNIK: " +SCORE, 375, 240);
-			g2d.drawString("CZAS: " +time, 380, 300);
-			g2d.drawString("BONUS CZASOWY: " + (int) time_bonus, 340, 370);
-			g2d.drawString("WYNIK KO—COWY: " +(int) TOTAL_SCORE, 340, 430);
-			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 26f));
-			g2d.setColor(Color.WHITE);
-			g2d.drawString("PODAJ SWOJE IMI  I NACIåNIJ ENTER:", 320, 480);
-			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 32f));
-			g2d.setColor(Color.CYAN);
-			g2d.drawString(playerName , 490-(playerName.length() * 8), 520);
-			//key.setKetPressedOnce(KeyEvent.VK_ENTER);
-			//pauseGame = false;
-		}
-		//playerDeadR.drawAnimation(g2d, (int) player.getX(), (int) player.getY(), false);
-		if (player.getHealth() <= 0)
-		{
-			g2d.setColor(Color.RED);
-			g2d.setFont(MainClass.texasFont.deriveFont(68f));
-			g2d.drawString("NIE ØYJESZ ...", 355, 220);
-			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
-			g2d.drawString("SPACJA - RESTART", 340, 320);
-			g2d.drawString("ESC - KONIEC", 370, 380);
-			//playerDeadR.runAnimation();
-			//playerDeadL.runAnimation();
-			//playerDeadR.drawAnimation(g, (int) player.getX(), (int) player.getY(), false);
-			//pauseGame = true;
-		}
-		
-		for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);
-		
-		
-		if (makeScreenShot)
-		{
-			makeScreenShot();
-		}
-		
+	if (gameState != GameState.MainMenu)
+	{
+		// PLAYER HEALTH
+		for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);	
 	}
 	
 	
-	if (gameState == GameState.Menu)
-	{
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 64f));
-		g2d.setColor(Color.BLUE);
-		g2d.drawImage(menuBg, 300, 100, null);
-		g2d.drawString("WZN”W GR ", 360, 220);
-		g2d.drawString("MENU G£”WNE", 360, 320);
-		g2d.drawString("WYJåCIE", 360, 420);
-	}
+		
+		
+	if (makeScreenShot)	makeScreenShot();
 	
-	
+	// HUD gry
+	hud.showGameHud(g2d, gameState, this.fps_count, this.ticks_count);
 	
 	//////////////////////////////////////////////////////////
 	
@@ -579,9 +578,11 @@ public void render(int fps_count, int ticks_count)
 	bs.show();
 }
 
+/** Metoda zapisujπca zrzut ekranu do pliku .png. 
+ * 
+ */
 public void makeScreenShot()
 {
-	//g.dispose();
 	screenShotSound.play();
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
 	Calendar cal = Calendar.getInstance();
@@ -589,7 +590,7 @@ public void makeScreenShot()
 	screenShotFile = new File("screenshot "+dateFormat.format(cal.getTime())+".png");
 			
 	try {
-		ImageIO.write(screenShotImage, "png", screenShotFile);
+		ImageIO.write(tex.screenShotImage, "png", screenShotFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -597,6 +598,9 @@ public void makeScreenShot()
 	makeScreenShot = false;
 }
 
+/** Metoda zwracajπca pole isExit, ktÛre mÛwi, czy zosta≥o wykonane rzπdanie zakmniÍcia gry.
+ * @return isExit
+ */
 public boolean isExit()
 {
 	return exit;

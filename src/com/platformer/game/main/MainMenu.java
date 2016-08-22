@@ -269,7 +269,7 @@ public class MenuKeyListener implements KeyListener
 			{
 				menuSound2.play();
 				showMenu(false);
-				mainClass.gameStart();
+				//mainClass.gameStart();
 			}
 			if (selected == 1)
 			{
@@ -351,7 +351,7 @@ public class MainMenuListener implements ActionListener
 		{
 			menuSound2.play();
 			showMenu(false);
-			mainClass.gameStart();
+			//mainClass.gameStart();
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("EXIT"))

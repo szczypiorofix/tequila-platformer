@@ -15,25 +15,14 @@ public static DisplayMode currentDisplayMode = null;
 private BufferedImageLoader loader = new BufferedImageLoader();
 
 public GameWindow()
-{
-	//GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	//GraphicsDevice gd = ge.getDefaultScreenDevice();
-	
-	//currentDisplayMode = ge.getDefaultScreenDevice().getDisplayMode();
-	//gd.setDisplayMode(new DisplayMode(1366, 768, 32, 60));
-	//this.setUndecorated(true);
-	
+{	
 	this.setIgnoreRepaint(true);
 	this.setTitle("TEQUILA PLATFORMER");
 	this.setResizable(false);
 	this.setSize(1006, 628);
 	this.setLocationRelativeTo(null);
-	setBackground(Color.BLACK);
-	
-	//gd.setFullScreenWindow(null);
-    
+	setBackground(Color.BLACK);    
 	this.setIconImage(loader.loadImage("/programIcon.png"));
-
 	this.addWindowListener(this);
 }
 

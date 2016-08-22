@@ -21,7 +21,7 @@ private ObjectsHandler objectsHandler;
 private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound;
 private Textures tex = MainClass.getTexturesInstance();
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
-private static final int MAX_HEALTH = 5;
+private static final int MAX_HEALTH = 2;
 private static final float NORMAL_GRAVITY = 0.5f;
 private final float MAX_SPEED = 13f;
 private final int HIT_COOLDOWN = 60*2;
