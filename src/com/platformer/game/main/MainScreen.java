@@ -23,11 +23,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 import javax.imageio.ImageIO;
+
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.input.InputManager;
 import com.platformer.game.input.Joystick;
 import com.platformer.game.objects.PlayerObject;
-import com.platformer.game.sounds.SoundsLoader;
 
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
@@ -78,14 +78,17 @@ private int msgY;
 private final int MESSAGE_TIME = 300;
 private Properties prop = new Properties();
 private InputStream propInput = null;
-private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
+private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp, upProp, upValueProp, downProp, downValueProp;
 private File screenShotFile;
 private HallOfFame hallOfFame;
 private Achievements achievements;
 private GameState gameState;
-private int selectedButton;
-private final int maxMainMenuButtons = 7;
+private int selectedMainMenuButton;
+private final int MAX_MAIN_MENU_BUTTONS = 7;
 private MenuButton[] mainMenuButtons;
+private int selectedMenuButton;
+private final int MAX_MENU_BUTTONS = 3;
+private MenuButton[] menuButtons;
 private float bg_move, circle_move;
 private double orbitRadius = 250;
 private double orbitSpeed = Math.PI / 16;
@@ -121,6 +124,10 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 			jumpValueProp = prop.getProperty("value_jump");
 			startProp = prop.getProperty("Start");
 			startValueProp = prop.getProperty("value_start");
+			upProp = prop.getProperty("Up");
+			upValueProp = prop.getProperty("value_up");
+			downProp = prop.getProperty("Down");
+			downValueProp = prop.getProperty("value_down");
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -168,12 +175,9 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	objectsHandler = new ObjectsHandler(cam, achievements);
 	objectsHandler.loadLevel(LEVEL);
 	player = objectsHandler.getPlayer();
-	mainMenuButtons = new MenuButton[maxMainMenuButtons];
-	
-	//bg0 = makeGrayScale(tex.backGroundMountains);
-	
-	selectedButton = 0;
-	
+	mainMenuButtons = new MenuButton[MAX_MAIN_MENU_BUTTONS];
+		
+	selectedMainMenuButton = 0;
 	mainMenuButtons[0] = new MenuButton("NOWA GRA", 350, 50);
 	mainMenuButtons[1] = new MenuButton("JAK GRA∆", 350, 120);
 	mainMenuButtons[2] = new MenuButton("NAJLEPSZE WYNIKI", 350, 190);
@@ -181,6 +185,12 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	mainMenuButtons[4] = new MenuButton("ZNAJDèKI", 350, 330);
 	mainMenuButtons[5] = new MenuButton("O GRZE", 350, 400);
 	mainMenuButtons[6] = new MenuButton("ZAKO—CZ", 350, 470);
+	
+	menuButtons = new MenuButton[MAX_MENU_BUTTONS];
+	selectedMenuButton = 0;	
+	menuButtons[0] = new MenuButton("WZN”W GR ", 360, 190);
+	menuButtons[1] = new MenuButton("MENU G£”WNE", 360, 260);
+	menuButtons[2] = new MenuButton("ZAKO—CZ GR ", 360, 340);	
 }
 
 public BufferedImage makeGrayScale(BufferedImage input)
@@ -236,13 +246,13 @@ public void tick()
 				if (Float.toString(value).equals(startValueProp)) exit = true;
 			}
 			
-			if (comp.getName().equals(jumpProp))
+			if (comp.getName().equals(jumpProp) && gameState == GameState.Game)
     			{
 				if (Float.toString(value).equals(jumpValueProp)) PLAYER_JUMP = true;
     				else PLAYER_JUMP = false;
     			}
 			
-			if (comp.getName().equals(leftProp))
+			if (comp.getName().equals(leftProp) && gameState == GameState.Game)
 			{
 				if (Float.toString(value).equals(leftValueProp))
 				{
@@ -251,13 +261,32 @@ public void tick()
 				else PLAYER_LEFT = false;
 			}
 			
-			if (comp.getName().equals(rightProp))
+			if (comp.getName().equals(rightProp) && gameState == GameState.Game)
 			{
 				if (Float.toString(value).equals(rightValueProp))
 				{
 					PLAYER_RIGHT = true;
 				}
 				else PLAYER_RIGHT = false;
+			}
+			
+			// MAIN MENU
+			if (comp.getName().equals(upProp) && gameState == GameState.MainMenu)
+			{
+				if (Float.toString(value).equals(upValueProp))
+				{
+					//PLAYER_RIGHT = true;
+				}
+				//else PLAYER_RIGHT = false;
+			}
+			
+			if (comp.getName().equals(downProp) && gameState == GameState.MainMenu)
+			{
+				if (Float.toString(value).equals(downValueProp))
+				{
+					//PLAYER_RIGHT = true;
+				}
+				//else PLAYER_RIGHT = false;
 			}
 		}
 	}
@@ -297,6 +326,7 @@ public void tick()
 		}
 	}
 	
+	
 	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
 		player.setHealth(5);
 		//System.out.println(Thread.activeCount());
@@ -327,8 +357,8 @@ public void tick()
 	
 	
 	// ZABAWA BULLET TIME
-	if (key.isKeyPressedOnce(KeyEvent.VK_1) && MainClass.amountOfTicks > 30) MainClass.amountOfTicks -= 10;
-	if (key.isKeyPressedOnce(KeyEvent.VK_2) && MainClass.amountOfTicks < 60) MainClass.amountOfTicks += 10;
+	//if (key.isKeyPressedOnce(KeyEvent.VK_1) && MainClass.amountOfTicks > 30) MainClass.amountOfTicks -= 10;
+	//if (key.isKeyPressedOnce(KeyEvent.VK_2) && MainClass.amountOfTicks < 60) MainClass.amountOfTicks += 10;
 	
 	
 	// RESTART AFTEER DEATH
@@ -343,9 +373,10 @@ public void tick()
 		achievements.restartLevel();
 		
 	}
-
+	
 	// PRZESUWANIE T£A W MENU G£”WNYM
-	if (gameState == GameState.MainMenu)
+	if (gameState == GameState.MainMenu || gameState == GameState.JakGrac || gameState == GameState.NajlepszeWyniki || gameState == GameState.NajlepszeWyniki
+			|| gameState == GameState.Osiagniecia || gameState == GameState.OGrze || gameState == GameState.Znajdzki)
 	{
 		bg_move -= 1;
 		if (bg_move < -1000) bg_move = 0;
@@ -353,16 +384,154 @@ public void tick()
 
 		// MOVE SUN IN A CIRCLE
 		circle_move  = 0.05f;
-		radian += orbitSpeed * circle_move;		
+		radian += orbitSpeed * circle_move;	
+	}
 		
+
+	// OB£UGA MENU G£”WNEGO
+	if (gameState == GameState.MainMenu)
+	{
+		// KEYBOARD
 		
-		if (key.isKeyPressed(KeyEvent.VK_ESCAPE))
+		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S))
 		{
-			exit = true;
+			if (selectedMainMenuButton < MAX_MAIN_MENU_BUTTONS)
+			{
+				mainMenuButtons[selectedMainMenuButton].setSelected(false);
+				if (selectedMainMenuButton == MAX_MAIN_MENU_BUTTONS-1) selectedMainMenuButton = 0; 
+				else selectedMainMenuButton++;				
+			}
+		}
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W))
+		{
+			if (selectedMainMenuButton >= 0)
+			{
+				mainMenuButtons[selectedMainMenuButton].setSelected(false);
+				if (selectedMainMenuButton == 0) selectedMainMenuButton = MAX_MAIN_MENU_BUTTONS-1;
+				else selectedMainMenuButton--;
+			}
+		}
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) exit = true; // ZAMKNI CIE GRY KLAWISZEM ESC.
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
+		{
+			switch (selectedMainMenuButton)
+			{
+			case 0: gameState = GameState.Game;
+					break;
+			case 1: gameState = GameState.JakGrac;
+					break;
+			case 2: gameState = GameState.NajlepszeWyniki;
+					break;
+			case 3: gameState = GameState.Osiagniecia;
+					break;
+			case 4: gameState = GameState.Znajdzki;
+					break;
+			case 5: gameState = GameState.OGrze;
+					break;
+			case 6: gameState = GameState.Zakoncz;
+					break;
+			}
 		}
 	}
 	
-	if (key.isKeyPressed(KeyEvent.VK_F1) && gameState == GameState.MainMenu) gameState = GameState.Game;
+	// OBS£UGA MENU W TRAKCIE GRY
+		if (gameState == GameState.Menu)
+		{
+			
+			if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S))
+			{
+				if (selectedMenuButton < MAX_MENU_BUTTONS)
+				{
+					menuButtons[selectedMenuButton].setSelected(false);
+					if (selectedMenuButton == MAX_MENU_BUTTONS-1) selectedMenuButton = 0; 
+					else selectedMenuButton++;				
+				}
+			}
+			
+			if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W))
+			{
+				if (selectedMenuButton >= 0)
+				{
+					menuButtons[selectedMenuButton].setSelected(false);
+					if (selectedMenuButton == 0) selectedMenuButton = MAX_MENU_BUTTONS-1;
+					else selectedMenuButton--;
+				}
+			}
+			
+			if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
+			{
+				switch (selectedMenuButton)
+				{
+				case 0: gameState = GameState.Game;
+						break;
+				case 1: 
+						gameState = GameState.Game;
+						objectsHandler.clearLevel();
+						objectsHandler.resetLevelStatistics();
+						objectsHandler.loadLevel(LEVEL);
+						cam.setX(0);
+						player = objectsHandler.getPlayer();
+						achievements.restartLevel();
+						gameState = GameState.MainMenu;
+						break;
+				case 2: gameState = GameState.Zakoncz;
+						break;
+				}
+			}
+		}
+
+	// MENU JAK GRA∆	
+	if (gameState == GameState.JakGrac)
+	{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
+		{
+			gameState = GameState.MainMenu;
+		}
+	}
+	
+
+	// MENU NAJLEPSZE WYNIKI	
+	if (gameState == GameState.NajlepszeWyniki)
+	{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
+		{
+			gameState = GameState.MainMenu;
+		}
+	}
+
+
+	// MENU OSIAGNIECIA
+	if (gameState == GameState.Osiagniecia)
+	{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
+		{
+			gameState = GameState.MainMenu;
+		}
+	}
+
+	
+	// MENU ZNAJDèKI
+	if (gameState == GameState.Znajdzki)
+	{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
+		{
+			gameState = GameState.MainMenu;
+		}
+	}
+	
+	
+	// MENU O GRZE
+	if (gameState == GameState.OGrze)
+	{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
+		{
+			gameState = GameState.MainMenu;
+		}
+	}
+	
 	
 	// PO WPISANIU IMIENIA DO LISTY NAJLEPSZYCH - ENTER!
 	if (player.isFinishLevel()) {
@@ -504,6 +673,13 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
  */
 public void render(int fps_count, int ticks_count)
 {
+	
+	// POLECENIE EXIT
+	if (gameState == GameState.Zakoncz)
+	{
+		exit = true;
+	}
+	
 	this.fps_count = fps_count;
 	this.ticks_count = ticks_count;
 	
@@ -517,13 +693,13 @@ public void render(int fps_count, int ticks_count)
 	
 	g = bs.getDrawGraphics();
 
-	
 	if (makeScreenShot)
 	{
 		tex.screenShotImage = new BufferedImage(MainClass.WIDTH, MainClass.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = tex.screenShotImage.createGraphics();
 	}
 	
+	// Tworzenie obrazu t≥a gry w grayScale;
 	if ((gameState == GameState.Menu || gameState == GameState.Death) && !makeBgImage)
 	{
 		makeBgImage = true;
@@ -541,7 +717,7 @@ public void render(int fps_count, int ticks_count)
 	g2d.setRenderingHints(rh);
 		
 	// MOUNTAING & PARALLAX
-	if (gameState != GameState.MainMenu)
+	if (gameState == GameState.Game || gameState == GameState.Death || gameState == GameState.Menu || gameState == GameState.NextLevel)
 	{
 		// BACKGROUND - GÛry i s≥oÒce
 		g.setColor(new Color(184, 220, 254));
@@ -551,34 +727,38 @@ public void render(int fps_count, int ticks_count)
 		if (cam.getX() < -7000  && cam.getX() > -14500) g2d.drawImage(tex.backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
 		g2d.drawImage(tex.sun, 210, (int) (cam.getY()/1.33) + 420, null);
 	}
-	else if (gameState == GameState.MainMenu)
+	
+	if (gameState == GameState.MainMenu || gameState == GameState.JakGrac || gameState == GameState.NajlepszeWyniki || gameState == GameState.NajlepszeWyniki
+			|| gameState == GameState.Osiagniecia || gameState == GameState.OGrze || gameState == GameState.Znajdzki)
 	{
 		g.setColor(new Color(184, 220, 254));
 		g.fillRect(0,0,getWidth(), getHeight());
 		
 		g2d.drawImage(tex.backGroundMountains, (int) (bg_move), (int) (0), MainClass.WIDTH, (int) (MainClass.HEIGHT), null);
 		g2d.drawImage(tex.backGroundMountains, (int) (bg_move+1000), (int) (0), MainClass.WIDTH, (int) (MainClass.HEIGHT), null);
-		
-		g2d.setColor(Color.BLUE);
-		
-		//double drawX = orbitX + orbitRadius * Math.cos(radian);
-		//double drawY = orbitY + orbitRadius * Math.sin(radian);
-		
 
-		g2d.drawImage(tex.sun, (int) (450+ orbitRadius * Math.cos(radian)), (int) (220 + orbitRadius * Math.sin(radian)), null);
+		g2d.drawImage(tex.sun, (int) (450+ orbitRadius * Math.cos(radian)), (int) (220 + orbitRadius * Math.sin(radian)), this);
 		
-		for (int i = 0; i < maxMainMenuButtons; i++)
-		mainMenuButtons[i].render(g2d);
+		for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) 
+		{
+			mainMenuButtons[i].render(g2d);
+		}
+		mainMenuButtons[selectedMainMenuButton].setSelected(true);
 	}
-		
 	
-	////// CAM MOVING HERE
-	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
-		
-		if ((!player.isFinishLevel()) && gameState != GameState.MainMenu) objectsHandler.render(g);
 	
-	g2d.translate(-cam.getX(), -cam.getY()); // CAM ENDING	
+	
+		
+	if ((!player.isFinishLevel()) && gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
+	{ 
+		////// CAM MOVING HERE
 
+		g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
+			objectsHandler.render(g);
+		g2d.translate(-cam.getX(), -cam.getY()); // CAM ENDING
+	}
+	
+		
 	
 	// POWERUUPS
 	if (player.isTequila_powerUp()) {
@@ -591,11 +771,7 @@ public void render(int fps_count, int ticks_count)
 		g2d.setColor(Color.GREEN);
 		g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
 	}
-		
-	//g2d.drawString("CAM X "+ cam.getX(), MainClass.WIDTH - 170, 120);
-	//g2d.drawString("GROUND "+ player.isOnGround(), MainClass.WIDTH - 170, 120);
-	//g2d.drawString("JUMP "+ player.isJumping(), MainClass.WIDTH - 170, 170);
-	//g2d.drawString("BONUS CZASOWY "+ (int) time_bonus, MainClass.WIDTH - 170, 120);
+
 	
 	// ACHIEVEMENTS
 	if (showMessage) showMessage(g2d, achievements.getAchievementTextShort(), achievements.getAchievementImage(), achievements.getAchievementCount());
@@ -608,25 +784,18 @@ public void render(int fps_count, int ticks_count)
 		TOTAL_SCORE = SCORE + (int) time_bonus;
 	}
 	
-	if (gameState != GameState.MainMenu)
+
+	// HUD gry
+	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
 	{
 		// PLAYER HEALTH
 		for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);	
-	}
-	
-		
-	if (makeScreenShot)	makeScreenShot();
-	
-	// HUD gry
-	if (gameState != GameState.MainMenu)
-	{
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
 		g2d.setColor(Color.BLUE);
 		g2d.drawString("POZIOM "+MainScreen.LEVEL, 845, 40);
 		g2d.drawString("MONETY: "+MainScreen.COINS, 10, 40);
 		g2d.drawString("WYNIK: "+MainScreen.SCORE, 10, 80);	
 		g2d.setFont(new Font("Verdana", 1, 12));
-		g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
 		g2d.drawString("CZAS: "+MainScreen.time, MainClass.WIDTH - 150, 80);
 	}
 	
@@ -639,9 +808,21 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(backgroundGrayScaleImage, 0, 0, null);
 	}
 	
+	if (gameState == GameState.Menu)
+	{
+		g2d.drawImage(tex.menuBg, 330, 155, null);
+		for (int i = 0; i < MAX_MENU_BUTTONS; i++) 
+		{
+			menuButtons[i].render(g2d);
+		}
+		menuButtons[selectedMenuButton].setSelected(true);
+	}
+	
 	if (gameState == GameState.Game) makeBgImage = false;
 	
 	hud.showGameHud(g2d, gameState, this.fps_count, this.ticks_count);
+	
+	if (makeScreenShot)	makeScreenShot();
 	
 	//////////////////////////////////////////////////////////
 	

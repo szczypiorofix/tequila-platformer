@@ -36,13 +36,14 @@ private boolean anyGamePad = false;
 private Controller myGamepad;
 private Controller[] controllers;
 private Component[] components;
-private Component left, right, jump, start;
-private float leftValue, rightValue, jumpValue, startValue;
+private Component left, right, jump, start, up, down;
+private float leftValue, rightValue, jumpValue, startValue, upValue, downValue;
 private JButton saveButton = new JButton("Zapisz i zamknij"), jumpButton = new JButton("JUMP"), leftButton = new JButton("LEFT"), rightButton = new JButton("RIGHT"), startButton = new JButton("START/EXIT");
+private JButton upButton = new JButton("UP"), downButton = new JButton("DOWN");
 private ActionListener buttonListener;
-private int awaitingButton = 0; // 1 - right, 2 - left, 3 - jump, 4 - start/exit
+private int awaitingButton = 0; // 1 - right, 2 - left, 3 - jump, 4 - start/exit, 5 - up, 6 - down;
 private JDialog awaitingDialog;
-private JLabel leftLabel, rightLabel, jumpLabel, startLabel;
+private JLabel leftLabel, rightLabel, jumpLabel, startLabel, upLabel, downLabel;
 private JLabel awaitingLabel;
 private Thread thread;
 private InputThread inputThread;
@@ -79,6 +80,11 @@ public GamepadSetting()
 			prop.put("value_jump", Float.toString(jumpValue));
 			prop.put("Start", start.getName());
 			prop.put("value_start", Float.toString(startValue));
+			prop.put("Up", up.getName());
+			prop.put("value_up", Float.toString(upValue));
+			prop.put("Down", down.getName());
+			prop.put("value_down", Float.toString(downValue));
+			
 			File file = new File("input.cfg");
 			try {
 			FileOutputStream fileOut = new FileOutputStream(file);
@@ -119,6 +125,8 @@ public GamepadSetting()
 	rightLabel = new JLabel("<null>");
 	jumpLabel = new JLabel("<null>");
 	startLabel = new JLabel("<null>");
+	upLabel = new JLabel("<null>");
+	downLabel = new JLabel("<null>");
 	
    centerPane.setLayout(new GridLayout(4, 3));
         
@@ -126,7 +134,8 @@ public GamepadSetting()
    rightButton.setActionCommand("RIGHT");
    jumpButton.setActionCommand("JUMP");
    startButton.setActionCommand("START");
-   
+   upButton.setActionCommand("UP");
+   downButton.setActionCommand("DOWN");
    
    centerPane.add(new JLabel("W lewo"));
    centerPane.add(leftLabel);
@@ -140,12 +149,20 @@ public GamepadSetting()
    centerPane.add(new JLabel("Start/Exit"));
    centerPane.add(startLabel);
    centerPane.add(startButton);
+   centerPane.add(new JLabel("Up"));
+   centerPane.add(upLabel);
+   centerPane.add(upButton);
+   centerPane.add(new JLabel("Down"));
+   centerPane.add(downLabel);
+   centerPane.add(downButton);
     
    buttonListener = new ButtonListener();
    leftButton.addActionListener(buttonListener);
    rightButton.addActionListener(buttonListener);
    jumpButton.addActionListener(buttonListener);
    startButton.addActionListener(buttonListener);
+   upButton.addActionListener(buttonListener);
+   downButton.addActionListener(buttonListener);
    
    awaitingDialog = new JDialog(frame, "Oczekiwanie...", true);
    awaitingDialog.setSize(300, 100);
@@ -171,11 +188,15 @@ public class ButtonListener implements ActionListener
 		if (e.getActionCommand().equalsIgnoreCase("LEFT")) awaitingButton = 2;
 		if (e.getActionCommand().equalsIgnoreCase("JUMP")) awaitingButton = 3;
 		if (e.getActionCommand().equalsIgnoreCase("START")) awaitingButton = 4;
+		if (e.getActionCommand().equalsIgnoreCase("UP")) awaitingButton = 5;
+		if (e.getActionCommand().equalsIgnoreCase("DOWN")) awaitingButton = 6;
 		
 		if (awaitingButton == 1) awaitingLabel.setText("Oczekiwanie na przycisk RIGHT ...");
 		else if (awaitingButton == 2) awaitingLabel.setText("Oczekiwanie na przycisk LEFT ...");
 		else if (awaitingButton == 3) awaitingLabel.setText("Oczekiwanie na przycisk JUMP ...");
-		else if (awaitingButton == 3) awaitingLabel.setText("Oczekiwanie na przycisk START/EXIT ...");
+		else if (awaitingButton == 4) awaitingLabel.setText("Oczekiwanie na przycisk START/EXIT ...");
+		else if (awaitingButton == 5) awaitingLabel.setText("Oczekiwanie na przycisk UP ...");
+		else if (awaitingButton == 6) awaitingLabel.setText("Oczekiwanie na przycisk DOWN ...");
 		awaitingDialog.setVisible(true);
 		
 	}
@@ -225,9 +246,21 @@ public void run()
         			start = comp;
         			startValue = value;
         		}
+        		if (awaitingButton == 5 && (value > 0.2f || value < -0.2f)) {
+        			System.out.println("UP przypisany do " +comp.getName() +" " +value+"");
+        			upLabel.setText(comp.getName() +" " +value);
+        			up = comp;
+        			upValue = value;
+        		}
+        		if (awaitingButton == 6 && (value > 0.2f || value < -0.2f)) {
+        			System.out.println("DOWN przypisany do " +comp.getName() +" " +value+"");
+        			downLabel.setText(comp.getName() +" " +value);
+        			down = comp;
+        			downValue = value;
+        		}
         		awaitingButton = 0;
         		awaitingDialog.setVisible(false);
-        		if (left != null && right != null && jump != null && start != null) saveButton.setEnabled(true);
+        		if (left != null && right != null && jump != null && start != null && up != null && down != null) saveButton.setEnabled(true);
         	}
         }
 	}

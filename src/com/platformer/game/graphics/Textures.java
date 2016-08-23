@@ -47,8 +47,9 @@ public BufferedImage springBlock, springBlock2;
 public BufferedImage fallingBlock;
 public BufferedImage clouds1, clouds2, clouds3;
 public BufferedImage[] collectible = new BufferedImage[5];
-public BufferedImage mainMenuButton;
+public BufferedImage mainMenuButton, mainMenuButtonSelected;
 
+public BufferedImage howToPlayImage, hallOfFameImage, creditsImage, achievementsImage, collectiblesImage;
 
 
 public Textures()
@@ -273,5 +274,13 @@ public Textures()
 	collectible[4] = loader.loadImage("/collectibles4.png");
 	
 	mainMenuButton = loader.loadImage("/mainMenuButton.png");
+	mainMenuButtonSelected = loader.loadImage("/mainMenuButtonSelected.png");
+	
+	howToPlayImage = loader.loadImage("/JakGrac.png");
+	//hallOfFameImage = loader.loadImage("");
+	creditsImage = loader.loadImage("/OGrze.png");
+	//achievementsImage = loader.loadImage("");
+	//collectiblesImage = loader.loadImage("");
+	
 }
 }
