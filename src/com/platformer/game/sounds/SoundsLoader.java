@@ -2,12 +2,12 @@ package com.platformer.game.sounds;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+
 
 
 public class SoundsLoader {
@@ -37,7 +37,7 @@ public SoundsLoader(String path)
 		AudioInputStream dais = AudioSystem.getAudioInputStream(decodeFormat, ais);
 		clip = AudioSystem.getClip();
 		clip.open(dais);
-		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);		
     }
 	catch(Exception ex) {
     	ex.printStackTrace();
@@ -56,12 +56,17 @@ public void play()
 	while (!clip.isRunning())
 	{
 		clip.start();
-	}
+	}	
 }
 
 public void stop()
 {
 	if (clip.isRunning()) clip.stop();
+}
+
+public boolean isPlaying()
+{
+	return clip.isRunning();
 }
 
 public void close()

@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.sounds.Music;
+import com.platformer.game.sounds.SoundsLoader;
 
 
 
@@ -37,8 +38,9 @@ public static int WIDTH = 0, HEIGHT = 0;
 
 private Achievements achievements = null;
 private HallOfFame hallOfFame = null;
-
+public static SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound,crateHitSound, screenShotSound;
 private int fps_count = 0, ticks_count = 0;
+public static double amountOfTicks = 60.0;
 private boolean gamepadEnabled = false;
 private GameWindow gameWindow;
 private MainMenu mainMenu;
@@ -92,6 +94,23 @@ private void gameInit()
 	//mainMenu.showMenu(true);
 
 	//music = new Music();
+	
+	jumpSound = new SoundsLoader("/jump.wav");
+	powerUpSound = new SoundsLoader("/powerup.wav");
+	coinSound = new SoundsLoader("/coin10.wav");
+	hitSound = new SoundsLoader("/hit.wav");
+	cactusShotSound = new SoundsLoader("/cactusShot.wav");
+	springJumpSound = new SoundsLoader("/SpringJump.wav");
+	crateHitSound = new SoundsLoader("/crateHit.wav");
+	screenShotSound = new SoundsLoader("/screenShotSound.wav");
+	
+	jumpSound.setVolume(-15f);
+	powerUpSound.setVolume(-20f);
+	coinSound.setVolume(-15f);
+	hitSound.setVolume(-15f);
+	cactusShotSound.setVolume(-15f);
+	springJumpSound.setVolume(-15f);
+	crateHitSound.setVolume(-15f);
 
 	gameWindow = new GameWindow();
 	gameState = GameState.MainMenu;
@@ -139,8 +158,8 @@ public void run()
 	boolean fpsCap = false;
 
 	long lastTime = System.nanoTime();
-	double amountOfTicks = 60.0;
-	double ns = 1000000000 / amountOfTicks;
+	amountOfTicks = 60.0;
+	
 	double delta = 0;
 	long timer = System.currentTimeMillis();
 	int updates = 0;
@@ -148,6 +167,7 @@ public void run()
 	
 	while(gameRunning)
 	{	
+		double ns = 1000000000 / amountOfTicks;
 		long now = System.nanoTime();
 		delta += (now - lastTime) / ns;
 		lastTime = now;
@@ -159,6 +179,14 @@ public void run()
 			if (gameState == GameState.Game)
 			{
 				mainScreen.tick();
+				
+				if (!jumpSound.isPlaying()) jumpSound.stop();
+				if (!powerUpSound.isPlaying()) powerUpSound.stop();
+				if (!coinSound.isPlaying()) coinSound.stop();
+				if (!hitSound.isPlaying()) hitSound.stop();
+				if (!cactusShotSound.isPlaying()) cactusShotSound.stop();
+				if (!springJumpSound.isPlaying()) springJumpSound.stop();
+				if (!crateHitSound.isPlaying()) crateHitSound.stop();
 				
 				if (fpsCap) mainScreen.render(60, ticks_count);
 			}

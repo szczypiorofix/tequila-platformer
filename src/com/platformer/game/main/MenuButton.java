@@ -1,6 +1,8 @@
 package com.platformer.game.main;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
@@ -23,12 +25,13 @@ public MenuButton(String name, float x, float y)
 }
 
 public void render(Graphics2D g2d)
-{
-	
-	g2d.setColor(Color.BLUE);
+{	
+	Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f);
+    g2d.setComposite(c);
+    g2d.drawImage(tex.mainMenuButton, (int) x, (int) y, null);
+    g2d.setColor(Color.BLUE);
 	g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
-	g2d.drawString(name, x + 20, y + 40);
-	g2d.drawImage(tex.mainMenuButton, (int) x, (int) y, null);
+	g2d.drawString(name, x + 30, y + 45);
 }
 
 public String getName() {

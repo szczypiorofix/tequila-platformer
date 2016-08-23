@@ -12,13 +12,12 @@ import com.platformer.game.main.Achievements;
 import com.platformer.game.main.MainClass;
 import com.platformer.game.main.MainScreen;
 import com.platformer.game.main.ObjectsHandler;
-import com.platformer.game.sounds.SoundsLoader;
 
 public class PlayerObject extends GameObject{
 
 	
 private ObjectsHandler objectsHandler;
-private SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound;
+
 private Textures tex = MainClass.getTexturesInstance();
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
 private static final int MAX_HEALTH = 2;
@@ -73,18 +72,7 @@ public PlayerObject(float x, float y, ObjectsHandler objectsHandler, Achievement
 	powerups = 0;
 	health = MAX_HEALTH;
 	gravity = NORMAL_GRAVITY;
-	jumpSound = new SoundsLoader("/jump.wav");
-	powerUpSound = new SoundsLoader("/powerup.wav");
-	coinSound = new SoundsLoader("/coin10.wav");
-	hitSound = new SoundsLoader("/hit.wav");
-	cactusShotSound = new SoundsLoader("/cactusShot.wav");
-	springJumpSound = new SoundsLoader("/SpringJump.wav");
-	jumpSound.setVolume(-15f);
-	powerUpSound.setVolume(-20f);
-	coinSound.setVolume(-15f);
-	hitSound.setVolume(-15f);
-	cactusShotSound.setVolume(-15f);
-	springJumpSound.setVolume(-15f);
+
 	
 	playerRunRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
 	playerRunLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
@@ -120,7 +108,7 @@ public void tick(LinkedList<GameObject> object) {
 		
 		if ((MainScreen.PLAYER_JUMP) && (!jumping) && (onGround)) {
 			
-			jumpSound.play();
+			MainClass.jumpSound.play();
 			velY = -12;
 			jumping = true;
 		}
@@ -323,7 +311,7 @@ private void collisions()
 					
 					if (!achievements.isCoinCount150Complete()) achievements.addCoin150Count();
 					
-					coinSound.play();
+					MainClass.coinSound.play();
 				}
 			}
 		}
@@ -338,7 +326,7 @@ private void collisions()
 				{
 					objectsHandler.getTequila_List().remove(tempObject);
 					MainScreen.SCORE += 35;
-					powerUpSound.play();
+					MainClass.powerUpSound.play();
 					achievements.addPowerup3Count();
 					tequila_powerUp = true;
 					powerups++;
@@ -359,7 +347,7 @@ private void collisions()
 				{
 					objectsHandler.getTaco_List().remove(tempObject);
 					MainScreen.SCORE += 35;
-					powerUpSound.play();
+					MainClass.powerUpSound.play();
 					achievements.addPowerup3Count();
 					taco_powerUp = true;
 					powerups++;
@@ -383,7 +371,7 @@ private void collisions()
 					health--;
 					noHarm = false;
 					MainScreen.SCORE -=40;
-					hitSound.play();
+					MainClass.hitSound.play();
 					hit_by_enemy = true;
 					objectsHandler.getDart_List().remove(tempObject);
 				}
@@ -408,7 +396,7 @@ private void collisions()
 					
 					if (!tempObject.isAction()) {
 						objectsHandler.getDart_List().add(new Dart((int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection(), objectsHandler));
-						cactusShotSound.play();
+						MainClass.cactusShotSound.play();
 						tempObject.setAction(true);
 					}
 				} else tempObject.setVelX(0);
@@ -453,7 +441,7 @@ private void collisions()
 					health--;
 					noHarm = false;
 					MainScreen.SCORE -=40;
-					hitSound.play();
+					MainClass.hitSound.play();
 					hit_by_enemy = true;
 				}
 			}
@@ -575,7 +563,7 @@ private void collisions()
 						health--;
 						noHarm = false;
 						MainScreen.SCORE -=40;
-						hitSound.play();
+						MainClass.hitSound.play();
 						hit_by_enemy = true;	
 					}
 				}
@@ -599,7 +587,7 @@ private void collisions()
 					health--;
 					noHarm = false;
 					MainScreen.SCORE -=40;
-					hitSound.play();
+					MainClass.hitSound.play();
 					hit_by_enemy = true;
 				}
 			}
@@ -625,7 +613,7 @@ private void collisions()
 					y = tempObject.getY() - 107;
 					if (jumping) {
 						velY = -18;
-						springJumpSound.play();
+						MainClass.springJumpSound.play();
 						tempObject.setAction(true);
 					}
 					onGround = true;
@@ -667,7 +655,7 @@ private void collisions()
 			}
 		}
 		
-		/// TEQUILA LIST
+		/// COLLECTIBLES LIST
 		for (int i = 0; i < objectsHandler.getCollectibles_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getCollectibles_List().get(i);
@@ -677,7 +665,7 @@ private void collisions()
 				{
 					objectsHandler.getCollectibles_List().remove(tempObject);
 					MainScreen.SCORE += 50;
-					powerUpSound.play();
+					MainClass.powerUpSound.play();
 					//achievements.addPowerup3Count();
 					//tequila_powerUp = true;
 					//powerups++;

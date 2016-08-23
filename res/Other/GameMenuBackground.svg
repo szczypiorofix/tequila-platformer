@@ -15,7 +15,10 @@
    id="svg4268"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="GameMenuBackground.svg">
+   sodipodi:docname="GameMenuBackground.svg"
+   inkscape:export-filename="C:\Users\Semiko\git\platformer-game\res\Other\GameMenuBackground.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4270" />
   <sodipodi:namedview
@@ -26,13 +29,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="291.90671"
+     inkscape:cx="246.08056"
      inkscape:cy="641.69615"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="706"
+     inkscape:window-width="1600"
+     inkscape:window-height="838"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -44,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,11 +58,11 @@
     <rect
        style="opacity:1;fill:#7be2b8;fill-opacity:0.71005919;fill-rule:nonzero;stroke:#000000;stroke-width:1.64699996;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
        id="rect4816"
-       width="478.81232"
-       height="378.80725"
+       width="428.30472"
+       height="276.78183"
        x="127.27922"
        y="185.65132"
-       ry="47.348614"
+       ry="22.094805"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
   </g>

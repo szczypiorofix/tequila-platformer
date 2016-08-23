@@ -7,13 +7,12 @@ import java.util.LinkedList;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
-import com.platformer.game.sounds.SoundsLoader;
 
 public class Dart extends GameObject{
 
 private Textures tex = MainClass.getTexturesInstance();
 private ObjectsHandler objectsHandler;
-private SoundsLoader crateHitSound;
+
 private float width ;
 private float height;
 private float x, y;
@@ -30,8 +29,7 @@ public Dart(float x, float y, int direction, ObjectsHandler objectsHandler) {
 	this.x = x;
 	this.y = y;
 	this.objectsHandler = objectsHandler;
-	crateHitSound = new SoundsLoader("/crateHit.wav");
-	crateHitSound.setVolume(-15f);
+
 	velX = 0;
 	velY = 0;
 	sx = 0;
@@ -72,7 +70,8 @@ public void tick(LinkedList<GameObject> object) {
 		if (tempObject.isVisible() && getBounds().intersects(tempObject.getBounds()))
 		{
 			objectsHandler.getDart_List().remove(this);
-			crateHitSound.play();
+			MainClass.crateHitSound.play();
+			
 		}
 	}
 }

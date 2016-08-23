@@ -18,6 +18,7 @@ public BufferedImage[] playerDeadL = new BufferedImage[7];
 
 public BufferedImage backGroundMountains;
 public BufferedImage screenShotImage;
+public BufferedImage bgMenuImage;
 public BufferedImage sun;
 public BufferedImage achievementBg;
 public BufferedImage menuBg;

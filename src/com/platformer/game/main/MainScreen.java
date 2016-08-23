@@ -10,6 +10,8 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -78,7 +80,6 @@ private Properties prop = new Properties();
 private InputStream propInput = null;
 private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jumpValueProp, startProp, startValueProp;
 private File screenShotFile;
-private SoundsLoader screenShotSound;
 private HallOfFame hallOfFame;
 private Achievements achievements;
 private GameState gameState;
@@ -86,11 +87,12 @@ private int selectedButton;
 private final int maxMainMenuButtons = 7;
 private MenuButton[] mainMenuButtons;
 private float bg_move, circle_move;
-private double orbitX = 0;
-private double orbitY = 0;
 private double orbitRadius = 250;
 private double orbitSpeed = Math.PI / 16;
 private double radian = 0;
+private boolean makeBgImage = false, makeBgImageGrayScale = false;
+public BufferedImage backgroundGrayScaleImage;
+
 
 
 public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEnabled, HallOfFame hallOfFame, Achievements achievements)
@@ -155,7 +157,6 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	this.gameWindow.addMouseWheelListener(key);
 	
 	cam = new Camera(0,0);
-	screenShotSound = new SoundsLoader("/screenShotSound.wav");
 	
 	playerName = "";
 	
@@ -168,6 +169,9 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	objectsHandler.loadLevel(LEVEL);
 	player = objectsHandler.getPlayer();
 	mainMenuButtons = new MenuButton[maxMainMenuButtons];
+	
+	//bg0 = makeGrayScale(tex.backGroundMountains);
+	
 	selectedButton = 0;
 	
 	mainMenuButtons[0] = new MenuButton("NOWA GRA", 350, 50);
@@ -178,6 +182,37 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	mainMenuButtons[5] = new MenuButton("O GRZE", 350, 400);
 	mainMenuButtons[6] = new MenuButton("ZAKOÑCZ", 350, 470);
 }
+
+public BufferedImage makeGrayScale(BufferedImage input)
+{
+	BufferedImage newImage = copyImage(input);
+	int bgWidth = newImage.getWidth();
+    int bgHeight = newImage.getHeight();
+    
+    for(int i=0; i<bgWidth; i++) {
+    
+       for(int j=0; j<bgHeight; j++) {
+       
+          Color c = new Color(newImage.getRGB(i, j));
+          int red = (int)(c.getRed() * 0.299);
+          int green = (int)(c.getGreen() * 0.587);
+          int blue = (int)(c.getBlue() *0.114);
+          Color newColor = new Color(red+green+blue,
+          red+green+blue,red+green+blue);
+          newImage.setRGB(i, j,newColor.getRGB());
+       }
+    }
+    return newImage;
+}
+
+static BufferedImage copyImage(BufferedImage bi)
+{
+	ColorModel cm = bi.getColorModel();
+	boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+	WritableRaster raster = bi.copyData(null);
+	return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+}
+
 
 /** Metoda w której zawarty jest ca³y game logic.
  * 
@@ -264,7 +299,15 @@ public void tick()
 	
 	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
 		player.setHealth(5);
-		System.out.println(Thread.activeCount());
+		//System.out.println(Thread.activeCount());
+		int active = Thread.activeCount();
+        System.out.println("currently active threads: " + active);
+        Thread all[] = new Thread[active];
+        Thread.enumerate(all);
+
+        for (int i = 0; i < active; i++) {
+           System.out.println(i + ": " + all[i] +" " +all[i].getState());
+        }
 	}
 	
 	if (showMessage)
@@ -281,6 +324,12 @@ public void tick()
 		// SCREENSHOT !!!
 		makeScreenShot = true;
 	}
+	
+	
+	// ZABAWA BULLET TIME
+	if (key.isKeyPressedOnce(KeyEvent.VK_1) && MainClass.amountOfTicks > 30) MainClass.amountOfTicks -= 10;
+	if (key.isKeyPressedOnce(KeyEvent.VK_2) && MainClass.amountOfTicks < 60) MainClass.amountOfTicks += 10;
+	
 	
 	// RESTART AFTEER DEATH
 	if (gameState == GameState.Death && key.isKeyPressedOnce(KeyEvent.VK_SPACE))
@@ -303,8 +352,8 @@ public void tick()
 		
 
 		// MOVE SUN IN A CIRCLE
-		circle_move += 0.03f;
-		radian = orbitSpeed * circle_move;		
+		circle_move  = 0.05f;
+		radian += orbitSpeed * circle_move;		
 		
 		
 		if (key.isKeyPressed(KeyEvent.VK_ESCAPE))
@@ -313,7 +362,7 @@ public void tick()
 		}
 	}
 	
-	if (key.isKeyPressed(KeyEvent.VK_F1)) gameState = GameState.Game;
+	if (key.isKeyPressed(KeyEvent.VK_F1) && gameState == GameState.MainMenu) gameState = GameState.Game;
 	
 	// PO WPISANIU IMIENIA DO LISTY NAJLEPSZYCH - ENTER!
 	if (player.isFinishLevel()) {
@@ -372,6 +421,7 @@ public void tick()
 			achievements.setShowAchievement(false);			
 		}
 	}
+	if (player.getHealth() <= 0) gameState = GameState.Death;
 }
 
 public void timeTick()
@@ -474,14 +524,21 @@ public void render(int fps_count, int ticks_count)
 		g = tex.screenShotImage.createGraphics();
 	}
 	
+	if ((gameState == GameState.Menu || gameState == GameState.Death) && !makeBgImage)
+	{
+		makeBgImage = true;
+		tex.bgMenuImage = new BufferedImage(MainClass.WIDTH, MainClass.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		g = tex.bgMenuImage.createGraphics();
+		backgroundGrayScaleImage = makeGrayScale(tex.bgMenuImage);
+		makeBgImageGrayScale = false;
+	}
+	
 	/////////////////// DRAW HERE ////////////////////////////
 	
 	g2d = (Graphics2D) g;
 	RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	
 	g2d.setRenderingHints(rh);
-	
-	
 		
 	// MOUNTAING & PARALLAX
 	if (gameState != GameState.MainMenu)
@@ -492,7 +549,7 @@ public void render(int fps_count, int ticks_count)
 		if (cam.getX() < 10  && cam.getX() > -6950) g2d.drawImage(tex.backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
 		if (cam.getX() < -15  && cam.getX() > -14000) g2d.drawImage(tex.backGroundMountains, (int) (cam.getX()*0.143) + 1000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
 		if (cam.getX() < -7000  && cam.getX() > -14500) g2d.drawImage(tex.backGroundMountains, (int) (cam.getX()*0.143) + 2000, (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);		
-		g2d.drawImage(tex.sun, 210, (int) (cam.getY()/1.33) + 420, null);		
+		g2d.drawImage(tex.sun, 210, (int) (cam.getY()/1.33) + 420, null);
 	}
 	else if (gameState == GameState.MainMenu)
 	{
@@ -507,14 +564,13 @@ public void render(int fps_count, int ticks_count)
 		//double drawX = orbitX + orbitRadius * Math.cos(radian);
 		//double drawY = orbitY + orbitRadius * Math.sin(radian);
 		
-		//g2d.fillRect((int) (150+ orbitX + orbitRadius * Math.cos(radian)), (int) (150 + orbitY + orbitRadius * Math.sin(radian)), 50, 50);
-		g2d.drawImage(tex.sun, (int) (450+ orbitX + orbitRadius * Math.cos(radian)), (int) (220 + orbitY + orbitRadius * Math.sin(radian)), null);
+
+		g2d.drawImage(tex.sun, (int) (450+ orbitRadius * Math.cos(radian)), (int) (220 + orbitRadius * Math.sin(radian)), null);
 		
 		for (int i = 0; i < maxMainMenuButtons; i++)
 		mainMenuButtons[i].render(g2d);
 	}
 		
-	
 	
 	////// CAM MOVING HERE
 	g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
@@ -523,7 +579,6 @@ public void render(int fps_count, int ticks_count)
 	
 	g2d.translate(-cam.getX(), -cam.getY()); // CAM ENDING	
 
-	
 	
 	// POWERUUPS
 	if (player.isTequila_powerUp()) {
@@ -552,22 +607,40 @@ public void render(int fps_count, int ticks_count)
 		gameState = GameState.NextLevel;
 		TOTAL_SCORE = SCORE + (int) time_bonus;
 	}
-
-	if (player.getHealth() <= 0) gameState = GameState.Death;
-		
-
+	
 	if (gameState != GameState.MainMenu)
 	{
 		// PLAYER HEALTH
 		for (int i = 0; i < player.getHealth(); i++) g.drawImage(tex.heart, 360+(i*40), 5, 40, 40,null);	
 	}
 	
-	
-		
 		
 	if (makeScreenShot)	makeScreenShot();
 	
 	// HUD gry
+	if (gameState != GameState.MainMenu)
+	{
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
+		g2d.setColor(Color.BLUE);
+		g2d.drawString("POZIOM "+MainScreen.LEVEL, 845, 40);
+		g2d.drawString("MONETY: "+MainScreen.COINS, 10, 40);
+		g2d.drawString("WYNIK: "+MainScreen.SCORE, 10, 80);	
+		g2d.setFont(new Font("Verdana", 1, 12));
+		g2d.drawString("FPS: "+fps_count +" TICKS: "+ ticks_count, MainClass.WIDTH - 150, 60);
+		g2d.drawString("CZAS: "+MainScreen.time, MainClass.WIDTH - 150, 80);
+	}
+	
+	if ((gameState == GameState.Menu || gameState == GameState.Death) && makeBgImage)
+	{
+		if (!makeBgImageGrayScale) {
+			backgroundGrayScaleImage = makeGrayScale(tex.bgMenuImage);
+			makeBgImageGrayScale = true;
+		}
+		g2d.drawImage(backgroundGrayScaleImage, 0, 0, null);
+	}
+	
+	if (gameState == GameState.Game) makeBgImage = false;
+	
 	hud.showGameHud(g2d, gameState, this.fps_count, this.ticks_count);
 	
 	//////////////////////////////////////////////////////////
@@ -583,7 +656,7 @@ public void render(int fps_count, int ticks_count)
  */
 public void makeScreenShot()
 {
-	screenShotSound.play();
+	MainClass.screenShotSound.play();
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
 	Calendar cal = Calendar.getInstance();
 			
