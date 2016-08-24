@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.RescaleOp;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
@@ -95,12 +96,14 @@ private double orbitSpeed = Math.PI / 16;
 private double radian = 0;
 private boolean makeBgImage = false, makeBgImageGrayScale = false;
 public BufferedImage backgroundGrayScaleImage;
+private BufferedImage bg_goryS, bg_nieboS;
+private float darkness = 0.0f;
 
 
 
 public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEnabled, HallOfFame hallOfFame, Achievements achievements)
 {
-	super();
+	super();	
 	this.setFocusable(false);
 	this.gameState = gameState;
 	this.gameWindow = gameWindow;
@@ -189,8 +192,8 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	menuButtons = new MenuButton[MAX_MENU_BUTTONS];
 	selectedMenuButton = 0;	
 	menuButtons[0] = new MenuButton("WZNÓW GRÊ", 360, 190);
-	menuButtons[1] = new MenuButton("MENU G£ÓWNE", 360, 260);
-	menuButtons[2] = new MenuButton("ZAKOÑCZ GRÊ", 360, 340);	
+	menuButtons[1] = new MenuButton("MENU G£ÓWNE", 360, 270);
+	menuButtons[2] = new MenuButton("ZAKOÑCZ GRÊ", 360, 350);
 }
 
 public BufferedImage makeGrayScale(BufferedImage input)
@@ -381,7 +384,18 @@ public void tick()
 		bg_move -= 1;
 		if (bg_move < -1000) bg_move = 0;
 		
-
+		//bg_goryS = copyImage(tex.bg_gory);
+		//bg_nieboS = copyImage(tex.bg_niebo);
+		
+		//darkness = darkness + 0.05f;
+		//if (darkness > 1.2f) darkness = 0;
+		
+		//bg_goryS = copyImage(tex.bg_gory);
+		//bg_nieboS = copyImage(tex.bg_niebo);
+		
+		//RescaleOp rescaleOp = new RescaleOp(darkness, 15, null);
+		//rescaleOp.filter(bg_goryS, bg_goryS);
+		
 		// MOVE SUN IN A CIRCLE
 		circle_move  = 0.05f;
 		radian += orbitSpeed * circle_move;	
@@ -560,8 +574,19 @@ public void tick()
 		timeTick();
 	}
 	
-	// ENTER TO NEW LEVEL
 	
+	if (key.isKeyPressedOnce(KeyEvent.VK_SPACE))
+	{
+		int p[] = new int[tex.sun.getWidth() * tex.sun.getWidth() + 4];
+		
+		p = getPixelColor(tex.sun);
+		
+		tex.sun = setPixelColor(tex.sun, p, 50);
+	}
+	
+	
+	
+	// ENTER TO NEW LEVEL
 	if (gameState == GameState.NextLevel && player.isFinishLevel() && key.isKeyPressedOnce(KeyEvent.VK_ENTER)) // ENTER PO WPISANIU IMIENIA PRZENOSI NA NOWY POZIOM
 	{
 		gameState = GameState.Game;
@@ -592,6 +617,63 @@ public void tick()
 	}
 	if (player.getHealth() <= 0) gameState = GameState.Death;
 }
+
+public BufferedImage setPixelColor(BufferedImage image, int[] pixels, float interpolation)
+{
+	int w = image.getWidth();
+	int h = image.getHeight();
+	
+	for (int x = 0; x < w; x++)
+	{
+		for (int y = 0; y < h; y++)
+		{
+			int p = image.getRGB(0,0);
+			
+			int a = 255;
+		    int r = pixels[x]+2;
+		    int g = 50;
+		    int b = 20;
+
+		    //set the pixel value
+		    p = (a<<24) | (r<<16) | (g<<8) | b;
+			
+			image.setRGB(x, y, p);
+		}
+	}
+	
+	return image;
+}
+
+public int[] getPixelColor(BufferedImage image)
+{
+	int w = image.getWidth();
+	int h = image.getHeight();
+	
+	int[] pix = new int[w + h * 4];
+	for (int x = 0; x < w; x++)
+	{
+		for (int y = 0; y < h; y++)
+		{
+			int p = image.getRGB(x,y);
+
+		    //get alpha
+		    int a = (p>>24) & 0xff;
+
+		    //get red
+		    int r = (p>>16) & 0xff;
+
+		    //get green
+		    int g = (p>>8) & 0xff;
+
+		    //get blue
+		    int b = p & 0xff;
+
+		}
+	}
+	
+	return pix;
+}
+
 
 public void timeTick()
 {
@@ -734,10 +816,14 @@ public void render(int fps_count, int ticks_count)
 		g.setColor(new Color(184, 220, 254));
 		g.fillRect(0,0,getWidth(), getHeight());
 		
-		g2d.drawImage(tex.backGroundMountains, (int) (bg_move), (int) (0), MainClass.WIDTH, (int) (MainClass.HEIGHT), null);
-		g2d.drawImage(tex.backGroundMountains, (int) (bg_move+1000), (int) (0), MainClass.WIDTH, (int) (MainClass.HEIGHT), null);
-
+		g2d.drawImage(tex.bg_niebo, (int) (bg_move), (int) (0), null);
+		g2d.drawImage(tex.bg_niebo, (int) (bg_move+1000), (int) (0), null);
+		
 		g2d.drawImage(tex.sun, (int) (450+ orbitRadius * Math.cos(radian)), (int) (220 + orbitRadius * Math.sin(radian)), this);
+		
+		g2d.drawImage(tex.bg_gory, (int) (bg_move), (int) (MainClass.HEIGHT - 305), null);
+		g2d.drawImage(tex.bg_gory, (int) (bg_move+1000), (int) (MainClass.HEIGHT - 305), null);
+		
 		
 		for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) 
 		{
@@ -745,7 +831,6 @@ public void render(int fps_count, int ticks_count)
 		}
 		mainMenuButtons[selectedMainMenuButton].setSelected(true);
 	}
-	
 	
 	
 		
@@ -799,6 +884,7 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawString("CZAS: "+MainScreen.time, MainClass.WIDTH - 150, 80);
 	}
 	
+	// ZROBIENIE SZAREGO EKRANU
 	if ((gameState == GameState.Menu || gameState == GameState.Death) && makeBgImage)
 	{
 		if (!makeBgImageGrayScale) {
@@ -810,7 +896,7 @@ public void render(int fps_count, int ticks_count)
 	
 	if (gameState == GameState.Menu)
 	{
-		g2d.drawImage(tex.menuBg, 330, 155, null);
+		g2d.drawImage(tex.menuBg, 320, 140, null);
 		for (int i = 0; i < MAX_MENU_BUTTONS; i++) 
 		{
 			menuButtons[i].render(g2d);

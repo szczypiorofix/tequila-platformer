@@ -1,8 +1,6 @@
 package com.platformer.game.main;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
@@ -13,7 +11,6 @@ import com.platformer.game.graphics.Textures;
 public class HUD {
 
 private Textures tex = MainClass.getTexturesInstance();
-private Composite defComposite, c;
 
 
 public HUD()

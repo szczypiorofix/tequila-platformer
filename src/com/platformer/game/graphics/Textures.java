@@ -16,7 +16,7 @@ public BufferedImage[] playerJumpL = new BufferedImage[5];
 public BufferedImage[] playerDeadR = new BufferedImage[7];
 public BufferedImage[] playerDeadL = new BufferedImage[7];
 
-public BufferedImage backGroundMountains;
+public BufferedImage backGroundMountains, bg_gory, bg_niebo;
 public BufferedImage screenShotImage;
 public BufferedImage bgMenuImage;
 public BufferedImage sun;
@@ -281,6 +281,9 @@ public Textures()
 	creditsImage = loader.loadImage("/OGrze.png");
 	//achievementsImage = loader.loadImage("");
 	//collectiblesImage = loader.loadImage("");
+	
+	bg_gory = loader.loadImage("/BG_gory.png");
+	bg_niebo = loader.loadImage("/BG_niebo.png");
 	
 }
 }

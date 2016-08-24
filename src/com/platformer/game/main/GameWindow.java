@@ -21,7 +21,7 @@ public GameWindow()
 	this.setResizable(false);
 	this.setSize(1006, 628);
 	this.setLocationRelativeTo(null);
-	setBackground(Color.BLACK);    
+	this.setBackground(Color.BLACK);    
 	this.setIconImage(loader.loadImage("/programIcon.png"));
 	this.addWindowListener(this);
 }
