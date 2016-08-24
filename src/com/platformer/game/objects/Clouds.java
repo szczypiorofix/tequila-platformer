@@ -5,11 +5,10 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.main.Camera;
-import com.platformer.game.main.MainClass;
+
 
 public class Clouds extends GameObject{
 
-private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
@@ -38,9 +37,9 @@ public Clouds(float x, float y, Camera cam, int type) {
 	
 @Override
 public void render(Graphics g) {
-	if (type == 1) g.drawImage(tex.clouds1, (int) x, (int) y, null);
-	if (type == 2) g.drawImage(tex.clouds2, (int) x, (int) y, null);
-	if (type == 3) g.drawImage(tex.clouds3, (int) x, (int) y, null);
+	if (type == 1) g.drawImage(Textures.getInstance().clouds1, (int) x, (int) y, null);
+	if (type == 2) g.drawImage(Textures.getInstance().clouds2, (int) x, (int) y, null);
+	if (type == 3) g.drawImage(Textures.getInstance().clouds3, (int) x, (int) y, null);
 }
 
 @Override

@@ -5,15 +5,14 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
-public class MovingCrate extends GameObject{
+public class MovingCrate extends GameObject {
 
-	
+
+
 private float width;
 private float height;
-private Textures tex = MainClass.getTexturesInstance();
 private ObjectsHandler objectsHandler;
 private float x, y;
 private float velX, velY;
@@ -42,7 +41,7 @@ public MovingCrate(float x, float y, ObjectsHandler objectsHandler) {
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.movingCrate, (int) x, (int) y-16, null);	
+	g.drawImage(Textures.getInstance().movingCrate, (int) x, (int) y-16, null);	
 }
 
 @Override

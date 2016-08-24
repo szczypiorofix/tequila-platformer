@@ -1,59 +1,82 @@
 package com.platformer.game.sounds;
 
 import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.jl.player.advanced.PlaybackEvent;
-import javazoom.jl.player.advanced.PlaybackListener;
+import javazoom.jl.player.Player;
+
 
 public class Music {
 
-private AdvancedPlayer player;
-private InputStream fis = null;
+private Player player;
+private FileInputStream fis = null;
 private BufferedInputStream bis = null;
-private int pauseOnFrame = 0;
+private long pauseLocation;
 
 
 // http://opengameart.org/content/mirage
 
 public Music()
 {
-	try{
-	    fis = getClass().getClassLoader().getResourceAsStream("mirage.mp3");
-	    bis = new BufferedInputStream(fis);
-	    player = new AdvancedPlayer(bis);
-	    player.setPlayBackListener(new PlaybackListener() {
-	        @Override
-	        public void playbackFinished(PlaybackEvent event) {
-	        	pauseOnFrame = event.getFrame();
-	        }
-	    });
-	}
-	catch(Exception exc){
-	    exc.printStackTrace();
-	    System.exit(-1);
-	}
+	///https://www.youtube.com/watch?v=LavMuqK5Is0
 }
 
-public void play()
+public void play(String path)
 {
-	 try {
-		player.play();
-	} catch (JavaLayerException e) {
-		e.printStackTrace();
+	try {
+		fis = new FileInputStream(path);
+		bis = new BufferedInputStream(fis);
+		player = new Player(bis);
 	}
+	catch (FileNotFoundException fnfe)
+	{
+		fnfe.printStackTrace();
+		System.exit(-1);
+	}
+	catch (JavaLayerException jle)
+	{
+		jle.printStackTrace();
+		System.exit(-1);
+	}
+	
+	new Thread()
+	{
+		@Override
+		public void run()
+		{
+			try {
+				player.play();
+			} catch (JavaLayerException e) {
+				e.printStackTrace();
+			}
+		}
+	}.start();
 }
 
 public void stop()
 {
-	
+	if (player != null)
+	player.close();
 }
 
 public void pause()
 {
-	
+	if (player != null)
+		try {
+			pauseLocation = bis.available();
+			player.close();
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+		}
+	{
+		
+	}
 }
 
 }

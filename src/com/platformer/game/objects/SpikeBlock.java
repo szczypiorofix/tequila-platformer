@@ -6,11 +6,12 @@ import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
 
-public class SpikeBlock extends GameObject{
 
-private Textures tex = MainClass.getTexturesInstance();
+
+public class SpikeBlock extends GameObject {
+
+
 private float x, y;
 private float width, height;
 private float velX, velY;
@@ -34,8 +35,11 @@ public SpikeBlock(float x, float y)
 	action = false;
 	visible = true;
 	animationTempo = 10;
-	spikeAnimation = new Animation(animationTempo, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock1, tex.spikeBlock2
-			, tex.spikeBlock3, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock4, tex.spikeBlock3, tex.spikeBlock2);
+	spikeAnimation = new Animation(animationTempo, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock1
+			, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock2
+			, Textures.getInstance().spikeBlock3, Textures.getInstance().spikeBlock4, Textures.getInstance().spikeBlock4, Textures.getInstance().spikeBlock4
+			, Textures.getInstance().spikeBlock4, Textures.getInstance().spikeBlock4, Textures.getInstance().spikeBlock4, Textures.getInstance().spikeBlock3
+			, Textures.getInstance().spikeBlock2);
 }
 
 @Override

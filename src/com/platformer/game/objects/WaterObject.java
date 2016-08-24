@@ -6,13 +6,13 @@ import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
+
+
 
 public class WaterObject extends GameObject{
 
 	
 
-private Textures tex = MainClass.getTexturesInstance();
 private int type;
 private float x, y;
 private float velX, velY;
@@ -33,7 +33,7 @@ public WaterObject(float x, float y, int type) {
 	direction = 1;
 	velX = 0;
 	velY = 0;
-	waterAnim = new Animation(10, tex.water5, tex.water4, tex.water3, tex.water2, tex.water1);
+	waterAnim = new Animation(10, Textures.getInstance().water5, Textures.getInstance().water4, Textures.getInstance().water3, Textures.getInstance().water2, Textures.getInstance().water1);
 	this.type = type;
 }
 
@@ -42,7 +42,7 @@ public void render(Graphics g) {
 	if (type == 0) {
 		waterAnim.drawAnimation(g, (int) x, (int) y, false);
 	}
-	else g.drawImage(tex.waterDeep, (int)x, (int)y, (int) width, (int) height, null);
+	else g.drawImage(Textures.getInstance().waterDeep, (int)x, (int)y, (int) width, (int) height, null);
 }
 
 @Override

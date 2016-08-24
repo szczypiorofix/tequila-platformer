@@ -5,12 +5,11 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
+
 
 public class SceneryObject extends GameObject{
 
 
-private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
@@ -36,18 +35,18 @@ public SceneryObject(float x, float y, int type) {
 
 @Override
 public void render(Graphics g) {
-	if (type == 16) g.drawImage(tex.sceneryObjects[0], (int) x, (int) y-36, null);
-	if (type == 17) g.drawImage(tex.sceneryObjects[1], (int) x, (int) y-22, null);
-	if (type == 18) g.drawImage(tex.sceneryObjects[2], (int) x, (int) y-60, null);
-	if (type == 19) g.drawImage(tex.sceneryObjects[3], (int) x, (int) y+5, null);
-	if (type == 20) g.drawImage(tex.sceneryObjects[4], (int) x, (int) y-45, null);
-	if (type == 21) g.drawImage(tex.sceneryObjects[5], (int) x, (int) y, null);
-	if (type == 22) g.drawImage(tex.sceneryObjects[6], (int) x, (int) y, null);
-	if (type == 23) g.drawImage(tex.sceneryObjects[7], (int) x, (int) y-37, null);
-	if (type == 24) g.drawImage(tex.sceneryObjects[8], (int) x, (int) y-37, null);
-	if (type == 25) g.drawImage(tex.sceneryObjects[9], (int) x-10, (int) y+2, null);
-	if (type == 26) g.drawImage(tex.sceneryObjects[10], (int) x-10, (int) y-20, null);
-	if (type == 27) g.drawImage(tex.sceneryObjects[11], (int) x-10, (int) y-209, null);
+	if (type == 16) g.drawImage(Textures.getInstance().sceneryObjects[0], (int) x, (int) y-36, null);
+	if (type == 17) g.drawImage(Textures.getInstance().sceneryObjects[1], (int) x, (int) y-22, null);
+	if (type == 18) g.drawImage(Textures.getInstance().sceneryObjects[2], (int) x, (int) y-60, null);
+	if (type == 19) g.drawImage(Textures.getInstance().sceneryObjects[3], (int) x, (int) y+5, null);
+	if (type == 20) g.drawImage(Textures.getInstance().sceneryObjects[4], (int) x, (int) y-45, null);
+	if (type == 21) g.drawImage(Textures.getInstance().sceneryObjects[5], (int) x, (int) y, null);
+	if (type == 22) g.drawImage(Textures.getInstance().sceneryObjects[6], (int) x, (int) y, null);
+	if (type == 23) g.drawImage(Textures.getInstance().sceneryObjects[7], (int) x, (int) y-37, null);
+	if (type == 24) g.drawImage(Textures.getInstance().sceneryObjects[8], (int) x, (int) y-37, null);
+	if (type == 25) g.drawImage(Textures.getInstance().sceneryObjects[9], (int) x-10, (int) y+2, null);
+	if (type == 26) g.drawImage(Textures.getInstance().sceneryObjects[10], (int) x-10, (int) y-20, null);
+	if (type == 27) g.drawImage(Textures.getInstance().sceneryObjects[11], (int) x-10, (int) y-209, null);
 }
 
 @Override

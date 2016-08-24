@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
 public class ButtonBlock extends GameObject{
@@ -14,7 +13,6 @@ public class ButtonBlock extends GameObject{
 private float x, y;
 private float velX, velY;
 private float width, height;
-private Textures tex = MainClass.getTexturesInstance();
 private ObjectsHandler objectsHandler;
 private boolean action, visible;
 private int direction;
@@ -37,7 +35,7 @@ public ButtonBlock(float x, float y, ObjectsHandler objectsHandler)
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.buttonBlock, (int) x, (int) y,  null);
+	g.drawImage(Textures.getInstance().buttonBlock, (int) x, (int) y,  null);
 	//Graphics2D g2d = (Graphics2D) g;
 	//g2d.draw(getImpactBounds());
 }

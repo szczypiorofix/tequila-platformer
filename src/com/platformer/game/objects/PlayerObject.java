@@ -18,7 +18,7 @@ public class PlayerObject extends GameObject{
 	
 private ObjectsHandler objectsHandler;
 
-private Textures tex = MainClass.getTexturesInstance();
+
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
 private static final int MAX_HEALTH = 2;
 private static final float NORMAL_GRAVITY = 0.5f;
@@ -74,14 +74,33 @@ public PlayerObject(float x, float y, ObjectsHandler objectsHandler, Achievement
 	gravity = NORMAL_GRAVITY;
 
 	
-	playerRunRight = new Animation(3, tex.playerRunR[0], tex.playerRunR[1], tex.playerRunR[2], tex.playerRunR[3], tex.playerRunR[4], tex.playerRunR[5], tex.playerRunR[6], tex.playerRunR[7], tex.playerRunR[8], tex.playerRunR[9]);
-	playerRunLeft = new Animation(3, tex.playerRunL[0], tex.playerRunL[1], tex.playerRunL[2], tex.playerRunL[3], tex.playerRunL[4], tex.playerRunL[5], tex.playerRunL[6], tex.playerRunL[7], tex.playerRunL[8], tex.playerRunL[9]);
-	playerIdleRight = new Animation(3, tex.playerIdleR[0], tex.playerIdleR[1], tex.playerIdleR[2], tex.playerIdleR[3], tex.playerIdleR[4], tex.playerIdleR[5], tex.playerIdleR[6], tex.playerIdleR[7], tex.playerIdleR[8], tex.playerIdleR[9]);
-	playerIdleLeft = new Animation(3, tex.playerIdleL[0], tex.playerIdleL[1], tex.playerIdleL[2], tex.playerIdleL[3], tex.playerIdleL[4], tex.playerIdleL[5], tex.playerIdleL[6], tex.playerIdleL[7], tex.playerIdleL[8], tex.playerIdleL[9]);
-	playerJumpRight = new Animation(10, tex.playerJumpR[0], tex.playerJumpR[1], tex.playerJumpR[2], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
-	playerJumpLeft = new Animation(10, tex.playerJumpL[0], tex.playerJumpL[1], tex.playerJumpL[2], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
-	playerFallingRight = new Animation(10, tex.playerJumpR[3], tex.playerJumpR[3], tex.playerJumpR[3], tex.playerJumpR[3], tex.playerJumpR[4], tex.playerJumpR[4], tex.playerJumpR[4]);
-	playerFallingLeft = new Animation(10, tex.playerJumpL[3], tex.playerJumpL[3], tex.playerJumpL[3], tex.playerJumpL[3], tex.playerJumpL[4], tex.playerJumpL[4], tex.playerJumpL[4]);
+	playerRunRight = new Animation(3, Textures.getInstance().playerRunR[0], Textures.getInstance().playerRunR[1], Textures.getInstance().playerRunR[2]
+			, Textures.getInstance().playerRunR[3], Textures.getInstance().playerRunR[4], Textures.getInstance().playerRunR[5], Textures.getInstance().playerRunR[6]
+			, Textures.getInstance().playerRunR[7], Textures.getInstance().playerRunR[8], Textures.getInstance().playerRunR[9]);
+	
+	playerRunLeft = new Animation(3, Textures.getInstance().playerRunL[0], Textures.getInstance().playerRunL[1], Textures.getInstance().playerRunL[2]
+			, Textures.getInstance().playerRunL[3], Textures.getInstance().playerRunL[4], Textures.getInstance().playerRunL[5], Textures.getInstance().playerRunL[6]
+			, Textures.getInstance().playerRunL[7], Textures.getInstance().playerRunL[8], Textures.getInstance().playerRunL[9]);
+	
+	playerIdleRight = new Animation(3, Textures.getInstance().playerIdleR[0], Textures.getInstance().playerIdleR[1], Textures.getInstance().playerIdleR[2]
+			, Textures.getInstance().playerIdleR[3], Textures.getInstance().playerIdleR[4], Textures.getInstance().playerIdleR[5], Textures.getInstance().playerIdleR[6]
+			, Textures.getInstance().playerIdleR[7], Textures.getInstance().playerIdleR[8], Textures.getInstance().playerIdleR[9]);
+	
+	playerIdleLeft = new Animation(3, Textures.getInstance().playerIdleL[0], Textures.getInstance().playerIdleL[1], Textures.getInstance().playerIdleL[2]
+			, Textures.getInstance().playerIdleL[3], Textures.getInstance().playerIdleL[4], Textures.getInstance().playerIdleL[5], Textures.getInstance().playerIdleL[6]
+			, Textures.getInstance().playerIdleL[7], Textures.getInstance().playerIdleL[8], Textures.getInstance().playerIdleL[9]);
+	
+	playerJumpRight = new Animation(10, Textures.getInstance().playerJumpR[0], Textures.getInstance().playerJumpR[1], Textures.getInstance().playerJumpR[2]
+			, Textures.getInstance().playerJumpR[3], Textures.getInstance().playerJumpR[4], Textures.getInstance().playerJumpR[4], Textures.getInstance().playerJumpR[4]);
+	
+	playerJumpLeft = new Animation(10, Textures.getInstance().playerJumpL[0], Textures.getInstance().playerJumpL[1], Textures.getInstance().playerJumpL[2]
+			, Textures.getInstance().playerJumpL[3], Textures.getInstance().playerJumpL[4], Textures.getInstance().playerJumpL[4], Textures.getInstance().playerJumpL[4]);
+	
+	playerFallingRight = new Animation(10, Textures.getInstance().playerJumpR[3], Textures.getInstance().playerJumpR[3], Textures.getInstance().playerJumpR[3]
+			, Textures.getInstance().playerJumpR[3], Textures.getInstance().playerJumpR[4], Textures.getInstance().playerJumpR[4], Textures.getInstance().playerJumpR[4]);
+	
+	playerFallingLeft = new Animation(10, Textures.getInstance().playerJumpL[3], Textures.getInstance().playerJumpL[3], Textures.getInstance().playerJumpL[3]
+			, Textures.getInstance().playerJumpL[3], Textures.getInstance().playerJumpL[4], Textures.getInstance().playerJumpL[4], Textures.getInstance().playerJumpL[4]);
 }
 
 

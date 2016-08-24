@@ -6,11 +6,10 @@ import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
 
 public class Coin extends GameObject{
 
-private Textures tex = MainClass.getTexturesInstance();
+
 private Animation coinRotating;
 private float x, y;
 private float width, height;
@@ -31,14 +30,14 @@ public Coin(float x, float y) {
 	visible = true;
 	direction = 0;
 	
-	coinRotating = new Animation(5, tex.coinAnim[0], tex.coinAnim[1], tex.coinAnim[2], tex.coinAnim[3], tex.coinAnim[4], tex.coinAnim[5]
-			, tex.coinAnim[6], tex.coinAnim[7], tex.coinAnim[8], tex.coinAnim[9], tex.coinAnim[10], tex.coinAnim[11], tex.coinAnim[12], tex.coinAnim[13]
-			, tex.coinAnim[14], tex.coinAnim[15], tex.coinAnim[16], tex.coinAnim[17], tex.coinAnim[18], tex.coinAnim[19], tex.coinAnim[20]
-			, tex.coinAnim[21], tex.coinAnim[22], tex.coinAnim[23], tex.coinAnim[24], tex.coinAnim[25], tex.coinAnim[26], tex.coinAnim[27], tex.coinAnim[28]
-			, tex.coinAnim[29], tex.coinAnim[30], tex.coinAnim[31], tex.coinAnim[32], tex.coinAnim[33], tex.coinAnim[34], tex.coinAnim[35], tex.coinAnim[36]
-			, tex.coinAnim[37], tex.coinAnim[38], tex.coinAnim[39], tex.coinAnim[40], tex.coinAnim[41], tex.coinAnim[42], tex.coinAnim[43], tex.coinAnim[44]
-			, tex.coinAnim[45], tex.coinAnim[46], tex.coinAnim[47], tex.coinAnim[48], tex.coinAnim[49], tex.coinAnim[50], tex.coinAnim[51], tex.coinAnim[52]
-			, tex.coinAnim[53], tex.coinAnim[54], tex.coinAnim[55], tex.coinAnim[56], tex.coinAnim[57], tex.coinAnim[58], tex.coinAnim[59]);
+	coinRotating = new Animation(5, Textures.getInstance().coinAnim[0], Textures.getInstance().coinAnim[1], Textures.getInstance().coinAnim[2], Textures.getInstance().coinAnim[3], Textures.getInstance().coinAnim[4], Textures.getInstance().coinAnim[5]
+			, Textures.getInstance().coinAnim[6], Textures.getInstance().coinAnim[7], Textures.getInstance().coinAnim[8], Textures.getInstance().coinAnim[9], Textures.getInstance().coinAnim[10], Textures.getInstance().coinAnim[11], Textures.getInstance().coinAnim[12], Textures.getInstance().coinAnim[13]
+			, Textures.getInstance().coinAnim[14], Textures.getInstance().coinAnim[15], Textures.getInstance().coinAnim[16], Textures.getInstance().coinAnim[17], Textures.getInstance().coinAnim[18], Textures.getInstance().coinAnim[19], Textures.getInstance().coinAnim[20]
+			, Textures.getInstance().coinAnim[21], Textures.getInstance().coinAnim[22], Textures.getInstance().coinAnim[23], Textures.getInstance().coinAnim[24], Textures.getInstance().coinAnim[25], Textures.getInstance().coinAnim[26], Textures.getInstance().coinAnim[27], Textures.getInstance().coinAnim[28]
+			, Textures.getInstance().coinAnim[29], Textures.getInstance().coinAnim[30], Textures.getInstance().coinAnim[31], Textures.getInstance().coinAnim[32], Textures.getInstance().coinAnim[33], Textures.getInstance().coinAnim[34], Textures.getInstance().coinAnim[35], Textures.getInstance().coinAnim[36]
+			, Textures.getInstance().coinAnim[37], Textures.getInstance().coinAnim[38], Textures.getInstance().coinAnim[39], Textures.getInstance().coinAnim[40], Textures.getInstance().coinAnim[41], Textures.getInstance().coinAnim[42], Textures.getInstance().coinAnim[43], Textures.getInstance().coinAnim[44]
+			, Textures.getInstance().coinAnim[45], Textures.getInstance().coinAnim[46], Textures.getInstance().coinAnim[47], Textures.getInstance().coinAnim[48], Textures.getInstance().coinAnim[49], Textures.getInstance().coinAnim[50], Textures.getInstance().coinAnim[51], Textures.getInstance().coinAnim[52]
+			, Textures.getInstance().coinAnim[53], Textures.getInstance().coinAnim[54], Textures.getInstance().coinAnim[55], Textures.getInstance().coinAnim[56], Textures.getInstance().coinAnim[57], Textures.getInstance().coinAnim[58], Textures.getInstance().coinAnim[59]);
 }
 
 @Override

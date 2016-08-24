@@ -6,6 +6,10 @@ import java.util.HashMap;
 import com.platformer.game.graphics.BufferedImageLoader;
 
 
+/** Klasa Achievements, w obiektcie której przechowywane s¹ Osi¹gniêcia.
+ * @author Piotrek
+ *
+ */
 public class Achievements {
 
 private HashMap<Integer, Boolean> achievementsList;

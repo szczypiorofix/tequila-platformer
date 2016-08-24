@@ -5,12 +5,10 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
 
 public class SpringBlock extends GameObject{
 
 
-private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
@@ -38,8 +36,8 @@ public SpringBlock(float x, float y)
 
 @Override
 public void render(Graphics g) {
-	if (action) g.drawImage(tex.springBlock2, (int) x, (int) y-10, null);
-	else g.drawImage(tex.springBlock, (int) x, (int) y-5, null);
+	if (action) g.drawImage(Textures.getInstance().springBlock2, (int) x, (int) y-10, null);
+	else g.drawImage(Textures.getInstance().springBlock, (int) x, (int) y-5, null);
 	//Graphics2D g2d = (Graphics2D) g;
 	//g2d.draw(getBounds());
 }

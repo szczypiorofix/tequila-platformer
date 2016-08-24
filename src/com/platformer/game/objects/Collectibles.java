@@ -6,13 +6,12 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
 public class Collectibles extends GameObject{
 
 
-private Textures tex = MainClass.getTexturesInstance();
+
 private ObjectsHandler objectsHandler;
 private float x, y;
 private float width, height;
@@ -40,14 +39,14 @@ public Collectibles(float x, float y, ObjectsHandler objectsHandler)
 	random = new Random();
 	show = random.nextInt(2);
 
-	type = random.nextInt(tex.collectible.length);
+	type = random.nextInt(Textures.getInstance().collectible.length);
 }
 	
 
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.collectible[type], (int) (x), (int) (y), null);
+	g.drawImage(Textures.getInstance().collectible[type], (int) (x), (int) (y), null);
 }
 
 @Override

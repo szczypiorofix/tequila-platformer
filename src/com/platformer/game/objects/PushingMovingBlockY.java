@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
+
 
 public class PushingMovingBlockY extends GameObject{
 
@@ -13,7 +13,6 @@ public class PushingMovingBlockY extends GameObject{
 private float x, y;
 private float velX, velY;
 private float width, height;
-private Textures tex = MainClass.getTexturesInstance();
 private int startPos = 0;
 private boolean action, visible;
 private int direction;
@@ -39,8 +38,8 @@ public PushingMovingBlockY(float x, float y)
 
 @Override
 public void render(Graphics g) {
-	if (action) g.drawImage(tex.pushingMovingBlockYOn, (int) x, (int) y, null);
-	else g.drawImage(tex.pushingMovingBlockYOff, (int) x, (int) y, null);
+	if (action) g.drawImage(Textures.getInstance().pushingMovingBlockYOn, (int) x, (int) y, null);
+	else g.drawImage(Textures.getInstance().pushingMovingBlockYOff, (int) x, (int) y, null);
 }
 
 @Override

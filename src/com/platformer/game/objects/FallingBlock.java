@@ -5,13 +5,12 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
 public class FallingBlock extends GameObject{
 
+
 	
-private Textures tex = MainClass.getTexturesInstance();
 private float x, y;
 private float velX, velY;
 private float width, height;
@@ -41,7 +40,7 @@ public FallingBlock(float x, float y, ObjectsHandler objectsHandler)
 	
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.fallingBlock, (int) x, (int) y, null);
+	g.drawImage(Textures.getInstance().fallingBlock, (int) x, (int) y, null);
 	//Graphics2D g2d = (Graphics2D) g;
 	//g2d.draw(getBounds());
 }
@@ -74,10 +73,6 @@ public void tick(LinkedList<GameObject> object) {
 			else velY = 0f;
 		}
 
-	
-	
-	
-	
 	y += velY;
 	
 	action = false;

@@ -4,20 +4,19 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
+
+
 
 public class AngryCactus extends GameObject{
 
 
 private float width, height;
-private Textures tex = MainClass.getTexturesInstance();
 private int direction;
 private boolean action, visible;
 private static final int SHOOTING_MAX = 100;
 private int shooting_time = SHOOTING_MAX;
 private float x, y;
 private float velX, velY;
-
 
 
 	
@@ -38,10 +37,10 @@ public AngryCactus(float x, float y) {
 public void render(Graphics g) {
 	if (action)
 	{
-		if (direction == 1) g.drawImage(tex.angryCactusR, (int) x, (int) y-30, null);
-		else g.drawImage(tex.angryCactusL, (int) x, (int) y-30, null);	
+		if (direction == 1) g.drawImage(Textures.getInstance().angryCactusR, (int) x, (int) y-30, null);
+		else g.drawImage(Textures.getInstance().angryCactusL, (int) x, (int) y-30, null);	
 	}
-	else g.drawImage(tex.angryCactus0, (int) x, (int) y-30, null);
+	else g.drawImage(Textures.getInstance().angryCactus0, (int) x, (int) y-30, null);
 }
 
 @Override

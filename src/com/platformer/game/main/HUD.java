@@ -10,8 +10,6 @@ import com.platformer.game.graphics.Textures;
 
 public class HUD {
 
-private Textures tex = MainClass.getTexturesInstance();
-
 
 public HUD()
 {
@@ -34,7 +32,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int 
 		break;
 	}
 	case Death: {
-		g2d.drawImage(tex.menuBg, 300, 120, null);
+		g2d.drawImage(Textures.getInstance().menuBg, 300, 120, null);
 		g2d.setColor(Color.RED);
 		g2d.setFont(MainClass.texasFont.deriveFont(68f));
 		g2d.drawString("NIE ¯YJESZ ...", 355, 220);
@@ -69,7 +67,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int 
 		break;
 	}
 	case JakGrac: {
-		g2d.drawImage(tex.howToPlayImage, 150, 30, null);
+		g2d.drawImage(Textures.getInstance().howToPlayImage, 150, 30, null);
 		break;
 	}
 	case Osiagniecia: {
@@ -97,7 +95,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int 
 		break;
 	}
 	case OGrze: {
-		g2d.drawImage(tex.creditsImage, 260, 30, null);
+		g2d.drawImage(Textures.getInstance().creditsImage, 260, 30, null);
 		break;
 	}
 	default: {

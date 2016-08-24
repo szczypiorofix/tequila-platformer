@@ -6,11 +6,10 @@ import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
+
 
 public class BeeObject extends GameObject{
 
-private Textures tex = MainClass.getTexturesInstance();
 private Animation beeMovingR, beeMovingL;
 private int direction;
 private int startPos = 0;
@@ -33,8 +32,10 @@ public BeeObject(float x, float y) {
 	action = false;
 	visible = true;
 	startPos = (int) x;
-	beeMovingR = new Animation(3, tex.beeR[0], tex.beeR[1], tex.beeR[2], tex.beeR[3], tex.beeR[4]);
-	beeMovingL = new Animation(3, tex.beeL[0], tex.beeL[1], tex.beeL[2], tex.beeL[3], tex.beeL[4]);
+	beeMovingR = new Animation(3, Textures.getInstance().beeR[0], Textures.getInstance().beeR[1], Textures.getInstance().beeR[2]
+			, Textures.getInstance().beeR[3], Textures.getInstance().beeR[4]);
+	beeMovingL = new Animation(3, Textures.getInstance().beeL[0], Textures.getInstance().beeL[1], Textures.getInstance().beeL[2]
+			, Textures.getInstance().beeL[3], Textures.getInstance().beeL[4]);
 }
 
 @Override

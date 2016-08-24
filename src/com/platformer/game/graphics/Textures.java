@@ -4,8 +4,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-public class Textures {
+/** Klasa, której obiekt przechowuje 
+ * @author Piotrek
+ *
+ */
+public final class Textures {
 
+
+private static Textures instance = null;
+	
+	
 public BufferedImage[] block = new BufferedImage[12];
 public BufferedImage[] playerRunR = new BufferedImage[10];
 public BufferedImage[] playerRunL = new BufferedImage[10];
@@ -49,7 +57,11 @@ public BufferedImage clouds1, clouds2, clouds3;
 public BufferedImage[] collectible = new BufferedImage[5];
 public BufferedImage mainMenuButton, mainMenuButtonSelected;
 
+
+
+
 public BufferedImage howToPlayImage, hallOfFameImage, creditsImage, achievementsImage, collectiblesImage;
+
 
 
 public Textures()
@@ -285,5 +297,11 @@ public Textures()
 	bg_gory = loader.loadImage("/BG_gory.png");
 	bg_niebo = loader.loadImage("/BG_niebo.png");
 	
+}
+
+public static final Textures getInstance()
+{
+	if (instance == null) instance = new Textures();
+	return instance;
 }
 }

@@ -6,13 +6,13 @@ import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
 import com.platformer.game.main.ObjectsHandler;
 
 public class Tumbleweed extends GameObject{
 
 	
-private Textures tex = MainClass.getTexturesInstance();
+
+	
 private float x, y;
 private float velX, velY;
 private float width, height;
@@ -42,7 +42,9 @@ public Tumbleweed(float x, float y, ObjectsHandler objectsHandler)
 	jumping = false;
 	gravity = 0.2f;
 	velX = -2f;
-	tumbling = new Animation(3, tex.tumbleweed7, tex.tumbleweed6, tex.tumbleweed5, tex.tumbleweed4, tex.tumbleweed3, tex.tumbleweed2, tex.tumbleweed1, tex.tumbleweed);
+	tumbling = new Animation(3, Textures.getInstance().tumbleweed7, Textures.getInstance().tumbleweed6, Textures.getInstance().tumbleweed5
+			, Textures.getInstance().tumbleweed4, Textures.getInstance().tumbleweed3, Textures.getInstance().tumbleweed2
+			, Textures.getInstance().tumbleweed1, Textures.getInstance().tumbleweed);
 }
 	
 	

@@ -11,7 +11,6 @@ import com.platformer.game.graphics.Textures;
 public class MenuButton {
 
 
-private Textures tex = MainClass.getTexturesInstance();
 private String name;
 private float x, y;
 private boolean selected;
@@ -31,8 +30,8 @@ public void render(Graphics2D g2d)
 	c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f);
 	defComposite = g2d.getComposite();
 	g2d.setComposite(c);
-    if (selected) g2d.drawImage(tex.mainMenuButtonSelected, (int) x, (int) y, null);
-    else g2d.drawImage(tex.mainMenuButton, (int) x, (int) y, null);
+    if (selected) g2d.drawImage(Textures.getInstance().mainMenuButtonSelected, (int) x, (int) y, null);
+    else g2d.drawImage(Textures.getInstance().mainMenuButton, (int) x, (int) y, null);
     g2d.setColor(Color.BLUE);
 	g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
 	g2d.drawString(name, x + 30, y + 45);

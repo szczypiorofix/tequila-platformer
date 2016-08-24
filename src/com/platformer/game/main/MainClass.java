@@ -12,8 +12,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.platformer.game.graphics.Textures;
-import com.platformer.game.sounds.Music;
+import com.platformer.game.sounds.MusicState;
 import com.platformer.game.sounds.SoundsLoader;
 
 
@@ -27,24 +26,61 @@ import com.platformer.game.sounds.SoundsLoader;
 public class MainClass implements Runnable {
 
 
+/** Obiekt HashMap<Integer, Boolean> przechowuj¹cy spis achievementów.
+ * 
+ */
 private HashMap<Integer, Boolean> achievementsList;
-private ArrayList<HallOfFamePlayer> hallOfFameList = new ArrayList<HallOfFamePlayer>(10);
-public static final File achievementsFile = new File("achievements.dat");
-public static final File hallOfFameFile = new File("halloffame.dat");
-public static final File gamepadConfigFile = new File("input.cfg");
-public static Font smokunFont;
-public static Font texasFont;
-public static int WIDTH = 0, HEIGHT = 0;
 
+/** Obiekt klasy ArrayList<HallOfFamePlayer> z zapisanymi Najlepszymi Osi¹gniêciami.
+ * 
+ */
+private ArrayList<HallOfFamePlayer> hallOfFameList = new ArrayList<HallOfFamePlayer>(10);
+
+/** Plik z zapisanymi Osi¹gniêcami.
+ * 
+ */
+public static final File achievementsFile = new File("achievements.dat");
+
+/** Plik z zapisanymi Najlepszymi Wynikami.
+ * 
+ */
+public static final File hallOfFameFile = new File("halloffame.dat");
+
+/** Plik konfiguracyjny do obs³ugi pada/gamepada.
+ * 
+ */
+public static final File gamepadConfigFile = new File("input.cfg");
+
+/** Czcionka Smokun Font.
+ * 
+ */
+public static Font smokunFont;
+
+/** Czcionka Texas Font.
+ * 
+ */
+public static Font texasFont;
+
+/** Szerokoœæ g³ównego okna gry.
+ * 
+ */
+public static int WIDTH = 0;
+
+/** Wysokoœæ g³ównego okna gry.
+ * 
+ */
+public static int HEIGHT = 0;
+
+/** Oiekt klasy Achievements.
+ * @see Achievements
+ */
 private Achievements achievements = null;
 private HallOfFame hallOfFame = null;
-public static SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound,crateHitSound, screenShotSound;
+public static SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound,crateHitSound, screenShotSound, menuSound1, menuSound2;
 private int fps_count = 0, ticks_count = 0;
 public static double amountOfTicks = 60.0;
 private boolean gamepadEnabled = false;
 private GameWindow gameWindow;
-private MainMenu mainMenu;
-private static final Textures tex = new Textures();
 private MainScreen mainScreen;
 private ObjectInputStream ois = null;
 private ObjectOutputStream oos = null;
@@ -53,20 +89,19 @@ private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-
 private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
 private Thread gameThread;
 private GameState gameState;
-private Music music;
-private enum MusicState
-{
-	play, pause, stop;
-}
 private MusicState musicState;
-private Thread musicThread;
-private boolean musicThreadRunning;
 
 
+
+
+/** Konstruktor klasy g³ównej gry.
+ * 
+ */
 public MainClass()
 {
 	gameInit();
 }
+
 
 /** Inicjuje pocz¹tekowe warunki i stany gry, np. gameWindow, MainScreen (Canvas). W tej metodzie uruchamiany jest w¹tek
  * renderowania i update'owania gry.
@@ -92,8 +127,8 @@ private void gameInit()
 	//mainMenu = new MainMenu(this, hallOfFame, achievements);
 	
 	//mainMenu.showMenu(true);
-
-	//music = new Music();
+	
+	musicState = MusicState.play;
 	
 	jumpSound = new SoundsLoader("/jump.wav");
 	powerUpSound = new SoundsLoader("/powerup.wav");
@@ -103,6 +138,8 @@ private void gameInit()
 	springJumpSound = new SoundsLoader("/SpringJump.wav");
 	crateHitSound = new SoundsLoader("/crateHit.wav");
 	screenShotSound = new SoundsLoader("/screenShotSound.wav");
+	menuSound1 = new SoundsLoader("/menusound1.wav");
+	menuSound2 = new SoundsLoader("/menusound2.wav");
 	
 	jumpSound.setVolume(-15f);
 	powerUpSound.setVolume(-20f);
@@ -118,22 +155,10 @@ private void gameInit()
 	gameWindow.setVisible(true);
 	WIDTH = mainScreen.getWidth();
 	HEIGHT = mainScreen.getHeight();
-	
-	//musicThreadStart();
+		
 	gameThreadStart();
 }
-	
 
-/** Metoda uruchamiaj¹ca w¹tek muzyki w tle dla gry.
- * 
- */
-public synchronized void musicThreadStart()
-{
-	if (musicThreadRunning) return;
-	musicThreadRunning = true;
-	musicThread = new Thread(new MusicThread());
-	musicThread.start();
-}
 
 /** Metoda uruchamiaj¹ca w¹tek renderowania i obliczania logic gry.
  * 
@@ -145,6 +170,7 @@ public synchronized void gameThreadStart()
 	gameThread = new Thread(this);
 	gameThread.start();
 }
+
 
 @Override
 public void run()
@@ -306,24 +332,6 @@ private void prepareAchievements()
 	achievements.setNoHarmComplete(achievementsList.get(15));
 }
 
-public static Textures getTexturesInstance()
-{
-	return tex;
-}
-
-private class MusicThread implements Runnable
-{
-
-	@Override
-	public void run() {
-		
-		
-		while (musicThreadRunning)
-		{
-			music.play();
-		}
-	}
-}
 
 public static void main(String[] args) {
 	new MainClass();

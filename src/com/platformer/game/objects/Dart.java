@@ -10,7 +10,7 @@ import com.platformer.game.main.ObjectsHandler;
 
 public class Dart extends GameObject{
 
-private Textures tex = MainClass.getTexturesInstance();
+
 private ObjectsHandler objectsHandler;
 
 private float width ;
@@ -45,8 +45,8 @@ public Dart(float x, float y, int direction, ObjectsHandler objectsHandler) {
 
 @Override
 public void render(Graphics g) {
-	if (direction == 1) g.drawImage(tex.dartR, (int) x, (int) y, null);
-	else g.drawImage(tex.dartL, (int) x, (int) y, null);
+	if (direction == 1) g.drawImage(Textures.getInstance().dartR, (int) x, (int) y, null);
+	else g.drawImage(Textures.getInstance().dartL, (int) x, (int) y, null);
 }
 
 @Override

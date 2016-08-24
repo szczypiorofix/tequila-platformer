@@ -5,12 +5,11 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
+
 
 public class MovingBlockX extends GameObject{
 
 	
-private Textures tex = MainClass.getTexturesInstance();
 private float velX;
 private float velY;
 private float x, y;
@@ -40,7 +39,7 @@ public MovingBlockX(float x, float y) {
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.movingBlockX, (int)x, (int)y, null);
+	g.drawImage(Textures.getInstance().movingBlockX, (int)x, (int)y, null);
 }
 
 @Override

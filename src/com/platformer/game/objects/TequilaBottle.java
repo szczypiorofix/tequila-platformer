@@ -5,12 +5,12 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Textures;
-import com.platformer.game.main.MainClass;
+
+
 
 public class TequilaBottle extends GameObject{
 
-	
-private Textures tex = MainClass.getTexturesInstance();
+
 private float x, y;
 private float velX, velY;
 private float width, height;
@@ -33,7 +33,7 @@ public TequilaBottle(float x, float y) {
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(tex.tequilaImage.getScaledInstance((int) width, (int) height, 0), (int) x, (int) y-40, null);
+	g.drawImage(Textures.getInstance().tequilaImage.getScaledInstance((int) width, (int) height, 0), (int) x, (int) y-40, null);
 }
 
 @Override
