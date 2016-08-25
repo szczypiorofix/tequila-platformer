@@ -25,8 +25,8 @@ public TequilaBottle(float x, float y) {
 		direction = 0;
 		action = false;
 		visible = true;
-		width = 32;
-		height = 60;
+		width = 30;
+		height = 80;
 		velX = 0;
 		velY = 0;
 }

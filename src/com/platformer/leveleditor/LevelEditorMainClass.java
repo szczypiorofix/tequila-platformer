@@ -112,7 +112,7 @@ public LevelEditorMainClass()
 		tempImage[29] = ImageIO.read(getClass().getResource("/level_end.png"));
 		tempImage[30] = ImageIO.read(getClass().getResource("/coin32.png")).getSubimage(0, 0, 32, 32);
 		tempImage[31] = ImageIO.read(getClass().getResource("/BeeR01.png"));
-		tempImage[32] = ImageIO.read(getClass().getResource("/tequila_bottle.png"));
+		tempImage[32] = ImageIO.read(getClass().getResource("/TequilaBottle.png"));
 		tempImage[33] = ImageIO.read(getClass().getResource("/taco.png"));
 		tempImage[34] = ImageIO.read(getClass().getResource("/MovingBlockX.png"));
 		tempImage[35] = ImageIO.read(getClass().getResource("/MovingBlockY.png"));

@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.platformer.game.sounds.MusicState;
+import com.platformer.game.sounds.Music;
 import com.platformer.game.sounds.SoundsLoader;
 
 
@@ -79,18 +79,32 @@ private HallOfFame hallOfFame = null;
 public static SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound,crateHitSound, screenShotSound, menuSound1, menuSound2;
 private int fps_count = 0, ticks_count = 0;
 public static double amountOfTicks = 60.0;
-private boolean gamepadEnabled = false;
+
+/** Przyjmuje wartoœæ true jeœli odnaleziono plik konfuguracji gamepada. 
+ * 
+ */
+private boolean gamepadConfigFileEnabled = false;
+
 private GameWindow gameWindow;
 private MainScreen mainScreen;
 private ObjectInputStream ois = null;
 private ObjectOutputStream oos = null;
-private boolean gameRunning;
+private boolean gameThreadRunning;
+private boolean musicThreadRunning;
 private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");
 private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
 private Thread gameThread;
-private GameState gameState;
-private MusicState musicState;
+private Thread musicThread;
 
+/** Obiekt enumu GameState prezentuj¹cy aktualny "stan gry". W zale¿noœci od tego stanu jest wyœwietlane odpowienie menu gry lub sama gra.
+ * 
+ */
+private GameState gameState;
+
+/** Obiekt klasy Music zajmuj¹cy siê ob³sug¹ odtwarzanie plików mp3.
+ * 
+ */
+public static Music music;
 
 
 
@@ -109,7 +123,7 @@ public MainClass()
  */
 private void gameInit()
 {
-	if(gamepadConfigFile.exists() && !gamepadConfigFile.isDirectory()) gamepadEnabled = true;
+	if(gamepadConfigFile.exists() && !gamepadConfigFile.isDirectory()) gamepadConfigFileEnabled = true;
 	
 	try {
 		texasFont = Font.createFont(Font.TRUETYPE_FONT, TEXAS_FONT);
@@ -128,7 +142,7 @@ private void gameInit()
 	
 	//mainMenu.showMenu(true);
 	
-	musicState = MusicState.play;
+	music = new Music();
 	
 	jumpSound = new SoundsLoader("/jump.wav");
 	powerUpSound = new SoundsLoader("/powerup.wav");
@@ -151,12 +165,22 @@ private void gameInit()
 
 	gameWindow = new GameWindow();
 	gameState = GameState.MainMenu;
-	mainScreen = new MainScreen(gameState, gameWindow, gamepadEnabled, hallOfFame, achievements);
+	mainScreen = new MainScreen(gameState, gameWindow, gamepadConfigFileEnabled, hallOfFame, achievements);
 	gameWindow.setVisible(true);
 	WIDTH = mainScreen.getWidth();
 	HEIGHT = mainScreen.getHeight();
-		
+	
+	musicThreadStart();
 	gameThreadStart();
+}
+
+
+public synchronized void musicThreadStart()
+{
+	if (musicThreadRunning) return;
+	musicThreadRunning = true;
+	musicThread = new Thread(new MusicThread());
+	musicThread.start();
 }
 
 
@@ -165,8 +189,8 @@ private void gameInit()
  */
 public synchronized void gameThreadStart()
 {
-	if (gameRunning) return;
-	gameRunning = true;
+	if (gameThreadRunning) return;
+	gameThreadRunning = true;
 	gameThread = new Thread(this);
 	gameThread.start();
 }
@@ -191,7 +215,7 @@ public void run()
 	int updates = 0;
 	int frames = 0;
 	
-	while(gameRunning)
+	while(gameThreadRunning)
 	{	
 		double ns = 1000000000 / amountOfTicks;
 		long now = System.nanoTime();
@@ -330,6 +354,34 @@ private void prepareAchievements()
 	achievements.setFindAllCoinsComplete(achievementsList.get(13));
 	achievements.setFindAllPowerupsComplete(achievementsList.get(14));
 	achievements.setNoHarmComplete(achievementsList.get(15));
+	achievements.setMegaJumpComplete(achievementsList.get(16));
+}
+
+/** Prywatna klasa w¹tku odtwarzaj¹cego muzykê z pliku mp3.
+ * @author Piotrek
+ *
+ */
+private class MusicThread implements Runnable
+{
+
+	@Override
+	public void run() {
+
+		music.setPlaying(true);
+		music.restart(Music.WESTERN);
+		
+		while (musicThreadRunning)
+		{	
+			if (music.isPlaying()) {
+				music.play();
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
 
 

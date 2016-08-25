@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Properties;
 import javax.imageio.ImageIO;
 
+import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
 import com.platformer.game.input.InputManager;
 import com.platformer.game.input.Joystick;
@@ -36,6 +37,11 @@ import net.java.games.input.Event;
 
 
 
+/** Podstawowa klasa ekranu gry.
+ * 
+ * @author Piotrek
+ *
+ */
 public class MainScreen extends Canvas{
 
 private static final long serialVersionUID = -5788122194224852624L;
@@ -55,7 +61,6 @@ public static boolean PLAYER_LEFT = false, PLAYER_RIGHT = false, PLAYER_JUMP = f
 protected static String time;
 protected static String playerName;
 
-
 private GameWindow gameWindow;
 private BufferStrategy bs;
 private Graphics g;
@@ -70,7 +75,12 @@ private Component[] gamepadComponents;
 private boolean exit = false;
 private Camera cam;
 private HUD hud;
+
+/** Przyjmuje wartoœæ true jeœli plik konfiguracyjny gamepada zosta³ utworzony ORAZ gdy gamepad zosta³ pod³¹czony do portu USB konputera.
+ * 
+ */
 private boolean gamepadEnabled = false;
+
 private boolean makeScreenShot = false;
 private boolean showMessage = false;
 private boolean saveAchievementsToFile;
@@ -83,24 +93,49 @@ private String leftProp, leftValueProp, rightProp, rightValueProp, jumpProp, jum
 private File screenShotFile;
 private HallOfFame hallOfFame;
 private Achievements achievements;
+
+/** Obiekt enumu GameState prezentuj¹cy aktualny "stan gry". W zale¿noœci od tego stanu jest wyœwietlane odpowienie menu gry lub sama gra.
+ *  @see GameState
+ */
 private GameState gameState;
+
 private int selectedMainMenuButton;
 private final int MAX_MAIN_MENU_BUTTONS = 7;
 private MenuButton[] mainMenuButtons;
 private int selectedMenuButton;
 private final int MAX_MENU_BUTTONS = 3;
 private MenuButton[] menuButtons;
-private float bg_move, circle_move;
+
+/** Zmienna pomocna przy naliczaniu przesuwania siê t³a w menu g³ównym.
+ * 
+ */
+private float bg_move = 0f;
+
+/** Zmienna pomocna przy naliczaniu ruchu s³oñca po okrêgu w menu g³ównym.
+ * 
+ */
+private float circle_move = 0f;
+
+private int plane_move = -600;
+
 private double orbitRadius = 250;
 private double orbitSpeed = Math.PI / 16;
 private double radian = 0;
 private boolean makeBgImage = false, makeBgImageGrayScale = false;
 public BufferedImage backgroundGrayScaleImage;
-private Music music;
+private Animation smigloAnim;
 
 
 
-public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEnabled, HallOfFame hallOfFame, Achievements achievements)
+
+/** Podstawowy konstruktor klasy MainScreen.
+ * @param gameState - stan gry.
+ * @param gameWindow - obiekt klasy GameWindow czyli okno gry.
+ * @param gamepadFileEnabled - true jeœli plik konfiguracyjny gamepada zosta³ utworzony.
+ * @param hallOfFame - obiekt klasy HallOfFame czyli Najlepsze Wyniki.
+ * @param achievements - obiekt klasy Achievements czyli Osi¹gniêcia.
+ */
+public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFileEnabled, HallOfFame hallOfFame, Achievements achievements)
 {
 	super();	
 	this.setFocusable(false);
@@ -108,7 +143,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	this.gameWindow = gameWindow;
 	this.hallOfFame = hallOfFame;
 	this.achievements = achievements;
-	this.gamepadEnabled = gamepadEnabled;
+	this.gamepadEnabled = gamepadFileEnabled;
 	
 	if (this.gamepadEnabled) 
 	{
@@ -181,7 +216,6 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	msgY = 0;
 	saveAchievementsToFile = false;
 	
-	music = new Music();
 	hud = new HUD();
 	
 	objectsHandler = new ObjectsHandler(cam, achievements);
@@ -191,20 +225,53 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 	mainMenuButtons = new MenuButton[MAX_MAIN_MENU_BUTTONS];
 		
 	selectedMainMenuButton = 0;
-	mainMenuButtons[0] = new MenuButton("NOWA GRA", 350, 50);
-	mainMenuButtons[1] = new MenuButton("JAK GRAÆ", 350, 120);
-	mainMenuButtons[2] = new MenuButton("NAJLEPSZE WYNIKI", 350, 190);
-	mainMenuButtons[3] = new MenuButton("OSI¥GNIÊCIA", 350, 260);
-	mainMenuButtons[4] = new MenuButton("ZNAJDKI", 350, 330);
-	mainMenuButtons[5] = new MenuButton("O GRZE", 350, 400);
-	mainMenuButtons[6] = new MenuButton("ZAKOÑCZ", 350, 470);
+	mainMenuButtons[0] = new MenuButton("NOWA GRA", 650, 120, 310, 50);
+	mainMenuButtons[1] = new MenuButton("JAK GRAÆ", 650, 180, 310, 50);
+	mainMenuButtons[2] = new MenuButton("NAJLEPSZE WYNIKI", 650, 240, 310, 50);
+	mainMenuButtons[3] = new MenuButton("OSI¥GNIÊCIA", 650, 300, 310, 50);
+	mainMenuButtons[4] = new MenuButton("ZNAJDKI", 650, 360, 310, 50);
+	mainMenuButtons[5] = new MenuButton("O GRZE", 650, 420, 310, 50);
+	mainMenuButtons[6] = new MenuButton("ZAKOÑCZ", 650, 480, 310, 50);
 	
 	menuButtons = new MenuButton[MAX_MENU_BUTTONS];
 	selectedMenuButton = 0;	
 	menuButtons[0] = new MenuButton("WZNÓW GRÊ", 360, 190);
 	menuButtons[1] = new MenuButton("MENU G£ÓWNE", 360, 270);
 	menuButtons[2] = new MenuButton("ZAKOÑCZ GRÊ", 360, 350);
+	
+	smigloAnim = new Animation(1, Textures.getInstance().smiglo[3], Textures.getInstance().smiglo[2], Textures.getInstance().smiglo[1], Textures.getInstance().smiglo[0]);
 }
+
+
+/** Metoda powoduj¹ca odtwarzanie muzyki nr.1 - 'Western.mp3"
+ * 
+ */
+public void playMusic1()
+{
+	MainClass.music.stop();
+	MainClass.music.restart(Music.WESTERN);
+	MainClass.music.setPlaying(true);		
+}
+
+/** Metoda powoduj¹ca odtwarzanie muzyki nr. 2 - "Mirage.mp3".
+ * 
+ */
+public void playMusic2()
+{
+	MainClass.music.stop();
+	MainClass.music.restart(Music.MIRAGE);
+	MainClass.music.setPlaying(true);
+}
+
+/** Metoda zatrzymuj¹ca odtwarzanie muzyki.
+ * 
+ */
+public void stopMusic()
+{
+	MainClass.music.stop();
+	MainClass.music.setPlaying(false); // KONIECZNE !!
+}
+
 
 public BufferedImage makeGrayScale(BufferedImage input)
 {
@@ -402,6 +469,7 @@ public void tick()
 		
 	}
 	
+	
 	// PRZESUWANIE T£A W MENU G£ÓWNYM
 	if (gameState == GameState.MainMenu || gameState == GameState.JakGrac || gameState == GameState.NajlepszeWyniki || gameState == GameState.NajlepszeWyniki
 			|| gameState == GameState.Osiagniecia || gameState == GameState.OGrze || gameState == GameState.Znajdzki)
@@ -411,23 +479,12 @@ public void tick()
 
 		// MOVE SUN IN A CIRCLE
 		circle_move  = 0.05f;
-		radian += orbitSpeed * circle_move;	
-	}
-	
-
-	if (key.isKeyPressed(KeyEvent.VK_F1))
-	{
-		music.play();
-	}
-	
-	if (key.isKeyPressed(KeyEvent.VK_F2))
-	{
-		music.pause();
-	}
-	
-	if (key.isKeyPressed(KeyEvent.VK_F3))
-	{
-		music.stop();
+		radian += orbitSpeed * circle_move;
+		
+		// PLAIN MOVE
+		smigloAnim.runAnimation();
+		plane_move += 4;
+		if (plane_move > 2200) plane_move = -800;
 	}
 	
 	// OB£UGA MENU G£ÓWNEGO
@@ -468,8 +525,11 @@ public void tick()
 			MainClass.menuSound2.play();
 			switch (selectedMainMenuButton)
 			{
-			case 0: gameState = GameState.Game;
-					break;
+			case 0: {
+						playMusic2();
+						gameState = GameState.Game;
+						break;				
+					}
 			case 1: gameState = GameState.JakGrac;
 					break;
 			case 2: gameState = GameState.NajlepszeWyniki;
@@ -517,7 +577,7 @@ public void tick()
 			switch (selectedMenuButton)
 			{
 			case 0: gameState = GameState.Game;
-					break;
+					break;				
 			case 1: 
 					objectsHandler.clearLevel();
 					objectsHandler.resetLevelStatistics();
@@ -525,6 +585,7 @@ public void tick()
 					cam.setX(0);
 					player = objectsHandler.getPlayer();
 					achievements.restartLevel();
+					playMusic1();
 					gameState = GameState.MainMenu;
 					break;
 			case 2: gameState = GameState.Zakoncz;
@@ -650,6 +711,9 @@ public void tick()
 }
 
 
+/** Metoda obliczaj¹ aktualny czas gry na danym poziomie.
+ * 
+ */
 public void timeTick()
 {
 	milis += (1000/60);
@@ -799,6 +863,15 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(Textures.getInstance().bg_gory, (int) (bg_move), (int) (MainClass.HEIGHT - 305), null);
 		g2d.drawImage(Textures.getInstance().bg_gory, (int) (bg_move+1000), (int) (MainClass.HEIGHT - 305), null);
 		
+		// SAMOLOT
+		g2d.drawImage(Textures.getInstance().planeR, plane_move, 15, null);
+		smigloAnim.drawAnimation(g2d, plane_move+155, 35, false);
+		
+		//plane_move = 200;
+		
+		g2d.setColor(Color.BLACK);
+		g2d.drawLine(plane_move+3, 78, plane_move-30, 78);
+		g2d.drawImage(Textures.getInstance().flaga, plane_move-220, 65, null);
 		
 		for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) 
 		{
@@ -821,7 +894,7 @@ public void render(int fps_count, int ticks_count)
 	
 	// POWERUUPS
 	if (player.isTequila_powerUp()) {
-		g2d.drawImage(Textures.getInstance().tequilaImage, 10, 90, null);
+		g2d.drawImage(Textures.getInstance().tequilaImage, 10, 100, null);
 		g2d.setColor(Color.ORANGE);
 		g2d.fillRect(60, 180 - (int)(player.getTequila_time()/3.5), 10, (int) (player.getTequila_time()/3.5));
 	}

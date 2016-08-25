@@ -632,6 +632,7 @@ private void collisions()
 					y = tempObject.getY() - 107;
 					if (jumping) {
 						velY = -18;
+						if (tequila_powerUp) achievements.addMegaJumpCount();
 						MainClass.springJumpSound.play();
 						tempObject.setAction(true);
 					}

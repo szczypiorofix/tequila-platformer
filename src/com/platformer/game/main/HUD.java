@@ -8,6 +8,10 @@ import java.awt.Graphics2D;
 import com.platformer.game.graphics.Textures;
 
 
+/** Klasa wyœwietlaj¹ca teksty i dane na ekranie w zale¿noœci od stanu gry.
+ * @author Piotrek
+ *
+ */
 public class HUD {
 
 
@@ -15,6 +19,14 @@ public HUD()
 {
 }
 
+/** Metoda rysuj¹ca na ekranie informacje i dane w zale¿noœci od stanu gry - czyli tzn. HUD.
+ * @param g2d - Obiekt Graphics2D
+ * @param gameState - stan gry
+ * @param fps_count - (int) iloœæ fpsów.
+ * @param ticks_count - (int) iloœæ updatów logiki gry.
+ * 
+ * @see GameState
+ */
 public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int ticks_count)
 {
 	switch (gameState)
@@ -23,12 +35,6 @@ public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int 
 		break;
 	}
 	case Menu: {
-		//g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 44f));
-		//g2d.setColor(Color.BLUE);
-		//g2d.drawImage(tex.menuBg, 300, 120, null);
-		//g2d.drawString("WZNÓW GRÊ", 360, 180);
-		//g2d.drawString("MENU G£ÓWNE", 360, 260);
-		//g2d.drawString("WYJŒCIE", 360, 340);
 		break;
 	}
 	case Death: {
@@ -98,8 +104,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int 
 		g2d.drawImage(Textures.getInstance().creditsImage, 260, 30, null);
 		break;
 	}
-	default: {
-			
+	default: {	
 	}
 	}
 	

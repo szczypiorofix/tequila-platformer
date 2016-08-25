@@ -4,13 +4,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-/** Klasa, której obiekt przechowuje 
+/** Klasa, której obiekt przechowuje wszystkie grafiki w grze.
  * @author Piotrek
  *
  */
 public final class Textures {
 
 
+/** Podstawowa i jedyna instancja klasy Textures.
+ * 
+ */
 private static Textures instance = null;
 	
 	
@@ -56,6 +59,9 @@ public BufferedImage fallingBlock;
 public BufferedImage clouds1, clouds2, clouds3;
 public BufferedImage[] collectible = new BufferedImage[5];
 public BufferedImage mainMenuButton, mainMenuButtonSelected;
+public BufferedImage planeR;    // http://opengameart.org/content/red-biplane
+public BufferedImage smiglo[] = new BufferedImage[4];
+public BufferedImage flaga;
 
 
 
@@ -213,7 +219,7 @@ public Textures()
 	
 	heart = loader.loadImage("/heart.png");
 	
-	tequilaImage = loader.loadImage("/tequila_bottle.png");
+	tequilaImage = loader.loadImage("/TequilaBottle.png");
 	
 	tacoImage = loader.loadImage("/taco.png");	
 	
@@ -297,8 +303,19 @@ public Textures()
 	bg_gory = loader.loadImage("/BG_gory.png");
 	bg_niebo = loader.loadImage("/BG_niebo.png");
 	
+	planeR = loader.loadImage("/planeR.png");
+	
+	smiglo[0] = loader.loadImage("/smiglo1.png");
+	smiglo[1] = loader.loadImage("/smiglo2.png");
+	smiglo[2] = loader.loadImage("/smiglo3.png");
+	smiglo[3] = loader.loadImage("/smiglo4.png");
+	
+	flaga = loader.loadImage("/flaga.png");
 }
 
+/** Metoda zwracaj¹ podstawow¹ i jedyn¹ instancjê klasy Textures (zgodna z wzorcem Singleton).
+ * @return instance - jedyna instancja obiektu klasy Textures.
+ */
 public static final Textures getInstance()
 {
 	if (instance == null) instance = new Textures();

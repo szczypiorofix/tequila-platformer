@@ -15,7 +15,10 @@
    id="svg4274"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="TequilaBottle.svg">
+   sodipodi:docname="TequilaBottle.svg"
+   inkscape:export-filename="C:\Users\Piotrek\Git\platformer-game\res\Other\TequilaBottle.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4276" />
   <sodipodi:namedview
@@ -26,17 +29,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="190.47078"
-     inkscape:cy="903.28774"
+     inkscape:cx="149.53919"
+     inkscape:cy="947.40216"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="838"
+     inkscape:window-width="1366"
+     inkscape:window-height="706"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:snap-grids="true">
+     inkscape:snap-grids="false">
     <inkscape:grid
        type="xygrid"
        id="grid4290" />
@@ -49,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,11 +60,58 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <ellipse
+       style="opacity:1;fill:#ff6600;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.12963055;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       id="path4172"
+       cx="144.8154"
+       cy="121.19144"
+       rx="10.928929"
+       ry="1.7147962" />
     <path
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
-       d="m 160.29135,46.755346 9.05879,-1e-6 c 8.3115,0 0.20794,33.902968 5.4929,40.317792 l 21.15937,25.682973 c 5.28498,6.41483 2.97391,150.28774 -5.33754,150.25853 l -50.81116,-0.17857 c -8.31144,-0.0292 -10.89299,-144.62106 -5.69686,-151.10806 l 20.11857,-25.11662 c 5.19613,-6.487002 -2.29556,-39.856043 6.01593,-39.856044 z"
+       style="opacity:1;fill:#ff6600;fill-opacity:1;stroke:#000000;stroke-width:0.38297909;stroke-opacity:1"
+       d="m 142.71383,46.165693 3.81664,0 c 3.50179,0 0.27379,18.633666 2.31426,19.442577 l 8.91484,3.534157 c 3.15722,1.251633 1.25296,52.319413 -2.2488,52.309253 l -21.4077,-0.0622 c -3.50176,-0.0102 -5.56918,-51.373847 -2.40019,-52.604993 l 8.47633,-3.293036 c 2.41187,-0.937005 -0.96717,-19.325786 2.53462,-19.325787 z"
        id="rect4287"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="sssssssss" />
+    <path
+       style="opacity:1;fill:#f2f2f2;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.05486287;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       d="m 141.13717,49.547314 0.3458,-2.187784 6.24347,0.02199 0.23193,1.362693 0.1064,2.605383 -0.0999,4.277342 -0.62744,-0.147407 -0.82655,-0.0033 -0.68036,0.319479 -1.07936,-0.03218 -0.89277,-0.289166 -0.854,-0.006 -0.73619,0.17598 -1.04537,0.02497 -0.0324,-2.527576 z"
+       id="path4162"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccc" />
+    <path
+       style="opacity:1;fill:#666666;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.30373242;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       d="m 143.5955,45.990388 2.60125,-2e-6 c 0.36211,0 1.89407,-0.03057 1.92656,0.381209 0.0235,0.298566 0.25056,2.171412 -0.11155,2.170818 l -6.69276,-0.01099 c -0.36211,-6.42e-4 -0.17577,-1.834556 -0.17577,-2.133754 0,-0.508961 2.09016,-0.407279 2.45227,-0.407279 z"
+       id="rect3337"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="sssscss" />
+    <rect
+       style="opacity:1;fill:#008080;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.22712426;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4170"
+       width="22.925749"
+       height="45.778667"
+       x="133.38527"
+       y="70.644524"
+       ry="0.49713424" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.98536587px;line-height:125%;font-family:Gungsuh;-inkscape-font-specification:'Gungsuh, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.29233178px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-165.76416"
+       y="105.0986"
+       id="text4164"
+       sodipodi:linespacing="125%"
+       transform="matrix(0,-0.69460765,1.4396617,0,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan4166"
+         x="-165.76416"
+         y="105.0986"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.98536587px;line-height:125%;font-family:Gungsuh;-inkscape-font-specification:'Gungsuh, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.29233178px">TEQUILA</tspan></text>
+    <ellipse
+       style="opacity:0.39100001;fill:#ff6600;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.12963055;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       id="path4172-4"
+       cx="145.07385"
+       cy="121.10021"
+       rx="10.928929"
+       ry="1.7147962" />
   </g>
 </svg>

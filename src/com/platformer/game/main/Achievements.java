@@ -13,7 +13,7 @@ import com.platformer.game.graphics.BufferedImageLoader;
 public class Achievements {
 
 private HashMap<Integer, Boolean> achievementsList;
-public static final int maxAchievements = 16;
+public static final int maxAchievements = 17;
 private final int showAchievementCooldown = 200;
 private boolean showAchievement = false;
 private int achievementCount;
@@ -136,6 +136,13 @@ private final String noHarmText = "Ukoñczy³eœ poziom bez utraty zdrowia";
 private final String noHarmTextShort = "Bez utraty zdrowia";
 private final BufferedImage noHarmImage;
 
+private int megaJumpCount;
+private static final int A_MEGAJUMP = 1;
+private boolean megaJumpComplete = false;
+private final String megaJumpText = "Wykona³eœ MEGA SKOK !";
+private final String megaJumpTextShort = "MEGA SKOK !";
+private final BufferedImage megaJumpImage;
+
 
 public Achievements(HashMap<Integer, Boolean> achievementsList)
 {
@@ -158,6 +165,7 @@ public Achievements(HashMap<Integer, Boolean> achievementsList)
 	findAllCoinsImage = loader.loadImage("/AfindAllCoins.png");
 	findAllPowerupsImage = loader.loadImage("/AfindAllPowerup.png");
 	noHarmImage = loader.loadImage("/AnoHarm.png");
+	megaJumpImage = loader.loadImage("/AMegaJump.png");
 	
 	achievementCount = showAchievementCooldown;
 	jump10Count = 0;
@@ -176,6 +184,7 @@ public Achievements(HashMap<Integer, Boolean> achievementsList)
 	findAllCoinsCount = 0;
 	findAllPowerupsCount = 0;
 	noHarmCount = 0;
+	megaJumpCount = 0;
 	achievementText = "";
 	achievementImage = null;
 }
@@ -194,6 +203,7 @@ public void restartLevel()
 	findAllCoinsCount = 0;
 	findAllPowerupsCount = 0;
 	noHarmCount = 0;
+	megaJumpCount = 0;
 }
 
 public void addJump10Count()
@@ -438,6 +448,21 @@ public void addNoHarmCount()
 }
 
 
+public void addMegaJumpCount()
+{
+	if (!megaJumpComplete) {
+		megaJumpCount++;
+		if (megaJumpCount>= A_MEGAJUMP) {
+			megaJumpComplete = true;
+			achievementsList.put(16, true);
+			setAchievementText(megaJumpText);
+			setAchievementTextShort(megaJumpTextShort);
+			setAchievementImage(megaJumpImage);
+			setShowAchievement(true);
+		}
+	}
+}
+
 
 
 public HashMap<Integer, Boolean> getAchievementsList()
@@ -558,6 +583,11 @@ public boolean isFindAllPowerupsComplete() {
 public boolean isNoHarmComplete() {
 	return noHarmComplete;
 }
+
+public boolean isMegaJumpComplete() {
+	return megaJumpComplete;
+}
+
 
 
 
@@ -691,6 +721,14 @@ public String getNoHarmTextShort() {
 	return noHarmTextShort;
 }
 
+public String getMegaJumpText() {
+	return megaJumpText;
+}
+
+public String getMegaJumpTextShort() {
+	return megaJumpTextShort;
+}
+
 
 
 
@@ -760,6 +798,9 @@ public void setNoHarmComplete(boolean noHarmComplete) {
 	this.noHarmComplete = noHarmComplete;
 }
 
+public void setMegaJumpComplete(boolean megaJumpComplete) {
+	this.megaJumpComplete = megaJumpComplete;
+}
 
 
 
@@ -826,5 +867,9 @@ public BufferedImage getFindAllPowerupsImage() {
 
 public BufferedImage getNoHarmImage() {
 	return noHarmImage;
+}
+
+public BufferedImage getMegaJumpImage() {
+	return megaJumpImage;
 }
 }

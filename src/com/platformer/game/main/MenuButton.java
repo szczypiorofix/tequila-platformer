@@ -13,6 +13,7 @@ public class MenuButton {
 
 private String name;
 private float x, y;
+private float width, height;
 private boolean selected;
 private Composite defComposite, c;
 
@@ -25,16 +26,39 @@ public MenuButton(String name, float x, float y)
 	selected = false;
 }
 
+public MenuButton(String name, float x, float y, float width, float height)
+{
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+	this.name = name;
+	selected = false;
+}
+
 public void render(Graphics2D g2d)
 {
 	c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f);
 	defComposite = g2d.getComposite();
 	g2d.setComposite(c);
-    if (selected) g2d.drawImage(Textures.getInstance().mainMenuButtonSelected, (int) x, (int) y, null);
-    else g2d.drawImage(Textures.getInstance().mainMenuButton, (int) x, (int) y, null);
-    g2d.setColor(Color.BLUE);
-	g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
-	g2d.drawString(name, x + 30, y + 45);
+	
+	g2d.setColor(Color.BLUE);
+	if (height != 0 && width != 0)
+	{
+	    if (selected) g2d.drawImage(Textures.getInstance().mainMenuButtonSelected, (int) x, (int) y, (int) width, (int) height, null);
+	    else g2d.drawImage(Textures.getInstance().mainMenuButton, (int) x, (int) y, (int) width, (int) height, null);
+	    
+	    g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, (width / height) * 7.5f));
+	    g2d.drawString(name, x + (int) (width * 0.05f), y + (int) (height * 0.78f));
+	}
+	else
+	{
+	    if (selected) g2d.drawImage(Textures.getInstance().mainMenuButtonSelected, (int) x, (int) y, null);
+	    else g2d.drawImage(Textures.getInstance().mainMenuButton, (int) x, (int) y, null);
+	    
+	    g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
+	    g2d.drawString(name, x + 30, y + 45);
+	}
 	g2d.setComposite(defComposite); // DOMYŒLNE COMPOSITE
 }
 
