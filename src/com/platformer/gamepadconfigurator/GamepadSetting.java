@@ -53,7 +53,7 @@ public GamepadSetting()
 {
 	frame = new JFrame("GamePad configuration");
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame.setSize(400,  200);
+	frame.setSize(400,  300);
 	frame.setLocationRelativeTo(null);
 	frame.setResizable(false);
 	frame.setLayout(new BorderLayout());
@@ -128,7 +128,7 @@ public GamepadSetting()
 	upLabel = new JLabel("<null>");
 	downLabel = new JLabel("<null>");
 	
-   centerPane.setLayout(new GridLayout(4, 3));
+   centerPane.setLayout(new GridLayout(6, 3));
         
    leftButton.setActionCommand("LEFT");
    rightButton.setActionCommand("RIGHT");

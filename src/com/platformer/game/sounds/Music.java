@@ -1,8 +1,6 @@
 package com.platformer.game.sounds;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -13,7 +11,7 @@ import javazoom.jl.player.Player;
 public class Music {
 
 private Player player;
-private FileInputStream fis = null;
+private InputStream fis = null;
 private BufferedInputStream bis = null;
 private long pauseLocation;
 
@@ -25,17 +23,12 @@ public Music()
 	///https://www.youtube.com/watch?v=LavMuqK5Is0
 }
 
-public void play(String path)
+public void play()
 {
 	try {
-		fis = new FileInputStream(path);
+		fis = this.getClass().getResourceAsStream("/mirage.mp3");
 		bis = new BufferedInputStream(fis);
 		player = new Player(bis);
-	}
-	catch (FileNotFoundException fnfe)
-	{
-		fnfe.printStackTrace();
-		System.exit(-1);
 	}
 	catch (JavaLayerException jle)
 	{

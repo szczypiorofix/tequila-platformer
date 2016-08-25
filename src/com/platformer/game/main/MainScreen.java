@@ -153,6 +153,14 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadEna
 		
 			for (int i = 0; i < gamepadComponents.length; i++)
 				System.out.println(gamepadComponents[i].getName());
+			
+			System.out.println();
+			
+			System.out.println(leftProp);
+			System.out.println(rightProp);
+			System.out.println(upProp);
+			System.out.println(downProp);
+			System.out.println(startProp);
 		}
 		else this.gamepadEnabled = false;
 	}
@@ -248,7 +256,7 @@ public void tick()
     	
 			if (comp.getName().equals(startProp))
 			{
-				if (Float.toString(value).equals(startValueProp)) exit = true;
+				if (Float.toString(value).equals(startValueProp) && gameState == GameState.MainMenu) exit = true;
 			}
 			
 			if (comp.getName().equals(jumpProp) && gameState == GameState.Game)
@@ -280,7 +288,13 @@ public void tick()
 			{
 				if (Float.toString(value).equals(upValueProp))
 				{
-					//PLAYER_RIGHT = true;
+					if (selectedMainMenuButton >= 0)
+					{
+						MainClass.menuSound1.play();
+						mainMenuButtons[selectedMainMenuButton].setSelected(false);
+						if (selectedMainMenuButton == 0) selectedMainMenuButton = MAX_MAIN_MENU_BUTTONS-1;
+						else selectedMainMenuButton--;
+					}
 				}
 				//else PLAYER_RIGHT = false;
 			}
@@ -289,7 +303,13 @@ public void tick()
 			{
 				if (Float.toString(value).equals(downValueProp))
 				{
-					//PLAYER_RIGHT = true;
+					if (selectedMainMenuButton < MAX_MAIN_MENU_BUTTONS)
+					{
+						MainClass.menuSound1.play();
+						mainMenuButtons[selectedMainMenuButton].setSelected(false);
+						if (selectedMainMenuButton == MAX_MAIN_MENU_BUTTONS-1) selectedMainMenuButton = 0; 
+						else selectedMainMenuButton++;				
+					}
 				}
 				//else PLAYER_RIGHT = false;
 			}
@@ -397,7 +417,7 @@ public void tick()
 
 	if (key.isKeyPressed(KeyEvent.VK_F1))
 	{
-		music.play("C:/Users/Piotrek/Git/platformer-game/res/Other/mirage.mp3");
+		music.play();
 	}
 	
 	if (key.isKeyPressed(KeyEvent.VK_F2))
@@ -835,7 +855,7 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawString("MONETY: "+MainScreen.COINS, 10, 40);
 		g2d.drawString("WYNIK: "+MainScreen.SCORE, 10, 80);	
 		g2d.setFont(new Font("Verdana", 1, 12));
-		g2d.drawString("CZAS: "+MainScreen.time, MainClass.WIDTH - 150, 80);
+		g2d.drawString("CZAS: "+MainScreen.time, MainClass.WIDTH - 150, 70);
 	}
 	
 	// ZROBIENIE SZAREGO EKRANU
