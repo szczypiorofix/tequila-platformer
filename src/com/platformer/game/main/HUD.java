@@ -19,15 +19,18 @@ public HUD()
 {
 }
 
+
 /** Metoda rysuj¹ca na ekranie informacje i dane w zale¿noœci od stanu gry - czyli tzn. HUD.
- * @param g2d - Obiekt Graphics2D
- * @param gameState - stan gry
+ * @param g2d - Obiekt Graphics2D.
+ * @param gameState - stan gry.
+ * @param achievements - obiekt klasy Achievements.
+ * @param hallOfFame - obiekt klasy HallOfFame.
  * @param fps_count - (int) iloœæ fpsów.
  * @param ticks_count - (int) iloœæ updatów logiki gry.
  * 
  * @see GameState
  */
-public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int ticks_count)
+public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achievements, HallOfFame hallOfFame, int fps_count, int ticks_count)
 {
 	switch (gameState)
 	{
@@ -69,19 +72,61 @@ public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int 
 	case MainMenu: {
 		g2d.setFont(new Font("Arial", Font.BOLD, 14));
 		g2d.setColor(Color.BLACK);
-		g2d.drawString("Tequila Platformer ver. 0.5 (build 0), 2016.", 10, 590);
+		g2d.drawString("Tequila Platformer ver." +MainClass.GAME_VER +" (" +MainClass.BUILD +"). 2016.", 10, 590);
 		break;
 	}
 	case JakGrac: {
-		g2d.drawImage(Textures.getInstance().howToPlayImage, 150, 30, null);
+		g2d.drawImage(Textures.getInstance().howToPlayImage, 150, 25, null);
 		break;
 	}
 	case Osiagniecia: {
 		g2d.setColor(Color.BLACK);
-		g2d.fillRect(100, 50, MainClass.WIDTH - 200, MainClass.HEIGHT - 100);
+		g2d.drawImage(Textures.getInstance().achievementsImage, 100, 20, null);
 		g2d.setFont(new Font("Arial", Font.BOLD, 14));
-		g2d.setColor(Color.BLACK);
-		g2d.drawString("Osi¹gniêcia!", 10,10);
+
+		
+		for (int i = 0; i < Achievements.maxAchievements; i++)
+		{
+
+			//if (achievements.getAchievementsList().get(i))
+			//{
+				switch (i)
+				{
+				case 0:	g2d.drawString(achievements.getJump10TextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().jump10Image, 110, 30 + (i*60), null);
+						break;
+				case 1:
+						g2d.drawString(achievements.getJump25TextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().jump25Image, 110, 30 + (i*60), null);
+						break;
+				case 2:	g2d.drawString(achievements.getJump50TextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().jump50Image, 110, 30 + (i*60), null);
+						break;
+				case 3:	g2d.drawString(achievements.getCoin20TextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().coin20Image, 110, 30 + (i*60), null);
+						break;
+				case 4:	g2d.drawString(achievements.getCoin50TextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().coin50Image, 110, 30 + (i*60), null);
+						break;
+				case 5:	g2d.drawString(achievements.getCoin100TextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().coin100Image, 110, 30 + (i*60), null);
+						break;
+				case 6:	g2d.drawString(achievements.getCoin150TextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().coin150Image, 110, 30 + (i*60), null);
+						break;
+				case 7:	g2d.drawString(achievements.getPowerup3TextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().powerup3Image, 110, 30 + (i*60), null);
+						break;
+				case 8: g2d.drawString(achievements.getComplete1LevelTextShort(), 170, 60 + (i*60));
+						g2d.drawImage(Textures.getInstance().complete1LevelImage, 110, 30 + (i*60), null);
+						break;
+				}				
+			//}
+			//else {
+			//	// draw blank field;
+			//}
+		}
+		
 		break;
 	}
 	case NajlepszeWyniki: {
@@ -101,7 +146,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, int fps_count, int 
 		break;
 	}
 	case OGrze: {
-		g2d.drawImage(Textures.getInstance().creditsImage, 260, 30, null);
+		g2d.drawImage(Textures.getInstance().creditsImage, 260, 25, null);
 		break;
 	}
 	default: {	

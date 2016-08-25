@@ -63,6 +63,25 @@ public BufferedImage planeR;    // http://opengameart.org/content/red-biplane
 public BufferedImage smiglo[] = new BufferedImage[4];
 public BufferedImage flaga;
 
+// ACHIEVMENTS
+public final BufferedImage jump10Image;
+public final BufferedImage jump25Image;
+public final BufferedImage jump50Image;
+public final BufferedImage coin20Image;
+public final BufferedImage coin50Image;
+public final BufferedImage coin100Image;
+public final BufferedImage coin150Image;
+public final BufferedImage powerup3Image;
+public final BufferedImage complete1LevelImage;
+public final BufferedImage complete2LevelImage;
+public final BufferedImage complete3LevelImage;
+public final BufferedImage complete4LevelImage;
+public final BufferedImage complete5LevelImage;
+public final BufferedImage findAllCoinsImage;
+public final BufferedImage findAllPowerupsImage;
+public final BufferedImage noHarmImage;
+public final BufferedImage megaJumpImage;
+
 
 
 
@@ -297,7 +316,7 @@ public Textures()
 	howToPlayImage = loader.loadImage("/JakGrac.png");
 	//hallOfFameImage = loader.loadImage("");
 	creditsImage = loader.loadImage("/OGrze.png");
-	//achievementsImage = loader.loadImage("");
+	achievementsImage = loader.loadImage("/Achievements.png");
 	//collectiblesImage = loader.loadImage("");
 	
 	bg_gory = loader.loadImage("/BG_gory.png");
@@ -311,7 +330,28 @@ public Textures()
 	smiglo[3] = loader.loadImage("/smiglo4.png");
 	
 	flaga = loader.loadImage("/flaga.png");
+	
+	jump10Image = loader.loadImage("/A10jumps.png");
+	jump25Image = loader.loadImage("/A25jumps.png");
+	jump50Image = loader.loadImage("/A50jumps.png");
+	coin20Image = loader.loadImage("/A20coins.png");
+	coin50Image = loader.loadImage("/A50coins.png");
+	coin100Image = loader.loadImage("/A100coins.png");
+	coin150Image = loader.loadImage("/A150coins.png");
+	powerup3Image = loader.loadImage("/A3powerups.png");
+	complete1LevelImage = loader.loadImage("/Acomplete1Level.png");
+	complete2LevelImage = loader.loadImage("/Acomplete2Level.png");
+	complete3LevelImage = loader.loadImage("/Acomplete3Level.png");
+	complete4LevelImage = loader.loadImage("/Acomplete4Level.png");
+	complete5LevelImage = loader.loadImage("/Acomplete5Level.png");
+	findAllCoinsImage = loader.loadImage("/AfindAllCoins.png");
+	findAllPowerupsImage = loader.loadImage("/AfindAllPowerup.png");
+	noHarmImage = loader.loadImage("/AnoHarm.png");
+	megaJumpImage = loader.loadImage("/AMegaJump.png");
 }
+
+
+
 
 /** Metoda zwracaj¹ podstawow¹ i jedyn¹ instancjê klasy Textures (zgodna z wzorcem Singleton).
  * @return instance - jedyna instancja obiektu klasy Textures.

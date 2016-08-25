@@ -22,6 +22,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
 
 import com.platformer.game.graphics.Animation;
@@ -124,6 +126,21 @@ private double radian = 0;
 private boolean makeBgImage = false, makeBgImageGrayScale = false;
 public BufferedImage backgroundGrayScaleImage;
 private Animation smigloAnim;
+private String napisNaFladze = "      TEQUILA PLATFORMER      ";
+private String[] napisy = new String[] {
+		"             HELLO !!!         ",
+		"       TEQUILA PLATFORMER      ",
+		"       BEDE GRAU W GRE !       ",
+		"        MY LITTLE PONY...      ",
+		"  TO JEST KURA PANIE GENRALE ! ",
+		"          IT JUST WORKS !      ",
+		"COME WITH ME IF YOU WANT TO LIVE",
+		"COME WITH ME IF YOU WANT TO LIVE",
+		"IT'S NOT A BUG, IT'S A FEATURE !",
+		"      MARCELLO MÓWI: CZEŒÆ !    "
+};
+private Random random;
+
 
 
 
@@ -212,6 +229,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	
 	playerName = "";
 	
+	random = new Random();
 	bg_move = 0f;
 	msgY = 0;
 	saveAchievementsToFile = false;
@@ -483,15 +501,17 @@ public void tick()
 		
 		// PLAIN MOVE
 		smigloAnim.runAnimation();
-		plane_move += 4;
-		if (plane_move > 2200) plane_move = -800;
+		plane_move += 1;
+		if (plane_move > 1300) {
+			napisNaFladze = napisy[random.nextInt(napisy.length)];
+			plane_move = -500;
+		}
 	}
 	
 	// OB£UGA MENU G£ÓWNEGO
 	if (gameState == GameState.MainMenu)
 	{
-		// KEYBOARD
-		
+
 		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S))
 		{
 			if (selectedMainMenuButton < MAX_MAIN_MENU_BUTTONS)
@@ -863,15 +883,20 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(Textures.getInstance().bg_gory, (int) (bg_move), (int) (MainClass.HEIGHT - 305), null);
 		g2d.drawImage(Textures.getInstance().bg_gory, (int) (bg_move+1000), (int) (MainClass.HEIGHT - 305), null);
 		
-		// SAMOLOT
-		g2d.drawImage(Textures.getInstance().planeR, plane_move, 15, null);
-		smigloAnim.drawAnimation(g2d, plane_move+155, 35, false);
+		//plane_move = 300;
+		if (plane_move > -170 && plane_move < 1300)
+		{
+			// SAMOLOT
+			g2d.drawImage(Textures.getInstance().planeR, plane_move, 15, null);
+			smigloAnim.drawAnimation(g2d, plane_move+155, 35, false);
+			
+			g2d.setColor(Color.BLACK);
+			g2d.drawLine(plane_move+3, 78, plane_move-30, 78);
+			g2d.drawImage(Textures.getInstance().flaga, plane_move-302, 65, null);
+			g2d.setFont(MainClass.smokunFont.deriveFont(Font.PLAIN, 19f));
+			g2d.drawString(napisNaFladze, plane_move - 285, 85);
+		}
 		
-		//plane_move = 200;
-		
-		g2d.setColor(Color.BLACK);
-		g2d.drawLine(plane_move+3, 78, plane_move-30, 78);
-		g2d.drawImage(Textures.getInstance().flaga, plane_move-220, 65, null);
 		
 		for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) 
 		{
@@ -880,12 +905,14 @@ public void render(int fps_count, int ticks_count)
 		mainMenuButtons[selectedMainMenuButton].setSelected(true);
 	}
 	
+	// FPS CAP WSZÊDZIE OPRÓCZ GRY
+	if (gameState == GameState.Game) MainClass.fpsCap = false;
+	else MainClass.fpsCap = true;
 	
 		
 	if ((!player.isFinishLevel()) && gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
 	{ 
 		////// CAM MOVING HERE
-
 		g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 			objectsHandler.render(g);
 		g2d.translate(-cam.getX(), -cam.getY()); // CAM ENDING
@@ -953,7 +980,7 @@ public void render(int fps_count, int ticks_count)
 	
 	if (gameState == GameState.Game) makeBgImage = false;
 	
-	hud.showGameHud(g2d, gameState, this.fps_count, this.ticks_count);
+	hud.showGameHud(g2d, gameState, achievements, hallOfFame, this.fps_count, this.ticks_count);
 	
 	if (makeScreenShot)	makeScreenShot();
 	

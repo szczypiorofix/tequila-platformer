@@ -105,6 +105,10 @@ private GameState gameState;
  * 
  */
 public static Music music;
+public static final float GAME_VER = 0.21f;
+public static final int BUILD = 7;
+public static boolean fpsCap;
+
 
 
 
@@ -203,9 +207,7 @@ public void run()
 	
 	gameState = GameState.Game;
 	
-	// GAME LOOPd
-    
-	boolean fpsCap = false;
+	// GAME LOOP
 
 	long lastTime = System.nanoTime();
 	amountOfTicks = 60.0;
@@ -230,13 +232,13 @@ public void run()
 			{
 				mainScreen.tick();
 				
-				if (!jumpSound.isPlaying()) jumpSound.stop();
-				if (!powerUpSound.isPlaying()) powerUpSound.stop();
-				if (!coinSound.isPlaying()) coinSound.stop();
-				if (!hitSound.isPlaying()) hitSound.stop();
-				if (!cactusShotSound.isPlaying()) cactusShotSound.stop();
-				if (!springJumpSound.isPlaying()) springJumpSound.stop();
-				if (!crateHitSound.isPlaying()) crateHitSound.stop();
+				////if (!jumpSound.isPlaying()) {jumpSound.stop();
+				//if (!powerUpSound.isPlaying()) powerUpSound.stop();
+				//if (!coinSound.isPlaying()) coinSound.stop();
+				//if (!hitSound.isPlaying()) hitSound.stop();
+				//if (!cactusShotSound.isPlaying()) cactusShotSound.stop();
+				//if (!springJumpSound.isPlaying()) springJumpSound.stop();
+				//if (!crateHitSound.isPlaying()) crateHitSound.stop();
 				
 				if (fpsCap) mainScreen.render(60, ticks_count);
 			}
@@ -261,6 +263,14 @@ public void run()
 			ticks_count = updates;
 			frames = 0;
 			updates = 0;
+		}
+		if (fpsCap)
+		{
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
@@ -374,6 +384,7 @@ private class MusicThread implements Runnable
 		{	
 			if (music.isPlaying()) {
 				music.play();
+				music.restart(music.getSong());
 			}
 			try {
 				Thread.sleep(100);

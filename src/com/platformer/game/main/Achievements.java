@@ -3,7 +3,7 @@ package com.platformer.game.main;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import com.platformer.game.graphics.BufferedImageLoader;
+import com.platformer.game.graphics.Textures;
 
 
 /** Klasa Achievements, w obiektcie której przechowywane s¹ Osi¹gniêcia.
@@ -22,150 +22,119 @@ private String achievementTextShort;
 private BufferedImage achievementImage;
 
 
-private BufferedImageLoader loader;
 
 private int jump10Count;
 private static final int A_10JUMPS = 10;
 private boolean jumpCount10Complete = false;
 private final String jump10Text = "Wykona³eœ 10 skoków w ci¹gu jednego poziomu";
 private final String jump10TextShort = "10 skoków - pch³a";
-private final BufferedImage jump10Image;
+
 
 private int jump25Count;
 private static final int A_25JUMPS = 25;
 private boolean jumpCount25Complete = false;
 private final String jump25Text = "Wykona³eœ 25 skoków w ci¹gu jednego poziomu";
 private final String jump25TextShort = "25 skoków - ¿aba";
-private final BufferedImage jump25Image;
+
 
 private int jump50Count;
 private static final int A_50JUMPS = 50;
 private boolean jumpCount50Complete = false;
 private final String jump50Text = "Wykona³eœ 50 skoków w ci¹gu jednego poziomu";
 private final String jump50TextShort = "50 skoków - kangur";
-private final BufferedImage jump50Image;
+
 
 private int coin20Count;
 private static final int A_20COINS = 20;
 private boolean coinCount20Complete = false;
 private final String coin20Text = "Zebra³eœ 20 monet w ci¹gu jednego poziomu";
 private final String coin20TextShort = "Zbieracz monet - 20";
-private final BufferedImage coin20Image;
+
 
 private int coin50Count;
 private static final int A_50COINS = 50;
 private boolean coinCount50Complete = false;
 private final String coin50Text = "Zebra³eœ 50 monet w ci¹gu jednego poziomu";
 private final String coin50TextShort = "Zbieracz monet - 50";
-private final BufferedImage coin50Image;
+
 
 private int coin100Count;
 private static final int A_100COINS = 100;
 private boolean coinCount100Complete = false;
 private final String coin100Text = "Zebra³eœ 100 monet w ci¹gu jednego poziomu";
 private final String coin100TextShort = "Zbieracz monet - 100";
-private final BufferedImage coin100Image;
 
 private int coin150Count;
 private static final int A_150COINS = 150;
 private boolean coinCount150Complete = false;
 private final String coin150Text = "Zebra³eœ 150 monet w ci¹gu jednego poziomu";
 private final String coin150TextShort = "Zbieracz monet - 150";
-private final BufferedImage coin150Image;
 
 private int powerup3Count;
 private static final int A_3POWERUP = 3;
 private boolean powerupCount3Complete = false;
 private final String powerup3Text = "Zebra³eœ 3 power-upy w ci¹gu jednego poziomu";
 private final String powerup3TextShort = "Na³adowany - 3 powerupy";
-private final BufferedImage powerup3Image;
 
 private int complete1LevelCount;
 private static final int A_COMPLETE1LEVEL = 1;
 private boolean complete1LevelComplete = false;
 private final String complete1LevelText = "Ukoñczy³eœ 1 poziom";
 private final String complete1LevelTextShort = "Ukoñczy³eœ 1 poziom";
-private final BufferedImage complete1LevelImage;
 
 private int complete2LevelCount;
 private static final int A_COMPLETE2LEVEL = 1;
 private boolean complete2LevelComplete = false;
 private final String complete2LevelText = "Ukoñczy³eœ 2 poziom";
 private final String complete2LevelTextShort = "Ukoñczy³eœ 2 poziom";
-private final BufferedImage complete2LevelImage;
 
 private int complete3LevelCount;
 private static final int A_COMPLETE3LEVEL = 1;
 private boolean complete3LevelComplete = false;
 private final String complete3LevelText = "Ukoñczy³eœ 3 poziom";
 private final String complete3LevelTextShort = "Ukoñczy³eœ 3 poziom";
-private final BufferedImage complete3LevelImage;
 
 private int complete4LevelCount;
 private static final int A_COMPLETE4LEVEL = 1;
 private boolean complete4LevelComplete = false;
 private final String complete4LevelText = "Ukoñczy³eœ 4 poziom";
 private final String complete4LevelTextShort = "Ukoñczy³eœ 4 poziom";
-private final BufferedImage complete4LevelImage;
 
 private int complete5LevelCount;
 private static final int A_COMPLETE5LEVEL = 1;
 private boolean complete5LevelComplete = false;
 private final String complete5LevelText = "Ukoñczy³eœ 5 poziom";
 private final String complete5LevelTextShort = "Ukoñczy³eœ 5 poziom";
-private final BufferedImage complete5LevelImage;
 
 private int findAllCoinsCount;
 private static final int A_FINDALLCOINS = 1;
 private boolean findAllCoinsComplete = false;
 private final String findAllCoinsText = "Znalaz³eœ wszystkie monety na danym poziomie";
 private final String findAllCoinsTextShort = "Zbieracz monet ... wszystkich!";
-private final BufferedImage findAllCoinsImage;
 
 private int findAllPowerupsCount;
 private static final int A_FINDALLPOWERUPS = 1;
 private boolean findAllPowerupsComplete = false;
 private final String findAllPowerupsText = "Znalaz³eœ wszystkie powerupy na danym poziomie";
 private final String findAllPowerupsTextShort = "Na wysokich obrotach!";
-private final BufferedImage findAllPowerupsImage;
 
 private int noHarmCount;
 private static final int A_NOHARM = 1;
 private boolean noHarmComplete = false;
 private final String noHarmText = "Ukoñczy³eœ poziom bez utraty zdrowia";
 private final String noHarmTextShort = "Bez utraty zdrowia";
-private final BufferedImage noHarmImage;
 
 private int megaJumpCount;
 private static final int A_MEGAJUMP = 1;
 private boolean megaJumpComplete = false;
 private final String megaJumpText = "Wykona³eœ MEGA SKOK !";
 private final String megaJumpTextShort = "MEGA SKOK !";
-private final BufferedImage megaJumpImage;
+
 
 
 public Achievements(HashMap<Integer, Boolean> achievementsList)
 {
 	this.achievementsList = achievementsList;
-	
-	loader = new BufferedImageLoader();
-	jump10Image = loader.loadImage("/A10jumps.png");
-	jump25Image = loader.loadImage("/A25jumps.png");
-	jump50Image = loader.loadImage("/A50jumps.png");
-	coin20Image = loader.loadImage("/A20coins.png");
-	coin50Image = loader.loadImage("/A50coins.png");
-	coin100Image = loader.loadImage("/A100coins.png");
-	coin150Image = loader.loadImage("/A150coins.png");
-	powerup3Image = loader.loadImage("/A3powerups.png");
-	complete1LevelImage = loader.loadImage("/Acomplete1Level.png");
-	complete2LevelImage = loader.loadImage("/Acomplete2Level.png");
-	complete3LevelImage = loader.loadImage("/Acomplete3Level.png");
-	complete4LevelImage = loader.loadImage("/Acomplete4Level.png");
-	complete5LevelImage = loader.loadImage("/Acomplete5Level.png");
-	findAllCoinsImage = loader.loadImage("/AfindAllCoins.png");
-	findAllPowerupsImage = loader.loadImage("/AfindAllPowerup.png");
-	noHarmImage = loader.loadImage("/AnoHarm.png");
-	megaJumpImage = loader.loadImage("/AMegaJump.png");
 	
 	achievementCount = showAchievementCooldown;
 	jump10Count = 0;
@@ -215,7 +184,7 @@ public void addJump10Count()
 			achievementsList.put(0, true);
 			setAchievementText(jump10Text);
 			setAchievementTextShort(jump10TextShort);
-			setAchievementImage(jump10Image);
+			setAchievementImage(Textures.getInstance().jump10Image);
 			setShowAchievement(true);
 		}
 	}
@@ -230,7 +199,7 @@ public void addJump25Count()
 			achievementsList.put(1, true);
 			setAchievementText(jump25Text);
 			setAchievementTextShort(jump25TextShort);
-			setAchievementImage(jump25Image);
+			setAchievementImage(Textures.getInstance().jump25Image);
 			setShowAchievement(true);
 		}
 	}
@@ -245,7 +214,7 @@ public void addJump50Count()
 			achievementsList.put(2, true);
 			setAchievementText(jump50Text);
 			setAchievementTextShort(jump50TextShort);
-			setAchievementImage(jump50Image);
+			setAchievementImage(Textures.getInstance().jump50Image);
 			setShowAchievement(true);
 		}
 	}
@@ -260,7 +229,7 @@ public void addCoin20Count()
 			achievementsList.put(3, true);
 			setAchievementText(coin20Text);
 			setAchievementTextShort(coin20TextShort);
-			setAchievementImage(coin20Image);
+			setAchievementImage(Textures.getInstance().coin20Image);
 			setShowAchievement(true);
 		}
 	}
@@ -275,7 +244,7 @@ public void addCoin50Count()
 			achievementsList.put(4, true);
 			setAchievementText(coin50Text);
 			setAchievementTextShort(coin50TextShort);
-			setAchievementImage(coin50Image);
+			setAchievementImage(Textures.getInstance().coin50Image);
 			setShowAchievement(true);
 		}
 	}
@@ -290,7 +259,7 @@ public void addCoin100Count()
 			achievementsList.put(5, true);
 			setAchievementText(coin100Text);
 			setAchievementTextShort(coin100TextShort);
-			setAchievementImage(coin100Image);
+			setAchievementImage(Textures.getInstance().coin100Image);
 			setShowAchievement(true);
 		}
 	}
@@ -305,7 +274,7 @@ public void addCoin150Count()
 			achievementsList.put(6, true);
 			setAchievementText(coin150Text);
 			setAchievementTextShort(coin150TextShort);
-			setAchievementImage(coin150Image);
+			setAchievementImage(Textures.getInstance().coin150Image);
 			setShowAchievement(true);
 		}
 	}
@@ -321,7 +290,7 @@ public void addPowerup3Count()
 			achievementsList.put(7, true);
 			setAchievementText(powerup3Text);
 			setAchievementTextShort(powerup3TextShort);
-			setAchievementImage(powerup3Image);
+			setAchievementImage(Textures.getInstance().powerup3Image);
 			setShowAchievement(true);
 		}
 	}
@@ -336,7 +305,7 @@ public void addComplete1LevelCount()
 			achievementsList.put(8, true);
 			setAchievementText(complete1LevelText);
 			setAchievementTextShort(complete1LevelTextShort);
-			setAchievementImage(complete1LevelImage);
+			setAchievementImage(Textures.getInstance().complete1LevelImage);
 			setShowAchievement(true);
 		}
 	}
@@ -351,7 +320,7 @@ public void addComplete2LevelCount()
 			achievementsList.put(9, true);
 			setAchievementText(complete2LevelText);
 			setAchievementTextShort(complete2LevelTextShort);
-			setAchievementImage(complete2LevelImage);
+			setAchievementImage(Textures.getInstance().complete2LevelImage);
 			setShowAchievement(true);
 		}
 	}
@@ -366,7 +335,7 @@ public void addComplete3LevelCount()
 			achievementsList.put(10, true);
 			setAchievementText(complete3LevelText);
 			setAchievementTextShort(complete3LevelTextShort);
-			setAchievementImage(complete3LevelImage);
+			setAchievementImage(Textures.getInstance().complete3LevelImage);
 			setShowAchievement(true);
 		}
 	}
@@ -381,7 +350,7 @@ public void addComplete4LevelCount()
 			achievementsList.put(11, true);
 			setAchievementText(complete4LevelText);
 			setAchievementTextShort(complete4LevelTextShort);
-			setAchievementImage(complete4LevelImage);
+			setAchievementImage(Textures.getInstance().complete4LevelImage);
 			setShowAchievement(true);
 		}
 	}
@@ -396,7 +365,7 @@ public void addComplete5LevelCount()
 			achievementsList.put(12, true);
 			setAchievementText(complete5LevelText);
 			setAchievementTextShort(complete5LevelTextShort);
-			setAchievementImage(complete5LevelImage);
+			setAchievementImage(Textures.getInstance().complete5LevelImage);
 			setShowAchievement(true);
 		}
 	}
@@ -411,7 +380,7 @@ public void addFindAllCoinsCount()
 			achievementsList.put(13, true);
 			setAchievementText(findAllCoinsText);
 			setAchievementTextShort(findAllCoinsTextShort);
-			setAchievementImage(findAllCoinsImage);
+			setAchievementImage(Textures.getInstance().findAllCoinsImage);
 			setShowAchievement(true);
 		}
 	}
@@ -426,7 +395,7 @@ public void addFindAllPowerupsCount()
 			achievementsList.put(14, true);
 			setAchievementText(findAllPowerupsText);
 			setAchievementTextShort(findAllPowerupsTextShort);
-			setAchievementImage(findAllPowerupsImage);
+			setAchievementImage(Textures.getInstance().findAllPowerupsImage);
 			setShowAchievement(true);
 		}
 	}
@@ -441,7 +410,7 @@ public void addNoHarmCount()
 			achievementsList.put(15, true);
 			setAchievementText(noHarmText);
 			setAchievementTextShort(noHarmTextShort);
-			setAchievementImage(noHarmImage);
+			setAchievementImage(Textures.getInstance().noHarmImage);
 			setShowAchievement(true);
 		}
 	}
@@ -457,7 +426,7 @@ public void addMegaJumpCount()
 			achievementsList.put(16, true);
 			setAchievementText(megaJumpText);
 			setAchievementTextShort(megaJumpTextShort);
-			setAchievementImage(megaJumpImage);
+			setAchievementImage(Textures.getInstance().megaJumpImage);
 			setShowAchievement(true);
 		}
 	}
@@ -800,76 +769,5 @@ public void setNoHarmComplete(boolean noHarmComplete) {
 
 public void setMegaJumpComplete(boolean megaJumpComplete) {
 	this.megaJumpComplete = megaJumpComplete;
-}
-
-
-
-
-public BufferedImage getJump10Image() {
-	return jump10Image;
-}
-
-public BufferedImage getJump25Image() {
-	return jump25Image;
-}
-
-public BufferedImage getJump50Image() {
-	return jump50Image;
-}
-
-public BufferedImage getCoin20Image() {
-	return coin20Image;
-}
-
-public BufferedImage getCoin50Image() {
-	return coin50Image;
-}
-
-public BufferedImage getCoin100Image() {
-	return coin100Image;
-}
-
-public BufferedImage getCoin150Image() {
-	return coin150Image;
-}
-
-public BufferedImage getPowerup3Image() {
-	return powerup3Image;
-}
-
-public BufferedImage getComplete1LevelImage() {
-	return complete1LevelImage;
-}
-
-public BufferedImage getComplete2LevelImage() {
-	return complete2LevelImage;
-}
-
-public BufferedImage getComplete3LevelImage() {
-	return complete3LevelImage;
-}
-
-public BufferedImage getComplete4LevelImage() {
-	return complete4LevelImage;
-}
-
-public BufferedImage getComplete5LevelImage() {
-	return complete5LevelImage;
-}
-
-public BufferedImage getFindAllCoinsImage() {
-	return findAllCoinsImage;
-}
-
-public BufferedImage getFindAllPowerupsImage() {
-	return findAllPowerupsImage;
-}
-
-public BufferedImage getNoHarmImage() {
-	return noHarmImage;
-}
-
-public BufferedImage getMegaJumpImage() {
-	return megaJumpImage;
 }
 }

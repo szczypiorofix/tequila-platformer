@@ -40,7 +40,7 @@ private InputStream fis;
  */
 private boolean playing = false;
 
-
+private int song;
 
 // http://opengameart.org/content/mirage
 
@@ -52,6 +52,7 @@ private boolean playing = false;
 public Music()
 {
 	///https://www.youtube.com/watch?v=LavMuqK5Is0
+	song = WESTERN;
 }
 
 
@@ -62,9 +63,10 @@ public Music()
  */
 public void restart(int song)
 {
+	this.song = song;
 	try {
-		if (song == WESTERN) fis = this.getClass().getResourceAsStream("/western.mp3"); 
-		if (song == MIRAGE) fis = this.getClass().getResourceAsStream("/mirage.mp3");
+		if (this.song == WESTERN) fis = this.getClass().getResourceAsStream("/western.mp3"); 
+		if (this.song == MIRAGE) fis = this.getClass().getResourceAsStream("/mirage.mp3");
 		player = new Player(new BufferedInputStream(fis));
 	} catch (JavaLayerException e) {
 		e.printStackTrace();
@@ -109,5 +111,13 @@ public boolean isPlaying() {
  */
 public void setPlaying(boolean playing) {
 	this.playing = playing;
+}
+
+public int getSong() {
+	return song;
+}
+
+public void setSong(int song) {
+	this.song = song;
 }
 }
