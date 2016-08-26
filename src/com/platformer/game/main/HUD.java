@@ -70,7 +70,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		break;
 	}
 	case MainMenu: {
-		g2d.setFont(new Font("Arial", Font.BOLD, 14));
+		g2d.setFont(MainClass.arialFont);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString("Tequila Platformer ver." +MainClass.GAME_VER +" (" +MainClass.BUILD +"). 2016.", 10, 590);
 		break;
@@ -81,7 +81,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	}
 	case Osiagniecia: {
 		g2d.setColor(Color.BLACK);
-		g2d.drawImage(Textures.getInstance().achievementsImage, 100, 20, null);
+		g2d.drawImage(Textures.getInstance().achievementsMenuBGImage, 100, 20, null);
 		g2d.setFont(new Font("Arial", Font.BOLD, 14));
 
 		
@@ -133,16 +133,16 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(100, 50, MainClass.WIDTH - 200, MainClass.HEIGHT - 100);
 		g2d.setFont(new Font("Arial", Font.BOLD, 14));
-		g2d.setColor(Color.BLACK);
-		g2d.drawString("Najlepsze wyniki!", 10,10);
+		g2d.setColor(Color.WHITE);
+		g2d.drawString("<UNDER CONTRUCTION>", 400, 300);
 		break;
 	}
 	case Znajdzki: {
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(100, 50, MainClass.WIDTH - 200, MainClass.HEIGHT - 100);
 		g2d.setFont(new Font("Arial", Font.BOLD, 14));
-		g2d.setColor(Color.BLACK);
-		g2d.drawString("Znajdüki!", 10,10);
+		g2d.setColor(Color.WHITE);
+		g2d.drawString("<UNDER CONTRUCTION>", 400, 300);
 		break;
 	}
 	case OGrze: {
@@ -153,7 +153,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	}
 	}
 	
-	g2d.setFont(new Font("Verdana", 1, 12));
+	g2d.setFont(MainClass.arialFont);
 	g2d.setColor(Color.BLACK);
 	g2d.drawString("FPS: "+fps_count +" Ticks: "+ ticks_count, MainClass.WIDTH - 160, MainClass.HEIGHT - 10);
 }

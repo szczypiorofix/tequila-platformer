@@ -62,6 +62,9 @@ public BufferedImage mainMenuButton, mainMenuButtonSelected;
 public BufferedImage planeR;    // http://opengameart.org/content/red-biplane
 public BufferedImage smiglo[] = new BufferedImage[4];
 public BufferedImage flaga;
+public BufferedImage literaA, literaE, literaF, literaI, literaL, literaM, literaO, literaP, literaQ, literaR, literaT, literaU;
+public BufferedImage ptakiR1, ptakiR2;
+
 
 // ACHIEVMENTS
 public final BufferedImage jump10Image;
@@ -85,7 +88,7 @@ public final BufferedImage megaJumpImage;
 
 
 
-public BufferedImage howToPlayImage, hallOfFameImage, creditsImage, achievementsImage, collectiblesImage;
+public BufferedImage howToPlayImage, hallOfFameImage, creditsImage, achievementsMenuBGImage, collectiblesImage;
 
 
 
@@ -316,7 +319,7 @@ public Textures()
 	howToPlayImage = loader.loadImage("/JakGrac.png");
 	//hallOfFameImage = loader.loadImage("");
 	creditsImage = loader.loadImage("/OGrze.png");
-	achievementsImage = loader.loadImage("/Achievements.png");
+	achievementsMenuBGImage = loader.loadImage("/AchievementsMenuBG.png");
 	//collectiblesImage = loader.loadImage("");
 	
 	bg_gory = loader.loadImage("/BG_gory.png");
@@ -330,6 +333,23 @@ public Textures()
 	smiglo[3] = loader.loadImage("/smiglo4.png");
 	
 	flaga = loader.loadImage("/flaga.png");
+	
+	literaA = loader.loadImage("/literaA.png");
+	literaE = loader.loadImage("/literaE.png");
+	literaF = loader.loadImage("/literaF.png");
+	literaI = loader.loadImage("/literaI.png");
+	literaL = loader.loadImage("/literaL.png");
+	literaM = loader.loadImage("/literaM.png");
+	literaO = loader.loadImage("/literaO.png");
+	literaP = loader.loadImage("/literaP.png");
+	literaQ = loader.loadImage("/literaQ.png");
+	literaR = loader.loadImage("/literaR.png");
+	literaT = loader.loadImage("/literaT.png");
+	literaU = loader.loadImage("/literaU.png");
+	
+	ptakiR1 = loader.loadImage("/ptakiR1.png");
+	ptakiR2 = loader.loadImage("/ptakiR2.png");
+	
 	
 	jump10Image = loader.loadImage("/A10jumps.png");
 	jump25Image = loader.loadImage("/A25jumps.png");

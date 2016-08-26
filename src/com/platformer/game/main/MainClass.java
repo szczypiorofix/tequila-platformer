@@ -1,7 +1,9 @@
 package com.platformer.game.main;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,6 +14,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JWindow;
+
+import com.platformer.game.graphics.BufferedImageLoader;
 import com.platformer.game.sounds.Music;
 import com.platformer.game.sounds.SoundsLoader;
 
@@ -50,6 +57,11 @@ public static final File hallOfFameFile = new File("halloffame.dat");
  * 
  */
 public static final File gamepadConfigFile = new File("input.cfg");
+
+/** Podstawowa czcionka typu Arial, plain, 14.
+ * 
+ */
+public static Font arialFont;
 
 /** Czcionka Smokun Font.
  * 
@@ -108,16 +120,30 @@ public static Music music;
 public static final float GAME_VER = 0.21f;
 public static final int BUILD = 7;
 public static boolean fpsCap;
-
-
-
+private JWindow window;
+private BufferedImageLoader splashScreenLoader = new BufferedImageLoader();
+private BufferedImage splashScreen;
 
 /** Konstruktor klasy g³ównej gry.
  * 
  */
 public MainClass()
 {
+	splashScreen();
 	gameInit();
+}
+
+
+public void splashScreen()
+{
+	window = new JWindow();
+	splashScreen = splashScreenLoader.loadImage("/splashScreen.png");
+	JLabel label = new JLabel(new ImageIcon(splashScreen));
+	window.getContentPane().add(label);
+	window.setSize(splashScreen.getWidth(), splashScreen.getHeight());
+	label.setBackground(Color.BLACK);
+	window.setLocationRelativeTo(null);
+	window.setVisible(true);
 }
 
 
@@ -138,6 +164,8 @@ private void gameInit()
 		e.printStackTrace();
 		System.exit(-1);
 	}
+	
+	arialFont = new Font("Arial", Font.BOLD, 14);
 	
 	prepareAchievements();
 	prepareHallOfFame();
@@ -176,6 +204,7 @@ private void gameInit()
 	
 	musicThreadStart();
 	gameThreadStart();
+	window.dispose();
 }
 
 
@@ -267,7 +296,7 @@ public void run()
 		if (fpsCap)
 		{
 			try {
-				Thread.sleep(10);
+				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -367,6 +396,13 @@ private void prepareAchievements()
 	achievements.setMegaJumpComplete(achievementsList.get(16));
 }
 
+
+public static void main(String[] args) {
+	//initSplash();
+	new MainClass();
+}
+
+
 /** Prywatna klasa w¹tku odtwarzaj¹cego muzykê z pliku mp3.
  * @author Piotrek
  *
@@ -393,10 +429,5 @@ private class MusicThread implements Runnable
 			}
 		}
 	}
-}
-
-
-public static void main(String[] args) {
-	new MainClass();
 }
 }

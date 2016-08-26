@@ -2,6 +2,7 @@ package com.platformer.game.main;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -18,6 +19,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -120,7 +123,8 @@ private float circle_move = 0f;
 
 private int plane_move = -600;
 
-private double orbitRadius = 250;
+private final double orbitRadius1 = 500;
+private final double orbitRadius2 = 250;
 private double orbitSpeed = Math.PI / 16;
 private double radian = 0;
 private boolean makeBgImage = false, makeBgImageGrayScale = false;
@@ -131,17 +135,27 @@ private String[] napisy = new String[] {
 		"             HELLO !!!         ",
 		"       TEQUILA PLATFORMER      ",
 		"       BEDE GRAU W GRE !       ",
-		"        MY LITTLE PONY...      ",
-		"  TO JEST KURA PANIE GENRALE ! ",
-		"          IT JUST WORKS !      ",
+		"        MY LITTLE PONY...       ",
+		"  TO JEST KURA PANIE GENRALE !  ",
+		"          IT JUST WORKS !       ",
 		"COME WITH ME IF YOU WANT TO LIVE",
-		"COME WITH ME IF YOU WANT TO LIVE",
+		"   BOO BARDZO LUBI TAKIE LASY  ",
 		"IT'S NOT A BUG, IT'S A FEATURE !",
 		"      MARCELLO MÓWI: CZEŒÆ !    "
 };
 private Random random;
 
+/** Przyjmuje wartoœæ true jeœli w system obs³uguje polecenia domyœlne takie jak OPEN, EDIT, MAIL, PRINT oraz BROWSE.
+ * 
+ */
+private boolean isDesktopSupported;
 
+private Desktop desktop;
+private float[] falujaceLitery = new float[16];
+private boolean[] literyUp = new boolean[16];
+private Animation ptaki1RAnim;
+private float ptaki1, ptaki2, ptaki3;
+private float chmury1, chmury2, chmury3;
 
 
 
@@ -229,6 +243,8 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	
 	playerName = "";
 	
+	isDesktopSupported = Desktop.isDesktopSupported();
+	
 	random = new Random();
 	bg_move = 0f;
 	msgY = 0;
@@ -256,8 +272,19 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	menuButtons[0] = new MenuButton("WZNÓW GRÊ", 360, 190);
 	menuButtons[1] = new MenuButton("MENU G£ÓWNE", 360, 270);
 	menuButtons[2] = new MenuButton("ZAKOÑCZ GRÊ", 360, 350);
-	
+		
 	smigloAnim = new Animation(1, Textures.getInstance().smiglo[3], Textures.getInstance().smiglo[2], Textures.getInstance().smiglo[1], Textures.getInstance().smiglo[0]);
+	ptaki1RAnim = new Animation(10, Textures.getInstance().ptakiR1, Textures.getInstance().ptakiR2);
+	
+	ptaki1 = -500f;
+	ptaki2 = -460f;
+	ptaki3 = -420f;
+	
+	chmury1 = 200;
+	chmury2 = 1300;
+	chmury3 = 800;
+	
+	for (int i = 0; i < falujaceLitery.length; i++) falujaceLitery[i] = random.nextInt(falujaceLitery.length);
 }
 
 
@@ -319,6 +346,31 @@ static BufferedImage copyImage(BufferedImage bi)
 	boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
 	WritableRaster raster = bi.copyData(null);
 	return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+}
+
+
+/** Otwiera podan¹ stronê internetow¹ w domyœlnej przegl¹darce systemu.
+ * @param website - Adres strony internetowej do otwarcia.
+ */
+private void openWebsite(String website)
+{
+	if (isDesktopSupported) {
+		desktop = Desktop.getDesktop();
+
+		if (desktop.isSupported(Desktop.Action.BROWSE)) {
+			URI url = null;
+			try {
+				url = new URI(website);
+			} catch (URISyntaxException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				desktop.browse(url);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		}
+	}
 }
 
 
@@ -496,11 +548,37 @@ public void tick()
 		if (bg_move < -1000) bg_move = 0;
 
 		// MOVE SUN IN A CIRCLE
-		circle_move  = 0.05f;
+		circle_move  = 0.04f;
 		radian += orbitSpeed * circle_move;
 		
 		// PLAIN MOVE
 		smigloAnim.runAnimation();
+		
+		// PTAKI
+		ptaki1RAnim.runAnimation();
+		ptaki1 += 1.8f;
+		ptaki2 += 1.8f;
+		ptaki3 += 1.8f;
+		
+		if (ptaki1 > 1300) {
+			ptaki1 = -500f;
+			ptaki2 = -460f;
+			ptaki3 = -420f;
+		}
+		
+		// CHMURY
+		chmury1 -= 0.5f;
+		chmury2 -= 0.5f;
+		chmury3 -= 0.5f;
+		
+		if (chmury1 < -300) chmury1 = 1100 + random.nextInt(200);
+		if (chmury2 < -300) chmury2 = 1100 + random.nextInt(200);
+		if (chmury3 < -300) chmury3 = 1100 + random.nextInt(200);
+		
+		//chmury1 = 200;
+		//chmury2 = 1300;
+		//chmury3 = 800;
+		
 		plane_move += 1;
 		if (plane_move > 1300) {
 			napisNaFladze = napisy[random.nextInt(napisy.length)];
@@ -511,6 +589,24 @@ public void tick()
 	// OB£UGA MENU G£ÓWNEGO
 	if (gameState == GameState.MainMenu)
 	{
+		
+		// OBS£UGA FALUJACYCH LITER
+		
+		for (int i = 0; i < falujaceLitery.length; i++)
+		{
+			
+			if (!literyUp[i] && falujaceLitery[i] > -10) falujaceLitery[i] -= 0.6f;
+			if (literyUp[i] && falujaceLitery[i] < 0) falujaceLitery[i] += 0.6f;
+			
+			if (falujaceLitery[i] >= 0) literyUp[i] = false;
+			if (falujaceLitery[i] <= -10) literyUp[i] = true;
+		}
+		
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_F1)) {
+			// OTWIERANIE STRONY DOMOWEJ GRY
+			if (isDesktopSupported) openWebsite("www.tequilaplatformer.cba.pl");
+		}
 
 		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S))
 		{
@@ -878,10 +974,27 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(Textures.getInstance().bg_niebo, (int) (bg_move), (int) (0), null);
 		g2d.drawImage(Textures.getInstance().bg_niebo, (int) (bg_move+1000), (int) (0), null);
 		
-		g2d.drawImage(Textures.getInstance().sun, (int) (450+ orbitRadius * Math.cos(radian)), (int) (220 + orbitRadius * Math.sin(radian)), this);
+		g2d.drawImage(Textures.getInstance().sun, (int) (430+ orbitRadius1 * Math.cos(radian)), (int) (260 + orbitRadius2 * Math.sin(radian)), this);
 		
 		g2d.drawImage(Textures.getInstance().bg_gory, (int) (bg_move), (int) (MainClass.HEIGHT - 305), null);
 		g2d.drawImage(Textures.getInstance().bg_gory, (int) (bg_move+1000), (int) (MainClass.HEIGHT - 305), null);
+		
+		
+		// CHMURY
+		
+		if (chmury1 > -200 && chmury1 < 1000) g2d.drawImage(Textures.getInstance().clouds1, (int) (chmury1), 70, null);
+		if (chmury3 > -200 && chmury3 < 1000) g2d.drawImage(Textures.getInstance().clouds3, (int) (chmury3), 110, null);
+		if (chmury2 > -200 && chmury2 < 1000) g2d.drawImage(Textures.getInstance().clouds2, (int) (chmury2), 150, null);
+		
+		
+		// PTAKI
+		if (ptaki1 > -220 && ptaki1 < 890)
+		{
+			ptaki1RAnim.drawAnimation(g2d, (int) (100+ptaki1), 80, false);
+			ptaki1RAnim.drawAnimation(g2d, (int) (100+ptaki2), 100, false);
+			ptaki1RAnim.drawAnimation(g2d, (int) (100+ptaki3), 90, false);			
+		}
+		
 		
 		//plane_move = 300;
 		if (plane_move > -170 && plane_move < 1300)
@@ -903,6 +1016,32 @@ public void render(int fps_count, int ticks_count)
 			mainMenuButtons[i].render(g2d);
 		}
 		mainMenuButtons[selectedMainMenuButton].setSelected(true);
+	}
+	
+	if (gameState == GameState.MainMenu && isDesktopSupported)
+	{
+		if (isDesktopSupported) {
+			g2d.setFont(MainClass.arialFont);
+			g2d.drawString("F1 - strona domowa gry.", 400, MainClass.HEIGHT - 10);			
+		}
+		
+		g2d.drawImage(Textures.getInstance().literaT, 95, (int) (MainClass.HEIGHT - 100 + falujaceLitery[0]), null);
+		g2d.drawImage(Textures.getInstance().literaE, 125, (int) (MainClass.HEIGHT - 100 + falujaceLitery[1]), null);
+		g2d.drawImage(Textures.getInstance().literaQ, 155, (int) (MainClass.HEIGHT - 100 + falujaceLitery[2]), null);
+		g2d.drawImage(Textures.getInstance().literaI, 185, (int) (MainClass.HEIGHT - 100 + falujaceLitery[3]), null);
+		g2d.drawImage(Textures.getInstance().literaL, 205, (int) (MainClass.HEIGHT - 100 + falujaceLitery[4]), null);
+		g2d.drawImage(Textures.getInstance().literaA, 230, (int) (MainClass.HEIGHT - 100 + falujaceLitery[5]), null);
+		
+		g2d.drawImage(Textures.getInstance().literaP, 285, (int) (MainClass.HEIGHT - 100 + falujaceLitery[6]), null);
+		g2d.drawImage(Textures.getInstance().literaL, 315, (int) (MainClass.HEIGHT - 100 + falujaceLitery[7]), null);
+		g2d.drawImage(Textures.getInstance().literaA, 340, (int) (MainClass.HEIGHT - 100 + falujaceLitery[8]), null);
+		g2d.drawImage(Textures.getInstance().literaT, 370, (int) (MainClass.HEIGHT - 100 + falujaceLitery[9]), null);
+		g2d.drawImage(Textures.getInstance().literaF, 400, (int) (MainClass.HEIGHT - 100 + falujaceLitery[10]), null);
+		g2d.drawImage(Textures.getInstance().literaO, 430, (int) (MainClass.HEIGHT - 100 + falujaceLitery[11]), null);
+		g2d.drawImage(Textures.getInstance().literaR, 460, (int) (MainClass.HEIGHT - 100 + falujaceLitery[12]), null);
+		g2d.drawImage(Textures.getInstance().literaM, 490, (int) (MainClass.HEIGHT - 100 + falujaceLitery[13]), null);
+		g2d.drawImage(Textures.getInstance().literaE, 530, (int) (MainClass.HEIGHT - 100 + falujaceLitery[14]), null);
+		g2d.drawImage(Textures.getInstance().literaR, 560, (int) (MainClass.HEIGHT - 100 + falujaceLitery[15]), null);
 	}
 	
 	// FPS CAP WSZÊDZIE OPRÓCZ GRY
