@@ -178,7 +178,7 @@ public void resetLevelStatistics()
 	MainScreen.TOTAL_SCORE = 0;
 	MainScreen.minutes = 0;
 	MainScreen.seconds = 0;
-	MainScreen.milis = 0f;
+	MainScreen.millis = 0;
 	MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
 }
 
@@ -206,6 +206,21 @@ public void switchLevel()
 	case 4:
 		loadLevel(5);
 		break;
+	case 5:
+		loadLevel(6);
+		break;
+	case 6:
+		loadLevel(7);
+		break;
+	case 7:
+		loadLevel(8);
+		break;
+	case 8:
+		loadLevel(9);
+		break;
+	case 9:
+		loadLevel(10);
+		break;
 	}
 	cam.setX(0);
 	MainScreen.LEVEL++;
@@ -221,6 +236,11 @@ public void loadLevel(int level)
 		if (level == 3) in = getClass().getResourceAsStream("/level3.lvl");
 		if (level == 4) in = getClass().getResourceAsStream("/level4.lvl");
 		if (level == 5) in = getClass().getResourceAsStream("/level5.lvl");
+		if (level == 6) in = getClass().getResourceAsStream("/level6.lvl");
+		if (level == 7) in = getClass().getResourceAsStream("/level7.lvl");
+		if (level == 8) in = getClass().getResourceAsStream("/level8.lvl");
+		if (level == 9) in = getClass().getResourceAsStream("/level9.lvl");
+		if (level == 10) in = getClass().getResourceAsStream("/level10.lvl");
 		
 		ois = new ObjectInputStream(in);
 		tileValues = (int[][]) (ois.readObject());

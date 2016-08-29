@@ -58,10 +58,13 @@ public static final File hallOfFameFile = new File("halloffame.dat");
  */
 public static final File gamepadConfigFile = new File("input.cfg");
 
-/** Podstawowa czcionka typu Arial, plain, 14.
- * 
- */
-public static Font arialFont;
+
+
+
+public static Font verdana14Font = new Font("Verdana", Font.BOLD, 14);
+public static Font verdana18Font = new Font("Verdana", Font.BOLD, 18);
+public static Font arialFont = new Font("Arial", Font.BOLD, 14);
+
 
 /** Czcionka Smokun Font.
  * 
@@ -76,6 +79,8 @@ public static Font texasFont;
 /** Szerokoœæ g³ównego okna gry.
  * 
  */
+
+public static final Color fontColor = new Color(60, 0, 140);
 public static int WIDTH = 0;
 
 /** Wysokoœæ g³ównego okna gry.
@@ -164,8 +169,6 @@ private void gameInit()
 		e.printStackTrace();
 		System.exit(-1);
 	}
-	
-	arialFont = new Font("Arial", Font.BOLD, 14);
 	
 	prepareAchievements();
 	prepareHallOfFame();
@@ -259,16 +262,7 @@ public void run()
 			
 			if (gameState == GameState.Game)
 			{
-				mainScreen.tick();
-				
-				////if (!jumpSound.isPlaying()) {jumpSound.stop();
-				//if (!powerUpSound.isPlaying()) powerUpSound.stop();
-				//if (!coinSound.isPlaying()) coinSound.stop();
-				//if (!hitSound.isPlaying()) hitSound.stop();
-				//if (!cactusShotSound.isPlaying()) cactusShotSound.stop();
-				//if (!springJumpSound.isPlaying()) springJumpSound.stop();
-				//if (!crateHitSound.isPlaying()) crateHitSound.stop();
-				
+				mainScreen.tick();		
 				if (fpsCap) mainScreen.render(60, ticks_count);
 			}
 			updates++;
@@ -312,8 +306,8 @@ private void prepareHallOfFame()
 	if (!MainClass.hallOfFameFile.exists() && !MainClass.hallOfFameFile.isDirectory())
 	{
 		// POCZATKOWA INICJALIZACJA TABLICY Z HALL OF FAME;
-		hallOfFameList = new ArrayList<HallOfFamePlayer>(10);
-		for (int i = 0; i < 10; i++) hallOfFameList.add(new HallOfFamePlayer("<empty>", 0, 0));
+		hallOfFameList = new ArrayList<HallOfFamePlayer>(20);
+		for (int i = 0; i < 20; i++) hallOfFameList.add(new HallOfFamePlayer(" < empty > ", 0, 0, 0));
 		
 		try {
 			oos = new ObjectOutputStream(new FileOutputStream(MainClass.hallOfFameFile));
@@ -390,15 +384,20 @@ private void prepareAchievements()
 	achievements.setComplete3LevelComplete(achievementsList.get(10));
 	achievements.setComplete4LevelComplete(achievementsList.get(11));
 	achievements.setComplete5LevelComplete(achievementsList.get(12));
-	achievements.setFindAllCoinsComplete(achievementsList.get(13));
-	achievements.setFindAllPowerupsComplete(achievementsList.get(14));
-	achievements.setNoHarmComplete(achievementsList.get(15));
-	achievements.setMegaJumpComplete(achievementsList.get(16));
+	achievements.setComplete6LevelComplete(achievementsList.get(13));
+	achievements.setComplete7LevelComplete(achievementsList.get(14));
+	achievements.setComplete8LevelComplete(achievementsList.get(15));
+	achievements.setComplete9LevelComplete(achievementsList.get(16));
+	achievements.setComplete10LevelComplete(achievementsList.get(17));
+	achievements.setFindAllCoinsComplete(achievementsList.get(18));
+	achievements.setFindAllPowerupsComplete(achievementsList.get(19));
+	achievements.setNoHarmComplete(achievementsList.get(20));
+	achievements.setMegaJumpComplete(achievementsList.get(21));
 }
 
 
-public static void main(String[] args) {
-	//initSplash();
+public static void main(String[] args)
+{
 	new MainClass();
 }
 
@@ -423,7 +422,7 @@ private class MusicThread implements Runnable
 				music.restart(music.getSong());
 			}
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -23,10 +23,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
 
 import com.platformer.game.graphics.Animation;
@@ -57,8 +60,7 @@ public static int LEVEL = 1;
 public static int COINS = 0;
 public static int SCORE = 0;
 public static int minutes = 0, seconds = 0;
-public static float milis = 0f;
-private long milisMax = 0;
+public static long millis = 0;
 public static final float MAX_TIME_BONUS = 1500f;
 public static float time_bonus = MAX_TIME_BONUS;
 public static float TOTAL_SCORE = 0f;
@@ -135,6 +137,10 @@ private String[] napisy = new String[] {
 		"             HELLO !!!         ",
 		"       TEQUILA PLATFORMER      ",
 		"       BEDE GRAU W GRE !       ",
+		"   LEELOO DALLAS MULTIPASS     ",
+		"        NASI TU BYLI !         ",
+		"         I'LL BE BACK !         ",
+		"   CIEMNOŒÆ, WIDZÊ CIEMNOŒÆ     ",
 		"        MY LITTLE PONY...       ",
 		"  TO JEST KURA PANIE GENRALE !  ",
 		"          IT JUST WORKS !       ",
@@ -156,6 +162,7 @@ private boolean[] literyUp = new boolean[16];
 private Animation ptaki1RAnim;
 private float ptaki1, ptaki2, ptaki3;
 private float chmury1, chmury2, chmury3;
+private float scrollScreenY;
 
 
 
@@ -244,6 +251,8 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	playerName = "";
 	
 	isDesktopSupported = Desktop.isDesktopSupported();
+	
+	scrollScreenY = 0;
 	
 	random = new Random();
 	bg_move = 0f;
@@ -648,9 +657,11 @@ public void tick()
 					}
 			case 1: gameState = GameState.JakGrac;
 					break;
-			case 2: gameState = GameState.NajlepszeWyniki;
+			case 2: scrollScreenY = 0;
+					gameState = GameState.NajlepszeWyniki;
 					break;
-			case 3: gameState = GameState.Osiagniecia;
+			case 3: scrollScreenY = 0;
+					gameState = GameState.Osiagniecia;
 					break;
 			case 4: gameState = GameState.Znajdzki;
 					break;
@@ -724,6 +735,17 @@ public void tick()
 	// MENU NAJLEPSZE WYNIKI	
 	if (gameState == GameState.NajlepszeWyniki)
 	{
+		
+		if (key.isKeyPressed(KeyEvent.VK_DOWN) && scrollScreenY < ((hallOfFame.getHallOfFameList().size() - 9) * 60))
+		{
+			scrollScreenY += 5;
+		}
+		
+		if (key.isKeyPressed(KeyEvent.VK_UP) && scrollScreenY > 0)
+		{
+			scrollScreenY -= 5;
+		}
+		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
 		{
 			MainClass.menuSound2.play();
@@ -735,6 +757,17 @@ public void tick()
 	// MENU OSIAGNIECIA
 	if (gameState == GameState.Osiagniecia)
 	{
+		
+		if (key.isKeyPressed(KeyEvent.VK_DOWN) && scrollScreenY < ((Achievements.maxAchievements - 9) * 60))
+		{
+			scrollScreenY += 5;
+		}
+		
+		if (key.isKeyPressed(KeyEvent.VK_UP) && scrollScreenY > 0)
+		{
+			scrollScreenY -= 5;
+		}
+		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
 		{
 			MainClass.menuSound2.play();
@@ -781,7 +814,7 @@ public void tick()
 		}
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
-			writeScore(playerName, SCORE, milisMax);
+			writeScore(playerName, SCORE, millis);
 		}
 	}
 	
@@ -798,8 +831,7 @@ public void tick()
 	if (gameState == GameState.NextLevel && player.isFinishLevel() && key.isKeyPressedOnce(KeyEvent.VK_ENTER)) // ENTER PO WPISANIU IMIENIA PRZENOSI NA NOWY POZIOM
 	{
 		gameState = GameState.Game;
-		MainScreen.milis = 0f;
-		milisMax = 0;
+		MainScreen.millis = 0;
 		MainScreen.minutes = 0;
 		MainScreen.seconds = 0;
 		MainScreen.COINS = 0;
@@ -832,22 +864,17 @@ public void tick()
  */
 public void timeTick()
 {
-	milis += (1000/60);
-	milisMax += (1000/60);
-	if (milis >999)
-	{
-		seconds++;
-		milis = 0;
+	millis += (1000/60);
+	time = new SimpleDateFormat("mm:ss:SSS").format(new Date(millis));
+}
+
+
+public static class CompareScore implements Comparator<HallOfFamePlayer>
+{
+	@Override
+	public int compare(HallOfFamePlayer p1, HallOfFamePlayer p2) {
+		return p2.getScore() - p1.getScore();
 	}
-	if (seconds > 59)
-	{
-		minutes++;
-		seconds = 0;
-	}
-	if (minutes < 10) time = "0"+minutes;
-	else time = minutes+"";
-	if (seconds < 10) time += ":0" +seconds +":" + (int) milis;
-	else time += ":"+seconds +":" + (int) milis;	
 }
 
 
@@ -855,11 +882,30 @@ public void timeTick()
  * oraz zapisuj¹ca tê listê do pliku.
  * @param name Imiê/ksywka obecnego gracza.
  * @param score Wynik obecnego gracza.
- * @param milis Czas gry obecnego gracza w milisekundach
+ * @param millis Czas gry obecnego gracza w milisekundach
  */
-private void writeScore(String name, int score, long milis)
+private void writeScore(String name, int score, long millis)
 {
-	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, milis));
+	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, millis, LEVEL));
+	
+	Collections.sort(hallOfFame.getHallOfFameList(), new CompareScore());
+	
+	ArrayList<HallOfFamePlayer> t = new ArrayList<HallOfFamePlayer>(10);
+	
+	
+	/// SORTOWANIE W KOLEJNOŒCI ODWROTNEJ CZYLI OD NAJWIÊKSZEGO DO NAJMNIEJSZEGO
+	for (int i = 0; i < 20; i++)
+	{
+		t.add(hallOfFame.getHallOfFameList().get(i));
+	}
+	
+	hallOfFame.getHallOfFameList().clear();
+	
+	for (int i = 0; i < 20; i++)
+	{
+		hallOfFame.getHallOfFameList().add(t.get(i));
+	}
+	
 	hallOfFame.writeScoreToFile();
 }
 
@@ -1093,7 +1139,7 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawString("POZIOM "+MainScreen.LEVEL, 845, 40);
 		g2d.drawString("MONETY: "+MainScreen.COINS, 10, 40);
 		g2d.drawString("WYNIK: "+MainScreen.SCORE, 10, 80);	
-		g2d.setFont(new Font("Verdana", 1, 12));
+		g2d.setFont(MainClass.verdana14Font);
 		g2d.drawString("CZAS: "+MainScreen.time, MainClass.WIDTH - 150, 70);
 	}
 	
@@ -1120,6 +1166,204 @@ public void render(int fps_count, int ticks_count)
 	if (gameState == GameState.Game) makeBgImage = false;
 	
 	hud.showGameHud(g2d, gameState, achievements, hallOfFame, this.fps_count, this.ticks_count);
+	
+	
+	if (gameState == GameState.Osiagniecia)
+	{
+		g2d.setColor(MainClass.fontColor);
+		g2d.drawImage(Textures.getInstance().achievementsMenuBGImage, 85, 0, null);
+		g2d.setFont(MainClass.verdana14Font);
+		g2d.drawString(achievements.getAchievementsUnlocked()+"/" +Achievements.maxAchievements,100, 10);
+		
+		
+		g2d.translate(0, -scrollScreenY); // CAM BEGINNING
+	
+		
+		for (int i = 0; i < Achievements.maxAchievements; i++)
+		{
+
+			if (achievements.getAchievementsList().get(i))
+			{
+				switch (i)
+				{
+				case 0:	if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getJump10TextShort() +"  " +achievements.getJump10Text(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().jump10Image, 110, 30 + (i*60), null);
+						}
+						break;
+				case 1: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getJump25TextShort() +"  " +achievements.getJump25Text(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().jump25Image, 110, 30 + (i*60), null);					
+						}
+						break;
+				case 2:	if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getJump50TextShort() +"  " +achievements.getJump50Text(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().jump50Image, 110, 30 + (i*60), null);
+						}
+						break;
+				case 3:	if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getCoin20TextShort() +"  " +achievements.getCoin20Text(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().coin20Image, 110, 30 + (i*60), null);
+						}
+						break;
+				case 4:	if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getCoin50TextShort() +"  " +achievements.getCoin50Text(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().coin50Image, 110, 30 + (i*60), null);
+						}
+						break;
+				case 5:	if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getCoin100TextShort() +"  " +achievements.getCoin100Text(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().coin100Image, 110, 30 + (i*60), null);
+						}
+						break;
+				case 6:	if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getCoin150TextShort() +"  " +achievements.getCoin150Text(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().coin150Image, 110, 30 + (i*60), null);
+						}
+						break;
+				case 7:	if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getPowerup3TextShort() +"  " +achievements.getPowerup3Text(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().powerup3Image, 110, 30 + (i*60), null);
+						}
+						break;
+				case 8: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete1LevelTextShort() +"  " +achievements.getComplete1LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete1LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 9: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete2LevelTextShort() +"  " +achievements.getComplete2LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete2LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 10: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete3LevelTextShort() +"  " +achievements.getComplete3LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete3LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 11: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete4LevelTextShort() +"  " +achievements.getComplete4LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete4LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 12: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete5LevelTextShort() +"  " +achievements.getComplete5LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete5LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 13: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete6LevelTextShort() +"  " +achievements.getComplete6LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete6LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 14: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete7LevelTextShort() +"  " +achievements.getComplete7LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete7LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 15: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete8LevelTextShort() +"  " +achievements.getComplete8LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete8LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 16: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete9LevelTextShort() +"  " +achievements.getComplete9LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete9LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 17: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getComplete10LevelTextShort() +"  " +achievements.getComplete10LevelText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().complete10LevelImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 18: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getFindAllCoinsTextShort() +"  " +achievements.getFindAllCoinsText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().findAllCoinsImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 19: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getFindAllPowerupsTextShort() +"  " +achievements.getFindAllPowerupsText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().findAllPowerupsImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 20: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getNoHarmTextShort() +"  " +achievements.getNoHarmText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().noHarmImage, 110, 30 + (i*60), null);
+						}
+						break;
+				case 21: if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+						{
+							g2d.drawString(achievements.getMegaJumpTextShort() +". " +achievements.getMegaJumpText(), 170, 60 + (i*60));
+							g2d.drawImage(Textures.getInstance().megaJumpImage, 110, 30 + (i*60), null);
+						}
+						break;
+				}				
+			}
+			else {
+				if (scrollScreenY < (20 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+				{
+					g2d.drawString(" < UKRYTY >", 170, 60 + (i*60));
+					g2d.drawImage(Textures.getInstance().blank, 110, 30 + (i*60), null);
+				}
+			}
+		}
+		//g2d.translate(0, scrollY1); // CAM ENDING
+	}
+	
+	
+	if (gameState == GameState.NajlepszeWyniki)
+	{
+		g2d.setColor(MainClass.fontColor);
+		g2d.drawImage(Textures.getInstance().hallOfFameImage, 100, 0, null);
+		
+		g2d.setFont(MainClass.verdana18Font);
+		g2d.drawString("MIEJSCE    POZIOM         IMIÊ                         CZAS                 WYNIK", 140, 45);
+		
+		g2d.drawLine(140, 51, 820, 51);
+		g2d.drawLine(140, 52, 820, 52);
+		g2d.drawLine(140, 53, 820, 53);
+		
+		g2d.translate(0, -scrollScreenY);
+		
+		
+		// TODO https://docs.oracle.com/javase/7/docs/api/java/awt/Graphics.html#setClip(int,%20int,%20int,%20int)
+		
+		
+		for (int i = 0; i < hallOfFame.getHallOfFameList().size(); i++)
+		{
+			 if (scrollScreenY < (10 +(i*60)) && scrollScreenY > (-490 + (i*60)))
+			 {
+				 	g2d.drawString(i+1+"", 175, 80 + (i*60));
+				 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getLevel()+"", 280, 80 + (i*60));
+				 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getName()+"", 360, 80+(i*60));
+				 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getTimeFromMilis(hallOfFame.getHallOfFameList().get(i).getMilis()), 570, 80 + (i*60));
+				 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getScore()+"", 755, 80 + (i*60));
+			 }
+		}
+	}
+	
+	
 	
 	if (makeScreenShot)	makeScreenShot();
 	

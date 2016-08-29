@@ -15,8 +15,8 @@
    id="svg4672"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="AchievementsMenuBG.svg"
-   inkscape:export-filename="C:\Users\Semiko\git\platformer-game\res\Other\Achievements.png"
+   sodipodi:docname="HallOfFameMenuBG.svg"
+   inkscape:export-filename="C:\Users\Semiko\git\platformer-game\res\Other\hallOfFameMenuBG.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -28,32 +28,32 @@
        inkscape:menu="Shadows and Glows"
        inkscape:label="Dark And Glow"
        style="color-interpolation-filters:sRGB;"
-       id="filter3336">
+       id="filter3405">
       <feGaussianBlur
          stdDeviation="5"
          result="result6"
-         id="feGaussianBlur3338" />
+         id="feGaussianBlur3407" />
       <feComposite
          result="result8"
          in="SourceGraphic"
          operator="atop"
          in2="result6"
-         id="feComposite3340" />
+         id="feComposite3409" />
       <feComposite
          result="result9"
          operator="over"
          in2="SourceAlpha"
          in="result8"
-         id="feComposite3342" />
+         id="feComposite3411" />
       <feColorMatrix
          values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 "
          result="result10"
-         id="feColorMatrix3344" />
+         id="feColorMatrix3413" />
       <feBlend
          in="result10"
          mode="normal"
          in2="result6"
-         id="feBlend3346" />
+         id="feBlend3415" />
     </filter>
   </defs>
   <sodipodi:namedview
@@ -64,8 +64,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.70000001"
-     inkscape:cx="358.19044"
-     inkscape:cy="799.54243"
+     inkscape:cx="333.19044"
+     inkscape:cy="744.86148"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -93,13 +93,13 @@
      id="layer1"
      transform="translate(0,4.7244096e-6)">
     <rect
-       style="opacity:1;fill:#7be2b8;fill-opacity:1;fill-rule:nonzero;stroke:#0035dc;stroke-width:2.53200006;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3336)"
+       style="opacity:1;fill:#7be2b8;fill-opacity:1;fill-rule:nonzero;stroke:#0035dc;stroke-width:2.53200006;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3405)"
        id="rect5220"
        width="731.02625"
-       height="549.39679"
-       x="8.8541431"
-       y="15.645646"
-       ry="25.928474"
+       height="562.25397"
+       x="7.4255714"
+       y="14.217074"
+       ry="5.9284759"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <text

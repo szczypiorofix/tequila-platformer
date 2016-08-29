@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="MainMenuButton.svg"
-   inkscape:export-filename="C:\Users\Piotrek\Git\platformer-game\res\Other\MainMenuButton.png"
+   inkscape:export-filename="C:\Users\Semiko\git\platformer-game\res\Other\mainMenuButton.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -29,13 +29,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="246.24838"
+     inkscape:cx="68.74838"
      inkscape:cy="811.50299"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="706"
+     inkscape:window-width="1600"
+     inkscape:window-height="838"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -56,7 +56,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="opacity:1;fill:#9cff00;fill-opacity:0.61538464;fill-rule:nonzero;stroke:#ffe680;stroke-width:3;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#9cff00;fill-opacity:0.61538464;fill-rule:nonzero;stroke:#ffe680;stroke-width:4;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
        id="rect4725"
        width="375.71423"
        height="59.999996"

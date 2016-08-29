@@ -50,7 +50,7 @@ public BufferedImage tacoImage;
 public BufferedImage angryCactusR, angryCactusL, angryCactus0;
 public BufferedImage dartR, dartL;
 public BufferedImage movingCrate;
-public BufferedImage buttonBlock;
+public BufferedImage buttonBlock, buttonBlockOn;
 public BufferedImage pushingMovingBlockXOff, pushingMovingBlockXOn, pushingMovingBlockYOff, pushingMovingBlockYOn;
 public BufferedImage spikeBlock1, spikeBlock2, spikeBlock3, spikeBlock4;
 public BufferedImage tumbleweed, tumbleweed1, tumbleweed2, tumbleweed3, tumbleweed4, tumbleweed5, tumbleweed6, tumbleweed7;
@@ -67,6 +67,7 @@ public BufferedImage ptakiR1, ptakiR2;
 
 
 // ACHIEVMENTS
+public final BufferedImage blank;
 public final BufferedImage jump10Image;
 public final BufferedImage jump25Image;
 public final BufferedImage jump50Image;
@@ -80,6 +81,11 @@ public final BufferedImage complete2LevelImage;
 public final BufferedImage complete3LevelImage;
 public final BufferedImage complete4LevelImage;
 public final BufferedImage complete5LevelImage;
+public final BufferedImage complete6LevelImage;
+public final BufferedImage complete7LevelImage;
+public final BufferedImage complete8LevelImage;
+public final BufferedImage complete9LevelImage;
+public final BufferedImage complete10LevelImage;
 public final BufferedImage findAllCoinsImage;
 public final BufferedImage findAllPowerupsImage;
 public final BufferedImage noHarmImage;
@@ -255,6 +261,7 @@ public Textures()
 	movingCrate = loader.loadImage("/MovingCrate.png");
 	
 	buttonBlock = loader.loadImage("/ButtonBlock.png");
+	buttonBlockOn = loader.loadImage("/ButtonBlockOn.png");
 	pushingMovingBlockXOff = loader.loadImage("/PushingMovingBlockX Off.png");
 	pushingMovingBlockXOn = loader.loadImage("/PushingMovingBlockX On.png");
 	pushingMovingBlockYOff = loader.loadImage("/PushingMovingBlockY Off.png");
@@ -317,7 +324,7 @@ public Textures()
 	mainMenuButtonSelected = loader.loadImage("/mainMenuButtonSelected.png");
 	
 	howToPlayImage = loader.loadImage("/JakGrac.png");
-	//hallOfFameImage = loader.loadImage("");
+	hallOfFameImage = loader.loadImage("/hallOfFameMenuBG.png");
 	creditsImage = loader.loadImage("/OGrze.png");
 	achievementsMenuBGImage = loader.loadImage("/AchievementsMenuBG.png");
 	//collectiblesImage = loader.loadImage("");
@@ -351,6 +358,7 @@ public Textures()
 	ptakiR2 = loader.loadImage("/ptakiR2.png");
 	
 	
+	blank = loader.loadImage("/Ablank.png");
 	jump10Image = loader.loadImage("/A10jumps.png");
 	jump25Image = loader.loadImage("/A25jumps.png");
 	jump50Image = loader.loadImage("/A50jumps.png");
@@ -364,6 +372,11 @@ public Textures()
 	complete3LevelImage = loader.loadImage("/Acomplete3Level.png");
 	complete4LevelImage = loader.loadImage("/Acomplete4Level.png");
 	complete5LevelImage = loader.loadImage("/Acomplete5Level.png");
+	complete6LevelImage = loader.loadImage("/Acomplete6Level.png");
+	complete7LevelImage = loader.loadImage("/Acomplete7Level.png");
+	complete8LevelImage = loader.loadImage("/Acomplete8Level.png");
+	complete9LevelImage = loader.loadImage("/Acomplete9Level.png");
+	complete10LevelImage = loader.loadImage("/Acomplete10Level.png");
 	findAllCoinsImage = loader.loadImage("/AfindAllCoins.png");
 	findAllPowerupsImage = loader.loadImage("/AfindAllPowerup.png");
 	noHarmImage = loader.loadImage("/AnoHarm.png");

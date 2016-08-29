@@ -17,6 +17,7 @@ private ObjectsHandler objectsHandler;
 private boolean action, visible;
 private int direction;
 private GameObject tempObject;
+private boolean highLight = false;
 
 public ButtonBlock(float x, float y, ObjectsHandler objectsHandler)
 {
@@ -35,7 +36,8 @@ public ButtonBlock(float x, float y, ObjectsHandler objectsHandler)
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(Textures.getInstance().buttonBlock, (int) x, (int) y,  null);
+	if (highLight) g.drawImage(Textures.getInstance().buttonBlockOn, (int) x, (int) y, null);
+	else g.drawImage(Textures.getInstance().buttonBlock, (int) x, (int) y, null);
 	//Graphics2D g2d = (Graphics2D) g;
 	//g2d.draw(getImpactBounds());
 }
@@ -56,7 +58,8 @@ public void tick(LinkedList<GameObject> object) {
 		tempObject = objectsHandler.getPushingMovingBlockY_List().get(i);
 		if (getImpactBounds().intersects(tempObject.getBounds()) && action && tempObject.isVisible())	tempObject.setAction(true);
 	}
-	
+	if (action) highLight = true;
+	else highLight = false;
 	action = false;
 }
 

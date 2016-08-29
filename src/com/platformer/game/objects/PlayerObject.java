@@ -304,6 +304,11 @@ private void collisions()
 					if (MainScreen.LEVEL == 3) achievements.addComplete3LevelCount();
 					if (MainScreen.LEVEL == 4) achievements.addComplete4LevelCount();
 					if (MainScreen.LEVEL == 5) achievements.addComplete5LevelCount();
+					if (MainScreen.LEVEL == 6) achievements.addComplete6LevelCount();
+					if (MainScreen.LEVEL == 7) achievements.addComplete7LevelCount();
+					if (MainScreen.LEVEL == 8) achievements.addComplete8LevelCount();
+					if (MainScreen.LEVEL == 9) achievements.addComplete9LevelCount();
+					if (MainScreen.LEVEL == 10) achievements.addComplete10LevelCount();
 					velX = 0f;
 					velY = 0f;
 					finishLevel = true;

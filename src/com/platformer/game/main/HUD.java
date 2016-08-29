@@ -80,61 +80,11 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		break;
 	}
 	case Osiagniecia: {
-		g2d.setColor(Color.BLACK);
-		g2d.drawImage(Textures.getInstance().achievementsMenuBGImage, 100, 20, null);
-		g2d.setFont(new Font("Arial", Font.BOLD, 14));
-
-		
-		for (int i = 0; i < Achievements.maxAchievements; i++)
-		{
-
-			//if (achievements.getAchievementsList().get(i))
-			//{
-				switch (i)
-				{
-				case 0:	g2d.drawString(achievements.getJump10TextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().jump10Image, 110, 30 + (i*60), null);
-						break;
-				case 1:
-						g2d.drawString(achievements.getJump25TextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().jump25Image, 110, 30 + (i*60), null);
-						break;
-				case 2:	g2d.drawString(achievements.getJump50TextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().jump50Image, 110, 30 + (i*60), null);
-						break;
-				case 3:	g2d.drawString(achievements.getCoin20TextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().coin20Image, 110, 30 + (i*60), null);
-						break;
-				case 4:	g2d.drawString(achievements.getCoin50TextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().coin50Image, 110, 30 + (i*60), null);
-						break;
-				case 5:	g2d.drawString(achievements.getCoin100TextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().coin100Image, 110, 30 + (i*60), null);
-						break;
-				case 6:	g2d.drawString(achievements.getCoin150TextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().coin150Image, 110, 30 + (i*60), null);
-						break;
-				case 7:	g2d.drawString(achievements.getPowerup3TextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().powerup3Image, 110, 30 + (i*60), null);
-						break;
-				case 8: g2d.drawString(achievements.getComplete1LevelTextShort(), 170, 60 + (i*60));
-						g2d.drawImage(Textures.getInstance().complete1LevelImage, 110, 30 + (i*60), null);
-						break;
-				}				
-			//}
-			//else {
-			//	// draw blank field;
-			//}
-		}
-		
+			
 		break;
 	}
 	case NajlepszeWyniki: {
-		g2d.setColor(Color.BLACK);
-		g2d.fillRect(100, 50, MainClass.WIDTH - 200, MainClass.HEIGHT - 100);
-		g2d.setFont(new Font("Arial", Font.BOLD, 14));
-		g2d.setColor(Color.WHITE);
-		g2d.drawString("<UNDER CONTRUCTION>", 400, 300);
+
 		break;
 	}
 	case Znajdzki: {

@@ -17,7 +17,69 @@
    inkscape:version="0.91 r13725"
    sodipodi:docname="achievementIconBG.svg">
   <defs
-     id="defs3370" />
+     id="defs3370">
+    <filter
+       inkscape:label="Canvas Bumps Matte"
+       inkscape:menu="Bumps"
+       inkscape:menu-tooltip="Same as Canvas Bumps but with a diffuse light instead of a specular one"
+       style="color-interpolation-filters:sRGB"
+       id="filter5663-8">
+      <feTurbulence
+         baseFrequency="0.2"
+         seed="300"
+         numOctaves="7"
+         result="result1"
+         type="turbulence"
+         id="feTurbulence5665-8" />
+      <feDisplacementMap
+         yChannelSelector="A"
+         scale="0"
+         in2="result1"
+         xChannelSelector="R"
+         result="result6"
+         id="feDisplacementMap5667-6" />
+      <feBlend
+         result="fbSourceGraphic"
+         mode="screen"
+         in2="SourceGraphic"
+         in="result6"
+         id="feBlend5669-0" />
+      <feColorMatrix
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 4 -2.5 "
+         result="fbSourceGraphicAlpha"
+         id="feColorMatrix5671-6" />
+      <feGaussianBlur
+         stdDeviation="0.5"
+         in="fbSourceGraphicAlpha"
+         result="result0"
+         id="feGaussianBlur5673-6" />
+      <feDiffuseLighting
+         result="result5"
+         surfaceScale="15"
+         diffuseConstant="0.40000001"
+         id="feDiffuseLighting5675-3">
+        <feDistantLight
+           azimuth="235"
+           elevation="25"
+           id="feDistantLight5677-8" />
+      </feDiffuseLighting>
+      <feComposite
+         k4="0"
+         k1="0"
+         result="result4"
+         operator="arithmetic"
+         k2="0.9"
+         k3="0.9"
+         in2="SourceGraphic"
+         id="feComposite5679-5" />
+      <feComposite
+         in2="SourceGraphic"
+         in="result4"
+         result="result2"
+         operator="in"
+         id="feComposite5681-9" />
+    </filter>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,13 +88,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="117.64651"
+     inkscape:cx="-166.0372"
      inkscape:cy="973.35638"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="706"
+     inkscape:window-width="1600"
+     inkscape:window-height="838"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -44,7 +106,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -53,13 +115,26 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="opacity:1;fill:#ddff55;fill-opacity:1;fill-rule:nonzero;stroke:#241c1f;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3376"
-       width="92.934036"
-       height="69.700523"
-       x="19.192896"
-       y="15.440619"
-       ry="12.05994"
-       rx="12.05994" />
+       style="opacity:1;fill:#dde9af;fill-opacity:1;fill-rule:nonzero;stroke:#241c1f;stroke-width:1.78734922;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5663-8)"
+       id="rect3376-6-5"
+       width="77.075264"
+       height="67.12043"
+       x="17.525833"
+       y="34.913418"
+       ry="11.61352"
+       rx="10.001966"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:62.7557373px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#0088aa;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       x="38.123234"
+       y="90.402306"
+       id="text4160"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4162"
+         x="38.123234"
+         y="90.402306">?</tspan></text>
   </g>
 </svg>
