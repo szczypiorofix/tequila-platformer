@@ -6,6 +6,7 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+
 import com.platformer.game.graphics.Textures;
 
 public class MenuButton {
@@ -23,6 +24,8 @@ public MenuButton(String name, float x, float y)
 	this.x = x;
 	this.y = y;
 	this.name = name;
+	width = 380;
+	height = 64;
 	selected = false;
 }
 
@@ -92,5 +95,21 @@ public boolean isSelected() {
 
 public void setSelected(boolean selected) {
 	this.selected = selected;
+}
+
+public float getWidth() {
+	return width;
+}
+
+public void setWidth(float width) {
+	this.width = width;
+}
+
+public float getHeight() {
+	return height;
+}
+
+public void setHeight(float height) {
+	this.height = height;
 }
 }

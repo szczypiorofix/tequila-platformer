@@ -122,8 +122,8 @@ private GameState gameState;
  * 
  */
 public static Music music;
-public static final float GAME_VER = 0.21f;
-public static final int BUILD = 7;
+public static final float GAME_VER = 0.46f;
+public static final int BUILD = 13;
 public static boolean fpsCap;
 private JWindow window;
 private BufferedImageLoader splashScreenLoader = new BufferedImageLoader();
@@ -420,11 +420,6 @@ private class MusicThread implements Runnable
 			if (music.isPlaying()) {
 				music.play();
 				music.restart(music.getSong());
-			}
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		}
 	}

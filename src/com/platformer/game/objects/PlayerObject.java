@@ -26,6 +26,7 @@ private final float MAX_SPEED = 13f;
 private final int HIT_COOLDOWN = 60*2;
 private final int TEQUILA_COOLDOWN = 60*5;
 private final int TACO_COOLDOWN = 60*8;
+private final int DUST_TIME = 20;
 private float width, height;
 private float velX = 0;
 private float velY = 0;
@@ -43,6 +44,10 @@ private int tequila_time = TEQUILA_COOLDOWN;
 private boolean tequila_powerUp = false;
 private int taco_time = TACO_COOLDOWN;
 private boolean taco_powerUp = false;
+private int dust_time = DUST_TIME;
+private boolean isDust = false;
+private int dustX, dustY;
+private int dustFrame;
 private boolean finishLevel = false;
 private int maxCoins;
 private int maxPowerups;
@@ -68,6 +73,9 @@ public PlayerObject(float x, float y, ObjectsHandler objectsHandler, Achievement
 	noHarm = true;
 	visible = true;
 	direction = 1;
+	dustX = 0;
+	dustY = 0;
+	dustFrame = 0;
 	maxCoins = 0;
 	powerups = 0;
 	health = MAX_HEALTH;
@@ -146,7 +154,7 @@ public void tick(LinkedList<GameObject> object) {
 	if (x > 232 * 64) x = 232*64;
 	
 	//ŒMIERÆ PRZY SPADNIÊCIU W DÓ£
-	if (y > 1150) health = 0;
+	if (y > 1130) health = 0;
 	
 	onGround = false;
 	
@@ -159,6 +167,20 @@ public void tick(LinkedList<GameObject> object) {
 		else {
 			tequila_time = TEQUILA_COOLDOWN;
 			tequila_powerUp = false;
+		}
+	}
+	
+	if (isDust)
+	{
+		if (dust_time > 0) {
+			dust_time--;
+			if (dust_time > 15) dustFrame = 0;
+			if (dust_time > 8 && dust_time <= 15) dustFrame = 1;
+			if (dust_time <= 8) dustFrame = 2;
+			}
+		else {
+			dust_time = DUST_TIME;
+			isDust = false;
 		}
 	}
 	
@@ -208,7 +230,6 @@ private void collisions()
 				if (getBoundsTop().intersects(tempObject.getBounds()))
 				{
 					if (y > (tempObject.getBounds().y - tempObject.getHeight())) {
-						
 						y = tempObject.getY() + 40;
 						velY = 0;	
 					}
@@ -216,6 +237,11 @@ private void collisions()
 					
 				if (getBounds().intersects(tempObject.getBounds()))
 				{			
+					if (velY > 10) {
+						dustX = (int) x-20;
+						dustY = (int) y+70;
+						isDust = true;
+					}
 					y = tempObject.getY() - 103;
 					jumping = false;
 					velY = 0;
@@ -722,6 +748,9 @@ public void render(Graphics g) {
 		if (!onGround && !jumping && direction == 1) playerFallingRight.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
 		if (!onGround && !jumping && direction == -1) playerFallingLeft.drawAnimation(g, (int) x, ( int )y+6, hit_by_enemy);
 	}
+	
+	if (isDust)	g2d.drawImage(Textures.getInstance().dust[dustFrame], dustX, dustY, null);
+		
 	//g2d.draw(getBounds());
 	//g2d.draw(getBoundsTop());
 	//g2d.draw(getBoundsLeft());

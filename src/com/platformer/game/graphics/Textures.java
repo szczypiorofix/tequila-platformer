@@ -64,6 +64,8 @@ public BufferedImage smiglo[] = new BufferedImage[4];
 public BufferedImage flaga;
 public BufferedImage literaA, literaE, literaF, literaI, literaL, literaM, literaO, literaP, literaQ, literaR, literaT, literaU;
 public BufferedImage ptakiR1, ptakiR2;
+public BufferedImage[] dust;
+public BufferedImage websiteButton;
 
 
 // ACHIEVMENTS
@@ -357,6 +359,12 @@ public Textures()
 	ptakiR1 = loader.loadImage("/ptakiR1.png");
 	ptakiR2 = loader.loadImage("/ptakiR2.png");
 	
+	websiteButton = loader.loadImage("/websiteButton.png");
+	
+	dust = new BufferedImage[3];
+	dust[0] = loader.loadImage("/dust1.png");
+	dust[1] = loader.loadImage("/dust2.png");
+	dust[2] = loader.loadImage("/dust3.png");
 	
 	blank = loader.loadImage("/Ablank.png");
 	jump10Image = loader.loadImage("/A10jumps.png");

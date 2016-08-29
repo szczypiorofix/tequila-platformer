@@ -44,9 +44,9 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		g2d.drawImage(Textures.getInstance().menuBg, 300, 120, null);
 		g2d.setColor(Color.RED);
 		g2d.setFont(MainClass.texasFont.deriveFont(68f));
-		g2d.drawString("NIE ¯YJESZ ...", 355, 220);
+		g2d.drawString("NIE ¯YJESZ", 420, 240);
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
-		g2d.drawString("SPACJA - RESTART", 340, 320);
+		g2d.drawString("SPACJA - RESTART", 405, 320);
 		break;
 	}
 	case NextLevel: {
@@ -72,7 +72,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	case MainMenu: {
 		g2d.setFont(MainClass.arialFont);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString("Tequila Platformer ver." +MainClass.GAME_VER +" (" +MainClass.BUILD +"). 2016.", 10, 590);
+		g2d.drawString("Tequila Platformer ver." +MainClass.GAME_VER +" (Build " +MainClass.BUILD +") 2016.", 10, 590);
 		break;
 	}
 	case JakGrac: {
