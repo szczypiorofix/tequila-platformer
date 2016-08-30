@@ -13,7 +13,7 @@ import com.platformer.game.graphics.Textures;
 public class Achievements {
 
 private HashMap<Integer, Boolean> achievementsList;
-public static final int maxAchievements = 22;
+public static final int maxAchievements = 23;
 private final int showAchievementCooldown = 200;
 private boolean showAchievement = false;
 private int achievementCount;
@@ -160,6 +160,11 @@ private boolean megaJumpComplete = false;
 private final String megaJumpText = "Wykona³eœ MEGA SKOK !";
 private final String megaJumpTextShort = "MEGA SKOK !";
 
+private int sprinterCount;
+private static final int A_SPRINTER = 1;
+private boolean sprinterComplete = false;
+private final String sprinterText = "Ukoñczy³eœ poziom w czasie krótszym ni¿ 1 minuta.";
+private final String sprinterTextShort = "Szybciej, szybciej!!";
 
 
 public Achievements(HashMap<Integer, Boolean> achievementsList)
@@ -189,6 +194,7 @@ public Achievements(HashMap<Integer, Boolean> achievementsList)
 	findAllPowerupsCount = 0;
 	noHarmCount = 0;
 	megaJumpCount = 0;
+	sprinterCount = 0;
 	achievementText = "";
 	achievementImage = null;
 }
@@ -208,6 +214,7 @@ public void restartLevel()
 	findAllPowerupsCount = 0;
 	noHarmCount = 0;
 	megaJumpCount = 0;
+	sprinterCount = 0;
 }
 
 public void addJump10Count()
@@ -543,6 +550,21 @@ public void addMegaJumpCount()
 }
 
 
+public void addSprinterCount()
+{
+	if (!sprinterComplete) {
+		sprinterCount++;
+		if (sprinterCount>= A_SPRINTER) {
+			sprinterComplete = true;
+			achievementsList.put(22, true);
+			setAchievementText(sprinterText);
+			setAchievementTextShort(sprinterTextShort);
+			setAchievementImage(Textures.getInstance().sprinterImage);
+			setShowAchievement(true);
+		}
+	}
+}
+
 
 public HashMap<Integer, Boolean> getAchievementsList()
 {
@@ -695,6 +717,9 @@ public boolean isMegaJumpComplete() {
 	return megaJumpComplete;
 }
 
+public boolean isSprinterComplete() {
+	return sprinterComplete;
+}
 
 
 
@@ -876,6 +901,14 @@ public String getMegaJumpTextShort() {
 	return megaJumpTextShort;
 }
 
+public String getSprinterText() {
+	return sprinterText;
+}
+
+public String getSprinterTextShort() {
+	return sprinterTextShort;
+}
+
 
 
 
@@ -967,5 +1000,9 @@ public void setNoHarmComplete(boolean noHarmComplete) {
 
 public void setMegaJumpComplete(boolean megaJumpComplete) {
 	this.megaJumpComplete = megaJumpComplete;
+}
+
+public void setSprinterComplete(boolean sprinterComplete) {
+	this.sprinterComplete = sprinterComplete;
 }
 }

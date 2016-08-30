@@ -239,7 +239,7 @@ private void collisions()
 				{			
 					if (velY > 10) {
 						dustX = (int) x-20;
-						dustY = (int) y+70;
+						dustY = (int) y+75;
 						isDust = true;
 					}
 					y = tempObject.getY() - 103;

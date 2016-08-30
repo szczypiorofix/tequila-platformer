@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg4139"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="sparkle.svg"
+   inkscape:export-filename="C:\Users\Semiko\git\platformer-game\res\Other\sparkle.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4141" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="236.02807"
+     inkscape:cy="955.59359"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="838"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4144">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="star"
+       style="opacity:1;fill:#ffd42a;fill-opacity:1;stroke:#d40000;stroke-width:0.4020918;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       id="path4687"
+       sodipodi:sides="8"
+       sodipodi:cx="30.666142"
+       sodipodi:cy="11.12621"
+       sodipodi:r1="18.310804"
+       sodipodi:r2="8.9722948"
+       sodipodi:arg1="0.773634"
+       sodipodi:arg2="1.1663331"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="1.0339e-015"
+       d="m 43.765255,23.920693 -9.568288,-4.546129 -3.315419,10.061184 -3.551203,-9.9804 -9.458686,4.769975 4.546128,-9.568287 -10.061183,-3.315419 9.9804,-3.5512033 -4.769976,-9.4586862 9.568288,4.5461286 3.315419,-10.0611832 3.551203,9.9803995 9.458686,-4.7699755 -4.546128,9.5682878 10.061183,3.3154193 -9.9804,3.551203 z"
+       inkscape:transform-center-x="2.2653961"
+       inkscape:transform-center-y="-2.4734621"
+       transform="translate(43.735611,56.337261)" />
+  </g>
+</svg>

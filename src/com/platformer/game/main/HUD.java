@@ -70,13 +70,13 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		break;
 	}
 	case MainMenu: {
-		g2d.setFont(MainClass.arialFont);
+		g2d.setFont(MainClass.arial14Font);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString("Tequila Platformer ver." +MainClass.GAME_VER +" (Build " +MainClass.BUILD +") 2016.", 10, 590);
 		break;
 	}
 	case JakGrac: {
-		g2d.drawImage(Textures.getInstance().howToPlayImage, 150, 25, null);
+		g2d.drawImage(Textures.getInstance().howToPlayImage, 145, 5, null);
 		break;
 	}
 	case Osiagniecia: {
@@ -96,14 +96,14 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		break;
 	}
 	case OGrze: {
-		g2d.drawImage(Textures.getInstance().creditsImage, 260, 25, null);
+		g2d.drawImage(Textures.getInstance().creditsImage, 255, 15, null);
 		break;
 	}
 	default: {	
 	}
 	}
 	
-	g2d.setFont(MainClass.arialFont);
+	g2d.setFont(MainClass.arial14Font);
 	g2d.setColor(Color.BLACK);
 	g2d.drawString("FPS: "+fps_count +" Ticks: "+ ticks_count, MainClass.WIDTH - 160, MainClass.HEIGHT - 10);
 }

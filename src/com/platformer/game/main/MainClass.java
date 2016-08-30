@@ -63,7 +63,7 @@ public static final File gamepadConfigFile = new File("input.cfg");
 
 public static Font verdana14Font = new Font("Verdana", Font.BOLD, 14);
 public static Font verdana18Font = new Font("Verdana", Font.BOLD, 18);
-public static Font arialFont = new Font("Arial", Font.BOLD, 14);
+public static Font arial14Font = new Font("Arial", Font.BOLD, 14);
 
 
 /** Czcionka Smokun Font.
@@ -290,7 +290,7 @@ public void run()
 		if (fpsCap)
 		{
 			try {
-				Thread.sleep(5);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -393,6 +393,7 @@ private void prepareAchievements()
 	achievements.setFindAllPowerupsComplete(achievementsList.get(19));
 	achievements.setNoHarmComplete(achievementsList.get(20));
 	achievements.setMegaJumpComplete(achievementsList.get(21));
+	achievements.setSprinterComplete(achievementsList.get(22));
 }
 
 

@@ -92,8 +92,7 @@ public final BufferedImage findAllCoinsImage;
 public final BufferedImage findAllPowerupsImage;
 public final BufferedImage noHarmImage;
 public final BufferedImage megaJumpImage;
-
-
+public final BufferedImage sprinterImage;
 
 
 public BufferedImage howToPlayImage, hallOfFameImage, creditsImage, achievementsMenuBGImage, collectiblesImage;
@@ -365,7 +364,7 @@ public Textures()
 	dust[0] = loader.loadImage("/dust1.png");
 	dust[1] = loader.loadImage("/dust2.png");
 	dust[2] = loader.loadImage("/dust3.png");
-	
+		
 	blank = loader.loadImage("/Ablank.png");
 	jump10Image = loader.loadImage("/A10jumps.png");
 	jump25Image = loader.loadImage("/A25jumps.png");
@@ -389,6 +388,7 @@ public Textures()
 	findAllPowerupsImage = loader.loadImage("/AfindAllPowerup.png");
 	noHarmImage = loader.loadImage("/AnoHarm.png");
 	megaJumpImage = loader.loadImage("/AMegaJump.png");
+	sprinterImage = loader.loadImage("/Asprinter.png");
 }
 
 

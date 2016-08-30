@@ -45,6 +45,7 @@ public Dart(float x, float y, int direction, ObjectsHandler objectsHandler) {
 
 @Override
 public void render(Graphics g) {
+	
 	if (direction == 1) g.drawImage(Textures.getInstance().dartR, (int) x, (int) y, null);
 	else g.drawImage(Textures.getInstance().dartL, (int) x, (int) y, null);
 }
@@ -71,7 +72,6 @@ public void tick(LinkedList<GameObject> object) {
 		{
 			objectsHandler.getDart_List().remove(this);
 			MainClass.crateHitSound.play();
-			
 		}
 	}
 }
