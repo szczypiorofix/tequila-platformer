@@ -4,19 +4,19 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+
 /** Klasa, której obiekt przechowuje wszystkie grafiki w grze.
  * @author Piotrek
  *
  */
 public final class Textures {
 
-
 /** Podstawowa i jedyna instancja klasy Textures.
  * 
  */
 private static Textures instance = null;
-	
-	
+
+
 public BufferedImage[] block = new BufferedImage[12];
 public BufferedImage[] playerRunR = new BufferedImage[10];
 public BufferedImage[] playerRunL = new BufferedImage[10];
@@ -57,14 +57,14 @@ public BufferedImage tumbleweed, tumbleweed1, tumbleweed2, tumbleweed3, tumblewe
 public BufferedImage springBlock, springBlock2;
 public BufferedImage fallingBlock;
 public BufferedImage clouds1, clouds2, clouds3;
-public BufferedImage[] collectible = new BufferedImage[5];
+public BufferedImage[] collectible = new BufferedImage[7];
 public BufferedImage mainMenuButton, mainMenuButtonSelected;
 public BufferedImage planeR;    // http://opengameart.org/content/red-biplane
 public BufferedImage smiglo[] = new BufferedImage[4];
 public BufferedImage flaga;
 public BufferedImage literaA, literaE, literaF, literaI, literaL, literaM, literaO, literaP, literaQ, literaR, literaT, literaU;
 public BufferedImage ptakiR1, ptakiR2;
-public BufferedImage[] dust;
+public BufferedImage[] dust = new BufferedImage[3];
 public BufferedImage websiteButton;
 
 
@@ -100,7 +100,7 @@ public BufferedImage howToPlayImage, hallOfFameImage, creditsImage, achievements
 
 
 public Textures()
-{
+{	
 	BufferedImageLoader loader = new BufferedImageLoader();
 		
 	// http://charas-project.net/charas2/  - GENERATOR !!!
@@ -220,7 +220,6 @@ public Textures()
 	movingBlockX = loader.loadImage("/MovingBlockX.png");
 	movingBlockY = loader.loadImage("/MovingBlockY.png");
 	
-	//water = loader.loadImage("/16.png");
 	water1 = loader.loadImage("/16_1.png");
 	water2 = loader.loadImage("/16_2.png");
 	water3 = loader.loadImage("/16_3.png");
@@ -320,6 +319,8 @@ public Textures()
 	collectible[2] = loader.loadImage("/collectibles2.png");
 	collectible[3] = loader.loadImage("/collectibles3.png");
 	collectible[4] = loader.loadImage("/collectibles4.png");
+	collectible[5] = loader.loadImage("/collectibles5.png");
+	collectible[6] = loader.loadImage("/collectibles6.png");
 	
 	mainMenuButton = loader.loadImage("/mainMenuButton.png");
 	mainMenuButtonSelected = loader.loadImage("/mainMenuButtonSelected.png");
@@ -360,7 +361,7 @@ public Textures()
 	
 	websiteButton = loader.loadImage("/websiteButton.png");
 	
-	dust = new BufferedImage[3];
+	
 	dust[0] = loader.loadImage("/dust1.png");
 	dust[1] = loader.loadImage("/dust2.png");
 	dust[2] = loader.loadImage("/dust3.png");

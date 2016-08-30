@@ -37,8 +37,7 @@ public Collectibles(float x, float y, ObjectsHandler objectsHandler)
 	visible = true;
 	direction = 0;
 	random = new Random();
-	show = random.nextInt(2);
-
+	show = random.nextInt(3);
 	type = random.nextInt(Textures.getInstance().collectible.length);
 }
 	
@@ -51,7 +50,7 @@ public void render(Graphics g) {
 
 @Override
 public void tick(LinkedList<GameObject> object) {
-	if (show == 0) this.objectsHandler.getCollectibles_List().remove(this);
+	if (show != 0) this.objectsHandler.getCollectibles_List().remove(this);
 }
 
 @Override

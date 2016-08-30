@@ -864,7 +864,7 @@ public boolean isTaco_powerUp() {
 	return taco_powerUp;
 }
 
-public boolean isFinishLevel() {
+public boolean isLevelFinished() {
 	return finishLevel;
 }
 

@@ -86,7 +86,7 @@ private InputManager key;
 private Joystick joystick;
 private Controller myGamepad;
 private Component[] gamepadComponents;
-private boolean exit = false;
+public static boolean exit = false;
 private Camera cam;
 private HUD hud;
 
@@ -172,6 +172,7 @@ private float ptaki1, ptaki2, ptaki3;
 private float chmury1, chmury2, chmury3;
 private float scrollScreenY;
 private Shape defaultClip;
+private Runtime runtime;
 
 
 
@@ -212,15 +213,18 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 			upValueProp = prop.getProperty("value_up");
 			downProp = prop.getProperty("Down");
 			downValueProp = prop.getProperty("value_down");
+			MainClass.logging(false, "Plik ustawieñ gamepada prawid³owo odczytany.");
 
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			String message = MainClass.getStackTrace(ex);
+			MainClass.logging(false, "B³¹d odczytu pliku ustawieñ gamepada!", message);
 		} finally {
 			if (propInput != null) {
 				try {
 					propInput.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					String message = MainClass.getStackTrace(e);
+					MainClass.logging(false, "Plik ustawieñ gamepada zosta³ nieprawid³owo zamkniêty!", message);
 				}
 			}
 		}
@@ -381,15 +385,18 @@ private void openWebsite(String website)
 
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
 			URI url = null;
+			MainClass.logging(false, "Polecenie desktopowe BROWSE jest dostêpne.");
 			try {
 				url = new URI(website);
 			} catch (URISyntaxException e1) {
-				e1.printStackTrace();
+				String message = MainClass.getStackTrace(e1);
+				MainClass.logging(false, "B³¹d wywo³ania (URL) otwierania strony domowej gry.", message);
 			}
 			try {
 				desktop.browse(url);
 			} catch (IOException e) {
-				e.printStackTrace();
+				String message = MainClass.getStackTrace(e);
+				MainClass.logging(false, "B³¹d otwierania (browse) strony domowej gry.", message);
 			}			
 		}
 	}
@@ -515,16 +522,20 @@ public void tick()
 	
 	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
 		player.setHealth(5);
-		/**
+		
 		int active = Thread.activeCount();
-        System.out.println("currently active threads: " + active);
+        System.out.println("Aktywne w¹tki: " + active);
         Thread all[] = new Thread[active];
         Thread.enumerate(all);
 
         for (int i = 0; i < active; i++) {
            System.out.println(i + ": " + all[i] +" " +all[i].getState());
         }
-        **/
+        runtime = Runtime.getRuntime();
+        System.out.println();
+        System.out.println("JVM Total memory: " +(runtime.totalMemory())/1024/1024 +" MB");
+        System.out.println("JVM Free memory: " +runtime.freeMemory()/1024/1024 +" MB");
+        System.out.println("JVM Max memory: " +runtime.maxMemory()/1024/1024 +" MB");
 	}
 	
 	if (showMessage)
@@ -555,6 +566,8 @@ public void tick()
 		gameState = GameState.Game;
 		objectsHandler.clearLevel();
 		objectsHandler.resetLevelStatistics();
+		System.gc(); // GARBAGE COLLECTOR
+		MainClass.logging(false, "Poziom gry zosta³ zrestartowany.");
 		objectsHandler.loadLevel(LEVEL);
 		cam.setX(0);
 		player = objectsHandler.getPlayer();
@@ -663,11 +676,9 @@ public void tick()
 			MainClass.menuSound2.play();
 			switch (selectedMainMenuButton)
 			{
-			case 0: {
-						playMusic2();
-						gameState = GameState.Game;
-						break;				
-					}
+			case 0: playMusic2();
+					gameState = GameState.Game;
+					break;				
 			case 1: gameState = GameState.JakGrac;
 					break;
 			case 2: scrollScreenY = 0;
@@ -727,10 +738,12 @@ public void tick()
 			case 1: 
 					objectsHandler.clearLevel();
 					objectsHandler.resetLevelStatistics();
+					System.gc(); // GARBAGE COLLECTOR
 					objectsHandler.loadLevel(1);
 					cam.setX(0);
 					player = objectsHandler.getPlayer();
 					achievements.restartLevel();
+					MainClass.logging(false, "Powrót do menu g³ównego gry.");
 					playMusic1();
 					gameState = GameState.MainMenu;
 					break;
@@ -818,7 +831,7 @@ public void tick()
 	
 	
 	// PO WPISANIU IMIENIA DO LISTY NAJLEPSZYCH - ENTER!
-	if (player.isFinishLevel()) {
+	if (player.isLevelFinished()) {
 		
 		if (key.isAnyKeyPressedOnce())
 		{
@@ -833,12 +846,13 @@ public void tick()
 		}
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
+			MainClass.logging(false, "Zapisano kolejnego gracza.");
 			writeScore(playerName, SCORE, millis);
 		}
 	}
 	
 	// GRA DZIA£A
-	if (gameState == GameState.Game && !player.isFinishLevel() && player.getHealth() > 0) {
+	if (gameState == GameState.Game && !player.isLevelFinished() && player.getHealth() > 0) {
 		objectsHandler.tick();
 		cam.tick(player);
 		timeTick();
@@ -847,7 +861,7 @@ public void tick()
 	
 	
 	// ENTER TO NEW LEVEL
-	if (gameState == GameState.NextLevel && player.isFinishLevel() && key.isKeyPressedOnce(KeyEvent.VK_ENTER)) // ENTER PO WPISANIU IMIENIA PRZENOSI NA NOWY POZIOM
+	if (gameState == GameState.NextLevel && player.isLevelFinished() && key.isKeyPressedOnce(KeyEvent.VK_ENTER)) // ENTER PO WPISANIU IMIENIA PRZENOSI NA NOWY POZIOM
 	{
 		gameState = GameState.Game;
 		MainScreen.millis = 0;
@@ -945,11 +959,12 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
 			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
 		    oos.writeObject(achievements.getAchievementsList());
 		    oos.close();
+		    MainClass.logging(false, "Plik osi¹gniêæ " +MainClass.achievementsFile.getName() +" zosta³ poprawnie zapisany.");
 			}
 			catch (IOException ioe)
 			{
-				ioe.printStackTrace();
-				System.exit(-1);
+				String message = MainClass.getStackTrace(ioe);
+				MainClass.logging(true, "B³¹d zapisu plików osi¹gniêæ " +MainClass.achievementsFile.getName(), message);
 			}
 			saveAchievementsToFile = true;
 		}
@@ -1113,7 +1128,7 @@ public void render(int fps_count, int ticks_count)
 	else MainClass.fpsCap = true;
 	
 		
-	if ((!player.isFinishLevel()) && gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
+	if ((!player.isLevelFinished()) && gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
 	{ 
 		////// CAM MOVING HERE
 		g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
@@ -1140,7 +1155,7 @@ public void render(int fps_count, int ticks_count)
 	else saveAchievementsToFile = false;
 		
 	// KONIEC POZIOMU
-	if (player.isFinishLevel())
+	if (player.isLevelFinished())
 	{
 		gameState = GameState.NextLevel;
 		if (millis < (1000 * 60)) achievements.addSprinterCount();
@@ -1346,8 +1361,8 @@ public void makeScreenShot()
 	try {
 		ImageIO.write(Textures.getInstance().screenShotImage, "png", screenShotFile);
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(-1);
+			String message = MainClass.getStackTrace(e);
+			MainClass.logging(false, "B³¹d zapisu zrzutu ekranu" +screenShotFile.getName(), message);
 		}
 	makeScreenShot = false;
 }
@@ -1423,10 +1438,12 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 							case 1: 
 									objectsHandler.clearLevel();
 									objectsHandler.resetLevelStatistics();
+									System.gc(); // GARBAGE COLLECTOR
 									objectsHandler.loadLevel(1);
 									cam.setX(0);
 									player = objectsHandler.getPlayer();
 									achievements.restartLevel();
+									MainClass.logging(false, "Powrót do menu g³ównego gry.");
 									playMusic1();
 									gameState = GameState.MainMenu;
 									break;

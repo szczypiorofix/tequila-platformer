@@ -31,8 +31,8 @@ public void writeScoreToFile()
 		}
 		catch (IOException ioe)
 		{
-			ioe.printStackTrace();
-			System.exit(-1);
+			String message = MainClass.getStackTrace(ioe);
+			MainClass.logging(true, "B³¹d zapisu kolejnego uczestnika do pliku "+MainClass.hallOfFameFile.getName(), message);
 		}
 	}
 }

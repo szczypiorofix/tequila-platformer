@@ -245,11 +245,12 @@ public void loadLevel(int level)
 		ois = new ObjectInputStream(in);
 		tileValues = (int[][]) (ois.readObject());
 		ois.close();
+		MainClass.logging(false, "Pliku poziomu nr. "+level +" za³adowany poprawnie.");
 	}
 	catch (IOException | ClassNotFoundException ioe)
 	{
-		ioe.printStackTrace();
-		System.exit(0);
+		String message = MainClass.getStackTrace(ioe);
+		MainClass.logging(true, "B³¹d odczytu pliku poziomu nr. "+level, message);
 	}
 	
 
@@ -314,7 +315,7 @@ public void loadLevel(int level)
 				if (tileValues[yy][xx] == 50) collectibles_List.add(new Collectibles(xx*50, (yy*50)+550, this));
 			}
 		}
-		
+		MainClass.logging(false, "Wszystkie obiekty poziomu gry "+level +" zosta³y za³adowane poprawnie.");
 		player.setMaxCoins(coin_List.size());
 		player.setMaxPowerups(tequila_List.size() + taco_List.size());
 }

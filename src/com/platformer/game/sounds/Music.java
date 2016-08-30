@@ -3,6 +3,8 @@ package com.platformer.game.sounds;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 
+import com.platformer.game.main.MainClass;
+
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
@@ -68,8 +70,10 @@ public void restart(int song)
 		if (this.song == WESTERN) fis = this.getClass().getResourceAsStream("/western.mp3"); 
 		if (this.song == MIRAGE) fis = this.getClass().getResourceAsStream("/mirage.mp3");
 		player = new Player(new BufferedInputStream(fis));
+		MainClass.logging(false, "Plik z muzyk¹ nr." +song +" za³adowany poprawnie.");
 	} catch (JavaLayerException e) {
-		e.printStackTrace();
+		String message = MainClass.getStackTrace(e);
+		MainClass.logging(true, "B³¹d odczytu strumienia z pliku nr." +song, message);
 	}		
 }
 
@@ -80,8 +84,10 @@ public void play()
 {
 	try {
 		player.play();
+		MainClass.logging(false, "Odtwarzanie pliku z muzyk¹ nr." +song);
 	} catch (JavaLayerException e) {
-		e.printStackTrace();
+		String message = MainClass.getStackTrace(e);
+		MainClass.logging(true, "B³¹d odtwarzania z pliku nr." +song, message);
 	}		
 }
 

@@ -31,6 +31,7 @@ public void showWindow(boolean showWindow)
 	this.setVisible(showWindow);
 	if (!showWindow) {
 		this.dispose();
+		MainClass.logging(false, "Wywo³anie zamkniêcia gry.");
 		System.exit(0);
 	}
 }
@@ -43,7 +44,7 @@ public void windowClosed(WindowEvent arg0) {}
 
 @Override
 public void windowClosing(WindowEvent arg0) {
-	System.exit(0);
+	MainScreen.exit = true;
 }
 
 @Override

@@ -11,9 +11,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JWindow;
@@ -33,6 +38,12 @@ import com.platformer.game.sounds.SoundsLoader;
 public class MainClass implements Runnable {
 
 
+	
+private final static Logger LOGGER = Logger.getLogger(MainClass.class.getName());
+private FileHandler fileHandler = null;
+
+
+	
 /** Obiekt HashMap<Integer, Boolean> przechowuj¹cy spis achievementów.
  * 
  */
@@ -128,12 +139,35 @@ public static boolean fpsCap;
 private JWindow window;
 private BufferedImageLoader splashScreenLoader = new BufferedImageLoader();
 private BufferedImage splashScreen;
+public static boolean DEBUG_MODE;
+
 
 /** Konstruktor klasy g³ównej gry.
  * 
  */
 public MainClass()
 {
+	// LOGGER
+	if (DEBUG_MODE)
+	{
+		try {
+			fileHandler = new FileHandler("platformer.log", false);
+		} catch (SecurityException e1) {
+			e1.printStackTrace();
+			System.exit(-1);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			System.exit(-1);
+		}
+		
+		//LOGGER.setUseParentHandlers(false); // WYŒWIETLANIE LOGÓW W KONSOLI
+		
+		fileHandler.setFormatter(new SimpleFormatter());
+		fileHandler.setLevel(Level.INFO);
+		LOGGER.addHandler(fileHandler);
+		logging(false, "Uruchomienie gry w trybie DEBUG. Logger za³adowany.");
+	}
+
 	splashScreen();
 	gameInit();
 }
@@ -149,8 +183,8 @@ public void splashScreen()
 	label.setBackground(Color.BLACK);
 	window.setLocationRelativeTo(null);
 	window.setVisible(true);
+	logging(false, "Uruchomienie ekranu splashScreen.");
 }
-
 
 /** Inicjuje pocz¹tekowe warunki i stany gry, np. gameWindow, MainScreen (Canvas). W tej metodzie uruchamiany jest w¹tek
  * renderowania i update'owania gry.
@@ -162,20 +196,18 @@ private void gameInit()
 	
 	try {
 		texasFont = Font.createFont(Font.TRUETYPE_FONT, TEXAS_FONT);
+		logging(false, "Czcionka Textas Font za³adowana.");
 		smokunFont = Font.createFont(Font.TRUETYPE_FONT, SMOKUN_FONT);
+		logging(false, "Czcionka Smokun Font Font za³adowana.");
 	}
 	catch (FontFormatException | IOException e)
 	{
-		e.printStackTrace();
-		System.exit(-1);
+		String message = getStackTrace(e);
+		logging(false, "B³¹d ³adowania czcionki! ", message);
 	}
 	
 	prepareAchievements();
 	prepareHallOfFame();
-	
-	//mainMenu = new MainMenu(this, hallOfFame, achievements);
-	
-	//mainMenu.showMenu(true);
 	
 	music = new Music();
 	
@@ -202,6 +234,7 @@ private void gameInit()
 	gameState = GameState.MainMenu;
 	mainScreen = new MainScreen(gameState, gameWindow, gamepadConfigFileEnabled, hallOfFame, achievements);
 	gameWindow.setVisible(true);
+	logging(false, "Okno gry zainicjowane ");
 	WIDTH = mainScreen.getWidth();
 	HEIGHT = mainScreen.getHeight();
 	
@@ -238,6 +271,7 @@ public void run()
 	gameWindow.requestFocus();
 	
 	gameState = GameState.Game;
+	logging(false, "W¹tek gry uruchomiony.");
 	
 	// GAME LOOP
 
@@ -290,9 +324,10 @@ public void run()
 		if (fpsCap)
 		{
 			try {
-				Thread.sleep(1);
+				Thread.sleep(5);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				String message = getStackTrace(e);
+				logging(true, "B³¹d game loop w momencie Thread.sleep(5); ! ", message);
 			}
 		}
 	}
@@ -314,11 +349,12 @@ private void prepareHallOfFame()
 			oos.writeObject(hallOfFameList);
 			oos.flush();
 			oos.close();
+			logging(false, "Plik "+MainClass.hallOfFameFile.getName() +" poprawnie utworzony a nowe dane poprawnie zapisane");
 		}
 		catch (IOException ioe)
 		{
-			ioe.printStackTrace();
-			System.exit(-1);
+			String message = getStackTrace(ioe);
+			logging(true, "B³¹d zapisu do pliku "+MainClass.hallOfFameFile.getName(), message);
 		}
 	}
 	
@@ -326,12 +362,12 @@ private void prepareHallOfFame()
 	ois = new ObjectInputStream(new FileInputStream(MainClass.hallOfFameFile));
 	hallOfFameList = (ArrayList<HallOfFamePlayer>) ois.readObject();
 	ois.close();
+	logging(false, "Dane HallOfFame z pliku "+MainClass.hallOfFameFile.getName() +" poprawnie za³adowane");
 	}
-	catch (IOException | ClassNotFoundException 
-			e)
+	catch (IOException | ClassNotFoundException e)
 	{
-		e.printStackTrace();
-		System.exit(-1);
+		String message = getStackTrace(e);
+		logging(true, "B³¹d odczytu z pliku " +MainClass.hallOfFameFile.getName(), message);
 	}
 	hallOfFame = new HallOfFame(hallOfFameList);
 }
@@ -351,11 +387,12 @@ private void prepareAchievements()
 				oos.writeObject(achievementsList);
 				oos.flush();
 				oos.close();
+				logging(false, "Plik "+MainClass.achievementsFile.getName() +" poprawnie utworzony a nowe dane poprawnie zapisane");
 			}
 			catch (IOException ioe)
 			{
-				ioe.printStackTrace();
-				System.exit(-1);
+				String message = getStackTrace(ioe);
+				logging(true, "B³¹d zapisu do pliku "+MainClass.achievementsFile.getName(), message);
 			}
 	}
 	
@@ -363,11 +400,12 @@ private void prepareAchievements()
 	ois = new ObjectInputStream(new FileInputStream(MainClass.achievementsFile));
 	achievementsList = (HashMap<Integer, Boolean>) ois.readObject();
 	ois.close();
+	logging(false, "Dane Achievements z pliku "+MainClass.achievementsFile.getName() +" poprawnie za³adowane");
 	}
 	catch (IOException | ClassNotFoundException e)
 	{
-		e.printStackTrace();
-		System.exit(-1);
+		String message = getStackTrace(e);
+		logging(true, "B³¹d odczytu pliku "+MainClass.achievementsFile.getName(), message);
 	}
 
 	achievements = new Achievements(achievementsList);
@@ -396,9 +434,37 @@ private void prepareAchievements()
 	achievements.setSprinterComplete(achievementsList.get(22));
 }
 
+public static void logging(boolean critical, String... msg)
+{
+	if (DEBUG_MODE)
+	{
+		for (int i = 0; i < msg.length; i++) {
+			if (critical) {
+				LOGGER.log(Level.WARNING, msg[i]);
+			} else LOGGER.log(Level.INFO, msg[i]);
+		}
+		if (critical) {
+			LOGGER.log(Level.WARNING, "Zamykanie programu z b³êdem.");
+			System.exit(-1);
+		}
+	}
+}
 
+
+public static String getStackTrace(final Throwable throwable) {
+    final StringWriter sw = new StringWriter();
+    final PrintWriter pw = new PrintWriter(sw, true);
+    throwable.printStackTrace(pw);
+    return sw.getBuffer().toString();
+}
+
+
+
+// URUCHAMIANIE Z "-DEBUG" W£ACZA DEBUG-MODE.
 public static void main(String[] args)
 {
+	if (args.length > 0)
+	if (args[0].equalsIgnoreCase("-debug")) DEBUG_MODE = true;
 	new MainClass();
 }
 
@@ -413,6 +479,8 @@ private class MusicThread implements Runnable
 	@Override
 	public void run() {
 
+		MainClass.logging(false, "W¹tek muzyczny uruchomiony.");
+		
 		music.setPlaying(true);
 		music.restart(Music.WESTERN);
 		
