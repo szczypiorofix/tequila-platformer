@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JWindow;
 
 import com.platformer.game.graphics.BufferedImageLoader;
+import com.platformer.game.objects.Collectibles;
 import com.platformer.game.sounds.Music;
 import com.platformer.game.sounds.SoundsLoader;
 
@@ -43,6 +44,7 @@ private final static Logger LOGGER = Logger.getLogger(MainClass.class.getName())
 private FileHandler fileHandler = null;
 
 
+private int[] collectiblesList = new int[Collectibles.MAX_COLLECTIBLES];
 	
 /** Obiekt HashMap<Integer, Boolean> przechowuj¹cy spis achievementów.
  * 
@@ -63,6 +65,10 @@ public static final File achievementsFile = new File("achievements.dat");
  * 
  */
 public static final File hallOfFameFile = new File("halloffame.dat");
+
+
+public static final File collectiblesFile = new File("collectibles.dat");
+
 
 /** Plik konfiguracyjny do obs³ugi pada/gamepada.
  * 
@@ -206,6 +212,7 @@ private void gameInit()
 		logging(false, "B³¹d ³adowania czcionki! ", message);
 	}
 	
+	prepareCollectibles();
 	prepareAchievements();
 	prepareHallOfFame();
 	
@@ -232,7 +239,7 @@ private void gameInit()
 
 	gameWindow = new GameWindow();
 	gameState = GameState.MainMenu;
-	mainScreen = new MainScreen(gameState, gameWindow, gamepadConfigFileEnabled, hallOfFame, achievements);
+	mainScreen = new MainScreen(gameState, gameWindow, gamepadConfigFileEnabled, hallOfFame, achievements, collectiblesList);
 	gameWindow.setVisible(true);
 	logging(false, "Okno gry zainicjowane ");
 	WIDTH = mainScreen.getWidth();
@@ -371,6 +378,46 @@ private void prepareHallOfFame()
 	}
 	hallOfFame = new HallOfFame(hallOfFameList);
 }
+
+
+public void prepareCollectibles()
+{
+	//collectiblesList
+	
+	if (!MainClass.collectiblesFile.exists() && !MainClass.collectiblesFile.isDirectory())
+	{
+		for (int i = 0; i < collectiblesList.length; i++)
+		{
+			collectiblesList[i] = i+1;
+		}
+		
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream((MainClass.collectiblesFile)));
+			oos.writeObject(collectiblesList);
+			oos.flush();
+			oos.close();
+			logging(false, "Plik "+MainClass.collectiblesFile.getName() +" poprawnie utworzony a nowe dane poprawnie zapisane");
+		}
+		catch (IOException ioe)
+		{
+			String message = getStackTrace(ioe);
+			logging(true, "B³¹d zapisu do pliku "+MainClass.collectiblesFile.getName(), message);
+		}
+	}
+		
+	try {
+		ois = new ObjectInputStream(new FileInputStream(MainClass.collectiblesFile));
+		collectiblesList = (int[]) ois.readObject();
+		ois.close();
+		logging(false, "Dane Collectibles z pliku "+MainClass.collectiblesFile.getName() +" poprawnie za³adowane");
+		}
+		catch (IOException | ClassNotFoundException e)
+		{
+			String message = getStackTrace(e);
+			logging(true, "B³¹d odczytu pliku "+MainClass.collectiblesFile.getName(), message);
+		}
+}
+
 
 @SuppressWarnings("unchecked")
 private void prepareAchievements()

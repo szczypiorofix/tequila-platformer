@@ -80,61 +80,61 @@ private int complete1LevelCount;
 private static final int A_COMPLETE1LEVEL = 1;
 private boolean complete1LevelComplete = false;
 private final String complete1LevelText = "Ukoñczy³eœ 1 poziom.";
-private final String complete1LevelTextShort = "Ukoñczy³eœ 1 poziom.";
+private final String complete1LevelTextShort = "1 poziom.";
 
 private int complete2LevelCount;
 private static final int A_COMPLETE2LEVEL = 1;
 private boolean complete2LevelComplete = false;
 private final String complete2LevelText = "Ukoñczy³eœ 2 poziom.";
-private final String complete2LevelTextShort = "Ukoñczy³eœ 2 poziom.";
+private final String complete2LevelTextShort = "2 poziom.";
 
 private int complete3LevelCount;
 private static final int A_COMPLETE3LEVEL = 1;
 private boolean complete3LevelComplete = false;
 private final String complete3LevelText = "Ukoñczy³eœ 3 poziom.";
-private final String complete3LevelTextShort = "Ukoñczy³eœ 3 poziom.";
+private final String complete3LevelTextShort = "3 poziom.";
 
 private int complete4LevelCount;
 private static final int A_COMPLETE4LEVEL = 1;
 private boolean complete4LevelComplete = false;
 private final String complete4LevelText = "Ukoñczy³eœ 4 poziom.";
-private final String complete4LevelTextShort = "Ukoñczy³eœ 4 poziom.";
+private final String complete4LevelTextShort = "4 poziom.";
 
 private int complete5LevelCount;
 private static final int A_COMPLETE5LEVEL = 1;
 private boolean complete5LevelComplete = false;
 private final String complete5LevelText = "Ukoñczy³eœ 5 poziom.";
-private final String complete5LevelTextShort = "Ukoñczy³eœ 5 poziom.";
+private final String complete5LevelTextShort = "5 poziom.";
 
 private int complete6LevelCount;
 private static final int A_COMPLETE6LEVEL = 1;
 private boolean complete6LevelComplete = false;
 private final String complete6LevelText = "Ukoñczy³eœ 6 poziom.";
-private final String complete6LevelTextShort = "Ukoñczy³eœ 6 poziom.";
+private final String complete6LevelTextShort = "6 poziom.";
 
 private int complete7LevelCount;
 private static final int A_COMPLETE7LEVEL = 1;
 private boolean complete7LevelComplete = false;
 private final String complete7LevelText = "Ukoñczy³eœ 7 poziom.";
-private final String complete7LevelTextShort = "Ukoñczy³eœ 7 poziom.";
+private final String complete7LevelTextShort = "7 poziom.";
 
 private int complete8LevelCount;
 private static final int A_COMPLETE8LEVEL = 1;
 private boolean complete8LevelComplete = false;
 private final String complete8LevelText = "Ukoñczy³eœ 8 poziom.";
-private final String complete8LevelTextShort = "Ukoñczy³eœ 8 poziom.";
+private final String complete8LevelTextShort = "8 poziom.";
 
 private int complete9LevelCount;
 private static final int A_COMPLETE9LEVEL = 1;
 private boolean complete9LevelComplete = false;
 private final String complete9LevelText = "Ukoñczy³eœ 9 poziom.";
-private final String complete9LevelTextShort = "Ukoñczy³eœ 9 poziom.";
+private final String complete9LevelTextShort = "9 poziom.";
 
 private int complete10LevelCount;
 private static final int A_COMPLETE10LEVEL = 1;
 private boolean complete10LevelComplete = false;
 private final String complete10LevelText = "Ukoñczy³eœ 10 poziom.";
-private final String complete10LevelTextShort = "Ukoñczy³eœ 10 poziom.";
+private final String complete10LevelTextShort = "10 poziom.";
 
 private int findAllCoinsCount;
 private static final int A_FINDALLCOINS = 1;
@@ -164,7 +164,7 @@ private int sprinterCount;
 private static final int A_SPRINTER = 1;
 private boolean sprinterComplete = false;
 private final String sprinterText = "Ukoñczy³eœ poziom w czasie krótszym ni¿ 1 minuta.";
-private final String sprinterTextShort = "Szybciej, szybciej!!";
+private final String sprinterTextShort = "Szybciej, szybciej...";
 
 
 public Achievements(HashMap<Integer, Boolean> achievementsList)

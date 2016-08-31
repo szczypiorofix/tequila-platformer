@@ -80,19 +80,12 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		break;
 	}
 	case Osiagniecia: {
-			
 		break;
 	}
 	case NajlepszeWyniki: {
-
 		break;
 	}
 	case Znajdzki: {
-		g2d.setColor(Color.BLACK);
-		g2d.fillRect(100, 50, MainClass.WIDTH - 200, MainClass.HEIGHT - 100);
-		g2d.setFont(new Font("Arial", Font.BOLD, 14));
-		g2d.setColor(Color.WHITE);
-		g2d.drawString("<UNDER CONTRUCTION>", 400, 300);
 		break;
 	}
 	case OGrze: {

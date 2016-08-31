@@ -11,7 +11,7 @@ import com.platformer.game.main.ObjectsHandler;
 public class Collectibles extends GameObject{
 
 
-
+public static final int MAX_COLLECTIBLES = 7;
 private ObjectsHandler objectsHandler;
 private float x, y;
 private float width, height;

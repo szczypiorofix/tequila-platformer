@@ -163,7 +163,7 @@ private Random random;
  * 
  */
 private boolean isDesktopSupported;
-
+private int[] collectiblesList;
 private Desktop desktop;
 private float[] falujaceLitery = new float[16];
 private boolean[] literyUp = new boolean[16];
@@ -183,7 +183,7 @@ private Runtime runtime;
  * @param hallOfFame - obiekt klasy HallOfFame czyli Najlepsze Wyniki.
  * @param achievements - obiekt klasy Achievements czyli Osi¹gniêcia.
  */
-public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFileEnabled, HallOfFame hallOfFame, Achievements achievements)
+public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFileEnabled, HallOfFame hallOfFame, Achievements achievements, int[] collectiblesList)
 {
 	super();	
 	this.setFocusable(false);
@@ -192,6 +192,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	this.hallOfFame = hallOfFame;
 	this.achievements = achievements;
 	this.gamepadEnabled = gamepadFileEnabled;
+	this.collectiblesList = collectiblesList;
 	
 	if (this.gamepadEnabled) 
 	{
@@ -1200,6 +1201,24 @@ public void render(int fps_count, int ticks_count)
 	if (gameState == GameState.Game) makeBgImage = false;
 	
 	hud.showGameHud(g2d, gameState, achievements, hallOfFame, this.fps_count, this.ticks_count);
+	
+	
+	if (gameState == GameState.Znajdzki)
+	{
+		g2d.drawImage(Textures.getInstance().collectiblesImage, 90, 0, null);
+		g2d.setFont(MainClass.verdana18Font);
+		g2d.setColor(MainClass.fontColor);
+		
+		//g2d.drawString("Osi¹gniêcia: " +achievements.getAchievementsUnlocked()+"/" +Achievements.maxAchievements,380, 34);
+		
+		
+		for (int i = 0; i < Textures.getInstance().collectible.length; i++)
+		{
+			g2d.drawImage(Textures.getInstance().collectible[i], 130, 70 + (i * 70), null);
+			g2d.drawString(collectiblesList[i] +"", 200, 95 + (i * 70));
+		}
+		
+	}
 	
 	
 	if (gameState == GameState.Osiagniecia)

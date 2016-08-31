@@ -329,7 +329,7 @@ public Textures()
 	hallOfFameImage = loader.loadImage("/hallOfFameMenuBG.png");
 	creditsImage = loader.loadImage("/OGrze.png");
 	achievementsMenuBGImage = loader.loadImage("/AchievementsMenuBG.png");
-	//collectiblesImage = loader.loadImage("");
+	collectiblesImage = loader.loadImage("/CollectiblesMenuBG.png");
 	
 	bg_gory = loader.loadImage("/BG_gory.png");
 	bg_niebo = loader.loadImage("/BG_niebo.png");
