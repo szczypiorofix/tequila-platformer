@@ -172,7 +172,9 @@ private float ptaki1, ptaki2, ptaki3;
 private float chmury1, chmury2, chmury3;
 private float scrollScreenY;
 private Shape defaultClip;
-private Runtime runtime;
+private boolean showHandMenu = false;
+private HandMenuItem[] handMenuItem = new HandMenuItem[7];
+
 
 
 
@@ -262,6 +264,14 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	
 	cam = new Camera(0,0);
 	
+	handMenuItem[0] = new HandMenuItem(Textures.getInstance().collectible[0], 170, 418);
+	handMenuItem[1] = new HandMenuItem(Textures.getInstance().collectible[1], 211, 452);
+	handMenuItem[2] = new HandMenuItem(Textures.getInstance().collectible[2], 205, 502);
+	handMenuItem[3] = new HandMenuItem(Textures.getInstance().collectible[3], 158, 522);
+	handMenuItem[4] = new HandMenuItem(Textures.getInstance().collectible[4], 116, 491);
+	handMenuItem[5] = new HandMenuItem(Textures.getInstance().collectible[5], 123, 440);
+	handMenuItem[6] = new HandMenuItem(Textures.getInstance().collectible[6], 165, 470);
+	
 	playerName = "";
 	
 	isDesktopSupported = Desktop.isDesktopSupported();
@@ -275,7 +285,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	
 	hud = new HUD();
 	
-	objectsHandler = new ObjectsHandler(cam, achievements);
+	objectsHandler = new ObjectsHandler(cam, achievements, collectiblesList);
 	objectsHandler.loadLevel(1);
 	player = objectsHandler.getPlayer();
 	
@@ -520,8 +530,16 @@ public void tick()
 		}
 	}
 	
+	showHandMenu = false;
 	
-	if (key.isKeyPressedOnce(KeyEvent.VK_CONTROL)) {
+	if (key.isKeyPressed(KeyEvent.VK_CONTROL)) {
+		
+		showHandMenu = true;
+		
+		
+		
+		
+		/**
 		player.setHealth(5);
 		
 		int active = Thread.activeCount();
@@ -537,6 +555,7 @@ public void tick()
         System.out.println("JVM Total memory: " +(runtime.totalMemory())/1024/1024 +" MB");
         System.out.println("JVM Free memory: " +runtime.freeMemory()/1024/1024 +" MB");
         System.out.println("JVM Max memory: " +runtime.maxMemory()/1024/1024 +" MB");
+        **/
 	}
 	
 	if (showMessage)
@@ -1162,7 +1181,18 @@ public void render(int fps_count, int ticks_count)
 		if (millis < (1000 * 60)) achievements.addSprinterCount();
 		TOTAL_SCORE = SCORE + (int) time_bonus;
 	}
-	
+		
+	// HAND MENU
+	if (showHandMenu)
+	{
+		g2d.drawImage(Textures.getInstance().handMenu, 100, MainClass.HEIGHT - 200, null);
+		
+		for (int i = 0; i < handMenuItem.length; i++) {
+			if (collectiblesList[i] >= 5) handMenuItem[i].setActive(true);
+			else handMenuItem[i].setActive(false);
+			handMenuItem[i].drawItem(g2d);
+		}
+	}
 
 	// HUD gry
 	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
@@ -1208,8 +1238,6 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(Textures.getInstance().collectiblesImage, 90, 0, null);
 		g2d.setFont(MainClass.verdana18Font);
 		g2d.setColor(MainClass.fontColor);
-		
-		//g2d.drawString("Osi¹gniêcia: " +achievements.getAchievementsUnlocked()+"/" +Achievements.maxAchievements,380, 34);
 		
 		
 		for (int i = 0; i < Textures.getInstance().collectible.length; i++)
@@ -1404,6 +1432,29 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 {
 	@Override
 	public void mouseReleased(MouseEvent me) {
+		
+		
+		if (showHandMenu)
+		{
+			
+			for (int i = 0; i < handMenuItem.length; i++)
+			{
+				
+				if (me.getX() >= handMenuItem[i].getX()+5 && me.getX() <= handMenuItem[i].getX() + handMenuItem[i].getWidth()-5
+						&& me.getY() >= handMenuItem[i].getY()+5 && me.getY() <= handMenuItem[i].getY() + handMenuItem[i].getHeight()-5
+						&& handMenuItem[i].isActive())  // AND MUSTT BE ACTIVE !!!
+				{
+					/// AKTYWACJA DANEJ MOCY nr. i
+					
+					player.setHealth(player.getHealth() + 1);
+					collectiblesList[i] -= 5;
+					if (collectiblesList[i] < 0) collectiblesList[i] = 0;
+					
+				}
+				
+			}
+			
+		}
 		
 		if (gameState == GameState.MainMenu)
 		{

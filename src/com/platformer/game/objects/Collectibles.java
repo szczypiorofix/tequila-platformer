@@ -18,7 +18,6 @@ private float width, height;
 private float velX, velY;
 private boolean action, visible;
 private int direction;
-private int type;
 private int show; // 0 - empty, 1 - show
 private Random random;
 
@@ -29,7 +28,6 @@ public Collectibles(float x, float y, ObjectsHandler objectsHandler)
 	this.x = x;
 	this.y = y;
 	this.objectsHandler = objectsHandler;
-	velX = 0;
 	velY = 0;
 	width = 50;
 	height = 50;
@@ -37,15 +35,15 @@ public Collectibles(float x, float y, ObjectsHandler objectsHandler)
 	visible = true;
 	direction = 0;
 	random = new Random();
-	show = random.nextInt(3);
-	type = random.nextInt(Textures.getInstance().collectible.length);
+	show = random.nextInt(1);
+	velX = (int) random.nextInt(Textures.getInstance().collectible.length);
 }
 	
 
 
 @Override
 public void render(Graphics g) {
-	g.drawImage(Textures.getInstance().collectible[type], (int) (x), (int) (y), null);
+	g.drawImage(Textures.getInstance().collectible[(int) velX], (int) (x), (int) (y), null);
 }
 
 @Override

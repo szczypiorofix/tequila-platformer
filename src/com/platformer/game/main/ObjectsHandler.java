@@ -65,12 +65,14 @@ private int[][] tileValues;
 private PlayerObject player;
 private InputStream in = null;
 private Achievements achievements;
+private int[] collectibles;
 
 
-public ObjectsHandler(Camera cam, Achievements achievements)
+public ObjectsHandler(Camera cam, Achievements achievements, int[] collectibles)
 {
 	this.cam = cam;
 	this.achievements = achievements;
+	this.collectibles = collectibles;
 }
 
 public void iteratingTick(LinkedList<GameObject> list)
@@ -267,7 +269,7 @@ public void loadLevel(int level)
 					
 				if (tileValues[yy][xx] == 28)
 				{
-					player = new PlayerObject(xx*50, (yy*50) +440, this, achievements);
+					player = new PlayerObject(xx*50, (yy*50) +440, this, achievements, collectibles);
 					player_List.add(player);					
 				}
 				if (tileValues[yy][xx] == 29) levelEnd_List.add(new LevelEnd(xx*50, (yy*50)+550));

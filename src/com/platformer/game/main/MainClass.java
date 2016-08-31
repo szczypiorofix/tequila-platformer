@@ -381,14 +381,12 @@ private void prepareHallOfFame()
 
 
 public void prepareCollectibles()
-{
-	//collectiblesList
-	
+{	
 	if (!MainClass.collectiblesFile.exists() && !MainClass.collectiblesFile.isDirectory())
 	{
 		for (int i = 0; i < collectiblesList.length; i++)
 		{
-			collectiblesList[i] = i+1;
+			collectiblesList[i] = 0;
 		}
 		
 		try {

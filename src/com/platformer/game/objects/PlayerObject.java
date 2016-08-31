@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 
 import com.platformer.game.graphics.Animation;
@@ -18,7 +21,7 @@ public class PlayerObject extends GameObject{
 	
 private ObjectsHandler objectsHandler;
 
-
+private ObjectOutputStream oos;
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
 private static final int MAX_HEALTH = 5;
 private static final float NORMAL_GRAVITY = 0.5f;
@@ -54,16 +57,17 @@ private int maxPowerups;
 private int powerups;
 private boolean noHarm;
 private Achievements achievements;
+private int[] collectiblesList;
 
 
 
 
-
-public PlayerObject(float x, float y, ObjectsHandler objectsHandler, Achievements achievements) {
+public PlayerObject(float x, float y, ObjectsHandler objectsHandler, Achievements achievements, int[] collectiblesList) {
 	super();
 	this.x = x;
 	this.y = y;
 	this.achievements = achievements;
+	this.collectiblesList = collectiblesList;
 	velX = 0;
 	velY = 0;
 	width = 110;
@@ -714,14 +718,24 @@ private void collisions()
 			{
 				if (getWholeBounds().intersects(tempObject.getBounds()))
 				{
+					
+					collectiblesList[(int) tempObject.getVelX()] ++;
+					
+					try {
+						oos = new ObjectOutputStream(new FileOutputStream((MainClass.collectiblesFile)));
+					    oos.writeObject(collectiblesList);
+					    oos.close();
+					    MainClass.logging(false, "Plik osi¹gniêæ " +MainClass.collectiblesFile.getName() +" zosta³ poprawnie zapisany.");
+						}
+						catch (IOException ioe)
+						{
+							String message = MainClass.getStackTrace(ioe);
+							MainClass.logging(true, "B³¹d zapisu plików osi¹gniêæ " +MainClass.collectiblesFile.getName(), message);
+						}
+					
 					objectsHandler.getCollectibles_List().remove(tempObject);
 					MainScreen.SCORE += 50;
 					MainClass.powerUpSound.play();
-					//achievements.addPowerup3Count();
-					//tequila_powerUp = true;
-					//powerups++;
-					//taco_powerUp = false;
-					//taco_time = TACO_COOLDOWN;
 				}
 			}
 		}

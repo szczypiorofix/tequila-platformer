@@ -58,6 +58,7 @@ public BufferedImage springBlock, springBlock2;
 public BufferedImage fallingBlock;
 public BufferedImage clouds1, clouds2, clouds3;
 public BufferedImage[] collectible = new BufferedImage[7];
+public BufferedImage collectibleG;
 public BufferedImage mainMenuButton, mainMenuButtonSelected;
 public BufferedImage planeR;    // http://opengameart.org/content/red-biplane
 public BufferedImage smiglo[] = new BufferedImage[4];
@@ -66,6 +67,7 @@ public BufferedImage literaA, literaE, literaF, literaI, literaL, literaM, liter
 public BufferedImage ptakiR1, ptakiR2;
 public BufferedImage[] dust = new BufferedImage[3];
 public BufferedImage websiteButton;
+public BufferedImage handMenu;
 
 
 // ACHIEVMENTS
@@ -322,6 +324,8 @@ public Textures()
 	collectible[5] = loader.loadImage("/collectibles5.png");
 	collectible[6] = loader.loadImage("/collectibles6.png");
 	
+	collectibleG = loader.loadImage("/collectiblesG.png");
+	
 	mainMenuButton = loader.loadImage("/mainMenuButton.png");
 	mainMenuButtonSelected = loader.loadImage("/mainMenuButtonSelected.png");
 	
@@ -361,6 +365,7 @@ public Textures()
 	
 	websiteButton = loader.loadImage("/websiteButton.png");
 	
+	handMenu = loader.loadImage("/handMenu.png");
 	
 	dust[0] = loader.loadImage("/dust1.png");
 	dust[1] = loader.loadImage("/dust2.png");
