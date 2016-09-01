@@ -252,65 +252,65 @@ public void clearMap(boolean b)
 		{
 			
 			String filename = "";
-			
-			do {
-				filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", currentLevelName);	
-			}
-			
-			while(filename.length() == 0);
-			
-			clearMap(true);
-			
-			currentLevelName = filename;
-			filename = "res/Other/" +filename +".lvl";
-			currentFile = filename;
-			setTitle("Platformer - Level Editor: "+currentFile);
-			
-			try {
-				ois = new ObjectInputStream(new FileInputStream(filename));
-				editorPane.setTileValues((int[][]) (ois.readObject()));
-				ois.close();
-			}
-			catch (IOException | ClassNotFoundException ioe)
+		
+			filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", currentLevelName);	
+
+			if (filename != null && filename.length() != 0)
 			{
-				ioe.printStackTrace();
-				System.exit(0);
-			}
+				clearMap(true);
+				
+				currentLevelName = filename;
+				filename = "res/Other/" +filename +".lvl";
+				currentFile = filename;
+				setTitle("Platformer - Level Editor: "+currentFile);
 			
-			for (int a = 0; a < ROWS; a++)
-				for (int b = 0; b < COLS; b++)
+				try {
+					ois = new ObjectInputStream(new FileInputStream(filename));
+					editorPane.setTileValues((int[][]) (ois.readObject()));
+					ois.close();
+				}
+				catch (IOException | ClassNotFoundException ioe)
 				{
-					editorPane.editorTiles[a][b].setIcon(null);
-					
-					if (editorPane.tileValues[a][b] >= 0) 
+					ioe.printStackTrace();
+					System.exit(0);
+				}
+			
+				for (int a = 0; a < ROWS; a++) {
+					for (int b = 0; b < COLS; b++)
 					{
-						editorPane.editorTiles[a][b].setIcon(new ImageIcon(tileImage[editorPane.tileValues[a][b]]));
+						editorPane.editorTiles[a][b].setIcon(null);
+					
+						if (editorPane.tileValues[a][b] >= 0) 
+						{
+							editorPane.editorTiles[a][b].setIcon(new ImageIcon(tileImage[editorPane.tileValues[a][b]]));
+						}
 					}
 				}
+			}
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Save"))
 		{
 			String filename = "";
-			do {
-				filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", currentLevelName);	
-			}	
-			while(filename.length() == 0);
-
-			currentLevelName = filename;
-			filename = "res/Other/" +filename +".lvl";
-			currentFile = filename;
-			setTitle("Platformer - Level Editor: "+currentFile);
+			filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", currentLevelName);
 			
-			try {
-				oos = new ObjectOutputStream(new FileOutputStream(filename));
-			    oos.writeObject(editorPane.getTileValues());
-			    oos.close();
-			}
-			catch (IOException ioe)
+			if (filename != null && filename.length() != 0)
 			{
-				ioe.printStackTrace();
-				System.exit(-1);
+				currentLevelName = filename;
+				filename = "res/Other/" +filename +".lvl";
+				currentFile = filename;
+				setTitle("Platformer - Level Editor: "+currentFile);
+				
+				try {
+					oos = new ObjectOutputStream(new FileOutputStream(filename));
+				    oos.writeObject(editorPane.getTileValues());
+				    oos.close();
+				}
+				catch (IOException ioe)
+				{
+					ioe.printStackTrace();
+					System.exit(-1);
+				}	
 			}
 		}
 		

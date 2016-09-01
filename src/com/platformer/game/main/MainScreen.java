@@ -174,7 +174,6 @@ private float scrollScreenY;
 private Shape defaultClip;
 private boolean showHandMenu = false;
 private HandMenuItem[] handMenuItem = new HandMenuItem[7];
-private MySQLConnect mySqlConnect;
 
 
 
@@ -272,11 +271,9 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	handMenuItem[4] = new HandMenuItem(Textures.getInstance().collectible[4], 56, 491);
 	handMenuItem[5] = new HandMenuItem(Textures.getInstance().collectible[5], 63, 440);
 	handMenuItem[6] = new HandMenuItem(Textures.getInstance().collectible[6], 105, 470);
-	
+		
 	playerName = "";
-	
-	mySqlConnect = new MySQLConnect();
-	
+		
 	isDesktopSupported = Desktop.isDesktopSupported();
 	
 	scrollScreenY = 0;
@@ -299,8 +296,8 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	mainMenuButtons[1] = new MenuButton("JAK GRA∆", 650, 180, 310, 50);
 	mainMenuButtons[2] = new MenuButton("NAJLEPSZE WYNIKI", 650, 240, 310, 50);
 	mainMenuButtons[3] = new MenuButton("OSI•GNI CIA", 650, 300, 310, 50);
-	mainMenuButtons[4] = new MenuButton("ZNAJDèKI", 650, 360, 310, 50);
-	mainMenuButtons[5] = new MenuButton("O GRZE", 650, 420, 310, 50);
+	mainMenuButtons[4] = new MenuButton("KRYSZTA£Y MOCY", 650, 360, 310, 50);
+	mainMenuButtons[5] = new MenuButton("O GRZE ...", 650, 420, 310, 50);
 	mainMenuButtons[6] = new MenuButton("ZAKO—CZ", 650, 480, 310, 50);
 	
 	menuButtons = new MenuButton[MAX_MENU_BUTTONS];
@@ -886,7 +883,6 @@ public void tick()
 	}
 
 	
-	
 	// ENTER TO NEW LEVEL
 	if (gameState == GameState.NextLevel && player.isLevelFinished() && key.isKeyPressedOnce(KeyEvent.VK_ENTER)) // ENTER PO WPISANIU IMIENIA PRZENOSI NA NOWY POZIOM
 	{
@@ -1195,9 +1191,12 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(Textures.getInstance().handMenu, 40, MainClass.HEIGHT - 200, null);
 		
 		for (int i = 0; i < handMenuItem.length; i++) {
+			
 			if (collectiblesList[i] >= 5) handMenuItem[i].setActive(true);
 			else handMenuItem[i].setActive(false);
+			
 			handMenuItem[i].drawItem(g2d);
+			g2d.drawString(collectiblesList[i] +"", (int) handMenuItem[i].getX() + 16, (int) handMenuItem[i].getY() + 22);
 		}
 	}
 
@@ -1449,14 +1448,24 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 				
 				if (me.getX() >= handMenuItem[i].getX()+5 && me.getX() <= handMenuItem[i].getX() + handMenuItem[i].getWidth()-5
 						&& me.getY() >= handMenuItem[i].getY()+5 && me.getY() <= handMenuItem[i].getY() + handMenuItem[i].getHeight()-5
-						&& handMenuItem[i].isActive())  // AND MUSTT BE ACTIVE !!!
+						&& handMenuItem[i].isActive())  // MUST BE ACTIVE !!!
 				{
 					/// AKTYWACJA DANEJ MOCY nr. i
 					
-					player.setHealth(player.getHealth() + 1);
-					collectiblesList[i] -= 5;
-					if (collectiblesList[i] < 0) collectiblesList[i] = 0;
+					if (i == 0 && player.getHealth() < player.getMaxHealth())    /// 1 MOC - ODNAWIA ZDROWIE O +1 O ILE NIE WI CEJ NIØ MAX HEALTH
+					{
+						player.setHealth(player.getHealth() + 1);
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+					}
 					
+					if (i == 1)    /// 2 MOC - ZWI KSZA MAKSYMALNE ZDROWIE O 1 I UZUPE£NIA BRAKUJACE O JEDEN JESLI POTRZEBA
+					{
+						player.setMaxHealth(player.getMaxHealth() + 1);
+						player.setHealth(player.getHealth() + 1);
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+					}		
 				}
 				
 			}

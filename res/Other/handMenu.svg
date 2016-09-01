@@ -29,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="126.87901"
+     inkscape:cx="82.307456"
      inkscape:cy="929.48845"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -110,5 +110,13 @@
        cx="207.27901"
        cy="108.38679"
        r="23.698542" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0000;stroke-width:3;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       id="path4158-7-2-0"
+       cx="284.86304"
+       cy="86.656372"
+       r="23.698542"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

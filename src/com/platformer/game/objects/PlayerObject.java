@@ -23,7 +23,10 @@ private ObjectsHandler objectsHandler;
 
 private ObjectOutputStream oos;
 private Animation playerRunRight, playerRunLeft, playerIdleRight, playerIdleLeft, playerJumpRight, playerJumpLeft, playerFallingRight, playerFallingLeft;
-private static final int MAX_HEALTH = 5;
+
+private int MAX_HEALTH = 5;
+
+
 private static final float NORMAL_GRAVITY = 0.5f;
 private final float MAX_SPEED = 13f;
 private final int HIT_COOLDOWN = 60*2;
@@ -725,12 +728,12 @@ private void collisions()
 						oos = new ObjectOutputStream(new FileOutputStream((MainClass.collectiblesFile)));
 					    oos.writeObject(collectiblesList);
 					    oos.close();
-					    MainClass.logging(false, "Plik osi¹gniêæ " +MainClass.collectiblesFile.getName() +" zosta³ poprawnie zapisany.");
+					    MainClass.logging(false, "Plik Collectibles " +MainClass.collectiblesFile.getName() +" zosta³ poprawnie zapisany.");
 						}
 						catch (IOException ioe)
 						{
 							String message = MainClass.getStackTrace(ioe);
-							MainClass.logging(true, "B³¹d zapisu plików osi¹gniêæ " +MainClass.collectiblesFile.getName(), message);
+							MainClass.logging(true, "B³¹d zapisu plików Collectibles " +MainClass.collectiblesFile.getName(), message);
 						}
 					
 					objectsHandler.getCollectibles_List().remove(tempObject);
@@ -941,6 +944,16 @@ public void setVisible(boolean visible) {
 public void setMaxCoins(int maxCoins)
 {
 	this.maxCoins = maxCoins;
+}
+
+public int getMaxHealth()
+{
+	return MAX_HEALTH;
+}
+
+public void setMaxHealth(int maxHealth)
+{
+	MAX_HEALTH = maxHealth;
 }
 
 public void setMaxPowerups(int maxPowerups)

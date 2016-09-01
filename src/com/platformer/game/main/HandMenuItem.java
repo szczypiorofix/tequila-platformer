@@ -1,5 +1,6 @@
 package com.platformer.game.main;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -13,7 +14,6 @@ private BufferedImage image;
 private float x, y;
 private final float width, height;
 private boolean active;
-private int count;
 	
 public HandMenuItem(BufferedImage image, float x, float y)
 {
@@ -32,9 +32,10 @@ public Rectangle getBounds()
 
 public void drawItem(Graphics2D g2d)
 {
-	if (active) 
-		g2d.drawImage(image, (int) x, (int) y, null);
-	else g2d.drawImage(Textures.getInstance().collectibleG, (int) x, (int) y, null);
+	g2d.drawImage(image, (int) x, (int) y, null);
+	if (active) g2d.drawImage(Textures.getInstance().handMenuItemFrame, (int) x-2, (int) y-8, null);
+	g2d.setFont(MainClass.verdana18Font);
+	g2d.setColor(Color.BLACK);
 }
 
 public BufferedImage getImage() {
@@ -67,14 +68,6 @@ public boolean isActive() {
 
 public void setActive(boolean active) {
 	this.active = active;
-}
-
-public int getCount() {
-	return count;
-}
-
-public void setCount(int count) {
-	this.count = count;
 }
 
 public float getWidth() {

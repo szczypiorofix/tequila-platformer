@@ -58,7 +58,7 @@ public BufferedImage springBlock, springBlock2;
 public BufferedImage fallingBlock;
 public BufferedImage clouds1, clouds2, clouds3;
 public BufferedImage[] collectible = new BufferedImage[7];
-public BufferedImage collectibleG;
+public BufferedImage handMenuItemFrame;
 public BufferedImage mainMenuButton, mainMenuButtonSelected;
 public BufferedImage planeR;    // http://opengameart.org/content/red-biplane
 public BufferedImage smiglo[] = new BufferedImage[4];
@@ -324,7 +324,7 @@ public Textures()
 	collectible[5] = loader.loadImage("/collectibles5.png");
 	collectible[6] = loader.loadImage("/collectibles6.png");
 	
-	collectibleG = loader.loadImage("/collectiblesG.png");
+	handMenuItemFrame = loader.loadImage("/handMenuItemFrame.png");
 	
 	mainMenuButton = loader.loadImage("/mainMenuButton.png");
 	mainMenuButtonSelected = loader.loadImage("/mainMenuButtonSelected.png");
