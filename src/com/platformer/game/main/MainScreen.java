@@ -174,6 +174,7 @@ private float scrollScreenY;
 private Shape defaultClip;
 private boolean showHandMenu = false;
 private HandMenuItem[] handMenuItem = new HandMenuItem[7];
+private MySQLConnect mySqlConnect;
 
 
 
@@ -264,15 +265,17 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	
 	cam = new Camera(0,0);
 	
-	handMenuItem[0] = new HandMenuItem(Textures.getInstance().collectible[0], 170, 418);
-	handMenuItem[1] = new HandMenuItem(Textures.getInstance().collectible[1], 211, 452);
-	handMenuItem[2] = new HandMenuItem(Textures.getInstance().collectible[2], 205, 502);
-	handMenuItem[3] = new HandMenuItem(Textures.getInstance().collectible[3], 158, 522);
-	handMenuItem[4] = new HandMenuItem(Textures.getInstance().collectible[4], 116, 491);
-	handMenuItem[5] = new HandMenuItem(Textures.getInstance().collectible[5], 123, 440);
-	handMenuItem[6] = new HandMenuItem(Textures.getInstance().collectible[6], 165, 470);
+	handMenuItem[0] = new HandMenuItem(Textures.getInstance().collectible[0], 110, 418);
+	handMenuItem[1] = new HandMenuItem(Textures.getInstance().collectible[1], 151, 452);
+	handMenuItem[2] = new HandMenuItem(Textures.getInstance().collectible[2], 145, 502);
+	handMenuItem[3] = new HandMenuItem(Textures.getInstance().collectible[3], 98, 522);
+	handMenuItem[4] = new HandMenuItem(Textures.getInstance().collectible[4], 56, 491);
+	handMenuItem[5] = new HandMenuItem(Textures.getInstance().collectible[5], 63, 440);
+	handMenuItem[6] = new HandMenuItem(Textures.getInstance().collectible[6], 105, 470);
 	
 	playerName = "";
+	
+	mySqlConnect = new MySQLConnect();
 	
 	isDesktopSupported = Desktop.isDesktopSupported();
 	
@@ -867,7 +870,11 @@ public void tick()
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			MainClass.logging(false, "Zapisano kolejnego gracza.");
-			writeScore(playerName, SCORE, millis);
+			
+			// MYSQL
+			//mySqlConnect.sendToMySQL();
+			
+			writeScore(playerName, SCORE, millis, LEVEL);
 		}
 	}
 	
@@ -937,9 +944,9 @@ public static class CompareScore implements Comparator<HallOfFamePlayer>
  * @param score Wynik obecnego gracza.
  * @param millis Czas gry obecnego gracza w milisekundach
  */
-private void writeScore(String name, int score, long millis)
+private void writeScore(String name, int score, long millis, int level)
 {
-	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, millis, LEVEL));
+	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, millis, level));
 	
 	Collections.sort(hallOfFame.getHallOfFameList(), new CompareScore());
 	
@@ -1185,7 +1192,7 @@ public void render(int fps_count, int ticks_count)
 	// HAND MENU
 	if (showHandMenu)
 	{
-		g2d.drawImage(Textures.getInstance().handMenu, 100, MainClass.HEIGHT - 200, null);
+		g2d.drawImage(Textures.getInstance().handMenu, 40, MainClass.HEIGHT - 200, null);
 		
 		for (int i = 0; i < handMenuItem.length; i++) {
 			if (collectiblesList[i] >= 5) handMenuItem[i].setActive(true);
@@ -1434,7 +1441,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 	public void mouseReleased(MouseEvent me) {
 		
 		
-		if (showHandMenu)
+		if (showHandMenu && gameState == GameState.Game)
 		{
 			
 			for (int i = 0; i < handMenuItem.length; i++)
