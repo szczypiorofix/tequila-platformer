@@ -12,7 +12,7 @@ public class MySQLConnect {
 
 // JDBC driver name and database URL
 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-static final String DB_URL = "jdbc:mysql://localhost/testbase1";
+static final String DB_URL = "jdbc:mysql://localhost/testbase1"; /// TUTAJ DO ZMIANY!
 
 //  Database credentials
 static final String USER = "root";
