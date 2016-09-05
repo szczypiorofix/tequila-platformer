@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class HallOfFamePlayer implements Serializable{
+public class HallOfFamePlayer implements Serializable {
 
 
-private static final long serialVersionUID = -3735618211371928538L;
+
+private static final long serialVersionUID = 8884657204736598287L;
 
 private String name;
 private int score;

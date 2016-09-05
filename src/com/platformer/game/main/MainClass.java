@@ -142,10 +142,15 @@ public static Music music;
 public static final float GAME_VER = 0.46f;
 public static final int BUILD = 13;
 public static boolean fpsCap;
+public static boolean DEBUG_MODE;
 private JWindow window;
 private BufferedImageLoader splashScreenLoader = new BufferedImageLoader();
 private BufferedImage splashScreen;
-public static boolean DEBUG_MODE;
+public static NetworkConnector nc = new NetworkConnector();
+
+
+
+
 
 
 /** Konstruktor klasy g³ównej gry.
@@ -215,6 +220,7 @@ private void gameInit()
 	prepareCollectibles();
 	prepareAchievements();
 	prepareHallOfFame();
+	
 	
 	music = new Music();
 	
@@ -340,8 +346,16 @@ public void run()
 	}
 }
 
+private void prepareHallOfFame()
+{
+	hallOfFameList = nc.getHOFRecordsFromServer();
+	
+	hallOfFame = new HallOfFame(hallOfFameList);
+}
 
 
+
+/**
 @SuppressWarnings("unchecked")
 private void prepareHallOfFame()
 {	
@@ -378,7 +392,7 @@ private void prepareHallOfFame()
 	}
 	hallOfFame = new HallOfFame(hallOfFameList);
 }
-
+**/
 
 public void prepareCollectibles()
 {	

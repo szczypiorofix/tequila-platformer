@@ -30,10 +30,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
@@ -143,6 +140,7 @@ private String napisNaFladze = "      TEQUILA PLATFORMER      ";
 private String[] napisy = new String[] {
 		"             HELLO !!!         ",
 		"       TEQUILA PLATFORMER      ",
+		"    CZY LECI Z NAMI PILOT ?    ",
 		"       BEDE GRAU W GRE !       ",
 		"   LEELOO DALLAS MULTIPASS     ",
 		"        NASI TU BYLI !         ",
@@ -174,6 +172,7 @@ private float scrollScreenY;
 private Shape defaultClip;
 private boolean showHandMenu = false;
 private HandMenuItem[] handMenuItem = new HandMenuItem[7];
+private boolean readHoFRecords = false;
 
 
 
@@ -697,11 +696,13 @@ public void tick()
 			switch (selectedMainMenuButton)
 			{
 			case 0: playMusic2();
+					LEVEL = 1;
 					gameState = GameState.Game;
 					break;				
 			case 1: gameState = GameState.JakGrac;
 					break;
 			case 2: scrollScreenY = 0;
+					readHoFRecords = true;
 					gameState = GameState.NajlepszeWyniki;
 					break;
 			case 3: scrollScreenY = 0;
@@ -871,7 +872,9 @@ public void tick()
 			// MYSQL
 			//mySqlConnect.sendToMySQL();
 			
-			writeScore(playerName, SCORE, millis, LEVEL);
+			MainClass.nc.addAnotherPlayerToHoF(new HallOfFamePlayer(playerName, SCORE, millis, LEVEL));
+			
+			//writeScore(playerName, SCORE, millis, LEVEL);
 		}
 	}
 	
@@ -925,14 +928,6 @@ public void timeTick()
 }
 
 
-public static class CompareScore implements Comparator<HallOfFamePlayer>
-{
-	@Override
-	public int compare(HallOfFamePlayer p1, HallOfFamePlayer p2) {
-		return p2.getScore() - p1.getScore();
-	}
-}
-
 
 /** Metoda dodaj¹ca nowegy wpis na liœcie Najlepsze Wyniki (Hall of Fame)
  * oraz zapisuj¹ca tê listê do pliku.
@@ -940,6 +935,8 @@ public static class CompareScore implements Comparator<HallOfFamePlayer>
  * @param score Wynik obecnego gracza.
  * @param millis Czas gry obecnego gracza w milisekundach
  */
+
+/**
 private void writeScore(String name, int score, long millis, int level)
 {
 	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, millis, level));
@@ -964,6 +961,7 @@ private void writeScore(String name, int score, long millis, int level)
 	
 	hallOfFame.writeScoreToFile();
 }
+**/
 
 /** Metoda wyœwietlaj¹ca osi¹gniêcie na ekranie, w³¹cznie z "najazdem" i "odjazdem" ramki z tekstem u góry ekranu.
  * @param g2d Graphics2D.
@@ -1360,6 +1358,13 @@ public void render(int fps_count, int ticks_count)
 	
 	if (gameState == GameState.NajlepszeWyniki)
 	{
+		
+		if (readHoFRecords)
+		{
+			hallOfFame.setHallOfFame(MainClass.nc.getHOFRecordsFromServer());
+			readHoFRecords = false;
+		}
+		
 		g2d.setColor(MainClass.fontColor);
 		g2d.drawImage(Textures.getInstance().hallOfFameImage, 100, 0, null);
 		
@@ -1487,12 +1492,14 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 							MainClass.menuSound2.play();
 							switch (i)
 							{
-							case 0: playMusic2();
+							case 0: LEVEL = 1;
+									playMusic2();
 									gameState = GameState.Game;
 									break;				
 							case 1: gameState = GameState.JakGrac;
 									break;
 							case 2: scrollScreenY = 0;
+									readHoFRecords = true;
 									gameState = GameState.NajlepszeWyniki;
 									break;
 							case 3: scrollScreenY = 0;
