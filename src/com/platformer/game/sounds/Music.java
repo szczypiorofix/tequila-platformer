@@ -55,6 +55,7 @@ private int song;
 public Music()
 {
 	///https://www.youtube.com/watch?v=LavMuqK5Is0
+	// http://opengameart.org/content/western
 	song = WESTERN;
 }
 
