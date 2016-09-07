@@ -5,6 +5,7 @@ import java.awt.DisplayMode;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.logging.Level;
 
 import com.platformer.game.graphics.BufferedImageLoader;
 
@@ -31,7 +32,7 @@ public void showWindow(boolean showWindow)
 	this.setVisible(showWindow);
 	if (!showWindow) {
 		this.dispose();
-		MainClass.logging(false, "Wywo³anie zamkniêcia gry.");
+		MainClass.logging(false, Level.INFO, "Wywo³anie zamkniêcia gry.");
 		System.exit(0);
 	}
 }

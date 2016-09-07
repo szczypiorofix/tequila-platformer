@@ -5,7 +5,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 
-/** Klasa, której obiekt przechowuje wszystkie grafiki w grze.
+/** Klasa, której obiekt przechowuje wszystkie grafiki w grze (Design Patterns - Singleton).
  * @author Piotrek
  *
  */

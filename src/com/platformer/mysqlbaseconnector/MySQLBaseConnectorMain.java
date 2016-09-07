@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -69,7 +70,7 @@ public MySQLBaseConnectorMain()
     stmt = conn.createStatement();
     String sql;
     
-    sql = "SELECT Id, Name, Score, Millis, Level FROM BestScores";
+    sql = "SELECT Id, Name, Score, Millis, Level FROM BestScores ORDER BY Score DESC";
     rs = stmt.executeQuery(sql);
     
     //INSERT INTO `numery` (`Indeks`, `Numer`, `Nazwa`) VALUES (NULL, '1003', 'Zdzis³aw Dyrman');
@@ -126,18 +127,21 @@ public MySQLBaseConnectorMain()
 				
 				message("Another gamer: " +players.get(players.size()-1).getName());
 				
-				String sql;
-			    
-			    sql = "INSERT INTO `BestScores` (`Name`, `Score`, `Millis`, `Level` ) VALUES (networkData.getHallOfFamePlayers().get(0).getName()"
-			    		+ ", networkData.getHallOfFamePlayers().get(0).getScore(), networkData.getHallOfFamePlayers().get(0).getMilis(), networkData.getHallOfFamePlayers().get(0).getLevel()";
-			    try {
-					rs = stmt.executeQuery(sql);
-				} catch (SQLException e) {
-					e.printStackTrace();
+				try {
+				
+					PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `BestScores` (`Name`, `Score`, `Millis`, `Level`) VALUES (?, ?, ?, ?)");
+
+					pstmt.setString(1, networkData.getHallOfFamePlayers().get(0).getName());
+					pstmt.setInt(2, networkData.getHallOfFamePlayers().get(0).getScore());
+					pstmt.setLong(3, networkData.getHallOfFamePlayers().get(0).getMilis());
+					pstmt.setInt(4, networkData.getHallOfFamePlayers().get(0).getLevel());
+					
+					pstmt.executeUpdate();
 				}
-			    
-			    //INSERT INTO `numery` (`Indeks`, `Numer`, `Nazwa`) VALUES (NULL, '1003', 'Zdzis³aw Dyrman');
-			    
+				catch (SQLException sqle)
+				{
+					sqle.printStackTrace();
+				}
 				
 				Collections.sort(players, new CompareScore());
 

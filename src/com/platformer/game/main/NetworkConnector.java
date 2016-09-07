@@ -6,9 +6,11 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class NetworkConnector {
 
+public static boolean connected;
 private ArrayList<HallOfFamePlayer> hallOfFameRecords;
 private Socket socket;
 private ObjectInputStream ois;
@@ -18,7 +20,7 @@ private NetworkData networkData;
 
 public NetworkConnector()
 {
-	
+	connected = false;
 }
 
 public void addAnotherPlayerToHoF(HallOfFamePlayer hofPlayer)
@@ -45,18 +47,20 @@ public void addAnotherPlayerToHoF(HallOfFamePlayer hofPlayer)
 		networkData = (NetworkData) ois.readObject();
 		hallOfFameRecords = networkData.getHallOfFamePlayers();
 		ois.close();
-		
+		MainClass.logging(false, Level.INFO, "Dane z serwera odczytane poprawnie.");
 	}
 	catch (ClassNotFoundException cnfe)
 	{
 		cnfe.printStackTrace();
-		System.exit(-1);
+		MainClass.logging(false, Level.WARNING, "Nie znaleziono poprawnej klasy po³¹czeniowej z serwerem");
+		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(cnfe));
 	}
 
 	catch (IOException ioe)
 	{
 		ioe.printStackTrace();
-		System.exit(-1);
+		MainClass.logging(false, Level.WARNING, "B³¹d po³¹czenia z serwerem");
+		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ioe));
 	}
 }
 
@@ -78,21 +82,27 @@ public ArrayList<HallOfFamePlayer> getHOFRecordsFromServer()
 		networkData = (NetworkData) ois.readObject();
 		hallOfFameRecords = networkData.getHallOfFamePlayers();
 		ois.close();
-		
+		MainClass.logging(false, Level.INFO, "Dane z serwera odczytane poprawnie.");
+		connected = true;
 	}
 	catch (ClassNotFoundException cnfe)
 	{
 		cnfe.printStackTrace();
-		System.exit(-1);
+		MainClass.logging(false, Level.WARNING, "Nie znaleziono poprawnej klasy po³¹czeniowej z serwerem");
+		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(cnfe));
+		hallOfFameRecords = new ArrayList<HallOfFamePlayer>();
+		connected = false;
 	}
 
 	catch (IOException ioe)
 	{
 		ioe.printStackTrace();
-		System.exit(-1);
+		MainClass.logging(false, Level.WARNING, "B³¹d po³¹czenia z serwerem");
+		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ioe));
+		hallOfFameRecords = new ArrayList<HallOfFamePlayer>();
+		connected = false;
 	}
 	
 	return hallOfFameRecords;
 }
-
 }

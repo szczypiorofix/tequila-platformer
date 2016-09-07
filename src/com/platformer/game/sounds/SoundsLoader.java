@@ -2,6 +2,8 @@ package com.platformer.game.sounds;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.util.logging.Level;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -40,11 +42,11 @@ public SoundsLoader(String path)
 		clip = AudioSystem.getClip();
 		clip.open(dais);
 		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		MainClass.logging(false, "Plik dŸwiêkowy (.wav) " +path +" za³adowany poprawnie");
+		MainClass.logging(false, Level.INFO, "Plik dŸwiêkowy (.wav) " +path +" za³adowany poprawnie");
     }
 	catch(Exception ex) {
-			String message = MainClass.getStackTrace(ex);
-			MainClass.logging(true, "B³¹d odczytu z pliku " +path, message);
+			MainClass.logging(false, Level.WARNING, "B³¹d odczytu z pliku " +path);
+			MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ex));
     	}
 }
 

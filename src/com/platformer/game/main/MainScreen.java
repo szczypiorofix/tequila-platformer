@@ -34,6 +34,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
+import java.util.logging.Level;
+
 import javax.imageio.ImageIO;
 
 import com.platformer.game.graphics.Animation;
@@ -215,18 +217,18 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 			upValueProp = prop.getProperty("value_up");
 			downProp = prop.getProperty("Down");
 			downValueProp = prop.getProperty("value_down");
-			MainClass.logging(false, "Plik ustawieñ gamepada prawid³owo odczytany.");
+			MainClass.logging(false, Level.INFO, "Plik ustawieñ gamepada prawid³owo odczytany.");
 
 		} catch (IOException ex) {
-			String message = MainClass.getStackTrace(ex);
-			MainClass.logging(false, "B³¹d odczytu pliku ustawieñ gamepada!", message);
+			MainClass.logging(false, Level.WARNING,  "B³¹d odczytu pliku ustawieñ gamepada!");
+			MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ex));
 		} finally {
 			if (propInput != null) {
 				try {
 					propInput.close();
 				} catch (IOException e) {
-					String message = MainClass.getStackTrace(e);
-					MainClass.logging(false, "Plik ustawieñ gamepada zosta³ nieprawid³owo zamkniêty!", message);
+					MainClass.logging(false, Level.WARNING,  "Plik ustawieñ gamepada zosta³ nieprawid³owo zamkniêty!");
+					MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(e));
 				}
 			}
 		}
@@ -395,18 +397,18 @@ private void openWebsite(String website)
 
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
 			URI url = null;
-			MainClass.logging(false, "Polecenie desktopowe BROWSE jest dostêpne.");
+			MainClass.logging(false, Level.INFO, "Polecenie desktopowe BROWSE jest dostêpne.");
 			try {
 				url = new URI(website);
 			} catch (URISyntaxException e1) {
-				String message = MainClass.getStackTrace(e1);
-				MainClass.logging(false, "B³¹d wywo³ania (URL) otwierania strony domowej gry.", message);
+				MainClass.logging(false, Level.WARNING,  "B³¹d wywo³ania (URL) otwierania strony domowej gry.");
+				MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(e1));
 			}
 			try {
 				desktop.browse(url);
 			} catch (IOException e) {
-				String message = MainClass.getStackTrace(e);
-				MainClass.logging(false, "B³¹d otwierania (browse) strony domowej gry.", message);
+				MainClass.logging(false, Level.WARNING, "B³¹d otwierania (browse) strony domowej gry.");
+				MainClass.logging(false,  Level.WARNING, MainClass.getStackTrace(e));
 			}			
 		}
 	}
@@ -586,7 +588,7 @@ public void tick()
 		objectsHandler.clearLevel();
 		objectsHandler.resetLevelStatistics();
 		System.gc(); // GARBAGE COLLECTOR
-		MainClass.logging(false, "Poziom gry zosta³ zrestartowany.");
+		MainClass.logging(false, Level.INFO, "Poziom gry zosta³ zrestartowany.");
 		objectsHandler.loadLevel(LEVEL);
 		cam.setX(0);
 		player = objectsHandler.getPlayer();
@@ -764,7 +766,7 @@ public void tick()
 					cam.setX(0);
 					player = objectsHandler.getPlayer();
 					achievements.restartLevel();
-					MainClass.logging(false, "Powrót do menu g³ównego gry.");
+					MainClass.logging(false, Level.INFO, "Powrót do menu g³ównego gry.");
 					playMusic1();
 					gameState = GameState.MainMenu;
 					break;
@@ -867,7 +869,7 @@ public void tick()
 		}
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
-			MainClass.logging(false, "Zapisano kolejnego gracza.");
+			MainClass.logging(false, Level.INFO, "Zapisano kolejnego gracza.");
 			
 			// MYSQL
 			//mySqlConnect.sendToMySQL();
@@ -980,12 +982,12 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
 			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
 		    oos.writeObject(achievements.getAchievementsList());
 		    oos.close();
-		    MainClass.logging(false, "Plik osi¹gniêæ " +MainClass.achievementsFile.getName() +" zosta³ poprawnie zapisany.");
+		    MainClass.logging(false, Level.INFO, "Plik osi¹gniêæ " +MainClass.achievementsFile.getName() +" zosta³ poprawnie zapisany.");
 			}
 			catch (IOException ioe)
 			{
-				String message = MainClass.getStackTrace(ioe);
-				MainClass.logging(true, "B³¹d zapisu plików osi¹gniêæ " +MainClass.achievementsFile.getName(), message);
+				MainClass.logging(false, Level.WARNING, "B³¹d zapisu plików osi¹gniêæ " +MainClass.achievementsFile.getName());
+				MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ioe));
 			}
 			saveAchievementsToFile = true;
 		}
@@ -1375,6 +1377,10 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawLine(140, 52, 820, 52);
 		g2d.drawLine(140, 53, 820, 53);
 		
+		// CONNECTION ERROR ?
+		if (!NetworkConnector.connected) g2d.drawString("B³¹d po³¹czenia z serwerem danych...", 300, 300);
+		
+		
 		defaultClip = g2d.getClip();
 		
 		g2d.setClip(new Rectangle(110, 56, (int) Textures.getInstance().hallOfFameImage.getWidth(), (int) Textures.getInstance().hallOfFameImage.getHeight()-77));
@@ -1419,8 +1425,8 @@ public void makeScreenShot()
 	try {
 		ImageIO.write(Textures.getInstance().screenShotImage, "png", screenShotFile);
 		} catch (IOException e) {
-			String message = MainClass.getStackTrace(e);
-			MainClass.logging(false, "B³¹d zapisu zrzutu ekranu" +screenShotFile.getName(), message);
+			MainClass.logging(false, Level.WARNING, "B³¹d zapisu zrzutu ekranu" +screenShotFile.getName());
+			MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(e));
 		}
 	makeScreenShot = false;
 }
@@ -1536,7 +1542,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 									cam.setX(0);
 									player = objectsHandler.getPlayer();
 									achievements.restartLevel();
-									MainClass.logging(false, "Powrót do menu g³ównego gry.");
+									MainClass.logging(false, Level.INFO, "Powrót do menu g³ównego gry.");
 									playMusic1();
 									gameState = GameState.MainMenu;
 									break;

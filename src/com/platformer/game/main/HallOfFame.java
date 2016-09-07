@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class HallOfFame {
 	
@@ -31,8 +32,8 @@ public void writeScoreToFile()
 		}
 		catch (IOException ioe)
 		{
-			String message = MainClass.getStackTrace(ioe);
-			MainClass.logging(true, "B³¹d zapisu kolejnego uczestnika do pliku "+MainClass.hallOfFameFile.getName(), message);
+			MainClass.logging(false, Level.WARNING, "B³¹d zapisu kolejnego uczestnika do pliku "+MainClass.hallOfFameFile.getName());
+			MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ioe));
 		}
 	}
 }

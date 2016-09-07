@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import com.platformer.game.objects.AngryCactus;
 import com.platformer.game.objects.BeeObject;
@@ -247,12 +248,12 @@ public void loadLevel(int level)
 		ois = new ObjectInputStream(in);
 		tileValues = (int[][]) (ois.readObject());
 		ois.close();
-		MainClass.logging(false, "Pliku poziomu nr. "+level +" za³adowany poprawnie.");
+		MainClass.logging(false, Level.INFO, "Pliku poziomu nr. "+level +" za³adowany poprawnie.");
 	}
 	catch (IOException | ClassNotFoundException ioe)
 	{
-		String message = MainClass.getStackTrace(ioe);
-		MainClass.logging(true, "B³¹d odczytu pliku poziomu nr. "+level, message);
+		MainClass.logging(false, Level.WARNING, "B³¹d odczytu pliku poziomu nr. "+level);
+		MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ioe));
 	}
 	
 
@@ -317,7 +318,7 @@ public void loadLevel(int level)
 				if (tileValues[yy][xx] == 50) collectibles_List.add(new Collectibles(xx*50, (yy*50)+550, this));
 			}
 		}
-		MainClass.logging(false, "Wszystkie obiekty poziomu gry "+level +" zosta³y za³adowane poprawnie.");
+		MainClass.logging(false, Level.INFO, "Wszystkie obiekty poziomu gry "+level +" zosta³y za³adowane poprawnie.");
 		player.setMaxCoins(coin_List.size());
 		player.setMaxPowerups(tequila_List.size() + taco_List.size());
 }

@@ -2,6 +2,7 @@ package com.platformer.game.sounds;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.util.logging.Level;
 
 import com.platformer.game.main.MainClass;
 
@@ -70,10 +71,10 @@ public void restart(int song)
 		if (this.song == WESTERN) fis = this.getClass().getResourceAsStream("/western.mp3"); 
 		if (this.song == MIRAGE) fis = this.getClass().getResourceAsStream("/mirage.mp3");
 		player = new Player(new BufferedInputStream(fis));
-		MainClass.logging(false, "Plik z muzyk¹ nr." +song +" za³adowany poprawnie.");
+		MainClass.logging(false, Level.INFO, "Plik z muzyk¹ nr." +song +" za³adowany poprawnie.");
 	} catch (JavaLayerException e) {
-		String message = MainClass.getStackTrace(e);
-		MainClass.logging(true, "B³¹d odczytu strumienia z pliku nr." +song, message);
+		MainClass.logging(false, Level.WARNING, "B³¹d odczytu strumienia z pliku nr." +song);
+		MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(e));
 	}		
 }
 
@@ -84,10 +85,10 @@ public void play()
 {
 	try {
 		player.play();
-		MainClass.logging(false, "Odtwarzanie pliku z muzyk¹ nr." +song);
+		MainClass.logging(false, Level.INFO, "Odtwarzanie pliku z muzyk¹ nr." +song);
 	} catch (JavaLayerException e) {
-		String message = MainClass.getStackTrace(e);
-		MainClass.logging(true, "B³¹d odtwarzania z pliku nr." +song, message);
+		MainClass.logging(false, Level.WARNING, "B³¹d odtwarzania z pliku nr." +song);
+		MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(e));
 	}		
 }
 

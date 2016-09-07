@@ -40,113 +40,55 @@ public class MainClass implements Runnable {
 
 
 	
-private final static Logger LOGGER = Logger.getLogger(MainClass.class.getName());
-private FileHandler fileHandler = null;
-
-
-private int[] collectiblesList = new int[Collectibles.MAX_COLLECTIBLES];
-	
-/** Obiekt HashMap<Integer, Boolean> przechowuj¹cy spis achievementów.
- * 
- */
-private HashMap<Integer, Boolean> achievementsList;
-
-/** Obiekt klasy ArrayList<HallOfFamePlayer> z zapisanymi Najlepszymi Osi¹gniêciami.
- * 
- */
-private ArrayList<HallOfFamePlayer> hallOfFameList = new ArrayList<HallOfFamePlayer>(10);
-
-/** Plik z zapisanymi Osi¹gniêcami.
- * 
- */
 public static final File achievementsFile = new File("achievements.dat");
-
-/** Plik z zapisanymi Najlepszymi Wynikami.
- * 
- */
 public static final File hallOfFameFile = new File("halloffame.dat");
-
-
 public static final File collectiblesFile = new File("collectibles.dat");
-
-
-/** Plik konfiguracyjny do obs³ugi pada/gamepada.
- * 
- */
 public static final File gamepadConfigFile = new File("input.cfg");
-
-
-
+public static final Color fontColor = new Color(60, 0, 140);
+public static final float GAME_VER = 0.57f;
+public static final int BUILD = 19;
 
 public static Font verdana14Font = new Font("Verdana", Font.BOLD, 14);
 public static Font verdana18Font = new Font("Verdana", Font.BOLD, 18);
 public static Font arial14Font = new Font("Arial", Font.BOLD, 14);
-
-
-/** Czcionka Smokun Font.
- * 
- */
 public static Font smokunFont;
-
-/** Czcionka Texas Font.
- * 
- */
 public static Font texasFont;
-
-/** Szerokoœæ g³ównego okna gry.
- * 
- */
-
-public static final Color fontColor = new Color(60, 0, 140);
+public static Music music;
+public static NetworkConnector nc = new NetworkConnector();
+public static SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound,crateHitSound, screenShotSound, menuSound1, menuSound2;
 public static int WIDTH = 0;
-
-/** Wysokoœæ g³ównego okna gry.
- * 
- */
 public static int HEIGHT = 0;
+public static boolean fpsCap;
 
-/** Oiekt klasy Achievements.
- * @see Achievements
- */
+private final static Logger LOGGER = Logger.getLogger(MainClass.class.getName());
+
+private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");
+private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
+private final double amountOfTicks = 60.0;
+
+private static boolean DEBUG_MODE;
+
+private Thread gameThread;
+private Thread musicThread;
 private Achievements achievements = null;
 private HallOfFame hallOfFame = null;
-public static SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusShotSound, springJumpSound,crateHitSound, screenShotSound, menuSound1, menuSound2;
-private int fps_count = 0, ticks_count = 0;
-public static double amountOfTicks = 60.0;
-
-/** Przyjmuje wartoœæ true jeœli odnaleziono plik konfuguracji gamepada. 
- * 
- */
-private boolean gamepadConfigFileEnabled = false;
-
 private GameWindow gameWindow;
 private MainScreen mainScreen;
 private ObjectInputStream ois = null;
 private ObjectOutputStream oos = null;
-private boolean gameThreadRunning;
-private boolean musicThreadRunning;
-private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-Regular.ttf");
-private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
-private Thread gameThread;
-private Thread musicThread;
-
-/** Obiekt enumu GameState prezentuj¹cy aktualny "stan gry". W zale¿noœci od tego stanu jest wyœwietlane odpowienie menu gry lub sama gra.
- * 
- */
 private GameState gameState;
-
-/** Obiekt klasy Music zajmuj¹cy siê ob³sug¹ odtwarzanie plików mp3.
- * 
- */
-public static Music music;
-public static final float GAME_VER = 0.46f;
-public static final int BUILD = 13;
-public static boolean fpsCap;
-public static boolean DEBUG_MODE;
 private JWindow window;
 private BufferedImageLoader splashScreenLoader = new BufferedImageLoader();
 private BufferedImage splashScreen;
-public static NetworkConnector nc = new NetworkConnector();
+private FileHandler fileHandler = null;
+private HashMap<Integer, Boolean> achievementsList;
+private ArrayList<HallOfFamePlayer> hallOfFameList = new ArrayList<HallOfFamePlayer>(30);
+
+private int[] collectiblesList = new int[Collectibles.MAX_COLLECTIBLES];
+private int fps_count, ticks_count;
+private boolean gamepadConfigFileEnabled = false;
+private boolean gameThreadRunning;
+private boolean musicThreadRunning;
 
 
 
@@ -176,7 +118,7 @@ public MainClass()
 		fileHandler.setFormatter(new SimpleFormatter());
 		fileHandler.setLevel(Level.INFO);
 		LOGGER.addHandler(fileHandler);
-		logging(false, "Uruchomienie gry w trybie DEBUG. Logger za³adowany.");
+		logging(false, Level.INFO, "Uruchomienie gry w trybie DEBUG. Logger za³adowany.");
 	}
 
 	splashScreen();
@@ -194,7 +136,7 @@ public void splashScreen()
 	label.setBackground(Color.BLACK);
 	window.setLocationRelativeTo(null);
 	window.setVisible(true);
-	logging(false, "Uruchomienie ekranu splashScreen.");
+	logging(false, Level.INFO, "Uruchomienie ekranu splashScreen.");
 }
 
 /** Inicjuje pocz¹tekowe warunki i stany gry, np. gameWindow, MainScreen (Canvas). W tej metodzie uruchamiany jest w¹tek
@@ -207,20 +149,20 @@ private void gameInit()
 	
 	try {
 		texasFont = Font.createFont(Font.TRUETYPE_FONT, TEXAS_FONT);
-		logging(false, "Czcionka Textas Font za³adowana.");
+		logging(false, Level.INFO, "Czcionka Textas Font za³adowana.");
 		smokunFont = Font.createFont(Font.TRUETYPE_FONT, SMOKUN_FONT);
-		logging(false, "Czcionka Smokun Font Font za³adowana.");
+		logging(false, Level.INFO, "Czcionka Smokun Font Font za³adowana.");
 	}
 	catch (FontFormatException | IOException e)
 	{
 		String message = getStackTrace(e);
-		logging(false, "B³¹d ³adowania czcionki! ", message);
+		logging(false, Level.WARNING, "B³¹d ³adowania czcionki! ");
+		logging(true, Level.WARNING, message);
 	}
 	
 	prepareCollectibles();
 	prepareAchievements();
 	prepareHallOfFame();
-	
 	
 	music = new Music();
 	
@@ -247,7 +189,7 @@ private void gameInit()
 	gameState = GameState.MainMenu;
 	mainScreen = new MainScreen(gameState, gameWindow, gamepadConfigFileEnabled, hallOfFame, achievements, collectiblesList);
 	gameWindow.setVisible(true);
-	logging(false, "Okno gry zainicjowane ");
+	logging(false, Level.INFO, "Okno gry zainicjowane.");
 	WIDTH = mainScreen.getWidth();
 	HEIGHT = mainScreen.getHeight();
 	
@@ -284,12 +226,10 @@ public void run()
 	gameWindow.requestFocus();
 	
 	gameState = GameState.Game;
-	logging(false, "W¹tek gry uruchomiony.");
+	logging(false, Level.INFO, "W¹tek gry uruchomiony.");
 	
 	// GAME LOOP
-
 	long lastTime = System.nanoTime();
-	amountOfTicks = 60.0;
 	
 	double delta = 0;
 	long timer = System.currentTimeMillis();
@@ -316,14 +256,8 @@ public void run()
 			delta--;
 		}
 		
-		if (gameState == GameState.Game)
-		{
-			if (!fpsCap) mainScreen.render(fps_count, ticks_count);
-		}
-		else if (gameState == GameState.Menu)
-		{
-			
-		}
+		if (!fpsCap) mainScreen.render(fps_count, ticks_count);
+		
 		frames++;
 		
 		if (System.currentTimeMillis() - timer > 1000)
@@ -339,8 +273,8 @@ public void run()
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
-				String message = getStackTrace(e);
-				logging(true, "B³¹d game loop w momencie Thread.sleep(5); ! ", message);
+				logging(false, Level.WARNING, "B³¹d game loop w momencie Thread.sleep(5); ! ");
+				logging(true, Level.WARNING, getStackTrace(e));
 			}
 		}
 	}
@@ -408,12 +342,12 @@ public void prepareCollectibles()
 			oos.writeObject(collectiblesList);
 			oos.flush();
 			oos.close();
-			logging(false, "Plik "+MainClass.collectiblesFile.getName() +" poprawnie utworzony a nowe dane poprawnie zapisane");
+			logging(false, Level.INFO, "Plik "+MainClass.collectiblesFile.getName() +" poprawnie utworzony a nowe dane poprawnie zapisane");
 		}
 		catch (IOException ioe)
 		{
-			String message = getStackTrace(ioe);
-			logging(true, "B³¹d zapisu do pliku "+MainClass.collectiblesFile.getName(), message);
+			logging(false, Level.WARNING, "B³¹d zapisu do pliku "+MainClass.collectiblesFile.getName());
+			logging(true, Level.WARNING, getStackTrace(ioe));
 		}
 	}
 		
@@ -421,12 +355,12 @@ public void prepareCollectibles()
 		ois = new ObjectInputStream(new FileInputStream(MainClass.collectiblesFile));
 		collectiblesList = (int[]) ois.readObject();
 		ois.close();
-		logging(false, "Dane Collectibles z pliku "+MainClass.collectiblesFile.getName() +" poprawnie za³adowane");
+		logging(false, Level.INFO, "Dane Collectibles z pliku "+MainClass.collectiblesFile.getName() +" poprawnie za³adowane");
 		}
 		catch (IOException | ClassNotFoundException e)
 		{
-			String message = getStackTrace(e);
-			logging(true, "B³¹d odczytu pliku "+MainClass.collectiblesFile.getName(), message);
+			logging(false, Level.WARNING, "B³¹d odczytu pliku "+MainClass.collectiblesFile.getName());
+			logging(true, Level.WARNING, getStackTrace(e));
 		}
 }
 
@@ -446,12 +380,13 @@ private void prepareAchievements()
 				oos.writeObject(achievementsList);
 				oos.flush();
 				oos.close();
-				logging(false, "Plik "+MainClass.achievementsFile.getName() +" poprawnie utworzony a nowe dane poprawnie zapisane");
+				logging(false, Level.INFO, "Plik "+MainClass.achievementsFile.getName() +" poprawnie utworzony a nowe dane poprawnie zapisane");
 			}
 			catch (IOException ioe)
 			{
 				String message = getStackTrace(ioe);
-				logging(true, "B³¹d zapisu do pliku "+MainClass.achievementsFile.getName(), message);
+				logging(true, Level.WARNING, "B³¹d zapisu do pliku "+MainClass.achievementsFile.getName());
+				logging(true, Level.WARNING, message);
 			}
 	}
 	
@@ -459,12 +394,12 @@ private void prepareAchievements()
 	ois = new ObjectInputStream(new FileInputStream(MainClass.achievementsFile));
 	achievementsList = (HashMap<Integer, Boolean>) ois.readObject();
 	ois.close();
-	logging(false, "Dane Achievements z pliku "+MainClass.achievementsFile.getName() +" poprawnie za³adowane");
+	logging(false, Level.INFO, "Dane Achievements z pliku "+MainClass.achievementsFile.getName() +" poprawnie za³adowane");
 	}
 	catch (IOException | ClassNotFoundException e)
 	{
-		String message = getStackTrace(e);
-		logging(true, "B³¹d odczytu pliku "+MainClass.achievementsFile.getName(), message);
+		logging(false, Level.WARNING, "B³¹d odczytu pliku "+MainClass.achievementsFile.getName());
+		logging(true, Level.WARNING, getStackTrace(e));
 	}
 
 	achievements = new Achievements(achievementsList);
@@ -493,15 +428,18 @@ private void prepareAchievements()
 	achievements.setSprinterComplete(achievementsList.get(22));
 }
 
-public static void logging(boolean critical, String... msg)
+
+/**  Metoda wrzucaj¹ca do loga treœæ wyj¹tku/informacji.
+ * Dzia³a tylko jeœli DEBUG_MODE = true;
+ * @param critical True jeœli b³¹d jest krytyczny i nale¿y przerwaæ dzia³anie programu.
+ * @param level Poziom informacji (z regu³y INFO lub WARNING)
+ * @param msg Treœæ wiadomoœci do loga.
+ */
+public static void logging(boolean critical, Level level, String msg)
 {
 	if (DEBUG_MODE)
 	{
-		for (int i = 0; i < msg.length; i++) {
-			if (critical) {
-				LOGGER.log(Level.WARNING, msg[i]);
-			} else LOGGER.log(Level.INFO, msg[i]);
-		}
+		LOGGER.log(level, msg);
 		if (critical) {
 			LOGGER.log(Level.WARNING, "Zamykanie programu z b³êdem.");
 			System.exit(-1);
@@ -510,6 +448,10 @@ public static void logging(boolean critical, String... msg)
 }
 
 
+/** Metoda zwracaj¹ca tekst PrintStackTrace w postaci String.
+ * @param throwable  Wyj¹tek.
+ * @return (String) tekst PrintStackTrace.
+ */
 public static String getStackTrace(final Throwable throwable) {
     final StringWriter sw = new StringWriter();
     final PrintWriter pw = new PrintWriter(sw, true);
@@ -524,6 +466,8 @@ public static void main(String[] args)
 {
 	if (args.length > 0)
 	if (args[0].equalsIgnoreCase("-debug")) DEBUG_MODE = true;
+	else DEBUG_MODE = false;
+	
 	new MainClass();
 }
 
@@ -538,7 +482,7 @@ private class MusicThread implements Runnable
 	@Override
 	public void run() {
 
-		MainClass.logging(false, "W¹tek muzyczny uruchomiony.");
+		MainClass.logging(false, Level.INFO, "W¹tek muzyczny uruchomiony.");
 		
 		music.setPlaying(true);
 		music.restart(Music.WESTERN);

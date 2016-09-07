@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import com.platformer.game.graphics.Animation;
 import com.platformer.game.graphics.Textures;
@@ -728,12 +729,12 @@ private void collisions()
 						oos = new ObjectOutputStream(new FileOutputStream((MainClass.collectiblesFile)));
 					    oos.writeObject(collectiblesList);
 					    oos.close();
-					    MainClass.logging(false, "Plik Collectibles " +MainClass.collectiblesFile.getName() +" zosta³ poprawnie zapisany.");
+					    MainClass.logging(false, Level.INFO, "Plik Collectibles " +MainClass.collectiblesFile.getName() +" zosta³ poprawnie zapisany.");
 						}
 						catch (IOException ioe)
 						{
-							String message = MainClass.getStackTrace(ioe);
-							MainClass.logging(true, "B³¹d zapisu plików Collectibles " +MainClass.collectiblesFile.getName(), message);
+							MainClass.logging(false, Level.WARNING, "B³¹d zapisu plików Collectibles " +MainClass.collectiblesFile.getName());
+							MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ioe));
 						}
 					
 					objectsHandler.getCollectibles_List().remove(tempObject);
