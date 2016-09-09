@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ public static final File achievementsFile = new File("achievements.dat");
 public static final File hallOfFameFile = new File("halloffame.dat");
 public static final File collectiblesFile = new File("collectibles.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
+public static final File gameConfigFile = new File("tequila.cfg");
 public static final Color fontColor = new Color(60, 0, 140);
 public static final float GAME_VER = 0.57f;
 public static final int BUILD = 19;
@@ -59,6 +61,8 @@ public static SoundsLoader jumpSound, powerUpSound, coinSound, hitSound, cactusS
 public static int WIDTH = 0;
 public static int HEIGHT = 0;
 public static boolean fpsCap;
+public static Languages language;
+public enum Languages { polish, english };
 
 private final static Logger LOGGER = Logger.getLogger(MainClass.class.getName());
 
@@ -83,7 +87,10 @@ private BufferedImage splashScreen;
 private FileHandler fileHandler = null;
 private HashMap<Integer, Boolean> achievementsList;
 private ArrayList<HallOfFamePlayer> hallOfFameList = new ArrayList<HallOfFamePlayer>(30);
+private Properties prop = new Properties();
+private InputStream propStream;
 
+private String languageProp;
 private int[] collectiblesList = new int[Collectibles.MAX_COLLECTIBLES];
 private int fps_count, ticks_count;
 private boolean gamepadConfigFileEnabled = false;
@@ -92,12 +99,6 @@ private boolean musicThreadRunning;
 
 
 
-
-
-
-/** Konstruktor klasy g³ównej gry.
- * 
- */
 public MainClass()
 {
 	// LOGGER
@@ -120,16 +121,69 @@ public MainClass()
 		LOGGER.addHandler(fileHandler);
 		logging(false, Level.INFO, "Uruchomienie gry w trybie DEBUG. Logger za³adowany.");
 	}
-
-	splashScreen();
+	
+	loadProperties();
+	
+	splashScreen();	
 	gameInit();
 }
 
 
+public void loadProperties()
+{	
+	if(gameConfigFile.exists() && !gameConfigFile.isDirectory())
+	{
+		language = Languages.polish;
+		
+		try {
+			propStream = new FileInputStream(MainClass.gameConfigFile);
+			prop.load(propStream);
+			languageProp = prop.getProperty("Language");
+			if (languageProp.equalsIgnoreCase("polish")) language = Languages.polish;
+			if (languageProp.equalsIgnoreCase("english")) language = Languages.english;
+
+			MainClass.logging(false, Level.INFO, "Plik ustawieñ gry prawid³owo odczytany.");
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			MainClass.logging(false, Level.WARNING,  "B³¹d odczytu pliku ustawieñ gry");
+			MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ex));
+		} finally {
+			if (propStream != null) {
+				try {
+					propStream.close();
+				} catch (IOException e) {
+					MainClass.logging(false, Level.WARNING,  "Plik ustawieñ gry zosta³ nieprawid³owo zamkniêty!");
+					MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(e));
+				}
+			}
+		}
+	}
+	else {
+		saveOptions();
+	}	
+}
+
+public void saveOptions()
+{
+	prop.put("Language", language.toString());
+
+	try {
+		FileOutputStream fileOut = new FileOutputStream(gameConfigFile);
+		prop.store(fileOut, "Game options");
+		fileOut.close();
+	}
+	catch (Exception ex)
+	{
+		ex.printStackTrace();
+	}
+}
+
 public void splashScreen()
 {
 	window = new JWindow();
-	splashScreen = splashScreenLoader.loadImage("/splashScreen.png");
+	if (language == Languages.polish) splashScreen = splashScreenLoader.loadImage("/splashScreenPl.png");
+	if (language == Languages.english) splashScreen = splashScreenLoader.loadImage("/splashScreenEng.png");
 	JLabel label = new JLabel(new ImageIcon(splashScreen));
 	window.getContentPane().add(label);
 	window.setSize(splashScreen.getWidth(), splashScreen.getHeight());
@@ -184,8 +238,8 @@ private void gameInit()
 	cactusShotSound.setVolume(-15f);
 	springJumpSound.setVolume(-15f);
 	crateHitSound.setVolume(-15f);
-
-	gameWindow = new GameWindow();
+	
+	gameWindow = new GameWindow(this);
 	gameState = GameState.MainMenu;
 	mainScreen = new MainScreen(gameState, gameWindow, gamepadConfigFileEnabled, hallOfFame, achievements, collectiblesList);
 	gameWindow.setVisible(true);

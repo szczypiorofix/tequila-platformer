@@ -68,6 +68,7 @@ public BufferedImage ptakiR1, ptakiR2;
 public BufferedImage[] dust = new BufferedImage[3];
 public BufferedImage websiteButton;
 public BufferedImage handMenu;
+public BufferedImage polishFlagImage, englishFlagImage;
 
 
 // ACHIEVMENTS
@@ -101,7 +102,7 @@ public BufferedImage howToPlayImage, hallOfFameImage, creditsImage, achievements
 
 
 
-public Textures()
+private Textures()
 {	
 	BufferedImageLoader loader = new BufferedImageLoader();
 		
@@ -370,6 +371,9 @@ public Textures()
 	dust[0] = loader.loadImage("/dust1.png");
 	dust[1] = loader.loadImage("/dust2.png");
 	dust[2] = loader.loadImage("/dust3.png");
+	
+	polishFlagImage = loader.loadImage("/polishFlag.png");
+	englishFlagImage = loader.loadImage("/englishFlag.png");
 		
 	blank = loader.loadImage("/Ablank.png");
 	jump10Image = loader.loadImage("/A10jumps.png");

@@ -44,9 +44,13 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		g2d.drawImage(Textures.getInstance().menuBg, 300, 120, null);
 		g2d.setColor(Color.RED);
 		g2d.setFont(MainClass.texasFont.deriveFont(68f));
-		g2d.drawString("NIE ¯YJESZ", 420, 240);
+		
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.PLAYER_DEAD_PL, 420, 240);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.PLAYER_DEAD_ENG, 420, 240);
+		
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
-		g2d.drawString("SPACJA - RESTART", 405, 320);
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.PLAYER_RESTART_PL, 405, 320);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.PLAYER_RESTART_ENG, 405, 320);
 		break;
 	}
 	case NextLevel: {
@@ -55,7 +59,10 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		g2d.setColor(Color.YELLOW);
 		g2d.drawRect(2999, 99, 402, 342);
 		g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
-		g2d.drawString("POZIOM "+MainScreen.LEVEL +" UKOÑCZONY !!!", 315, 155);
+		
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.LEVEL_PL +" "+MainScreen.LEVEL +" " +TextResources.FINISHED_PL, 315, 155);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.LEVEL_ENG +" "+MainScreen.LEVEL +" " +TextResources.FINISHED_ENG, 315, 155);
+		
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
 		g2d.drawString("TWÓJ WYNIK: " +MainScreen.SCORE, 375, 240);
 		g2d.drawString("CZAS: " +MainScreen.time, 380, 300);
@@ -98,7 +105,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	
 	g2d.setFont(MainClass.arial14Font);
 	g2d.setColor(Color.BLACK);
-	g2d.drawString("FPS: "+fps_count +" Ticks: "+ ticks_count, MainClass.WIDTH - 160, MainClass.HEIGHT - 10);
+	g2d.drawString("FPS: "+fps_count +" Ticks: "+ ticks_count, MainClass.WIDTH - 200, MainClass.HEIGHT - 10);
 }
 
 }

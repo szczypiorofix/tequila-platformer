@@ -14,9 +14,11 @@ public class GameWindow extends Frame implements WindowListener{
 private static final long serialVersionUID = 8434543456858249978L;
 public static DisplayMode currentDisplayMode = null;
 private BufferedImageLoader loader = new BufferedImageLoader();
+private MainClass mainclass;
 
-public GameWindow()
+public GameWindow(MainClass mainClass)
 {	
+	this.mainclass = mainClass;
 	this.setIgnoreRepaint(true);
 	this.setTitle("TEQUILA PLATFORMER");
 	this.setResizable(false);
@@ -31,6 +33,7 @@ public void showWindow(boolean showWindow)
 {
 	this.setVisible(showWindow);
 	if (!showWindow) {
+		mainclass.saveOptions();
 		this.dispose();
 		MainClass.logging(false, Level.INFO, "Wywo³anie zamkniêcia gry.");
 		System.exit(0);

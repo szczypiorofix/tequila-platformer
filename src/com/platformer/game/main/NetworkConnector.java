@@ -11,10 +11,10 @@ import java.util.logging.Level;
 public class NetworkConnector {
 
 public static boolean connected;
-//private final String host = "127.0.0.1";
-private final String host = "37.233.99.104";
+private final String host = "127.0.0.1";
+//private final String host = "37.233.99.104";
 private final int port = 1201;
-private final int timeOut = 5000; // 5 sekund
+private final int timeOut = 1000; // 5 sekund
 private ArrayList<HallOfFamePlayer> hallOfFameRecords;
 private Socket socket;
 private ObjectInputStream ois;

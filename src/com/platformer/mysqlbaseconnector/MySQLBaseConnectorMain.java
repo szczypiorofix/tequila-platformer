@@ -46,9 +46,6 @@ public MySQLBaseConnectorMain()
 	serverRunning = true;
 	message("Server starting...");
 	
-	conn = null;
-	stmt = null;
-	
 	downloadResults();
 	
 	try {
@@ -114,12 +111,12 @@ public MySQLBaseConnectorMain()
 	 	}
 		finally {
 	    try{
-	       if(stmt!=null) stmt.close();
+	       if (stmt != null) stmt.close();
 	    }
 	    catch(SQLException se2){
 	    }
 	    try{
-	       if(conn!=null) conn.close();
+	       if(conn != null) conn.close();
 	    }
 	    catch(SQLException se) {
 	       se.printStackTrace();

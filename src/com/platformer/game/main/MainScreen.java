@@ -293,19 +293,42 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	mainMenuButtons = new MenuButton[MAX_MAIN_MENU_BUTTONS];
 		
 	selectedMainMenuButton = 0;
-	mainMenuButtons[0] = new MenuButton("NOWA GRA", 650, 120, 310, 50);
-	mainMenuButtons[1] = new MenuButton("JAK GRAÆ", 650, 180, 310, 50);
-	mainMenuButtons[2] = new MenuButton("NAJLEPSZE WYNIKI", 650, 240, 310, 50);
-	mainMenuButtons[3] = new MenuButton("OSI¥GNIÊCIA", 650, 300, 310, 50);
-	mainMenuButtons[4] = new MenuButton("KRYSZTA£Y MOCY", 650, 360, 310, 50);
-	mainMenuButtons[5] = new MenuButton("O GRZE ...", 650, 420, 310, 50);
-	mainMenuButtons[6] = new MenuButton("ZAKOÑCZ", 650, 480, 310, 50);
+	if (MainClass.language == MainClass.Languages.polish)
+	{
+		mainMenuButtons[0] = new MenuButton(TextResources.NEW_GAME_PL, 650, 120, 310, 50);
+		mainMenuButtons[1] = new MenuButton(TextResources.HOW_TO_PLAY_PL, 650, 180, 310, 50);
+		mainMenuButtons[2] = new MenuButton(TextResources.HALL_OF_FAME_PL, 650, 240, 310, 50);
+		mainMenuButtons[3] = new MenuButton(TextResources.ACHIEVEMENTS_PL, 650, 300, 310, 50);
+		mainMenuButtons[4] = new MenuButton(TextResources.COLLECTIBLES_PL, 650, 360, 310, 50);
+		mainMenuButtons[5] = new MenuButton(TextResources.CREDITS_PL, 650, 420, 310, 50);
+		mainMenuButtons[6] = new MenuButton(TextResources.EXIT_PL, 650, 480, 310, 50);		
+	}
+	if (MainClass.language == MainClass.Languages.english)
+	{
+		mainMenuButtons[0] = new MenuButton(TextResources.NEW_GAME_ENG, 650, 120, 310, 50);
+		mainMenuButtons[1] = new MenuButton(TextResources.HOW_TO_PLAY_ENG, 650, 180, 310, 50);
+		mainMenuButtons[2] = new MenuButton(TextResources.HALL_OF_FAME_ENG, 650, 240, 310, 50);
+		mainMenuButtons[3] = new MenuButton(TextResources.ACHIEVEMENTS_ENG, 650, 300, 310, 50);
+		mainMenuButtons[4] = new MenuButton(TextResources.COLLECTIBLES_ENG, 650, 360, 310, 50);
+		mainMenuButtons[5] = new MenuButton(TextResources.CREDITS_ENG, 650, 420, 310, 50);
+		mainMenuButtons[6] = new MenuButton(TextResources.EXIT_ENG, 650, 480, 310, 50);		
+	}
 	
 	menuButtons = new MenuButton[MAX_MENU_BUTTONS];
-	selectedMenuButton = 0;	
-	menuButtons[0] = new MenuButton("WZNÓW GRÊ", 360, 190);
-	menuButtons[1] = new MenuButton("MENU G£ÓWNE", 360, 270);
-	menuButtons[2] = new MenuButton("ZAKOÑCZ GRÊ", 360, 350);
+	selectedMenuButton = 0;
+	
+	if (MainClass.language == MainClass.Languages.polish)
+	{
+		menuButtons[0] = new MenuButton(TextResources.RESUME_GAME_PL, 360, 190);
+		menuButtons[1] = new MenuButton(TextResources.MAIN_MENU_PL, 360, 270);
+		menuButtons[2] = new MenuButton(TextResources.EXIT_PL, 360, 350);		
+	}
+	if (MainClass.language == MainClass.Languages.english)
+	{
+		menuButtons[0] = new MenuButton(TextResources.RESUME_GAME_ENG, 360, 190);
+		menuButtons[1] = new MenuButton(TextResources.MAIN_MENU_ENG, 360, 270);
+		menuButtons[2] = new MenuButton(TextResources.EXIT_ENG, 360, 350);		
+	}
 		
 	smigloAnim = new Animation(1, Textures.getInstance().smiglo[3], Textures.getInstance().smiglo[2], Textures.getInstance().smiglo[1], Textures.getInstance().smiglo[0]);
 	ptaki1RAnim = new Animation(10, Textures.getInstance().ptakiR1, Textures.getInstance().ptakiR2);
@@ -536,27 +559,6 @@ public void tick()
 	if (key.isKeyPressed(KeyEvent.VK_CONTROL)) {
 		
 		showHandMenu = true;
-		
-		
-		
-		
-		/**
-		player.setHealth(5);
-		
-		int active = Thread.activeCount();
-        System.out.println("Aktywne w¹tki: " + active);
-        Thread all[] = new Thread[active];
-        Thread.enumerate(all);
-
-        for (int i = 0; i < active; i++) {
-           System.out.println(i + ": " + all[i] +" " +all[i].getState());
-        }
-        runtime = Runtime.getRuntime();
-        System.out.println();
-        System.out.println("JVM Total memory: " +(runtime.totalMemory())/1024/1024 +" MB");
-        System.out.println("JVM Free memory: " +runtime.freeMemory()/1024/1024 +" MB");
-        System.out.println("JVM Max memory: " +runtime.maxMemory()/1024/1024 +" MB");
-        **/
 	}
 	
 	if (showMessage)
@@ -573,12 +575,6 @@ public void tick()
 		// SCREENSHOT !!!
 		makeScreenShot = true;
 	}
-	
-	
-	// ZABAWA BULLET TIME
-	//if (key.isKeyPressedOnce(KeyEvent.VK_1) && MainClass.amountOfTicks > 30) MainClass.amountOfTicks -= 10;
-	//if (key.isKeyPressedOnce(KeyEvent.VK_2) && MainClass.amountOfTicks < 60) MainClass.amountOfTicks += 10;
-	
 	
 	// RESTART AFTEER DEATH
 	if (gameState == GameState.Death && key.isKeyPressedOnce(KeyEvent.VK_SPACE))
@@ -931,40 +927,6 @@ public void timeTick()
 
 
 
-/** Metoda dodaj¹ca nowegy wpis na liœcie Najlepsze Wyniki (Hall of Fame)
- * oraz zapisuj¹ca tê listê do pliku.
- * @param name Imiê/ksywka obecnego gracza.
- * @param score Wynik obecnego gracza.
- * @param millis Czas gry obecnego gracza w milisekundach
- */
-
-/**
-private void writeScore(String name, int score, long millis, int level)
-{
-	hallOfFame.getHallOfFameList().add(new HallOfFamePlayer(name, score, millis, level));
-	
-	Collections.sort(hallOfFame.getHallOfFameList(), new CompareScore());
-	
-	ArrayList<HallOfFamePlayer> t = new ArrayList<HallOfFamePlayer>(10);
-	
-	
-	/// SORTOWANIE W KOLEJNOŒCI ODWROTNEJ CZYLI OD NAJWIÊKSZEGO DO NAJMNIEJSZEGO
-	for (int i = 0; i < 20; i++)
-	{
-		t.add(hallOfFame.getHallOfFameList().get(i));
-	}
-	
-	hallOfFame.getHallOfFameList().clear();
-	
-	for (int i = 0; i < 20; i++)
-	{
-		hallOfFame.getHallOfFameList().add(t.get(i));
-	}
-	
-	hallOfFame.writeScoreToFile();
-}
-**/
-
 /** Metoda wyœwietlaj¹ca osi¹gniêcie na ekranie, w³¹cznie z "najazdem" i "odjazdem" ramki z tekstem u góry ekranu.
  * @param g2d Graphics2D.
  * @param msg Treœæ osi¹gniêcia.
@@ -1144,6 +1106,9 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(Textures.getInstance().literaR, 560, (int) (MainClass.HEIGHT - 100 + falujaceLitery[15]), null);
 		
 		if (isDesktopSupported) g2d.drawImage(Textures.getInstance().websiteButton, 330, (int) (MainClass.HEIGHT - 25), null);
+		
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawImage(Textures.getInstance().polishFlagImage, MainClass.WIDTH - 55, MainClass.HEIGHT - 32, null);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawImage(Textures.getInstance().englishFlagImage, MainClass.WIDTH - 55, MainClass.HEIGHT - 32, null);
 	}
 	
 	// FPS CAP WSZÊDZIE OPRÓCZ GRY
@@ -1207,11 +1172,19 @@ public void render(int fps_count, int ticks_count)
 		for (int i = 0; i < player.getHealth(); i++) g.drawImage(Textures.getInstance().heart, 360+(i*40), 5, 40, 40,null);	
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
 		g2d.setColor(Color.BLUE);
-		g2d.drawString("POZIOM "+MainScreen.LEVEL, 845, 40);
-		g2d.drawString("MONETY: "+MainScreen.COINS, 10, 40);
-		g2d.drawString("WYNIK: "+MainScreen.SCORE, 10, 80);	
+		
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.LEVEL_PL +": " +MainScreen.LEVEL, 845, 40);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.LEVEL_ENG +": " +MainScreen.LEVEL, 845, 40);
+		
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.COINS_PL +": " +MainScreen.COINS, 10, 40);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.COINS_ENG +": " +MainScreen.COINS, 10, 40);
+		
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.SCORE_PL +": "  +MainScreen.SCORE, 10, 80);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.SCORE_ENG +": " +MainScreen.SCORE, 10, 80);
+		
 		g2d.setFont(MainClass.verdana14Font);
-		g2d.drawString("CZAS: "+MainScreen.time, MainClass.WIDTH - 150, 70);
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.TIME_PL +": " +MainScreen.time, MainClass.WIDTH - 150, 70);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.TIME_ENG +": " +MainScreen.time, MainClass.WIDTH - 150, 70);
 	}
 	
 	// ZROBIENIE SZAREGO EKRANU
@@ -1261,7 +1234,8 @@ public void render(int fps_count, int ticks_count)
 		g2d.setFont(MainClass.verdana14Font);
 		g2d.setColor(Color.BLACK);
 		g2d.setColor(MainClass.fontColor);
-		g2d.drawString("Osi¹gniêcia: " +achievements.getAchievementsUnlocked()+"/" +Achievements.maxAchievements,380, 34);
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.achievements_PL +": " +achievements.getAchievementsUnlocked()+"/" +Achievements.maxAchievements,380, 34);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.achievements_ENG +": " +achievements.getAchievementsUnlocked()+"/" +Achievements.maxAchievements,380, 34);
 
 		
 		defaultClip = g2d.getClip();
@@ -1350,7 +1324,9 @@ public void render(int fps_count, int ticks_count)
 			}
 			else
 			{
-				g2d.drawString(" < UKRYTY >", 175, 70 + (i*60));
+				if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.HIDDEN_PL, 175, 70 + (i*60));
+				if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.HIDDEN_ENG, 175, 70 + (i*60));
+				
 				g2d.drawImage(Textures.getInstance().blank, 110, 40 + (i*60), null);
 			}
 		}
@@ -1371,14 +1347,19 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(Textures.getInstance().hallOfFameImage, 100, 0, null);
 		
 		g2d.setFont(MainClass.verdana18Font);
-		g2d.drawString("MIEJSCE    POZIOM         IMIÊ                         CZAS                 WYNIK", 140, 45);
+		
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.HALL_OF_FAME_COLUMNS_PL, 140, 45);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.HALL_OF_FAME_COLUMNS_ENG, 140, 45);
 		
 		g2d.drawLine(140, 51, 820, 51);
 		g2d.drawLine(140, 52, 820, 52);
 		g2d.drawLine(140, 53, 820, 53);
 		
 		// CONNECTION ERROR ?
-		if (!NetworkConnector.connected) g2d.drawString("B³¹d po³¹czenia z serwerem danych...", 300, 300);
+		if (!NetworkConnector.connected) {
+			if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.CONNECTION_ERROR_PL, 300, 300);
+			if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.CONNECTION_ERROR_ENG, 300, 300);
+		}
 		
 		
 		defaultClip = g2d.getClip();
@@ -1450,6 +1431,48 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		
+		if (gameState == GameState.MainMenu)
+		{
+			
+			if (me.getX() >= MainClass.WIDTH - 55 && me.getX() <= Textures.getInstance().polishFlagImage.getWidth() + MainClass.WIDTH - 55
+					&& me.getY() >= MainClass.HEIGHT - 32  && me.getY() <= MainClass.HEIGHT - 32 + Textures.getInstance().polishFlagImage.getHeight())
+			{
+				if (MainClass.language == MainClass.Languages.polish) {
+					MainClass.language = MainClass.Languages.english;
+
+					mainMenuButtons[0].setName(TextResources.NEW_GAME_ENG);
+					mainMenuButtons[1].setName(TextResources.HOW_TO_PLAY_ENG);
+					mainMenuButtons[2].setName(TextResources.HALL_OF_FAME_ENG);
+					mainMenuButtons[3].setName(TextResources.ACHIEVEMENTS_ENG);
+					mainMenuButtons[4].setName(TextResources.COLLECTIBLES_ENG);
+					mainMenuButtons[5].setName(TextResources.CREDITS_ENG);
+					mainMenuButtons[6].setName(TextResources.EXIT_ENG);
+					
+					menuButtons[0].setName(TextResources.RESUME_GAME_ENG);
+					menuButtons[1].setName(TextResources.MAIN_MENU_ENG);
+					menuButtons[2].setName(TextResources.EXIT_ENG);
+					
+					return;
+				}
+				if (MainClass.language == MainClass.Languages.english) {
+					MainClass.language = MainClass.Languages.polish;
+					
+					mainMenuButtons[0].setName(TextResources.NEW_GAME_PL);
+					mainMenuButtons[1].setName(TextResources.HOW_TO_PLAY_PL);
+					mainMenuButtons[2].setName(TextResources.HALL_OF_FAME_PL);
+					mainMenuButtons[3].setName(TextResources.ACHIEVEMENTS_PL);
+					mainMenuButtons[4].setName(TextResources.COLLECTIBLES_PL);
+					mainMenuButtons[5].setName(TextResources.CREDITS_PL);
+					mainMenuButtons[6].setName(TextResources.EXIT_PL);
+
+					menuButtons[0].setName(TextResources.RESUME_GAME_PL);
+					menuButtons[1].setName(TextResources.MAIN_MENU_PL);
+					menuButtons[2].setName(TextResources.EXIT_PL);		
+
+					return;
+				}	
+			}
+		}
 		
 		if (showHandMenu && gameState == GameState.Game)
 		{
