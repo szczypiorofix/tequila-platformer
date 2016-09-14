@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="websiteButton.svg"
-   inkscape:export-filename="C:\Users\Piotrek\Git\platformer-game\res\Other\websiteButton.png"
+   inkscape:export-filename="C:\Users\Semiko\git\platformer-game\res\Other\websiteButton.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -29,13 +29,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="172.95835"
+     inkscape:cx="203.71118"
      inkscape:cy="913.43033"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="706"
+     inkscape:window-width="1600"
+     inkscape:window-height="838"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -56,13 +56,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="opacity:0.263;fill:#8787de;fill-opacity:0.61538463;fill-rule:nonzero;stroke:#ffd42a;stroke-width:0.95115101;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.434;fill:#cccccc;fill-opacity:0.61538463;fill-rule:nonzero;stroke:#ffd42a;stroke-width:1.092;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
        id="rect4725"
-       width="195.10085"
-       height="18.663807"
-       x="94.054169"
-       y="139.77858"
-       ry="3.8900449"
+       width="201.27388"
+       height="23.826704"
+       x="94.124374"
+       y="139.84877"
+       ry="4.9661331"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <text
@@ -78,18 +78,18 @@
          y="149.53838" /></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:16.4990406px;line-height:125%;font-family:'Agency FB';-inkscape-font-specification:'Agency FB, Condensed';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#d40000;fill-opacity:1;stroke:#008000;stroke-width:0.23423971;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1;"
-       x="80.149857"
-       y="188.54662"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20.9992981px;line-height:125%;font-family:Smokum;-inkscape-font-specification:'Smokum, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#d40000;fill-opacity:1;stroke:#008000;stroke-width:0.28107828;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       x="89.074928"
+       y="169.14825"
        id="text3338"
        sodipodi:linespacing="125%"
-       transform="scale(1.2286184,0.81392238)"
+       transform="scale(1.087472,0.9195639)"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3340"
-         x="80.149857"
-         y="188.54662"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:16.4990406px;line-height:125%;font-family:'Agency FB';-inkscape-font-specification:'Agency FB, Condensed';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#d40000;stroke:#008000;stroke-width:0.23423971;stroke-miterlimit:4.30000019;stroke-dasharray:none;">www.tequilaplatformer.cba.pl</tspan></text>
+         x="89.074928"
+         y="169.14825"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.0053215px;line-height:125%;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#d40000;stroke:#008000;stroke-width:0.28107828;stroke-miterlimit:4.30000019;stroke-dasharray:none">wroblewskipiotr.pl/tequila</tspan></text>
   </g>
 </svg>

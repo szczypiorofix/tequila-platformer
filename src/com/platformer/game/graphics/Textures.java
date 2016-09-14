@@ -69,6 +69,7 @@ public BufferedImage[] dust = new BufferedImage[3];
 public BufferedImage websiteButton;
 public BufferedImage handMenu;
 public BufferedImage polishFlagImage, englishFlagImage;
+public BufferedImage gameUIbg;
 
 
 // ACHIEVMENTS
@@ -374,7 +375,9 @@ private Textures()
 	
 	polishFlagImage = loader.loadImage("/polishFlag.png");
 	englishFlagImage = loader.loadImage("/englishFlag.png");
-		
+	
+	gameUIbg = loader.loadImage("/gameUIbg.png");
+	
 	blank = loader.loadImage("/Ablank.png");
 	jump10Image = loader.loadImage("/A10jumps.png");
 	jump25Image = loader.loadImage("/A25jumps.png");

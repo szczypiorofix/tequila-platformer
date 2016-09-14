@@ -1169,12 +1169,18 @@ public void render(int fps_count, int ticks_count)
 	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
 	{
 		// PLAYER HEALTH
-		for (int i = 0; i < player.getHealth(); i++) g.drawImage(Textures.getInstance().heart, 360+(i*40), 5, 40, 40,null);	
+		for (int i = 0; i < player.getHealth(); i++) g.drawImage(Textures.getInstance().heart, 360+(i*40), 5, 40, 40,null);
+		
+		
+		g2d.drawImage(Textures.getInstance().gameUIbg, 0, 0, null);
+		g2d.drawImage(Textures.getInstance().gameUIbg, 770, 0, null);
+		
+		
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 38f));
 		g2d.setColor(Color.BLUE);
 		
-		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.LEVEL_PL +": " +MainScreen.LEVEL, 845, 40);
-		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.LEVEL_ENG +": " +MainScreen.LEVEL, 845, 40);
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.LEVEL_PL +": " +MainScreen.LEVEL, 800, 40);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.LEVEL_ENG +": " +MainScreen.LEVEL, 800, 40);
 		
 		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.COINS_PL +": " +MainScreen.COINS, 10, 40);
 		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.COINS_ENG +": " +MainScreen.COINS, 10, 40);
@@ -1183,8 +1189,8 @@ public void render(int fps_count, int ticks_count)
 		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.SCORE_ENG +": " +MainScreen.SCORE, 10, 80);
 		
 		g2d.setFont(MainClass.verdana14Font);
-		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.TIME_PL +": " +MainScreen.time, MainClass.WIDTH - 150, 70);
-		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.TIME_ENG +": " +MainScreen.time, MainClass.WIDTH - 150, 70);
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.TIME_PL +": " +MainScreen.time, MainClass.WIDTH - 200, 70);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.TIME_ENG +": " +MainScreen.time, MainClass.WIDTH - 200, 70);
 	}
 	
 	// ZROBIENIE SZAREGO EKRANU
@@ -1501,9 +1507,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}		
 				}
-				
 			}
-			
 		}
 		
 		if (gameState == GameState.MainMenu)
@@ -1511,7 +1515,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 			
 			if (isDesktopSupported && me.getX() >= 330 && me.getX() <= Textures.getInstance().websiteButton.getWidth()+330
 				&& me.getY() >= MainClass.HEIGHT - 25  && me.getY() <= MainClass.HEIGHT - 25 + Textures.getInstance().websiteButton.getHeight())
-				openWebsite("www.tequilaplatformer.cba.pl");
+				openWebsite("http://wroblewskipiotr.pl/index.php/tequila/");
 			{
 			for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++)
 			{

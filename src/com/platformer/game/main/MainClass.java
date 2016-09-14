@@ -47,8 +47,8 @@ public static final File collectiblesFile = new File("collectibles.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
 public static final File gameConfigFile = new File("tequila.cfg");
 public static final Color fontColor = new Color(60, 0, 140);
-public static final float GAME_VER = 0.57f;
-public static final int BUILD = 19;
+public static final float GAME_VER = 0.64f;
+public static final int BUILD = 27;
 
 public static Font verdana14Font = new Font("Verdana", Font.BOLD, 14);
 public static Font verdana18Font = new Font("Verdana", Font.BOLD, 18);
@@ -184,6 +184,7 @@ public void splashScreen()
 	window = new JWindow();
 	if (language == Languages.polish) splashScreen = splashScreenLoader.loadImage("/splashScreenPl.png");
 	if (language == Languages.english) splashScreen = splashScreenLoader.loadImage("/splashScreenEng.png");
+	
 	JLabel label = new JLabel(new ImageIcon(splashScreen));
 	window.getContentPane().add(label);
 	window.setSize(splashScreen.getWidth(), splashScreen.getHeight());

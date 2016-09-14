@@ -155,10 +155,6 @@ public void downloadResults()
 	    
 	    sql = "SELECT Id, Name, Score, Millis, Level FROM BestScores ORDER BY Score DESC";
 	    rs = stmt.executeQuery(sql);
-	    
-	    //INSERT INTO `numery` (`Indeks`, `Numer`, `Nazwa`) VALUES (NULL, '1003', 'Zdzis³aw Dyrman');
-	    
-	    //rs = stmt.executeQuery(sql);
 
 	    while(rs.next()){
 		     int id  = rs.getInt("Id");
