@@ -33,6 +33,7 @@ private final float MAX_SPEED = 13f;
 private final int HIT_COOLDOWN = 60*2;
 private final int TEQUILA_COOLDOWN = 60*5;
 private final int TACO_COOLDOWN = 60*8;
+private final int IMMORTALITY_COOLDOWN = 60*15;
 private final int DUST_TIME = 20;
 private float width, height;
 private float velX = 0;
@@ -45,14 +46,22 @@ private boolean action;
 private float x, y;
 private int direction;
 private int health;
+
+private int immortality_time = IMMORTALITY_COOLDOWN;
+private boolean immortality = false;
+
 private int hit_time = HIT_COOLDOWN;
 private boolean hit_by_enemy = false;
+
 private int tequila_time = TEQUILA_COOLDOWN;
 private boolean tequila_powerUp = false;
+
 private int taco_time = TACO_COOLDOWN;
 private boolean taco_powerUp = false;
+
 private int dust_time = DUST_TIME;
 private boolean isDust = false;
+
 private int dustX, dustY;
 private int dustFrame;
 private boolean finishLevel = false;
@@ -200,6 +209,15 @@ public void tick(LinkedList<GameObject> object) {
 		else {
 			taco_time = TACO_COOLDOWN;
 			taco_powerUp = false;
+		}
+	}
+	
+	if (immortality)
+	{	
+		if (immortality_time > 0) immortality_time--;
+		else {
+			immortality_time = IMMORTALITY_COOLDOWN;
+			immortality = false;
 		}
 	}
 	
@@ -422,7 +440,7 @@ private void collisions()
 			GameObject tempObject = objectsHandler.getDart_List().get(i);
 			if (tempObject.isVisible())
 			{
-				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy && !immortality)
 				{
 					if (tempObject.getX() > x) x -= 10;
 					else x += 10;
@@ -492,7 +510,7 @@ private void collisions()
 			GameObject tempObject = objectsHandler.getBee_List().get(i);
 			if (tempObject.isVisible())
 			{
-				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy && !immortality)
 				{
 					if (tempObject.getX() > x) x -= 25;
 					else x += 25;
@@ -615,7 +633,7 @@ private void collisions()
 					jumping = false;
 					velY = 0;
 					onGround = true;
-					if (!hit_by_enemy && tempObject.isAction())
+					if (!hit_by_enemy && tempObject.isAction() && !immortality)
 					{
 						y -= 90;
 						health--;
@@ -638,7 +656,7 @@ private void collisions()
 			GameObject tempObject = objectsHandler.getTumbleweed_List().get(i);
 			if (tempObject.isVisible())
 			{
-				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy)
+				if (getWholeBounds().intersects(tempObject.getBounds()) && !hit_by_enemy && !immortality)
 				{
 					if (tempObject.getX() > x) x -= 25;
 					else x += 25;
@@ -941,6 +959,20 @@ public void setVisible(boolean visible) {
 }
 
 
+public boolean isImmortality()
+{
+	return immortality;
+}
+
+public void setImmortality(boolean immortality)
+{
+	this.immortality = immortality;
+}
+
+public int getImmortalityCooldown()
+{
+	return IMMORTALITY_COOLDOWN;
+}
 
 public void setMaxCoins(int maxCoins)
 {

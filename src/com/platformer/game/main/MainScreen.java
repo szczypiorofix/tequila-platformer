@@ -556,7 +556,7 @@ public void tick()
 	
 	showHandMenu = false;
 	
-	if (key.isKeyPressed(KeyEvent.VK_CONTROL)) {
+	if (key.isKeyPressed(KeyEvent.VK_CONTROL) && gameState == GameState.Game) {
 		
 		showHandMenu = true;
 	}
@@ -1136,6 +1136,9 @@ public void render(int fps_count, int ticks_count)
 		g2d.setColor(Color.GREEN);
 		g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
 	}
+	if (player.isImmortality()) {
+		g2d.drawImage(Textures.getInstance().immortalIcon, 0, 260, null);
+	}
 
 	
 	// ACHIEVEMENTS
@@ -1495,6 +1498,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 					if (i == 0 && player.getHealth() < player.getMaxHealth())    /// 1 MOC - ODNAWIA ZDROWIE O +1 O ILE NIE WIÊCEJ NI¯ MAX HEALTH
 					{
 						player.setHealth(player.getHealth() + 1);
+						
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
@@ -1503,9 +1507,52 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 					{
 						player.setMaxHealth(player.getMaxHealth() + 1);
 						player.setHealth(player.getHealth() + 1);
+						
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
-					}		
+					}
+					
+					if (i == 2)    /// 3 MOC - ODNAWIA CA£E ZDROWIE POSTACI
+					{
+						player.setHealth(player.getMaxHealth());
+						
+						//collectiblesList[i] -= 5;
+						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+					}
+					
+					if (i == 3)    /// 4 MOC - CZASOWA NIEŒMIERTELNOŒC POSTACI
+					{
+						
+						player.setImmortality(true);
+						//collectiblesList[i] -= 5;
+						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+					}
+
+					if (i == 4)    /// 5 MOC - USUWA WSZYSTKIE PSZCZO£Y Z PLANSZY
+					{
+						objectsHandler.getBee_List().clear();
+						
+						//collectiblesList[i] -= 5;
+						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+					}
+
+					if (i == 5)    /// 6 MOC - USUWA KAKTUSY Z PLANSZY
+					{
+						objectsHandler.getAngryCactus_List().clear();
+						
+						//collectiblesList[i] -= 5;
+						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+					}
+					
+					if (i == 6)    /// 7 MOC - USUWA WSZYSTKICH PRZECIWNIKÓW Z PLANSZY !
+					{
+						objectsHandler.getBee_List().clear();
+						objectsHandler.getTumbleweed_List().clear();
+						objectsHandler.getAngryCactus_List().clear();
+						
+						//collectiblesList[i] -= 5;
+						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+					}
 				}
 			}
 		}
