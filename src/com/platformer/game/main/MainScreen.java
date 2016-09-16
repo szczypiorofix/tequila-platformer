@@ -175,6 +175,7 @@ private Shape defaultClip;
 private boolean showHandMenu = false;
 private HandMenuItem[] handMenuItem = new HandMenuItem[7];
 private boolean readHoFRecords = false;
+private int showInfo = -1;
 
 
 
@@ -1166,6 +1167,29 @@ public void render(int fps_count, int ticks_count)
 			handMenuItem[i].drawItem(g2d);
 			g2d.drawString(collectiblesList[i] +"", (int) handMenuItem[i].getX() + 16, (int) handMenuItem[i].getY() + 22);
 		}
+		
+		if (showInfo > -1) {
+			
+			String info = "";
+			switch (showInfo)
+			{
+				case 0: info = "Pierwsza moc";
+						break;
+				case 1: info = "Druga moc";
+						break;
+				case 2: info = "Czecia moc";
+						break;
+				case 3: info = "Czfarta moc";
+						break;
+				case 4: info = "Pionta moc";
+						break;
+				case 5: info = "Szusta moc";
+						break;
+				case 6: info = "Siódma moc";
+						break;
+			}
+			g2d.drawString(info+"", 250, MainClass.HEIGHT - 30);
+		}
 	}
 
 	// HUD gry
@@ -1231,7 +1255,24 @@ public void render(int fps_count, int ticks_count)
 		for (int i = 0; i < Textures.getInstance().collectible.length; i++)
 		{
 			g2d.drawImage(Textures.getInstance().collectible[i], 130, 70 + (i * 70), null);
-			g2d.drawString(collectiblesList[i] +"", 200, 95 + (i * 70));
+			g2d.drawString("("+collectiblesList[i]+")", 180, 95 + (i * 70));
+			switch (i)
+			{
+			case 0: g2d.drawString("regeneracja 1 punktu zdrowia", 250, 95 + (i * 70));
+					break;
+			case 1: g2d.drawString("zwiêkszenie maksymalnego zdrowia o 1", 250, 95 + (i * 70));
+					break;
+			case 2: g2d.drawString("regeneracja ca³ego zdrowia", 250, 95 + (i * 70));
+					break;
+			case 3: g2d.drawString("tymczasowa nieœmiertelnoœæ postaci", 250, 95 + (i * 70));
+					break;
+			case 4: g2d.drawString("usuwa wszystkie pszczo³y na danym poziomie", 250, 95 + (i * 70));
+					break;
+			case 5: g2d.drawString("usuwa wszystkie kaktusy na danym poziomie", 250, 95 + (i * 70));
+					break;
+			case 6: g2d.drawString("usuwa wszystkich przeciwników na danym poziomie", 250, 95 + (i * 70));
+					break;
+			}
 		}
 		
 	}
@@ -1485,10 +1526,8 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 		
 		if (showHandMenu && gameState == GameState.Game)
 		{
-			
 			for (int i = 0; i < handMenuItem.length; i++)
 			{
-				
 				if (me.getX() >= handMenuItem[i].getX()+5 && me.getX() <= handMenuItem[i].getX() + handMenuItem[i].getWidth()-5
 						&& me.getY() >= handMenuItem[i].getY()+5 && me.getY() <= handMenuItem[i].getY() + handMenuItem[i].getHeight()-5
 						&& handMenuItem[i].isActive())  // MUST BE ACTIVE !!!
@@ -1645,6 +1684,19 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 
 	@Override
 	public void mouseMoved(MouseEvent me) {
+		
+		if (showHandMenu && gameState == GameState.Game)
+		{
+			showInfo = -1;
+			for (int i = 0; i < handMenuItem.length; i++)
+			{
+				if (me.getX() >= handMenuItem[i].getX()+5 && me.getX() <= handMenuItem[i].getX() + handMenuItem[i].getWidth()-5
+						&& me.getY() >= handMenuItem[i].getY()+5 && me.getY() <= handMenuItem[i].getY() + handMenuItem[i].getHeight()-5)
+				{
+					showInfo = i;
+				}
+			}
+		}
 		
 		if (gameState == GameState.Menu)
 		{
