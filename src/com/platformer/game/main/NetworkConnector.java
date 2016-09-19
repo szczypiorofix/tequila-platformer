@@ -12,7 +12,7 @@ public class NetworkConnector {
 
 public static boolean connected;
 //private final String host = "127.0.0.1";
-private final String host = "37.233.99.104";
+private final String host = "149.202.59.28";
 private final int port = 1201;
 private final int timeOut = 5000; // 5 sekund
 private ArrayList<HallOfFamePlayer> hallOfFameRecords;
