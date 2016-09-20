@@ -31,6 +31,7 @@ import com.platformer.game.sounds.SoundsLoader;
 
 
 
+
 /** G³ówna klasa uruchamiaj¹ca grê. To tutaj zainicjowane s¹ pocz¹tkowe warunki gry, ³adowane tekstury czy inne pliki
  * do pamiêci. W MainClass inicjowane jest podstawowe okno gry. Tutaj równie znajduje siê game loop oraz przygotowywane
  * do u¿ytku s¹ klasy obiekty klas HallOfFame oraz Achievements.
@@ -344,44 +345,6 @@ private void prepareHallOfFame()
 
 
 
-/**
-@SuppressWarnings("unchecked")
-private void prepareHallOfFame()
-{	
-	if (!MainClass.hallOfFameFile.exists() && !MainClass.hallOfFameFile.isDirectory())
-	{
-		// POCZATKOWA INICJALIZACJA TABLICY Z HALL OF FAME;
-		hallOfFameList = new ArrayList<HallOfFamePlayer>(20);
-		for (int i = 0; i < 20; i++) hallOfFameList.add(new HallOfFamePlayer(" < empty > ", 0, 0, 0));
-		
-		try {
-			oos = new ObjectOutputStream(new FileOutputStream(MainClass.hallOfFameFile));
-			oos.writeObject(hallOfFameList);
-			oos.flush();
-			oos.close();
-			logging(false, "Plik "+MainClass.hallOfFameFile.getName() +" poprawnie utworzony a nowe dane poprawnie zapisane");
-		}
-		catch (IOException ioe)
-		{
-			String message = getStackTrace(ioe);
-			logging(true, "B³¹d zapisu do pliku "+MainClass.hallOfFameFile.getName(), message);
-		}
-	}
-	
-	try {
-	ois = new ObjectInputStream(new FileInputStream(MainClass.hallOfFameFile));
-	hallOfFameList = (ArrayList<HallOfFamePlayer>) ois.readObject();
-	ois.close();
-	logging(false, "Dane HallOfFame z pliku "+MainClass.hallOfFameFile.getName() +" poprawnie za³adowane");
-	}
-	catch (IOException | ClassNotFoundException e)
-	{
-		String message = getStackTrace(e);
-		logging(true, "B³¹d odczytu z pliku " +MainClass.hallOfFameFile.getName(), message);
-	}
-	hallOfFame = new HallOfFame(hallOfFameList);
-}
-**/
 
 public void prepareCollectibles()
 {	

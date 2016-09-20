@@ -35,9 +35,6 @@ public void addAnotherPlayerToHoF(HallOfFamePlayer hofPlayer)
 		socket = new Socket();
 		socket.connect(new InetSocketAddress(host, port), timeOut);
 		
-		
-		//hallOfFameRecords = (ArrayList<HallOfFamePlayer>) ois.readObject();
-		
 		oos = new ObjectOutputStream(socket.getOutputStream());
 		
 		ArrayList<HallOfFamePlayer> temp = new ArrayList<HallOfFamePlayer>();

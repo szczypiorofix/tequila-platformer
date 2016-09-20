@@ -172,7 +172,6 @@ private float ptaki1, ptaki2, ptaki3;
 private float chmury1, chmury2, chmury3;
 private float scrollScreenY;
 private Shape defaultClip;
-private boolean showHandMenu = false;
 private HandMenuItem[] handMenuItem = new HandMenuItem[7];
 private boolean readHoFRecords = false;
 private int showInfo = -1;
@@ -553,13 +552,6 @@ public void tick()
 			gameState = GameState.Menu;
 			return;
 		}
-	}
-	
-	showHandMenu = false;
-	
-	if (key.isKeyPressed(KeyEvent.VK_CONTROL) && gameState == GameState.Game) {
-		
-		showHandMenu = true;
 	}
 	
 	if (showMessage)
@@ -1155,7 +1147,7 @@ public void render(int fps_count, int ticks_count)
 	}
 		
 	// HAND MENU
-	if (showHandMenu)
+	if (gameState == GameState.Game)
 	{
 		g2d.drawImage(Textures.getInstance().handMenu, 40, MainClass.HEIGHT - 200, null);
 		
@@ -1173,21 +1165,24 @@ public void render(int fps_count, int ticks_count)
 			String info = "";
 			switch (showInfo)
 			{
-				case 0: info = "Pierwsza moc";
+				case 0: info = "Ma³e odnowienie zdrowia";
 						break;
-				case 1: info = "Druga moc";
+				case 1: info = "Zwiêkszenie zdrowia o 1";
 						break;
-				case 2: info = "Czecia moc";
+				case 2: info = "Du¿e odnownienie zdrowia";
 						break;
-				case 3: info = "Czfarta moc";
+				case 3: info = "Chwilowa nieœmiertelnoœæ";
 						break;
-				case 4: info = "Pionta moc";
+				case 4: info = "Usuniêcie pszczó³";
 						break;
-				case 5: info = "Szusta moc";
+				case 5: info = "Usuniêcie kaktusów";
 						break;
-				case 6: info = "Siódma moc";
+				case 6: info = "Usuniêcie wszystkich przeciwników";
 						break;
 			}
+			g2d.setColor(Color.BLUE);
+			g2d.fillRect(240, MainClass.HEIGHT-55, 400, MainClass.HEIGHT - 25);
+			g2d.setColor(Color.WHITE);
 			g2d.drawString(info+"", 250, MainClass.HEIGHT - 30);
 		}
 	}
@@ -1524,7 +1519,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 			}
 		}
 		
-		if (showHandMenu && gameState == GameState.Game)
+		if (gameState == GameState.Game)
 		{
 			for (int i = 0; i < handMenuItem.length; i++)
 			{
@@ -1538,8 +1533,8 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 					{
 						player.setHealth(player.getHealth() + 1);
 						
-						collectiblesList[i] -= 5;
-						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						//collectiblesList[i] -= 5;
+						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
 					if (i == 1)    /// 2 MOC - ZWIÊKSZA MAKSYMALNE ZDROWIE O 1 I UZUPE£NIA BRAKUJACE O JEDEN JESLI POTRZEBA
@@ -1547,8 +1542,8 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						player.setMaxHealth(player.getMaxHealth() + 1);
 						player.setHealth(player.getHealth() + 1);
 						
-						collectiblesList[i] -= 5;
-						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						//collectiblesList[i] -= 5;
+						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
 					if (i == 2)    /// 3 MOC - ODNAWIA CA£E ZDROWIE POSTACI
@@ -1685,7 +1680,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 	@Override
 	public void mouseMoved(MouseEvent me) {
 		
-		if (showHandMenu && gameState == GameState.Game)
+		if (gameState == GameState.Game)
 		{
 			showInfo = -1;
 			for (int i = 0; i < handMenuItem.length; i++)
