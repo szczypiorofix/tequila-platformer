@@ -1180,8 +1180,8 @@ public void render(int fps_count, int ticks_count)
 				case 6: info = "Usuniêcie wszystkich przeciwników";
 						break;
 			}
-			g2d.setColor(Color.BLUE);
-			g2d.fillRect(240, MainClass.HEIGHT-55, 400, MainClass.HEIGHT - 25);
+			g2d.setColor(new Color(100, 100, 255));
+			g2d.fillRect(230, MainClass.HEIGHT-55, 410, 40);
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(info+"", 250, MainClass.HEIGHT - 30);
 		}
