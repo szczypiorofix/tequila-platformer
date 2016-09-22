@@ -71,6 +71,7 @@ public BufferedImage handMenu;
 public BufferedImage polishFlagImage, englishFlagImage;
 public BufferedImage gameUIbg;
 public BufferedImage immortalIcon;
+public BufferedImage text_bg;
 
 
 // ACHIEVMENTS
@@ -376,10 +377,9 @@ private Textures()
 	
 	polishFlagImage = loader.loadImage("/polishFlag.png");
 	englishFlagImage = loader.loadImage("/englishFlag.png");
-	
 	gameUIbg = loader.loadImage("/gameUIbg.png");
-	
 	immortalIcon = loader.loadImage("/immortalIcon.png");
+	text_bg = loader.loadImage("/text_bg.png");
 	
 	blank = loader.loadImage("/Ablank.png");
 	jump10Image = loader.loadImage("/A10jumps.png");

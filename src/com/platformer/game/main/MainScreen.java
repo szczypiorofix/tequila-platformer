@@ -1130,7 +1130,9 @@ public void render(int fps_count, int ticks_count)
 		g2d.fillRect(70, 160 - (player.getTaco_time()/8), 10, (player.getTaco_time()/8));
 	}
 	if (player.isImmortality()) {
-		g2d.drawImage(Textures.getInstance().immortalIcon, 0, 260, null);
+		g2d.drawImage(Textures.getInstance().immortalIcon, -10, 210, null);
+		g2d.setColor(Color.ORANGE);
+		g2d.fillRect(90, 295 - (player.getImmortality_time()/14), 10, (player.getImmortality_time()/14));
 	}
 
 	
@@ -1165,23 +1167,30 @@ public void render(int fps_count, int ticks_count)
 			String info = "";
 			switch (showInfo)
 			{
-				case 0: info = "Ma³e odnowienie zdrowia";
+				case 0: if (MainClass.language == MainClass.Languages.polish) info = "Ma³a regeneracja zdrowia";
+						if (MainClass.language == MainClass.Languages.english) info = "Small health regeneration";
 						break;
-				case 1: info = "Zwiêkszenie zdrowia o 1";
+				case 1: if (MainClass.language == MainClass.Languages.polish) info = "Zwiêkszenie zdrowia o 1";
+						if (MainClass.language == MainClass.Languages.english) info = "Increasing max health by 1";
 						break;
-				case 2: info = "Du¿e odnownienie zdrowia";
+				case 2: if (MainClass.language == MainClass.Languages.polish) info = "Regeneracja ca³ego zdrowia";
+						if (MainClass.language == MainClass.Languages.english) info = "Full health regeneration";
 						break;
-				case 3: info = "Chwilowa nieœmiertelnoœæ";
+				case 3: if (MainClass.language == MainClass.Languages.polish) info = "Tymczasowa nieœmiertelnoœæ";
+						if (MainClass.language == MainClass.Languages.english) info = "Temporary immortality";
 						break;
-				case 4: info = "Usuniêcie pszczó³";
+				case 4: if (MainClass.language == MainClass.Languages.polish) info = "Usuñ pszczo³y";
+						if (MainClass.language == MainClass.Languages.english) info = "Remove bees";
 						break;
-				case 5: info = "Usuniêcie kaktusów";
+				case 5: if (MainClass.language == MainClass.Languages.polish) info = "Usuñ kaktusy";
+						if (MainClass.language == MainClass.Languages.english) info = "Remove cactuses";
 						break;
-				case 6: info = "Usuniêcie wszystkich przeciwników";
+				case 6: if (MainClass.language == MainClass.Languages.polish) info = "Usuniêcie wszystkich przeciwników";
+						if (MainClass.language == MainClass.Languages.english) info = "Remove all enemies";
 						break;
 			}
 			g2d.setColor(new Color(100, 100, 255));
-			g2d.fillRect(230, MainClass.HEIGHT-55, 410, 40);
+			g2d.drawImage(Textures.getInstance().text_bg, 230, MainClass.HEIGHT - 55, null);
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(info+"", 250, MainClass.HEIGHT - 30);
 		}

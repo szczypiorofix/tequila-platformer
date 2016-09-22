@@ -974,6 +974,14 @@ public int getImmortalityCooldown()
 	return IMMORTALITY_COOLDOWN;
 }
 
+public int getImmortality_time() {
+	return immortality_time;
+}
+
+public void setImmortality_time(int immortality_time) {
+	this.immortality_time = immortality_time;
+}
+
 public void setMaxCoins(int maxCoins)
 {
 	this.maxCoins = maxCoins;
