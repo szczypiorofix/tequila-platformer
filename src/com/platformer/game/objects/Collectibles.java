@@ -35,8 +35,18 @@ public Collectibles(float x, float y, ObjectsHandler objectsHandler)
 	visible = true;
 	direction = 0;
 	random = new Random();
-	show = random.nextInt(1);
-	velX = (int) random.nextInt(Textures.getInstance().collectible.length);
+	
+	show = random.nextInt(2); // 50% szansy na pojawianie siê kryszta³u
+	
+	int r = random.nextInt(28);
+	
+	if (r == 0) velX = 6;
+	else if (r == 1 || r == 2) velX = 5;
+	else if (r == 3 || r == 4 || r == 5) velX = 4;
+	else if (r == 6 || r == 7 || r == 8 || r == 9) velX = 3;
+	else if (r == 10 || r == 11 || r == 12 || r == 13 || r == 14) velX = 2;
+	else if (r == 15 || r == 16 || r == 17 || r == 18 || r == 19 || r == 20) velX = 1;
+	else if (r == 21 || r == 22 || r == 23 || r == 24 || r == 25 || r == 26 || r == 27) velX = 0;
 }
 	
 
