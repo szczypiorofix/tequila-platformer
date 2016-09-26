@@ -709,6 +709,26 @@ public void tick()
 		}
 	}
 	
+	// SKIP LEVEL
+	if (gameState == GameState.Game)
+	{
+		if (key.isKeyPressedOnce(KeyEvent.VK_F1))
+		{
+			gameState = GameState.Game;
+			MainScreen.millis = 0;
+			MainScreen.minutes = 0;
+			MainScreen.seconds = 0;
+			MainScreen.COINS = 0;
+			MainScreen.SCORE = 0;
+			MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
+			MainScreen.TOTAL_SCORE = 0;
+					
+			objectsHandler.switchLevel();
+			player = objectsHandler.getPlayer();
+			achievements.restartLevel();
+		}
+	}
+	
 	// OBS£UGA MENU W TRAKCIE GRY
 	if (gameState == GameState.Menu)
 	{
@@ -859,13 +879,7 @@ public void tick()
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			MainClass.logging(false, Level.INFO, "Zapisano kolejnego gracza.");
-			
-			// MYSQL
-			//mySqlConnect.sendToMySQL();
-			
 			MainClass.nc.addAnotherPlayerToHoF(new HallOfFamePlayer(playerName, SCORE, millis, LEVEL));
-			
-			//writeScore(playerName, SCORE, millis, LEVEL);
 		}
 	}
 	
@@ -1167,31 +1181,31 @@ public void render(int fps_count, int ticks_count)
 			String info = "";
 			switch (showInfo)
 			{
-				case 0: if (MainClass.language == MainClass.Languages.polish) info = "Ma³a regeneracja zdrowia";
-						if (MainClass.language == MainClass.Languages.english) info = "Small health regeneration";
+				case 0: if (MainClass.language == MainClass.Languages.polish) info = "      Ma³a regeneracja zdrowia";
+						if (MainClass.language == MainClass.Languages.english) info = "     Small health regeneration";
 						break;
-				case 1: if (MainClass.language == MainClass.Languages.polish) info = "Zwiêkszenie zdrowia o 1";
-						if (MainClass.language == MainClass.Languages.english) info = "Increasing max health by 1";
+				case 1: if (MainClass.language == MainClass.Languages.polish) info = "      Zwiêkszenie zdrowia o 1";
+						if (MainClass.language == MainClass.Languages.english) info = "    Increasing max health by 1";
 						break;
-				case 2: if (MainClass.language == MainClass.Languages.polish) info = "Regeneracja ca³ego zdrowia";
-						if (MainClass.language == MainClass.Languages.english) info = "Full health regeneration";
+				case 2: if (MainClass.language == MainClass.Languages.polish) info = "     Regeneracja ca³ego zdrowia";
+						if (MainClass.language == MainClass.Languages.english) info = "     Full health regeneration";
 						break;
-				case 3: if (MainClass.language == MainClass.Languages.polish) info = "Tymczasowa nieœmiertelnoœæ";
-						if (MainClass.language == MainClass.Languages.english) info = "Temporary immortality";
+				case 3: if (MainClass.language == MainClass.Languages.polish) info = "       Tymczasowa nieœmiertelnoœæ";
+						if (MainClass.language == MainClass.Languages.english) info = "        Temporary immortality";
 						break;
-				case 4: if (MainClass.language == MainClass.Languages.polish) info = "Usuñ pszczo³y";
-						if (MainClass.language == MainClass.Languages.english) info = "Remove bees";
+				case 4: if (MainClass.language == MainClass.Languages.polish) info = "                Usuñ pszczo³y";
+						if (MainClass.language == MainClass.Languages.english) info = "               Remove bees";
 						break;
-				case 5: if (MainClass.language == MainClass.Languages.polish) info = "Usuñ kaktusy";
-						if (MainClass.language == MainClass.Languages.english) info = "Remove cactuses";
+				case 5: if (MainClass.language == MainClass.Languages.polish) info = "                Usuñ kaktusy";
+						if (MainClass.language == MainClass.Languages.english) info = "               Remove cactuses";
 						break;
 				case 6: if (MainClass.language == MainClass.Languages.polish) info = "Usuniêcie wszystkich przeciwników";
-						if (MainClass.language == MainClass.Languages.english) info = "Remove all enemies";
+						if (MainClass.language == MainClass.Languages.english) info = "       Remove all enemies";
 						break;
 			}
 			g2d.setColor(new Color(100, 100, 255));
 			g2d.drawImage(Textures.getInstance().text_bg, 230, MainClass.HEIGHT - 55, null);
-			g2d.setColor(Color.WHITE);
+			g2d.setColor(Color.BLUE);
 			g2d.drawString(info+"", 250, MainClass.HEIGHT - 30);
 		}
 	}
@@ -1605,7 +1619,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 			
 			if (isDesktopSupported && me.getX() >= 330 && me.getX() <= Textures.getInstance().websiteButton.getWidth()+330
 				&& me.getY() >= MainClass.HEIGHT - 25  && me.getY() <= MainClass.HEIGHT - 25 + Textures.getInstance().websiteButton.getHeight())
-				openWebsite("http://wroblewskipiotr.pl/index.php/tequila/");
+				openWebsite("https://wroblewskipiotr.pl/tequila/");
 			{
 			for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++)
 			{

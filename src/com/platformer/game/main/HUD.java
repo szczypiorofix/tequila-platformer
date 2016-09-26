@@ -42,7 +42,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	}
 	case Death: {
 		g2d.drawImage(Textures.getInstance().menuBg, 300, 120, null);
-		g2d.setColor(Color.RED);
+		g2d.setColor(Color.YELLOW);
 		g2d.setFont(MainClass.texasFont.deriveFont(68f));
 		
 		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.PLAYER_DEAD_PL, 420, 240);
