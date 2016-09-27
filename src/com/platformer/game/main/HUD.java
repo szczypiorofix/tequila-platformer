@@ -40,6 +40,12 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	case Menu: {
 		break;
 	}
+	case Intro: {
+		g2d.setFont(MainClass.arial14Font);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString("ESC - powrót do menu, SPACJA - POMIÑ", 350, MainClass.HEIGHT - 20);
+		break;
+	}
 	case Death: {
 		g2d.drawImage(Textures.getInstance().menuBg, 300, 120, null);
 		g2d.setColor(Color.YELLOW);

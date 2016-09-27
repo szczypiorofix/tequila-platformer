@@ -6,6 +6,7 @@ import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -16,6 +17,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -176,6 +178,17 @@ private HandMenuItem[] handMenuItem = new HandMenuItem[7];
 private boolean readHoFRecords = false;
 private int showInfo = -1;
 
+// INTRO
+private String introText1PL = "Dawno dawno temu, w dalekim Meksyku ...";
+private BufferedImage intro_logo_image = null;
+private int intro_counter = 0;
+private float intro_logo_size = 0.1f;
+private float intro_font_size1 = 0.1f;
+private float intro_font_size2 = 0.1f;
+private float intro_font_size3 = 0.1f;
+private float intro_font_y1 = 0;
+private float intro_font_y2 = 0;
+private float intro_font_y3 = 0;
 
 
 
@@ -582,7 +595,6 @@ public void tick()
 		cam.setX(0);
 		player = objectsHandler.getPlayer();
 		achievements.restartLevel();
-		
 	}
 	
 	
@@ -631,6 +643,47 @@ public void tick()
 			plane_move = -500;
 		}
 	}
+	
+	// INTRO
+	if (gameState == GameState.Intro)
+	{
+		if (intro_counter == 10) {
+			intro_font_y1 = MainClass.HEIGHT;
+			intro_font_y2 = MainClass.HEIGHT;
+			intro_font_y3 = MainClass.HEIGHT;
+		}
+		intro_counter ++;
+		if (intro_counter > 300 && intro_counter < 1400)
+		{
+			if (intro_logo_size < 1.7) intro_logo_size += 0.002f;
+			if (intro_logo_size > 1.5) intro_logo_size *= 1.005;
+		}
+		if (intro_counter > 800 && intro_counter < 1500)
+		{
+			intro_font_size1 += 0.0005f;
+			intro_font_y1 -= 0.6f;
+		}
+		
+		if (intro_counter > 1000 && intro_counter < 1500)
+		{
+			intro_font_size2 += 0.0005f;
+			intro_font_y2 -= 0.6f;
+		}
+		
+		if (intro_counter > 1300 && intro_counter < 1900)
+		{
+			intro_font_size3 += 0.0005f;
+			intro_font_y3 -= 0.6f;
+		}
+
+		if (intro_counter > 2000 )
+		{
+			playMusic2();
+			LEVEL = 1;
+			gameState = GameState.Game;
+		}
+	}
+	
 	
 	// OB£UGA MENU G£ÓWNEGO
 	if (gameState == GameState.MainMenu)
@@ -686,9 +739,15 @@ public void tick()
 			MainClass.menuSound2.play();
 			switch (selectedMainMenuButton)
 			{
-			case 0: playMusic2();
-					LEVEL = 1;
-					gameState = GameState.Game;
+			case 0: intro_counter = 0;
+					intro_logo_size = 0.1f;
+					intro_font_size1 = 0.1f;
+					intro_font_size2 = 0.1f;
+					intro_font_size3 = 0.1f;
+					intro_font_y1 = 0;
+					intro_font_y2 = 0;
+					intro_font_y3 = 0;
+					gameState = GameState.Intro;					
 					break;				
 			case 1: gameState = GameState.JakGrac;
 					break;
@@ -708,6 +767,19 @@ public void tick()
 			}
 		}
 	}
+	
+	
+	// INTRO DO GRY
+	if (gameState == GameState.Intro)
+	{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) gameState = GameState.MainMenu;
+		if (key.isKeyPressedOnce(KeyEvent.VK_SPACE)) {
+			playMusic2();
+			LEVEL = 1;
+			gameState = GameState.Game;
+		}
+	}
+	
 	
 	// SKIP LEVEL
 	if (gameState == GameState.Game)
@@ -767,10 +839,9 @@ public void tick()
 			{
 			case 0: gameState = GameState.Game;
 					break;				
-			case 1: 
-					objectsHandler.clearLevel();
+			case 1: objectsHandler.clearLevel();
 					objectsHandler.resetLevelStatistics();
-					System.gc(); // GARBAGE COLLECTOR
+					System.gc();
 					objectsHandler.loadLevel(1);
 					cam.setX(0);
 					player = objectsHandler.getPlayer();
@@ -976,6 +1047,27 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
 }
 
 
+private static BufferedImage toBufferedImage(Image img)
+{
+    if (img instanceof BufferedImage)
+    {
+        return (BufferedImage) img;
+    }
+
+    // Create a buffered image with transparency
+    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+    // Draw the image on to the buffered image
+    Graphics2D bGr = bimage.createGraphics();
+    bGr.drawImage(img, 0, 0, null);
+    bGr.dispose();
+
+    // Return the buffered image
+    return bimage;
+}
+
+
+
 /** Podstawowa metoda rysowania na ekranie w trakcie trwania gry.
  * @param fps_count Licznik FPSów.
  * @param ticks_count Licznik update'ów (game logic).
@@ -1119,7 +1211,7 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	// FPS CAP WSZÊDZIE OPRÓCZ GRY
-	if (gameState == GameState.Game) MainClass.fpsCap = false;
+	if (gameState == GameState.Game || gameState == GameState.Intro) MainClass.fpsCap = false;
 	else MainClass.fpsCap = true;
 	
 		
@@ -1131,6 +1223,61 @@ public void render(int fps_count, int ticks_count)
 		g2d.translate(-cam.getX(), -cam.getY()); // CAM ENDING
 	}
 		
+	
+	// INTRO
+	if (gameState == GameState.Intro)
+	{
+		g2d.drawImage(Textures.getInstance().backGroundMountains, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
+		
+		g2d.setColor(MainClass.fontColor);
+		
+		if (intro_counter > 50 && intro_counter < 250)
+		{
+			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 34f));
+			g2d.drawString(introText1PL, 200, 100);	
+		}
+		
+		if (intro_counter > 300 && intro_counter < 1000)
+		{
+			double ratio = (double) Textures.getInstance().intro_game_logo.getWidth() / Textures.getInstance().intro_game_logo.getHeight();
+			
+			intro_logo_image = toBufferedImage(Textures.getInstance().intro_game_logo.getScaledInstance((int) (Textures.getInstance().intro_game_logo.getWidth() / (ratio * intro_logo_size)),
+					(int) (Textures.getInstance().intro_game_logo.getHeight() / (ratio * intro_logo_size)), Image.SCALE_DEFAULT));
+					
+			g2d.drawImage(intro_logo_image, (int) ((MainClass.WIDTH / 2) - (intro_logo_image.getWidth() / 2)), (int) ((MainClass.HEIGHT / 2) - (intro_logo_image.getHeight() /2)), null);
+		}
+		
+		if (intro_counter > 800 && intro_counter < 1300)
+		{
+			double ratio1 = (double) Textures.getInstance().intro_game_text1.getWidth() / Textures.getInstance().intro_game_text1.getHeight();
+			
+			BufferedImage text1image = toBufferedImage(Textures.getInstance().intro_game_text1.getScaledInstance((int) (Textures.getInstance().intro_game_text1.getWidth() / (ratio1 * intro_font_size1)),
+					(int) (Textures.getInstance().intro_game_text1.getHeight() / (ratio1 * intro_font_size1)), Image.SCALE_DEFAULT));
+			
+			g2d.drawImage(text1image, (int) ((MainClass.WIDTH / 2) - (text1image.getWidth() / 2)), (int) (intro_font_y1), null);
+		}
+		
+		
+		if (intro_counter > 900 && intro_counter < 1500)
+		{
+			double ratio2 = (double) Textures.getInstance().intro_game_text2.getWidth() / Textures.getInstance().intro_game_text2.getHeight();
+			
+			BufferedImage text2image = toBufferedImage(Textures.getInstance().intro_game_text2.getScaledInstance((int) (Textures.getInstance().intro_game_text2.getWidth() / (ratio2 * intro_font_size2)),
+					(int) (Textures.getInstance().intro_game_text2.getHeight() / (ratio2 * intro_font_size2)), Image.SCALE_DEFAULT));	
+			g2d.drawImage(text2image, (int) ((MainClass.WIDTH / 2) - (text2image.getWidth() / 2)), (int) (intro_font_y2), null);
+		}
+		
+		if (intro_counter > 1000 && intro_counter < 1900)
+		{
+			double ratio3 = (double) Textures.getInstance().intro_game_text3.getWidth() / Textures.getInstance().intro_game_text3.getHeight();
+			
+			BufferedImage text3image = toBufferedImage(Textures.getInstance().intro_game_text3.getScaledInstance((int) (Textures.getInstance().intro_game_text3.getWidth() / (ratio3 * intro_font_size3)),
+					(int) (Textures.getInstance().intro_game_text3.getHeight() / (ratio3 * intro_font_size3)), Image.SCALE_DEFAULT));	
+			g2d.drawImage(text3image, (int) ((MainClass.WIDTH / 2) - (text3image.getWidth() / 2)), (int) (intro_font_y3), null);
+		}
+		
+		g2d.drawString(intro_counter+"", 100, 100);
+	}
 	
 	// POWERUUPS
 	if (player.isTequila_powerUp()) {
@@ -1629,9 +1776,15 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 							MainClass.menuSound2.play();
 							switch (i)
 							{
-							case 0: LEVEL = 1;
-									playMusic2();
-									gameState = GameState.Game;
+							case 0: intro_counter = 0;
+									intro_logo_size = 0.1f;
+									intro_font_size1 = 0.1f;
+									intro_font_size2 = 0.1f;
+									intro_font_size3 = 0.1f;
+									intro_font_y1 = 0;
+									intro_font_y2 = 0;
+									intro_font_y3 = 0;
+									gameState = GameState.Intro;									
 									break;				
 							case 1: gameState = GameState.JakGrac;
 									break;

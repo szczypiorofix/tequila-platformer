@@ -48,8 +48,8 @@ public static final File collectiblesFile = new File("collectibles.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
 public static final File gameConfigFile = new File("tequila.cfg");
 public static final Color fontColor = new Color(60, 0, 140);
-public static final float GAME_VER = 0.75f;
-public static final int BUILD = 36;
+public static final float GAME_VER = 0.77f;
+public static final int BUILD = 38;
 
 public static Font verdana14Font = new Font("Verdana", Font.BOLD, 14);
 public static Font verdana18Font = new Font("Verdana", Font.BOLD, 18);

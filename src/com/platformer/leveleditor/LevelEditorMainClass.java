@@ -76,7 +76,7 @@ private final KeyStroke ctrl_U = KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEve
 
 public LevelEditorMainClass()
 {
-	super("Platformer - Level Editor");
+	super("Tequila Platformer - Edytor Poziomów");
 	
 	random = new Random();
 	try {
@@ -171,7 +171,7 @@ public LevelEditorMainClass()
 	
 	bottomPane = new JPanel(new FlowLayout());
 	bottomPane.add(new JLabel("Obszar: " +editorPane.getRow() +"x" +editorPane.getCol()));
-	selectedLabel = new JLabel("   Selected: "+selectedTile);
+	selectedLabel = new JLabel("   Obiekt: "+selectedTile);
 	bottomPane.add(selectedLabel);
 	
 	add(scrollPane, BorderLayout.CENTER);
@@ -262,7 +262,7 @@ public void clearMap(boolean b)
 				currentLevelName = filename;
 				filename = "res/Other/" +filename +".lvl";
 				currentFile = filename;
-				setTitle("Platformer - Level Editor: "+currentFile);
+				setTitle("Tequila Platformer - Edytor Poziomów: "+currentFile);
 			
 				try {
 					ois = new ObjectInputStream(new FileInputStream(filename));

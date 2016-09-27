@@ -14,6 +14,18 @@ public enum GameState {
 	 */
 	Game,
 	
+	/** Wyœwietlane na pocz¹tku gry
+	 * 
+	 */
+	Intro,
+	
+	
+	/** Wyœwietlane na zakoñczenie gry
+	 * 
+	 */
+	Outro,
+	
+	
 	/** G³ówne menu gry.
 	 * 
 	 */
