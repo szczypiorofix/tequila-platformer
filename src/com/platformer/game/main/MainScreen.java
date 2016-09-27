@@ -119,15 +119,7 @@ private MenuButton[] mainMenuButtons;
 private int selectedMenuButton;
 private final int MAX_MENU_BUTTONS = 3;
 private MenuButton[] menuButtons;
-
-/** Zmienna pomocna przy naliczaniu przesuwania siê t³a w menu g³ównym.
- * 
- */
 private float bg_move = 0f;
-
-/** Zmienna pomocna przy naliczaniu ruchu s³oñca po okrêgu w menu g³ównym.
- * 
- */
 private float circle_move = 0f;
 
 private int plane_move = -600;
