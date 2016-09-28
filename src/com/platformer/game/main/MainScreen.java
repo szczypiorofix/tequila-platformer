@@ -644,10 +644,10 @@ public void tick()
 			intro_font_y3 = MainClass.HEIGHT;
 		}
 		intro_counter ++;
-		if (intro_counter > 300 && intro_counter < 1400)
+		if (intro_counter > 300 && intro_counter < 1250)
 		{
 			if (intro_logo_size < 1.7) intro_logo_size += 0.002f;
-			if (intro_logo_size > 1.5) intro_logo_size *= 1.005;
+			if (intro_logo_size > 1.4) intro_logo_size *= 1.005;
 		}
 		if (intro_counter > 800 && intro_counter < 1500)
 		{
@@ -667,7 +667,7 @@ public void tick()
 			intro_font_y3 -= 0.6f;
 		}
 
-		if (intro_counter > 2000 )
+		if (intro_counter > 1950 )
 		{
 			playMusic2();
 			LEVEL = 1;
@@ -1228,7 +1228,7 @@ public void render(int fps_count, int ticks_count)
 			g2d.drawString(introText1PL, 200, 100);	
 		}
 		
-		if (intro_counter > 300 && intro_counter < 1000)
+		if (intro_counter > 300 && intro_counter < 1250)
 		{
 			double ratio = (double) Textures.getInstance().intro_game_logo.getWidth() / Textures.getInstance().intro_game_logo.getHeight();
 			

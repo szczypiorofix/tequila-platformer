@@ -97,8 +97,8 @@ public void tick()
 	iteratingTick(levelEnd_List);
 	iteratingTick(movingBlockX_List);
 	iteratingTick(movingBlockY_List);
-	iteratingTick(pushingMovingBlockX_List);
 	iteratingTick(pushingMovingBlockY_List);
+	iteratingTick(pushingMovingBlockX_List);
 	iteratingTick(movingCrate_List);
 	iteratingTick(player_List);
 	iteratingTick(scenery_List);

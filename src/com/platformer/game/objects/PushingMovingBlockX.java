@@ -46,7 +46,6 @@ public void render(Graphics g) {
 @Override
 public void tick(LinkedList<GameObject> object) {
 
-	
 	if (action)
 	{
 		if (x > startPos + 240) {
@@ -61,7 +60,6 @@ public void tick(LinkedList<GameObject> object) {
 			if (counter < 0)
 				velX = 1f;
 		}
-
 	}
 		
 	if (action) x += velX;

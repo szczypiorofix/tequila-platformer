@@ -544,7 +544,7 @@ private void collisions()
 					jumping = false;
 					velY = 0;
 					onGround = true;
-					if (velX == 0 && tempObject.isAction()) x += tempObject.getVelX();
+					if (velX == 0) x += tempObject.getVelX();
 				}
 							
 				if (getBoundsRight().intersects(tempObject.getBounds())) x = tempObject.getX() - 75;
