@@ -1267,7 +1267,7 @@ public void render(int fps_count, int ticks_count)
 			g2d.drawImage(text3image, (int) ((MainClass.WIDTH / 2) - (text3image.getWidth() / 2)), (int) (intro_font_y3), null);
 		}
 		
-		g2d.drawString(intro_counter+"", 100, 100);
+		//g2d.drawString(intro_counter+"", 100, 100);
 	}
 	
 	// POWERUUPS
