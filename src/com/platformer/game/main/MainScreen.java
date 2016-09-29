@@ -1694,8 +1694,8 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 					{
 						player.setHealth(player.getHealth() + 1);
 						
-						//collectiblesList[i] -= 5;
-						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
 					if (i == 1)    /// 2 MOC - ZWIÊKSZA MAKSYMALNE ZDROWIE O 1 I UZUPE£NIA BRAKUJACE O JEDEN JESLI POTRZEBA
@@ -1703,40 +1703,40 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						player.setMaxHealth(player.getMaxHealth() + 1);
 						player.setHealth(player.getHealth() + 1);
 						
-						//collectiblesList[i] -= 5;
-						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
 					if (i == 2)    /// 3 MOC - ODNAWIA CA£E ZDROWIE POSTACI
 					{
 						player.setHealth(player.getMaxHealth());
 						
-						//collectiblesList[i] -= 5;
-						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
 					if (i == 3)    /// 4 MOC - CZASOWA NIEŒMIERTELNOŒC POSTACI
 					{
 						
 						player.setImmortality(true);
-						//collectiblesList[i] -= 5;
-						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 
 					if (i == 4)    /// 5 MOC - USUWA WSZYSTKIE PSZCZO£Y Z PLANSZY
 					{
 						objectsHandler.getBee_List().clear();
 						
-						//collectiblesList[i] -= 5;
-						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 
 					if (i == 5)    /// 6 MOC - USUWA KAKTUSY Z PLANSZY
 					{
 						objectsHandler.getAngryCactus_List().clear();
 						
-						//collectiblesList[i] -= 5;
-						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
 					if (i == 6)    /// 7 MOC - USUWA WSZYSTKICH PRZECIWNIKÓW Z PLANSZY !
@@ -1745,8 +1745,8 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						objectsHandler.getTumbleweed_List().clear();
 						objectsHandler.getAngryCactus_List().clear();
 						
-						//collectiblesList[i] -= 5;
-						//if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
+						collectiblesList[i] -= 5;
+						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 				}
 			}
