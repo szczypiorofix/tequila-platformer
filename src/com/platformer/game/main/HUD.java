@@ -43,7 +43,9 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	case Intro: {
 		g2d.setFont(MainClass.arial14Font);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString("ESC - powrót do menu, SPACJA - POMIÑ", 350, MainClass.HEIGHT - 20);
+		
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.BACK_TO_MAIN_MENU_SKIP_PL, 350, MainClass.HEIGHT - 20);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.BACK_TO_MAIN_MENU_SKIP_ENG, 350, MainClass.HEIGHT - 20);
 		break;
 	}
 	case Death: {
@@ -108,10 +110,11 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	default: {	
 	}
 	}
-	
-	g2d.setFont(MainClass.arial14Font);
-	g2d.setColor(Color.BLACK);
-	g2d.drawString("FPS: "+fps_count +" Ticks: "+ ticks_count, MainClass.WIDTH - 200, MainClass.HEIGHT - 10);
+	if (gameState != GameState.Outro) {
+		g2d.setFont(MainClass.arial14Font);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString("FPS: "+fps_count +" Ticks: "+ ticks_count, MainClass.WIDTH - 200, MainClass.HEIGHT - 10);
+	}
 }
 
 }

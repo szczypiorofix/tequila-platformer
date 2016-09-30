@@ -74,6 +74,9 @@ public BufferedImage immortalIcon;
 public BufferedImage text_bg;
 public BufferedImage intro_game_logo;
 public BufferedImage intro_game_text1, intro_game_text2, intro_game_text3;
+public BufferedImage lockedLevelPL, lockedLevelENG;
+public BufferedImage koza;
+public BufferedImage[] balony = new BufferedImage[6];
 
 
 // ACHIEVMENTS
@@ -387,6 +390,18 @@ private Textures()
 	intro_game_text1 = loader.loadImage("/intro_game_text1.png");
 	intro_game_text2 = loader.loadImage("/intro_game_text2.png");
 	intro_game_text3 = loader.loadImage("/intro_game_text3.png");
+	
+	lockedLevelPL = loader.loadImage("/lockedLevelPL.png");
+	lockedLevelENG = loader.loadImage("/lockedLevelENG.png");
+	
+	koza = loader.loadImage("/koza.png");
+	
+	balony[0] = loader.loadImage("/baloon_blue.png");
+	balony[1] = loader.loadImage("/baloon_darkblue.png");
+	balony[2] = loader.loadImage("/baloon_green.png");
+	balony[3] = loader.loadImage("/baloon_pink.png");
+	balony[4] = loader.loadImage("/baloon_red.png");
+	balony[5] = loader.loadImage("/baloon_yellow.png");
 	
 	blank = loader.loadImage("/Ablank.png");
 	jump10Image = loader.loadImage("/A10jumps.png");

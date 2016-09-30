@@ -19,13 +19,16 @@ public enum GameState {
 	 */
 	Intro,
 	
-	
 	/** Wyœwietlane na zakoñczenie gry
 	 * 
 	 */
 	Outro,
-	
-	
+		
+	/** Menu wyboru poziomów - poziomy dostêpne wybierane na podstawie osi¹gniêæ ukoñczonych leveli
+	 * 
+	 */
+	LevelChoose,
+		
 	/** G³ówne menu gry.
 	 * 
 	 */

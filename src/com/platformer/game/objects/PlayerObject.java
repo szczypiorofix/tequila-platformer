@@ -761,6 +761,19 @@ private void collisions()
 				}
 			}
 		}
+		
+		/// GOAT LIST
+		for (int i = 0; i < objectsHandler.getGoat_List().size(); i++)
+		{
+			GameObject tempObject = objectsHandler.getGoat_List().get(i);
+			if (tempObject.isVisible())
+			{
+				if (getWholeBounds().intersects(tempObject.getBounds()))
+				{
+					MainScreen.endgame = true;
+				}
+			}
+		}
 }
 
 

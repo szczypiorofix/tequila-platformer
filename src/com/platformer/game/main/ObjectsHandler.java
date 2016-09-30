@@ -16,6 +16,7 @@ import com.platformer.game.objects.Coin;
 import com.platformer.game.objects.Collectibles;
 import com.platformer.game.objects.FallingBlock;
 import com.platformer.game.objects.GameObject;
+import com.platformer.game.objects.Goat;
 import com.platformer.game.objects.LevelEnd;
 import com.platformer.game.objects.MovingBlockX;
 import com.platformer.game.objects.MovingBlockY;
@@ -57,6 +58,7 @@ private LinkedList<GameObject> springBlock_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> fallingBlock_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> clouds_List = new LinkedList<GameObject>();
 private LinkedList<GameObject> collectibles_List = new LinkedList<GameObject>();
+private LinkedList<GameObject> goat_List = new LinkedList<GameObject>();
 
 
 private final int ROWS = 300, COLS = 12;
@@ -111,6 +113,7 @@ public void tick()
 	iteratingTick(fallingBlock_List);
 	iteratingTick(clouds_List);
 	iteratingTick(collectibles_List);
+	iteratingTick(goat_List);
 }
 
 public void iteratingRender(Graphics g, LinkedList<GameObject> list)
@@ -139,6 +142,7 @@ public void render(Graphics g)
 	iteratingRender(g, bee_List);
 	iteratingRender(g, dart_List);
 	iteratingRender(g, collectibles_List);
+	iteratingRender(g, goat_List);
 	iteratingRender(g, player_List);
 	iteratingRender(g, fallingBlock_List);
 	iteratingRender(g, water_List);
@@ -172,6 +176,7 @@ public void clearLevel()
 	fallingBlock_List.clear();
 	clouds_List.clear();
 	collectibles_List.clear();
+	goat_List.clear();
 }
 
 public void resetLevelStatistics()
@@ -224,9 +229,12 @@ public void switchLevel()
 	case 9:
 		loadLevel(10);
 		break;
+	case 10:
+		loadLevel(11);
+		break;
 	}
 	cam.setX(0);
-	MainScreen.LEVEL++;
+	if (MainScreen.LEVEL < 11) MainScreen.LEVEL++;
 }
 
 public void loadLevel(int level)
@@ -244,6 +252,7 @@ public void loadLevel(int level)
 		if (level == 8) in = getClass().getResourceAsStream("/level8.lvl");
 		if (level == 9) in = getClass().getResourceAsStream("/level9.lvl");
 		if (level == 10) in = getClass().getResourceAsStream("/level10.lvl");
+		if (level == 11) in = getClass().getResourceAsStream("/level11.lvl");
 		
 		ois = new ObjectInputStream(in);
 		tileValues = (int[][]) (ois.readObject());
@@ -316,6 +325,8 @@ public void loadLevel(int level)
 				if (tileValues[yy][xx] == 49) clouds_List.add(new Clouds(xx*50, (yy*50)+550, cam, 3));
 				
 				if (tileValues[yy][xx] == 50) collectibles_List.add(new Collectibles(xx*50, (yy*50)+550, this));
+				
+				if (tileValues[yy][xx] == 51) goat_List.add(new Goat(xx*50, (yy*50)+550));
 			}
 		}
 		MainClass.logging(false, Level.INFO, "Wszystkie obiekty poziomu gry "+level +" zosta³y za³adowane poprawnie.");
@@ -413,5 +424,9 @@ public LinkedList<GameObject> getClouds_List() {
 
 public LinkedList<GameObject> getCollectibles_List() {
 	return collectibles_List;
+}
+
+public LinkedList<GameObject> getGoat_List() {
+	return goat_List;
 }
 }

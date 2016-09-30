@@ -17,6 +17,7 @@ private float x, y;
 private float width, height;
 private boolean selected;
 private Composite defComposite, c;
+private boolean locked;
 
 
 public MenuButton(String name, float x, float y)
@@ -26,6 +27,7 @@ public MenuButton(String name, float x, float y)
 	this.name = name;
 	width = 380;
 	height = 64;
+	locked = false;
 	selected = false;
 }
 
@@ -36,11 +38,13 @@ public MenuButton(String name, float x, float y, float width, float height)
 	this.width = width;
 	this.height = height;
 	this.name = name;
+	locked = false;
 	selected = false;
 }
 
 public void render(Graphics2D g2d)
 {
+	if (!locked) {
 	c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f);
 	defComposite = g2d.getComposite();
 	g2d.setComposite(c);
@@ -63,6 +67,11 @@ public void render(Graphics2D g2d)
 	    g2d.drawString(name, x + 30, y + 45);
 	}
 	g2d.setComposite(defComposite); // DOMYŒLNE COMPOSITE
+	}
+	else {
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawImage(Textures.getInstance().lockedLevelPL, (int) x, (int) y, (int) width, (int) height, null);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawImage(Textures.getInstance().lockedLevelENG, (int) x, (int) y, (int) width, (int) height, null);
+	}
 }
 
 public String getName() {
@@ -111,5 +120,13 @@ public float getHeight() {
 
 public void setHeight(float height) {
 	this.height = height;
+}
+
+public boolean isLocked() {
+	return locked;
+}
+
+public void setLocked(boolean locked) {
+	this.locked = locked;
 }
 }

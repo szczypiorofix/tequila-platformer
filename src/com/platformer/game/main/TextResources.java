@@ -63,4 +63,7 @@ public static final String PLAYER_RESTART_ENG = "SPACE - RESTART";
 public static final String FINISHED_PL = "UKOÑCZONY !!!";
 public static final String FINISHED_ENG = "FINISHED !!!";
 
+public static final String BACK_TO_MAIN_MENU_SKIP_PL = "ESC - POWRÓT DO MENU, ENTER - POMIÑ";
+public static final String BACK_TO_MAIN_MENU_SKIP_ENG = "ESC - BACK TO MAIN MENU, ENTER - SKIP";
+
 }

@@ -113,15 +113,23 @@ private Achievements achievements;
  */
 private GameState gameState;
 
-private int selectedMainMenuButton;
+
+
 private final int MAX_MAIN_MENU_BUTTONS = 7;
 private MenuButton[] mainMenuButtons;
-private int selectedMenuButton;
+private int selectedMainMenuButton;
+
 private final int MAX_MENU_BUTTONS = 3;
 private MenuButton[] menuButtons;
+private int selectedMenuButton;
+
+private final int MAX_LEVEL_MENU_BUTTONS = 10;
+private MenuButton[] levelMenuButtons;
+private int selectedLevelMenuButton;
+private int unlockedLevels = 0;
+
 private float bg_move = 0f;
 private float circle_move = 0f;
-
 private int plane_move = -600;
 
 private final double orbitRadius1 = 500;
@@ -181,7 +189,14 @@ private float intro_font_y1 = 0;
 private float intro_font_y2 = 0;
 private float intro_font_y3 = 0;
 
-
+// OUTRO
+public static boolean endgame = false;
+private int outro_counter = 0;
+private String outroText1 = "GRATULACJE !!!";
+private String outroText2 = "Pomog³eœ Marcello odnaleŸæ jego";
+private String outroText3 = " zaginion¹ kozê Matyldê!";
+private String outroText4 = "JESTEŒ ZWYCIÊZC¥ !!!";
+private int[] baloniki = new int[6];
 
 /** Podstawowy konstruktor klasy MainScreen.
  * @param gameState - stan gry.
@@ -333,7 +348,28 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 		menuButtons[1] = new MenuButton(TextResources.MAIN_MENU_ENG, 360, 270);
 		menuButtons[2] = new MenuButton(TextResources.EXIT_ENG, 360, 350);		
 	}
-		
+	
+
+	
+	levelMenuButtons = new MenuButton[MAX_LEVEL_MENU_BUTTONS];
+	selectedLevelMenuButton = 0;
+	
+	for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++)
+	{
+		if (MainClass.language == MainClass.Languages.polish)
+		{
+			levelMenuButtons[i] = new MenuButton("      " +TextResources.LEVEL_PL +" " +(i+1), 360, 25+(i*55), 300, 45);
+		}
+		if (MainClass.language == MainClass.Languages.english)
+		{
+			levelMenuButtons[i] = new MenuButton("      " +TextResources.LEVEL_ENG +" " +(i+1), 360, 25+(i*55), 300, 45);
+		}
+		levelMenuButtons[i].setLocked(true);
+	}
+	levelMenuButtons[0].setLocked(false);
+	unlockedLevels = 1;
+	
+	
 	smigloAnim = new Animation(1, Textures.getInstance().smiglo[3], Textures.getInstance().smiglo[2], Textures.getInstance().smiglo[1], Textures.getInstance().smiglo[0]);
 	ptaki1RAnim = new Animation(10, Textures.getInstance().ptakiR1, Textures.getInstance().ptakiR2);
 	
@@ -651,26 +687,34 @@ public void tick()
 		}
 		if (intro_counter > 800 && intro_counter < 1500)
 		{
-			intro_font_size1 += 0.0005f;
+			intro_font_size1 += 0.0002f;
 			intro_font_y1 -= 0.6f;
 		}
 		
 		if (intro_counter > 1000 && intro_counter < 1500)
 		{
-			intro_font_size2 += 0.0005f;
+			intro_font_size2 += 0.0002f;
 			intro_font_y2 -= 0.6f;
 		}
 		
 		if (intro_counter > 1300 && intro_counter < 1900)
 		{
-			intro_font_size3 += 0.0005f;
+			intro_font_size3 += 0.0002f;
 			intro_font_y3 -= 0.6f;
 		}
 
 		if (intro_counter > 1950 )
 		{
 			playMusic2();
+			objectsHandler.clearLevel();
+			objectsHandler.resetLevelStatistics();
+			System.gc();
 			LEVEL = 1;
+			objectsHandler.loadLevel(LEVEL);
+			cam.setX(0);
+			player = objectsHandler.getPlayer();
+			achievements.restartLevel();
+			MainClass.logging(false, Level.INFO, "Rozpoczêto poziom "+selectedLevelMenuButton);
 			gameState = GameState.Game;
 		}
 	}
@@ -738,7 +782,7 @@ public void tick()
 					intro_font_y1 = 0;
 					intro_font_y2 = 0;
 					intro_font_y3 = 0;
-					gameState = GameState.Intro;					
+					gameState = GameState.LevelChoose;
 					break;				
 			case 1: gameState = GameState.JakGrac;
 					break;
@@ -756,6 +800,7 @@ public void tick()
 			case 6: gameState = GameState.Zakoncz;
 					break;
 			}
+			key.update();
 		}
 	}
 	
@@ -764,13 +809,53 @@ public void tick()
 	if (gameState == GameState.Intro)
 	{
 		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) gameState = GameState.MainMenu;
-		if (key.isKeyPressedOnce(KeyEvent.VK_SPACE)) {
-			playMusic2();
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
+		{
+			objectsHandler.clearLevel();
+			objectsHandler.resetLevelStatistics();
+			System.gc();
 			LEVEL = 1;
+			objectsHandler.loadLevel(LEVEL);
+			cam.setX(0);
+			player = objectsHandler.getPlayer();
+			achievements.restartLevel();
+			MainClass.logging(false, Level.INFO, "Rozpoczêto poziom "+selectedLevelMenuButton);
+			playMusic1();
 			gameState = GameState.Game;
 		}
 	}
 	
+	// WYWO£ANIE OUTRO
+	if (gameState == GameState.Game && endgame)
+	{
+		for (int i = 0; i < baloniki.length; i++)
+		{
+			baloniki[i] = MainClass.HEIGHT + random.nextInt(150) + 1;
+		}
+		outro_counter = 0;
+		gameState = GameState.Outro;
+	}
+	
+	if (gameState == GameState.Outro)
+	{
+		outro_counter++;
+		
+		for (int i = 0; i < baloniki.length; i++)
+		{
+			baloniki[i]--;
+		}
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
+		{
+			objectsHandler.clearLevel();
+			objectsHandler.resetLevelStatistics();
+			endgame = false;
+			player = objectsHandler.getPlayer();
+			achievements.restartLevel();
+			System.gc();
+			gameState = GameState.MainMenu;
+		}
+	}
 	
 	// SKIP LEVEL
 	if (gameState == GameState.Game)
@@ -791,6 +876,104 @@ public void tick()
 			achievements.restartLevel();
 		}
 	}
+	
+	
+	// MENU WYBORU POZIOMÓW
+	if (gameState == GameState.LevelChoose)
+	{
+		for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++)
+		{
+			if (i != selectedLevelMenuButton) levelMenuButtons[i].setSelected(false);
+		}
+		
+		if (achievements.isComplete1LevelComplete()) {
+			levelMenuButtons[1].setLocked(false);
+			unlockedLevels = 2;
+		}
+		if (achievements.isComplete2LevelComplete()) {
+			levelMenuButtons[2].setLocked(false);
+			unlockedLevels = 3;
+		}
+		if (achievements.isComplete3LevelComplete()) {
+			levelMenuButtons[3].setLocked(false);
+			unlockedLevels = 4;
+		}
+		if (achievements.isComplete4LevelComplete()) {
+			levelMenuButtons[4].setLocked(false);
+			unlockedLevels = 5;
+		}
+		if (achievements.isComplete5LevelComplete()) {
+			levelMenuButtons[5].setLocked(false);
+			unlockedLevels = 6;
+		}
+		if (achievements.isComplete6LevelComplete()) {
+			levelMenuButtons[6].setLocked(false);
+			unlockedLevels = 7;
+		}
+		if (achievements.isComplete7LevelComplete()) {
+			levelMenuButtons[7].setLocked(false);
+			unlockedLevels = 8;
+		}
+		if (achievements.isComplete8LevelComplete()) {
+			levelMenuButtons[8].setLocked(false);
+			unlockedLevels = 9;
+		}
+		if (achievements.isComplete9LevelComplete()) {
+			levelMenuButtons[9].setLocked(false);
+			unlockedLevels = 10;
+		}
+
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S))
+		{
+			if (selectedLevelMenuButton < unlockedLevels)
+			{
+				MainClass.menuSound1.play();
+				levelMenuButtons[selectedLevelMenuButton].setSelected(false);
+				if (selectedLevelMenuButton == unlockedLevels-1) selectedLevelMenuButton = 0; 
+				else selectedLevelMenuButton++;				
+			}
+		}
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W))
+		{
+			if (selectedLevelMenuButton >= 0)
+			{
+				MainClass.menuSound1.play();
+				levelMenuButtons[selectedLevelMenuButton].setSelected(false);
+				if (selectedLevelMenuButton == 0) selectedLevelMenuButton = unlockedLevels-1;
+				else selectedLevelMenuButton--;
+			}
+		}
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
+		{
+			gameState = GameState.MainMenu;
+		}
+		
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
+		{
+			MainClass.menuSound2.play();		
+			objectsHandler.clearLevel();
+			objectsHandler.resetLevelStatistics();
+			System.gc();
+			LEVEL = selectedLevelMenuButton+1;
+			if (LEVEL == 1) {
+				gameState = GameState.Intro;
+			}
+			else {
+				objectsHandler.loadLevel(LEVEL);
+				cam.setX(0);
+				player = objectsHandler.getPlayer();
+				achievements.restartLevel();
+				MainClass.logging(false, Level.INFO, "Rozpoczêto poziom "+selectedLevelMenuButton);
+				playMusic1();
+				gameState = GameState.Game;				
+			}
+		}
+	}
+
+	
 	
 	// OBS£UGA MENU W TRAKCIE GRY
 	if (gameState == GameState.Menu)
@@ -1202,18 +1385,18 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	// FPS CAP WSZÊDZIE OPRÓCZ GRY
-	if (gameState == GameState.Game || gameState == GameState.Intro) MainClass.fpsCap = false;
+	if (gameState == GameState.Game || gameState == GameState.Intro || gameState == GameState.Outro) MainClass.fpsCap = false;
 	else MainClass.fpsCap = true;
 	
 		
-	if ((!player.isLevelFinished()) && gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
+	if ((!player.isLevelFinished()) && (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel || gameState == GameState.Outro))
 	{ 
 		////// CAM MOVING HERE
 		g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 			objectsHandler.render(g);
 		g2d.translate(-cam.getX(), -cam.getY()); // CAM ENDING
 	}
-		
+	
 	
 	// INTRO
 	if (gameState == GameState.Intro)
@@ -1269,6 +1452,29 @@ public void render(int fps_count, int ticks_count)
 		
 		//g2d.drawString(intro_counter+"", 100, 100);
 	}
+
+	
+	// OUTRO
+	if (endgame && gameState == GameState.Outro)
+	{
+		g2d.drawImage(Textures.getInstance().backGroundMountains, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
+		for (int i = 0; i < baloniki.length; i++)
+		{
+			g2d.drawImage(Textures.getInstance().balony[i], 50 + (i* 10), baloniki[i], null);
+		}
+		
+		g2d.setColor(MainClass.fontColor);
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 36f));
+		
+		if (outro_counter > 100) g2d.drawString(outroText1, 370, 240);
+		if (outro_counter > 190) g2d.drawString(outroText2, 330, 290);
+		if (outro_counter > 220) g2d.drawString(outroText3, 330, 340);
+		if (outro_counter > 350) g2d.drawString(outroText4, 350, 390);
+		
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 24f));
+		if (outro_counter > 500) g2d.drawString("Naciœnij ENTER aby wróciæ na ranczo...", 300, 580);
+	}
+	
 	
 	// POWERUUPS
 	if (player.isTequila_powerUp()) {
@@ -1349,7 +1555,7 @@ public void render(int fps_count, int ticks_count)
 	}
 
 	// HUD gry
-	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
+	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel || gameState == GameState.Outro)
 	{
 		// PLAYER HEALTH
 		for (int i = 0; i < player.getHealth(); i++) g.drawImage(Textures.getInstance().heart, 360+(i*40), 5, 40, 40,null);
@@ -1395,6 +1601,19 @@ public void render(int fps_count, int ticks_count)
 		}
 		menuButtons[selectedMenuButton].setSelected(true);
 	}
+	
+	// LEVEL CHOOSE
+	if (gameState == GameState.LevelChoose)
+	{
+		g2d.drawImage(Textures.getInstance().backGroundMountains, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
+		//g2d.drawImage(Textures.getInstance().menuBg, 320, 140, null);
+		for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++) 
+		{
+			levelMenuButtons[i].render(g2d);
+		}
+		levelMenuButtons[selectedLevelMenuButton].setSelected(true);
+	}
+	
 	
 	if (gameState == GameState.Game) makeBgImage = false;
 	
@@ -1658,6 +1877,17 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 					menuButtons[1].setName(TextResources.MAIN_MENU_ENG);
 					menuButtons[2].setName(TextResources.EXIT_ENG);
 					
+					levelMenuButtons[0].setName("      " +TextResources.LEVEL_ENG +" 1");
+					levelMenuButtons[1].setName("      " +TextResources.LEVEL_ENG +" 2");
+					levelMenuButtons[2].setName("      " +TextResources.LEVEL_ENG +" 3");
+					levelMenuButtons[3].setName("      " +TextResources.LEVEL_ENG +" 4");
+					levelMenuButtons[4].setName("      " +TextResources.LEVEL_ENG +" 5");
+					levelMenuButtons[5].setName("      " +TextResources.LEVEL_ENG +" 6");
+					levelMenuButtons[6].setName("      " +TextResources.LEVEL_ENG +" 7");
+					levelMenuButtons[7].setName("      " +TextResources.LEVEL_ENG +" 8");
+					levelMenuButtons[8].setName("      " +TextResources.LEVEL_ENG +" 9");
+					levelMenuButtons[9].setName("      " +TextResources.LEVEL_ENG +" 10");
+					
 					return;
 				}
 				if (MainClass.language == MainClass.Languages.english) {
@@ -1674,7 +1904,18 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 					menuButtons[0].setName(TextResources.RESUME_GAME_PL);
 					menuButtons[1].setName(TextResources.MAIN_MENU_PL);
 					menuButtons[2].setName(TextResources.EXIT_PL);		
-
+					
+					levelMenuButtons[0].setName("      " +TextResources.LEVEL_PL +" 1");
+					levelMenuButtons[1].setName("      " +TextResources.LEVEL_PL +" 2");
+					levelMenuButtons[2].setName("      " +TextResources.LEVEL_PL +" 3");
+					levelMenuButtons[3].setName("      " +TextResources.LEVEL_PL +" 4");
+					levelMenuButtons[4].setName("      " +TextResources.LEVEL_PL +" 5");
+					levelMenuButtons[5].setName("      " +TextResources.LEVEL_PL +" 6");
+					levelMenuButtons[6].setName("      " +TextResources.LEVEL_PL +" 7");
+					levelMenuButtons[7].setName("      " +TextResources.LEVEL_PL +" 8");
+					levelMenuButtons[8].setName("      " +TextResources.LEVEL_PL +" 9");
+					levelMenuButtons[9].setName("      " +TextResources.LEVEL_PL +" 10");
+					
 					return;
 				}	
 			}
@@ -1775,7 +2016,8 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 									intro_font_y1 = 0;
 									intro_font_y2 = 0;
 									intro_font_y3 = 0;
-									gameState = GameState.Intro;									
+									//gameState = GameState.Intro;		
+									gameState = GameState.LevelChoose;
 									break;				
 							case 1: gameState = GameState.JakGrac;
 									break;
@@ -1797,6 +2039,37 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 			}
 			}
 		}
+		
+		
+		if (gameState == GameState.LevelChoose)
+		{
+
+			for (int i = 0; i < unlockedLevels; i++)
+			{
+				if (me.getX() >= levelMenuButtons[i].getX() && me.getX() <= (levelMenuButtons[i].getX() + levelMenuButtons[i].getWidth())
+						&& me.getY() >= levelMenuButtons[i].getY() && me.getY() <= (levelMenuButtons[i].getY() + levelMenuButtons[i].getHeight()))
+						{
+							MainClass.menuSound2.play();		
+							objectsHandler.clearLevel();
+							objectsHandler.resetLevelStatistics();
+							System.gc();
+							LEVEL = selectedLevelMenuButton+1;
+							if (LEVEL == 1) {
+								gameState = GameState.Intro;
+							}
+							else {
+								objectsHandler.loadLevel(LEVEL);
+								cam.setX(0);
+								player = objectsHandler.getPlayer();
+								achievements.restartLevel();
+								MainClass.logging(false, Level.INFO, "Rozpoczêto poziom "+selectedLevelMenuButton);
+								playMusic1();
+								gameState = GameState.Game;				
+							}
+						}
+			}
+		}
+		
 		
 		if (gameState == GameState.Menu)
 		{
@@ -1882,6 +2155,19 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						{
 							if (selectedMainMenuButton != i) MainClass.menuSound1.play();
 							selectedMainMenuButton = i;
+						}
+			}
+		}
+		
+		if (gameState == GameState.LevelChoose)
+		{
+			for (int i = 0; i < unlockedLevels; i++)
+			{
+				if (me.getX() >= levelMenuButtons[i].getX() && me.getX() <= (levelMenuButtons[i].getX() + levelMenuButtons[i].getWidth())
+						&& me.getY() >= levelMenuButtons[i].getY() && me.getY() <= (levelMenuButtons[i].getY() + levelMenuButtons[i].getHeight()))
+						{
+							if (selectedLevelMenuButton != i) MainClass.menuSound1.play();
+							selectedLevelMenuButton = i;
 						}
 			}
 		}
