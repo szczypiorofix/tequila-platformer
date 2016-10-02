@@ -193,8 +193,8 @@ private float intro_font_y3 = 0;
 public static boolean endgame = false;
 private int outro_counter = 0;
 private String outroText1 = "GRATULACJE !!!";
-private String outroText2 = "Pomog³eœ Marcello odnaleŸæ jego";
-private String outroText3 = " zaginion¹ kozê Matyldê!";
+private String outroText2 = "Pomog³eœ Marcello odnaleŸæ";
+private String outroText3 = "zaginion¹ kozê Matyldê !";
 private String outroText4 = "JESTEŒ ZWYCIÊZC¥ !!!";
 private int[] baloniki = new int[6];
 
@@ -406,6 +406,16 @@ public void playMusic2()
 {
 	MainClass.music.stop();
 	MainClass.music.restart(Music.MIRAGE);
+	MainClass.music.setPlaying(true);
+}
+
+/** Metoda powoduj¹ca odtwarzanie muzyki nr. 3 - "Victory.mp3".
+ * 
+ */
+public void playMusic3()
+{
+	MainClass.music.stop();
+	MainClass.music.restart(Music.VICTORY);
 	MainClass.music.setPlaying(true);
 }
 
@@ -820,7 +830,7 @@ public void tick()
 			player = objectsHandler.getPlayer();
 			achievements.restartLevel();
 			MainClass.logging(false, Level.INFO, "Rozpoczêto poziom "+selectedLevelMenuButton);
-			playMusic1();
+			playMusic2();
 			gameState = GameState.Game;
 		}
 	}
@@ -830,9 +840,11 @@ public void tick()
 	{
 		for (int i = 0; i < baloniki.length; i++)
 		{
-			baloniki[i] = MainClass.HEIGHT + random.nextInt(150) + 1;
+			baloniki[i] = MainClass.HEIGHT + random.nextInt(600);
 		}
+		achievements.addCompleteGameCount();
 		outro_counter = 0;
+		playMusic3();
 		gameState = GameState.Outro;
 	}
 	
@@ -842,7 +854,8 @@ public void tick()
 		
 		for (int i = 0; i < baloniki.length; i++)
 		{
-			baloniki[i]--;
+			baloniki[i] -= 2;
+			if (baloniki[i] < -150) baloniki[i] = MainClass.HEIGHT + random.nextInt(600);
 		}
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
@@ -853,29 +866,30 @@ public void tick()
 			player = objectsHandler.getPlayer();
 			achievements.restartLevel();
 			System.gc();
+			playMusic1();
 			gameState = GameState.MainMenu;
 		}
 	}
 	
 	// SKIP LEVEL
-	if (gameState == GameState.Game)
-	{
-		if (key.isKeyPressedOnce(KeyEvent.VK_F1))
-		{
-			gameState = GameState.Game;
-			MainScreen.millis = 0;
-			MainScreen.minutes = 0;
-			MainScreen.seconds = 0;
-			MainScreen.COINS = 0;
-			MainScreen.SCORE = 0;
-			MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
-			MainScreen.TOTAL_SCORE = 0;
+	//if (gameState == GameState.Game)
+	//{
+	//	if (key.isKeyPressedOnce(KeyEvent.VK_F1))
+	//	{
+	//		gameState = GameState.Game;
+	//		MainScreen.millis = 0;
+	//		MainScreen.minutes = 0;
+	//		MainScreen.seconds = 0;
+	//		MainScreen.COINS = 0;
+	//		MainScreen.SCORE = 0;
+	//		MainScreen.time_bonus = MainScreen.MAX_TIME_BONUS;
+	//		MainScreen.TOTAL_SCORE = 0;
 					
-			objectsHandler.switchLevel();
-			player = objectsHandler.getPlayer();
-			achievements.restartLevel();
-		}
-	}
+	//		objectsHandler.switchLevel();
+	//		player = objectsHandler.getPlayer();
+	//		achievements.restartLevel();
+	//	}
+	//}
 	
 	
 	// MENU WYBORU POZIOMÓW
@@ -948,6 +962,7 @@ public void tick()
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
 		{
+			MainClass.menuSound2.play();
 			gameState = GameState.MainMenu;
 		}
 		
@@ -967,7 +982,7 @@ public void tick()
 				player = objectsHandler.getPlayer();
 				achievements.restartLevel();
 				MainClass.logging(false, Level.INFO, "Rozpoczêto poziom "+selectedLevelMenuButton);
-				playMusic1();
+				playMusic2();
 				gameState = GameState.Game;				
 			}
 		}
@@ -1292,7 +1307,7 @@ public void render(int fps_count, int ticks_count)
 	g2d.setRenderingHints(rh);
 		
 	// MOUNTAING & PARALLAX
-	if (gameState == GameState.Game || gameState == GameState.Death || gameState == GameState.Menu || gameState == GameState.NextLevel)
+	if (gameState == GameState.Game || gameState == GameState.Death || gameState == GameState.Menu || gameState == GameState.NextLevel || gameState == GameState.Outro)
 	{
 		// BACKGROUND - Góry i s³oñce
 		g.setColor(new Color(184, 220, 254));
@@ -1390,7 +1405,7 @@ public void render(int fps_count, int ticks_count)
 	
 		
 	if ((!player.isLevelFinished()) && (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel || gameState == GameState.Outro))
-	{ 
+	{
 		////// CAM MOVING HERE
 		g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 			objectsHandler.render(g);
@@ -1453,28 +1468,6 @@ public void render(int fps_count, int ticks_count)
 		//g2d.drawString(intro_counter+"", 100, 100);
 	}
 
-	
-	// OUTRO
-	if (endgame && gameState == GameState.Outro)
-	{
-		g2d.drawImage(Textures.getInstance().backGroundMountains, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
-		for (int i = 0; i < baloniki.length; i++)
-		{
-			g2d.drawImage(Textures.getInstance().balony[i], 50 + (i* 10), baloniki[i], null);
-		}
-		
-		g2d.setColor(MainClass.fontColor);
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 36f));
-		
-		if (outro_counter > 100) g2d.drawString(outroText1, 370, 240);
-		if (outro_counter > 190) g2d.drawString(outroText2, 330, 290);
-		if (outro_counter > 220) g2d.drawString(outroText3, 330, 340);
-		if (outro_counter > 350) g2d.drawString(outroText4, 350, 390);
-		
-		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 24f));
-		if (outro_counter > 500) g2d.drawString("Naciœnij ENTER aby wróciæ na ranczo...", 300, 580);
-	}
-	
 	
 	// POWERUUPS
 	if (player.isTequila_powerUp()) {
@@ -1555,7 +1548,7 @@ public void render(int fps_count, int ticks_count)
 	}
 
 	// HUD gry
-	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel || gameState == GameState.Outro)
+	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
 	{
 		// PLAYER HEALTH
 		for (int i = 0; i < player.getHealth(); i++) g.drawImage(Textures.getInstance().heart, 360+(i*40), 5, 40, 40,null);
@@ -1590,6 +1583,27 @@ public void render(int fps_count, int ticks_count)
 			makeBgImageGrayScale = true;
 		}
 		g2d.drawImage(backgroundGrayScaleImage, 0, 0, null);
+	}
+	
+	// OUTRO
+	if (endgame && gameState == GameState.Outro)
+	{
+		for (int i = 0; i < baloniki.length; i++)
+		{
+			g2d.drawImage(Textures.getInstance().balony[i], 50 + (i* 160), baloniki[i], null);
+		}
+		
+		g2d.setColor(Color.WHITE);
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
+		
+		if (outro_counter > 100) g2d.drawString(outroText1, 385, 250);
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 36f));
+		if (outro_counter > 190) g2d.drawString(outroText2, 290, 290);
+		if (outro_counter > 190) g2d.drawString(outroText3, 315, 340);
+		if (outro_counter > 350) g2d.drawString(outroText4, 350, 390);
+		
+		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 24f));
+		if (outro_counter > 500) g2d.drawString("Naciœnij ENTER aby wróciæ na ranczo...", 320, 580);
 	}
 	
 	if (gameState == GameState.Menu)
@@ -1730,19 +1744,22 @@ public void render(int fps_count, int ticks_count)
 				case 17:g2d.drawString(achievements.getComplete10LevelTextShort() +"  " +achievements.getComplete10LevelText(), 175, 70 + (i*60));
 						g2d.drawImage(Textures.getInstance().complete10LevelImage, 110, 40 + (i*60), null);
 						break;
-				case 18:g2d.drawString(achievements.getFindAllCoinsTextShort() +"  " +achievements.getFindAllCoinsText(), 175, 70 + (i*60));
+				case 18:g2d.drawString(achievements.getCompleteGameTextShort() +"  " +achievements.getCompleteGameText(), 175, 70 + (i*60));
+						g2d.drawImage(Textures.getInstance().completeGameImage, 110, 40 + (i*60), null);
+						break;
+				case 19:g2d.drawString(achievements.getFindAllCoinsTextShort() +"  " +achievements.getFindAllCoinsText(), 175, 70 + (i*60));
 						g2d.drawImage(Textures.getInstance().findAllCoinsImage, 110, 40 + (i*60), null);
 						break;
-				case 19:g2d.drawString(achievements.getFindAllPowerupsTextShort() +"  " +achievements.getFindAllPowerupsText(), 175, 70 + (i*60));
+				case 20:g2d.drawString(achievements.getFindAllPowerupsTextShort() +"  " +achievements.getFindAllPowerupsText(), 175, 70 + (i*60));
 						g2d.drawImage(Textures.getInstance().findAllPowerupsImage, 110, 40 + (i*60), null);
 						break;
-				case 20:g2d.drawString(achievements.getNoHarmTextShort() +"  " +achievements.getNoHarmText(), 175, 70 + (i*60));
+				case 21:g2d.drawString(achievements.getNoHarmTextShort() +"  " +achievements.getNoHarmText(), 175, 70 + (i*60));
 						g2d.drawImage(Textures.getInstance().noHarmImage, 110, 40 + (i*60), null);
 						break;
-				case 21:g2d.drawString(achievements.getMegaJumpTextShort() +". " +achievements.getMegaJumpText(), 175, 70 + (i*60));
+				case 22:g2d.drawString(achievements.getMegaJumpTextShort() +". " +achievements.getMegaJumpText(), 175, 70 + (i*60));
 						g2d.drawImage(Textures.getInstance().megaJumpImage, 110, 40 + (i*60), null);
 						break;
-				case 22:g2d.drawString(achievements.getSprinterTextShort() +". " +achievements.getSprinterText(), 175, 70 + (i*60));
+				case 23:g2d.drawString(achievements.getSprinterTextShort() +". " +achievements.getSprinterText(), 175, 70 + (i*60));
 						g2d.drawImage(Textures.getInstance().sprinterImage, 110, 40 + (i*60), null);
 						break;
 				}				
@@ -2063,7 +2080,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 								player = objectsHandler.getPlayer();
 								achievements.restartLevel();
 								MainClass.logging(false, Level.INFO, "Rozpoczêto poziom "+selectedLevelMenuButton);
-								playMusic1();
+								playMusic2();
 								gameState = GameState.Game;				
 							}
 						}

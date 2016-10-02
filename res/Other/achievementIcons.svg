@@ -1662,6 +1662,67 @@
          operator="in"
          id="feComposite5681-2" />
     </filter>
+    <filter
+       inkscape:label="Canvas Bumps Matte"
+       inkscape:menu="Bumps"
+       inkscape:menu-tooltip="Same as Canvas Bumps but with a diffuse light instead of a specular one"
+       style="color-interpolation-filters:sRGB"
+       id="filter5663-3">
+      <feTurbulence
+         baseFrequency="0.2"
+         seed="300"
+         numOctaves="7"
+         result="result1"
+         type="turbulence"
+         id="feTurbulence5665-6" />
+      <feDisplacementMap
+         yChannelSelector="A"
+         scale="0"
+         in2="result1"
+         xChannelSelector="R"
+         result="result6"
+         id="feDisplacementMap5667-7" />
+      <feBlend
+         result="fbSourceGraphic"
+         mode="screen"
+         in2="SourceGraphic"
+         in="result6"
+         id="feBlend5669-7" />
+      <feColorMatrix
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 4 -2.5 "
+         result="fbSourceGraphicAlpha"
+         id="feColorMatrix5671-7" />
+      <feGaussianBlur
+         stdDeviation="0.5"
+         in="fbSourceGraphicAlpha"
+         result="result0"
+         id="feGaussianBlur5673-7" />
+      <feDiffuseLighting
+         result="result5"
+         surfaceScale="15"
+         diffuseConstant="0.40000001"
+         id="feDiffuseLighting5675-8">
+        <feDistantLight
+           azimuth="235"
+           elevation="25"
+           id="feDistantLight5677-2" />
+      </feDiffuseLighting>
+      <feComposite
+         k4="0"
+         k1="0"
+         result="result4"
+         operator="arithmetic"
+         k2="0.9"
+         k3="0.9"
+         in2="SourceGraphic"
+         id="feComposite5679-6" />
+      <feComposite
+         in2="SourceGraphic"
+         in="result4"
+         result="result2"
+         operator="in"
+         id="feComposite5681-5" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1671,8 +1732,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="27.019576"
-     inkscape:cy="432.39055"
+     inkscape:cx="-37.057353"
+     inkscape:cy="546.67626"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2458,6 +2519,69 @@
        preserveAspectRatio="none"
        height="42.89336"
        width="32.470673"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:1;fill:#dde9af;fill-opacity:1;fill-rule:nonzero;stroke:#241c1f;stroke-width:1.78734922;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5663-3)"
+       id="rect3376-6-1"
+       width="77.075264"
+       height="67.12043"
+       x="142.17665"
+       y="582.37341"
+       ry="11.61352"
+       rx="10.001966"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="star"
+       style="opacity:1;fill:#eeffaa;fill-opacity:1;fill-rule:nonzero;stroke:#ff9955;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path6260-3-1"
+       sodipodi:sides="5"
+       sodipodi:cx="42.931484"
+       sodipodi:cy="286.66656"
+       sodipodi:r1="28.085148"
+       sodipodi:r2="14.042574"
+       sodipodi:arg1="0.65788861"
+       sodipodi:arg2="1.2862071"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="1.08941e-015"
+       d="m 65.15484,303.83916 -18.280717,-3.69485 -13.407351,12.96455 -2.135038,-18.52777 -16.47312,-8.74488 16.961192,-7.75594 3.226403,-18.36919 12.617631,13.73434 18.467146,-2.6079 -9.163067,16.24422 z"
+       inkscape:transform-center-x="-0.64043673"
+       inkscape:transform-center-y="-2.5914802"
+       transform="matrix(1.0435763,0.30046013,-0.30046013,1.0435763,221.36971,305.32167)"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <image
+       y="586.6925"
+       x="153.61609"
+       id="image4574"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAABGCAYAAABxLuKEAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAu
+MTJDBGvsAAAEQElEQVR4Xu2XQW7UQBREc5VwiURwAs5EkgVwIoIUzgALpCBWYY9YcQJkpqzUqCjK
+ju32JN0Tf+nJdnX7u/thJ+Gk67qNQAw3NjGDxHBjEzNIDDc2MYPEcGMTM0gMl/Dq/LzbEcdaJIZj
+aPEaUt5eXEBML4dHlvdogRiCh4rzkhS91rktEUPwUGEOJYgIl7Sf2xoxBEPFcUpwKc9OjI5x8ypi
+SApK722FGAIv5tj8p4/XPfcSuh/fvuzF4JxyWNq3FWIIvJhTDDZPQZBBfv/6+Z8c7dsKMQReOyF9
+jiOlqAxKgjiX471bIIbAC0JcCgQQiklyvHcLxBCkQo6NuhQAGc9SDDJ/WyhC5RDMOWoxvE5SXp6d
+9dcqhzA/ajEuRTcPOZoxx/z3V1c9LcqJoTIkZQiXcpRinqsUEEOADYGvb153f77fRBEEQlwKznE/
+PjXv3QIxBNgUhEyRAgmUkt6uFuXEEPBt0Q3qdXpLgM4nEONymI2h8x+bGAKI4cYgxKXoW0IhQ2I4
+Hz17dpu+u/3c3Vx/6NG/f5QkK8E1D+VLiCHYbWD/1rgEPwdJiMI3DPgYJE2FMhWVwX4U6/uaSgwB
+xNwf+39liiDvLi/3UhTf9KFJ4pBTmO5pDjFUVAol4YEQg3GcU8rd7bRf62ujYvCm6PlSOTFUKAZH
+Zvcy9HzwbbkLn84hcDn6mXHdc4iho1IIxOwe2otJnxUXmTZxSPBMCqGgJXJiOJUkBueUslTM2H1T
+eurbslRODOfAh1OKikmLnrKxofvH7tV7cKQMxdc+RgznwIdSisrxxXPRuolEmpMyR8eXfkIkhnNQ
+MXhzKIavc1o4ct2EwzGO67Xi9/GZGMPxScUALECl8LvmIn1zOsZxR+crY/fqOKhGjKJvDTfhC9fc
+hfg4s3S/38u5VYrxTSR0I4qP6z1A+2M8iSmRAmI4l90i9j9rXMxDknQzIM1RvD/AfRTD65rEnLw4
+Pf1HjqIbSYzN1TGAZ/gclVoqBcSwBC4ckoBuiAvXbCkupzoxqVSIy9E8yRtC5wNs3uU8iZg5pZvV
+c80Ae/N6DJ2rfXi+phQQw8ScGlq8Zt5/Kt6P1xRT0luJYWJO6eJ94cy8/1S0N3uxN37OlPRWYpiY
+U7p4XTgpWbz2Pgox/K3BzPtPRXtr/6bFrLFw740jxTDze5YQw8Sc8sVTyqHEsDczv2cJMUzMKSwO
+vzYfSwz/O9CMGIDztcWwL1Ax+JxK+5MYJuZUWvxaC9fe7NuMGBQWyE2QNV519gUQQTFrSgExTCwp
+LFTFrLFwSmFvCAFr/nwBMUwsKS6eUtZcuPbWZ/i8pcQwsaQog3jPEtDvUFJADBMllfqVosLXlgJi
+mCip1K92YpgoqdSvdmKYKKnUr3ZimCip1K92YpgoqdSvdmKYKKnUr3ZimCip1K92YpgoqdSvdmKY
+KKnUr3ZimCip1K9uupO/c4jArniFX+kAAAAASUVORK5CYII=
+"
+       preserveAspectRatio="none"
+       height="58.482147"
+       width="58.482147"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
   </g>

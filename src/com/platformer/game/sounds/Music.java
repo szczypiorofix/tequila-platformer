@@ -28,6 +28,11 @@ public static final int WESTERN = 1;
  */
 public static final int MIRAGE = 2;
 
+/** Piosenka "victory.mp3"
+ * 
+ */
+public static final int VICTORY = 3;
+
 /** Obiekt klasy Player. G³ówny odtwarzacz mp3 ze strumienia fis.
  *
  */
@@ -71,6 +76,7 @@ public void restart(int song)
 	try {
 		if (this.song == WESTERN) fis = this.getClass().getResourceAsStream("/western.mp3"); 
 		if (this.song == MIRAGE) fis = this.getClass().getResourceAsStream("/mirage.mp3");
+		if (this.song == VICTORY) fis = this.getClass().getResourceAsStream("/victory.mp3");
 		player = new Player(new BufferedInputStream(fis));
 		MainClass.logging(false, Level.INFO, "Plik z muzyk¹ nr." +song +" za³adowany poprawnie.");
 	} catch (JavaLayerException e) {

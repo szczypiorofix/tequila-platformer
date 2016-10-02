@@ -99,6 +99,7 @@ public final BufferedImage complete7LevelImage;
 public final BufferedImage complete8LevelImage;
 public final BufferedImage complete9LevelImage;
 public final BufferedImage complete10LevelImage;
+public final BufferedImage completeGameImage;
 public final BufferedImage findAllCoinsImage;
 public final BufferedImage findAllPowerupsImage;
 public final BufferedImage noHarmImage;
@@ -422,6 +423,7 @@ private Textures()
 	complete8LevelImage = loader.loadImage("/Acomplete8Level.png");
 	complete9LevelImage = loader.loadImage("/Acomplete9Level.png");
 	complete10LevelImage = loader.loadImage("/Acomplete10Level.png");
+	completeGameImage = loader.loadImage("/AcompleteGame.png");
 	findAllCoinsImage = loader.loadImage("/AfindAllCoins.png");
 	findAllPowerupsImage = loader.loadImage("/AfindAllPowerup.png");
 	noHarmImage = loader.loadImage("/AnoHarm.png");

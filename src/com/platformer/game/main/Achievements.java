@@ -13,8 +13,8 @@ import com.platformer.game.graphics.Textures;
 public class Achievements {
 
 private HashMap<Integer, Boolean> achievementsList;
-public static final int maxAchievements = 23;
-private final int showAchievementCooldown = 200;
+public static final int maxAchievements = 24;
+private final int showAchievementCooldown = 210;
 private boolean showAchievement = false;
 private int achievementCount;
 private String achievementText;
@@ -136,6 +136,12 @@ private boolean complete10LevelComplete = false;
 private final String complete10LevelText = "Ukoñczy³eœ 10 poziom.";
 private final String complete10LevelTextShort = "10 poziom.";
 
+private int completeGameCount;
+private static final int A_COMPLETEGAME = 1;
+private boolean completeGameComplete = false;
+private final String completeGameText = "Odnalaz³eœ Matyldê i ukoñczy³eœ grê.";
+private final String completeGameTextShort = "Koniec gry.";
+
 private int findAllCoinsCount;
 private static final int A_FINDALLCOINS = 1;
 private boolean findAllCoinsComplete = false;
@@ -190,6 +196,7 @@ public Achievements(HashMap<Integer, Boolean> achievementsList)
 	complete8LevelCount = 0;
 	complete9LevelCount = 0;
 	complete10LevelCount = 0;
+	completeGameCount = 0;
 	findAllCoinsCount = 0;
 	findAllPowerupsCount = 0;
 	noHarmCount = 0;
@@ -212,6 +219,7 @@ public void restartLevel()
 	powerup3Count = 0;
 	findAllCoinsCount = 0;
 	findAllPowerupsCount = 0;
+	completeGameCount = 0;
 	noHarmCount = 0;
 	megaJumpCount = 0;
 	sprinterCount = 0;
@@ -488,13 +496,28 @@ public void addComplete10LevelCount()
 	}
 }
 
+public void addCompleteGameCount()
+{
+	if (!completeGameComplete) {
+		completeGameCount++;
+		if (completeGameCount>= A_COMPLETEGAME) {
+			completeGameComplete = true;
+			achievementsList.put(18, true);
+			setAchievementText(completeGameText);
+			setAchievementTextShort(completeGameTextShort);
+			setAchievementImage(Textures.getInstance().completeGameImage);
+			setShowAchievement(true);
+		}
+	}
+}
+
 public void addFindAllCoinsCount()
 {
 	if (!findAllCoinsComplete) {
 		findAllCoinsCount++;
 		if (findAllCoinsCount>= A_FINDALLCOINS) {
 			findAllCoinsComplete = true;
-			achievementsList.put(18, true);
+			achievementsList.put(19, true);
 			setAchievementText(findAllCoinsText);
 			setAchievementTextShort(findAllCoinsTextShort);
 			setAchievementImage(Textures.getInstance().findAllCoinsImage);
@@ -509,7 +532,7 @@ public void addFindAllPowerupsCount()
 		findAllPowerupsCount++;
 		if (findAllPowerupsCount>= A_FINDALLPOWERUPS) {
 			findAllPowerupsComplete = true;
-			achievementsList.put(19, true);
+			achievementsList.put(20, true);
 			setAchievementText(findAllPowerupsText);
 			setAchievementTextShort(findAllPowerupsTextShort);
 			setAchievementImage(Textures.getInstance().findAllPowerupsImage);
@@ -524,7 +547,7 @@ public void addNoHarmCount()
 		noHarmCount++;
 		if (noHarmCount>= A_NOHARM) {
 			noHarmComplete = true;
-			achievementsList.put(20, true);
+			achievementsList.put(21, true);
 			setAchievementText(noHarmText);
 			setAchievementTextShort(noHarmTextShort);
 			setAchievementImage(Textures.getInstance().noHarmImage);
@@ -540,7 +563,7 @@ public void addMegaJumpCount()
 		megaJumpCount++;
 		if (megaJumpCount>= A_MEGAJUMP) {
 			megaJumpComplete = true;
-			achievementsList.put(21, true);
+			achievementsList.put(22, true);
 			setAchievementText(megaJumpText);
 			setAchievementTextShort(megaJumpTextShort);
 			setAchievementImage(Textures.getInstance().megaJumpImage);
@@ -556,7 +579,7 @@ public void addSprinterCount()
 		sprinterCount++;
 		if (sprinterCount>= A_SPRINTER) {
 			sprinterComplete = true;
-			achievementsList.put(22, true);
+			achievementsList.put(23, true);
 			setAchievementText(sprinterText);
 			setAchievementTextShort(sprinterTextShort);
 			setAchievementImage(Textures.getInstance().sprinterImage);
@@ -699,6 +722,10 @@ public boolean isComplete9LevelComplete() {
 
 public boolean isComplete10LevelComplete() {
 	return complete10LevelComplete;
+}
+
+public boolean isCompleteGameComplete() {
+	return completeGameComplete;
 }
 
 public boolean isFindAllCoinsComplete() {
@@ -869,6 +896,14 @@ public String getComplete10LevelTextShort() {
 	return complete10LevelTextShort;
 }
 
+public String getCompleteGameText() {
+	return completeGameText;
+}
+
+public String getCompleteGameTextShort() {
+	return completeGameTextShort;
+}
+
 public String getFindAllCoinsText() {
 	return findAllCoinsText;
 }
@@ -984,6 +1019,10 @@ public void setComplete9LevelComplete(boolean complete9LevelComplete) {
 
 public void setComplete10LevelComplete(boolean complete10LevelComplete) {
 	this.complete10LevelComplete = complete10LevelComplete;
+}
+
+public void setCompleteGameComplete(boolean completeGameComplete) {
+	this.completeGameComplete = completeGameComplete;
 }
 
 public void setFindAllCoinsComplete(boolean findAllCoinsComplete) {

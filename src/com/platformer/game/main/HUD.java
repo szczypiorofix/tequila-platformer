@@ -110,7 +110,7 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 	default: {	
 	}
 	}
-	if (gameState != GameState.Outro) {
+	if (MainClass.DEBUG_MODE) {
 		g2d.setFont(MainClass.arial14Font);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString("FPS: "+fps_count +" Ticks: "+ ticks_count, MainClass.WIDTH - 200, MainClass.HEIGHT - 10);

@@ -48,8 +48,8 @@ public static final File collectiblesFile = new File("collectibles.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
 public static final File gameConfigFile = new File("tequila.cfg");
 public static final Color fontColor = new Color(60, 0, 140);
-public static final float GAME_VER = 0.79f;
-public static final int BUILD = 40;
+public static final float GAME_VER = 1.0f;
+public static final int BUILD = 47;
 public static Font verdana14Font = new Font("Verdana", Font.BOLD, 14);
 public static Font verdana18Font = new Font("Verdana", Font.BOLD, 18);
 public static Font arial14Font = new Font("Arial", Font.BOLD, 14);
@@ -70,7 +70,7 @@ private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-
 private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
 private final double amountOfTicks = 60.0;
 
-private static boolean DEBUG_MODE;
+public static boolean DEBUG_MODE;
 
 private Thread gameThread;
 private Thread musicThread;
@@ -437,11 +437,12 @@ private void prepareAchievements()
 	achievements.setComplete8LevelComplete(achievementsList.get(15));
 	achievements.setComplete9LevelComplete(achievementsList.get(16));
 	achievements.setComplete10LevelComplete(achievementsList.get(17));
-	achievements.setFindAllCoinsComplete(achievementsList.get(18));
-	achievements.setFindAllPowerupsComplete(achievementsList.get(19));
-	achievements.setNoHarmComplete(achievementsList.get(20));
-	achievements.setMegaJumpComplete(achievementsList.get(21));
-	achievements.setSprinterComplete(achievementsList.get(22));
+	achievements.setCompleteGameComplete(achievementsList.get(18));
+	achievements.setFindAllCoinsComplete(achievementsList.get(19));
+	achievements.setFindAllPowerupsComplete(achievementsList.get(20));
+	achievements.setNoHarmComplete(achievementsList.get(21));
+	achievements.setMegaJumpComplete(achievementsList.get(22));
+	achievements.setSprinterComplete(achievementsList.get(23));
 }
 
 
