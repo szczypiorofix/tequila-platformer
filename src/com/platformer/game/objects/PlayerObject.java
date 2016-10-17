@@ -63,6 +63,7 @@ private int dust_time = DUST_TIME;
 private boolean isDust = false;
 
 private int dustX, dustY;
+private int cactus_wake;
 private int dustFrame;
 private boolean finishLevel = false;
 private int maxCoins;
@@ -97,7 +98,8 @@ public PlayerObject(float x, float y, ObjectsHandler objectsHandler, Achievement
 	powerups = 0;
 	health = MAX_HEALTH;
 	gravity = NORMAL_GRAVITY;
-
+	cactus_wake = 0;
+	
 	
 	playerRunRight = new Animation(3, Textures.getInstance().playerRunR[0], Textures.getInstance().playerRunR[1], Textures.getInstance().playerRunR[2]
 			, Textures.getInstance().playerRunR[3], Textures.getInstance().playerRunR[4], Textures.getInstance().playerRunR[5], Textures.getInstance().playerRunR[6]
@@ -458,27 +460,36 @@ private void collisions()
 			}
 		}
 		
+		
 		/// ANGRY CACTUS LIST
 		for (int i = 0; i < objectsHandler.getAngryCactus_List().size(); i++)
 		{
 			GameObject tempObject = objectsHandler.getAngryCactus_List().get(i);
 			if (tempObject.isVisible())
 			{
+				if (!getWholeBounds().intersects(tempObject.getBounds())) cactus_wake = 0;
 				if (getWholeBounds().intersects(tempObject.getBounds()))
 				{
 					tempObject.setVelX(1);
 					if (tempObject.getX() > x) tempObject.setDirection(-1);
 					else tempObject.setDirection(1);
 					
+					cactus_wake++;
+					
 					if (!tempObject.isAction()) {
-						objectsHandler.getDart_List().add(new Dart((int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection(), objectsHandler));
-						MainClass.cactusShotSound.play();
+						if (cactus_wake > 20) {
+							objectsHandler.getDart_List().add(new Dart((int) tempObject.getX(), (int) tempObject.getY(), tempObject.getDirection(), objectsHandler));
+							MainClass.cactusShotSound.play();
+							cactus_wake = 0;
+						}
 						tempObject.setAction(true);
 					}
-				} else tempObject.setVelX(0);
+				} else {
+					tempObject.setVelX(0);
+				}
 			}
 		}
-		
+
 		/// MOVING CRATE LIST
 		for (int i = 0; i < objectsHandler.getMovingCrate_List().size(); i++)
 		{

@@ -51,13 +51,6 @@ public Tumbleweed(float x, float y, ObjectsHandler objectsHandler)
 @Override
 public void render(Graphics g) {
 	tumbling.drawAnimation(g, (int) x, ( int ) (y - 15), false);
-	
-	//Graphics2D g2d = (Graphics2D) g;
-	
-	//g2d.draw(getBounds());
-	//g2d.draw(getBoundsTop());
-	//g2d.draw(getBoundsLeft());
-	//g2d.draw(getBoundsRight());
 }
 
 @Override

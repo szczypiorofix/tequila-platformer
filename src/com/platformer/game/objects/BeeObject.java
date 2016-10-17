@@ -59,7 +59,7 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x-3, (int) y-18, (int) width+10, (int) height);
+	return new Rectangle((int) x, (int) y-8, (int) width, (int) height-15);
 }
 
 @Override

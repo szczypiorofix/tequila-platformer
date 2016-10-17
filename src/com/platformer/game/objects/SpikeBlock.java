@@ -45,8 +45,6 @@ public SpikeBlock(float x, float y)
 @Override
 public void render(Graphics g) {
 	spikeAnimation.drawAnimation(g, (int) x, (int) y-20, false);
-	//Graphics2D g2d = (Graphics2D) g;
-	//g2d.draw(getBounds());
 }
 
 @Override

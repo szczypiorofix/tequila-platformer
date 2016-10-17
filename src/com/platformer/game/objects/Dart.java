@@ -20,7 +20,7 @@ private int direction;
 private float velX, velY;
 private boolean action, visible;
 private int sx;
-private int howLondToRun = 75;
+private int howLondToRun = 85;
 
 
 
@@ -37,8 +37,8 @@ public Dart(float x, float y, int direction, ObjectsHandler objectsHandler) {
 	height = 12;
 	action = false;
 	visible = true;
-	if (direction == 1) velX = 8;
-	else velX = -8;
+	if (direction == 1) velX = 7;
+	else velX = -7;
 	this.direction = direction;
 }
 
@@ -78,7 +78,7 @@ public void tick(LinkedList<GameObject> object) {
 
 @Override
 public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, (int) width, (int) height);
+	return new Rectangle((int) x+5, (int) y+2, (int) width-10, (int) height-4);
 }
 
 @Override

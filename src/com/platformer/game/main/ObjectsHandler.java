@@ -199,7 +199,7 @@ public void switchLevel()
 {
 	clearLevel();
 	resetLevelStatistics();
-	
+	player.setHealth(player.getMaxHealth());
 	switch(MainScreen.LEVEL)
 	{
 	case 1:

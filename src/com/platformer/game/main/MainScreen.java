@@ -164,6 +164,7 @@ private Random random;
  * 
  */
 private boolean isDesktopSupported;
+private boolean clickhere;
 private int[] collectiblesList;
 private Desktop desktop;
 private float[] falujaceLitery = new float[16];
@@ -295,6 +296,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	playerName = "";
 		
 	isDesktopSupported = Desktop.isDesktopSupported();
+	clickhere = false;
 	
 	scrollScreenY = 0;
 	
@@ -1393,7 +1395,14 @@ public void render(int fps_count, int ticks_count)
 		g2d.drawImage(Textures.getInstance().literaE, 530, (int) (MainClass.HEIGHT - 100 + falujaceLitery[14]), null);
 		g2d.drawImage(Textures.getInstance().literaR, 560, (int) (MainClass.HEIGHT - 100 + falujaceLitery[15]), null);
 		
-		if (isDesktopSupported) g2d.drawImage(Textures.getInstance().websiteButton, 330, (int) (MainClass.HEIGHT - 25), null);
+		if (isDesktopSupported) {
+			g2d.drawImage(Textures.getInstance().websiteButton, 330, (int) (MainClass.HEIGHT - 25), null);
+			if (clickhere) {
+				g2d.setFont(MainClass.smokunFont.deriveFont(Font.PLAIN, 20f));
+				g2d.setColor(MainClass.fontColor);
+				g2d.drawString("Kliknij tutaj!", 540, MainClass.HEIGHT - 5);
+			}
+		}
 		
 		if (MainClass.language == MainClass.Languages.polish) g2d.drawImage(Textures.getInstance().polishFlagImage, MainClass.WIDTH - 55, MainClass.HEIGHT - 32, null);
 		if (MainClass.language == MainClass.Languages.english) g2d.drawImage(Textures.getInstance().englishFlagImage, MainClass.WIDTH - 55, MainClass.HEIGHT - 32, null);
@@ -2165,6 +2174,11 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 		
 		if (gameState == GameState.MainMenu)
 		{
+			if (isDesktopSupported && me.getX() >= 330 && me.getX() <= Textures.getInstance().websiteButton.getWidth()+330
+					&& me.getY() >= MainClass.HEIGHT - 25  && me.getY() <= MainClass.HEIGHT - 25 + Textures.getInstance().websiteButton.getHeight())
+					clickhere = true;
+			else clickhere = false;
+			
 			for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++)
 			{
 				if (me.getX() >= mainMenuButtons[i].getX() && me.getX() <= (mainMenuButtons[i].getX() + mainMenuButtons[i].getWidth())
