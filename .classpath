@@ -9,5 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JInput"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JLayer"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MySQL Connector"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jinput"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
