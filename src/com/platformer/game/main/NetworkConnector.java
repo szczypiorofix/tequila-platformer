@@ -1,25 +1,27 @@
 package com.platformer.game.main;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import com.google.gson.Gson;
+
 
 public class NetworkConnector {
 
 public static boolean connected;
-//private final String host = "127.0.0.1";
-private final String host = "149.202.59.28";
-private final int port = 1201;
-private final int timeOut = 5000; // 5 sekund
+
 private ArrayList<HallOfFamePlayer> hallOfFameRecords;
-private Socket socket;
-private ObjectInputStream ois;
-private ObjectOutputStream oos;
-private NetworkData networkData;
+private static final String USER_AGENT = "Mozilla/5.0";
+private static final String POST_URL_GET_RESULTS = "https://wroblewskipiotr.pl/gethalloffameresults.php";
+private static final String POST_URL_ADD_RESULT = "https://wroblewskipiotr.pl/addhalloffameresult.php";
+private static final String POST_PARAMS = "getallresults";
+private static String post_addplayer = "";
 
 
 public NetworkConnector()
@@ -30,39 +32,54 @@ public NetworkConnector()
 public void addAnotherPlayerToHoF(HallOfFamePlayer hofPlayer)
 {
 	hallOfFameRecords = new ArrayList<HallOfFamePlayer>();
-	
 	try {
-		socket = new Socket();
-		socket.connect(new InetSocketAddress(host, port), timeOut);
-		
-		oos = new ObjectOutputStream(socket.getOutputStream());
-		
-		ArrayList<HallOfFamePlayer> temp = new ArrayList<HallOfFamePlayer>();
-		temp.add(hofPlayer);
-		
-		networkData = new NetworkData(NetworkDataClass.ADD, temp);
-		oos.writeObject(networkData);			
-		oos.flush();
-		
-		ois = new ObjectInputStream(socket.getInputStream());
-		networkData = (NetworkData) ois.readObject();
-		hallOfFameRecords = networkData.getHallOfFamePlayers();
-		ois.close();
-		MainClass.logging(false, Level.INFO, "Dane z serwera odczytane poprawnie.");
-	}
-	catch (ClassNotFoundException cnfe)
-	{
-		cnfe.printStackTrace();
-		MainClass.logging(false, Level.WARNING, "Nie znaleziono poprawnej klasy po³¹czeniowej z serwerem");
-		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(cnfe));
-	}
+		URL obj = new URL(POST_URL_ADD_RESULT);
+		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+		con.setRequestMethod("POST");
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		con.setRequestProperty("Accept-Charset", "UTF-8");
+		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		con.setRequestProperty("charset", "UTF-8");
 
-	catch (IOException ioe)
-	{
-		ioe.printStackTrace();
-		MainClass.logging(false, Level.WARNING, "B³¹d po³¹czenia z serwerem");
-		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ioe));
-	}
+		post_addplayer = "name="+hofPlayer.getName()+"&score="+hofPlayer.getScore()+"&millis="
+				+hofPlayer.getMillis()+"&level="+hofPlayer.getLevel()+"&date="+hofPlayer.getDate();
+		
+		// For POST only - START
+		con.setDoOutput(true);
+		OutputStream os = con.getOutputStream();
+		os.write(post_addplayer.getBytes());
+		os.flush();
+		os.close();
+		// For POST only - END
+		
+		String results = "";
+		int responseCode = con.getResponseCode();
+		if (responseCode == HttpsURLConnection.HTTP_OK) {
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			results = response.toString();
+		}
+		else MainClass.logging(false, Level.WARNING, "Po³¹czenie ze skryptem serwera - b³¹d !!!");
+		
+		//System.out.println(results);
+		
+		if (results.equals("OK"))
+			MainClass.logging(false, Level.INFO, "Poprawnie dodano kolejnego gracza");
+		else 
+			MainClass.logging(false, Level.WARNING, "Dodawanie gracza do listy zakoñczone b³êdem !!!");
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			MainClass.logging(false, Level.WARNING, "B³¹d ³¹czenia ze skryptem na serwerze!");
+			MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ex));
+		}
 }
 
 public ArrayList<HallOfFamePlayer> getHOFRecordsFromServer()
@@ -70,40 +87,54 @@ public ArrayList<HallOfFamePlayer> getHOFRecordsFromServer()
 	hallOfFameRecords = new ArrayList<HallOfFamePlayer>();
 	
 	try {
-		socket = new Socket();
-		socket.connect(new InetSocketAddress(host, port), timeOut);
-		
-		oos = new ObjectOutputStream(socket.getOutputStream());
-		
-		networkData = new NetworkData(NetworkDataClass.DOWNLOAD, new ArrayList<HallOfFamePlayer>());
-		oos.writeObject(networkData);			
-		oos.flush();
-		
-		ois = new ObjectInputStream(socket.getInputStream());
-		networkData = (NetworkData) ois.readObject();
-		hallOfFameRecords = networkData.getHallOfFamePlayers();
-		ois.close();
-		MainClass.logging(false, Level.INFO, "Dane z serwera odczytane poprawnie.");
-		connected = true;
-	}
-	catch (ClassNotFoundException cnfe)
-	{
-		cnfe.printStackTrace();
-		MainClass.logging(false, Level.WARNING, "Nie znaleziono poprawnej klasy po³¹czeniowej z serwerem");
-		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(cnfe));
-		hallOfFameRecords = new ArrayList<HallOfFamePlayer>();
-		connected = false;
-	}
+	URL obj = new URL(POST_URL_GET_RESULTS);
+	HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+	con.setRequestMethod("POST");
+	con.setRequestProperty("User-Agent", USER_AGENT);
+	con.setRequestProperty("Accept-Charset", "UTF-8");
+	con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+	con.setRequestProperty("charset", "UTF-8");
 
-	catch (IOException ioe)
-	{
-		ioe.printStackTrace();
-		MainClass.logging(false, Level.WARNING, "B³¹d po³¹czenia z serwerem");
-		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ioe));
-		hallOfFameRecords = new ArrayList<HallOfFamePlayer>();
-		connected = false;
-	}
+	// For POST only - START
+	con.setDoOutput(true);
+	OutputStream os = con.getOutputStream();
+	os.write(POST_PARAMS.getBytes());
+	os.flush();
+	os.close();
+	// For POST only - END
 	
+	String results = "";
+	int responseCode = con.getResponseCode();
+	if (responseCode == HttpsURLConnection.HTTP_OK) {
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		results = response.toString();
+	}
+	else System.out.println("POST request not worked");
+	
+	if (results.startsWith("ï»¿")) results = results.substring(3);
+	
+	//System.out.println(results);
+	
+	Gson g = new Gson();
+	HallOfFamePlayer[] persons = g.fromJson(""+results, HallOfFamePlayer[].class);
+	
+	for (int i=0; i < persons.length; i++)
+		hallOfFameRecords.add(new HallOfFamePlayer(persons[i].getName(), persons[i].getScore(), persons[i].getMillis(), persons[i].getLevel(), persons[i].getDate()));
+	}
+	catch (Exception ex) {
+		ex.printStackTrace();
+		MainClass.logging(false, Level.WARNING, "B³¹d ³¹czenia ze skryptem na serwerze!");
+		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ex));
+	}
+	connected = true;
 	return hallOfFameRecords;
 }
 }

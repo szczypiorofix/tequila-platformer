@@ -43,7 +43,6 @@ public class MainClass implements Runnable {
 
 
 public static final File achievementsFile = new File("achievements.dat");
-public static final File hallOfFameFile = new File("halloffame.dat");
 public static final File collectiblesFile = new File("collectibles.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
 public static final File gameConfigFile = new File("tequila.cfg");

@@ -1141,7 +1141,7 @@ public void tick()
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			MainClass.logging(false, Level.INFO, "Zapisano kolejnego gracza.");
-			MainClass.nc.addAnotherPlayerToHoF(new HallOfFamePlayer(playerName, SCORE, millis, LEVEL));
+			MainClass.nc.addAnotherPlayerToHoF(new HallOfFamePlayer(playerName, SCORE, millis, LEVEL, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())));
 		}
 	}
 	
@@ -1826,7 +1826,7 @@ public void render(int fps_count, int ticks_count)
 		 	g2d.drawString(i+1+"", 175, 80 + (i*60));
 		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getLevel()+"", 280, 80 + (i*60));
 		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getName()+"", 360, 80+(i*60));
-		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getTimeFromMilis(hallOfFame.getHallOfFameList().get(i).getMilis()), 570, 80 + (i*60));
+		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getTimeFromMilis(hallOfFame.getHallOfFameList().get(i).getMillis()), 570, 80 + (i*60));
 		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getScore()+"", 755, 80 + (i*60));
 		}
 		
