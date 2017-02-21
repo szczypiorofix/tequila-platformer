@@ -66,7 +66,7 @@ public void render(Graphics2D g2d)
 	    g2d.setFont(MainClass.texasFont.deriveFont(Font.BOLD, 54f));
 	    g2d.drawString(name, x + 30, y + 45);
 	}
-	g2d.setComposite(defComposite); // DOMYŒLNE COMPOSITE
+	g2d.setComposite(defComposite); // DOMYÅšLNE COMPOSITE
 	}
 	else {
 		if (MainClass.language == MainClass.Languages.polish) g2d.drawImage(Textures.getInstance().lockedLevelPL, (int) x, (int) y, (int) width, (int) height, null);

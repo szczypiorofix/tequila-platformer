@@ -14,7 +14,7 @@ private String name;
 private int score;
 private long millis;
 private int level;
-private String date;
+private String insert_date;
 
 	
 public HallOfFamePlayer(String name, int score, long millis, int level, String date)
@@ -23,7 +23,7 @@ public HallOfFamePlayer(String name, int score, long millis, int level, String d
 	this.score = score;
 	this.millis = millis;
 	this.level = level;
-	this.date = date;
+	this.insert_date = date;
 }
 
 
@@ -66,11 +66,11 @@ public void setLevel(int level) {
 }
 
 public void setDate(String date) {
-	this.date = date;
+	this.insert_date = date;
 }
 
 public String getDate() {
-	return this.date;
+	return this.insert_date;
 }
 
 }

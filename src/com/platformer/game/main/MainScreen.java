@@ -90,7 +90,7 @@ public static boolean exit = false;
 private Camera cam;
 private HUD hud;
 
-/** Przyjmuje wartoúÊ true jeúli plik konfiguracyjny gamepada zosta≥ utworzony ORAZ gdy gamepad zosta≥ pod≥πczony do portu USB konputera.
+/** Przyjmuje warto≈õƒá true je≈õli plik konfiguracyjny gamepada zosta≈Ç utworzony ORAZ gdy gamepad zosta≈Ç pod≈ÇƒÖczony do portu USB konputera.
  * 
  */
 private boolean gamepadEnabled = false;
@@ -108,7 +108,7 @@ private File screenShotFile;
 private HallOfFame hallOfFame;
 private Achievements achievements;
 
-/** Obiekt enumu GameState prezentujπcy aktualny "stan gry". W zaleønoúci od tego stanu jest wyúwietlane odpowienie menu gry lub sama gra.
+/** Obiekt enumu GameState prezentujƒÖcy aktualny "stan gry". W zale≈ºno≈õci od tego stanu jest wy≈õwietlane odpowienie menu gry lub sama gra.
  *  @see GameState
  */
 private GameState gameState;
@@ -147,20 +147,20 @@ private String[] napisy = new String[] {
 		"       BEDE GRAU W GRE !       ",
 		"   LEELOO DALLAS MULTIPASS     ",
 		"        NASI TU BYLI !         ",
-		"   NIE LEKCEWAØ ZAKWASZENIA    ",
+		"   NIE LEKCEWA≈ª ZAKWASZENIA    ",
 		"         I'LL BE BACK !         ",
-		"   CIEMNOå∆, WIDZ  CIEMNOå∆     ",
+		"   CIEMNO≈öƒÜ, WIDZƒò CIEMNO≈öƒÜ     ",
 		"        MY LITTLE PONY...       ",
 		"  TO JEST KURA PANIE GENRALE !  ",
 		"          IT JUST WORKS !       ",
 		"COME WITH ME IF YOU WANT TO LIVE",
 		"   BOO BARDZO LUBI TAKIE LASY  ",
 		"IT'S NOT A BUG, IT'S A FEATURE !",
-		"      MARCELLO M”WI: CZEå∆ !    "
+		"      MARCELLO M√ìWI: CZE≈öƒÜ !    "
 };
 private Random random;
 
-/** Przyjmuje wartoúÊ true jeúli w system obs≥uguje polecenia domyúlne takie jak OPEN, EDIT, MAIL, PRINT oraz BROWSE.
+/** Przyjmuje warto≈õƒá true je≈õli w system obs≈Çuguje polecenia domy≈õlne takie jak OPEN, EDIT, MAIL, PRINT oraz BROWSE.
  * 
  */
 private boolean isDesktopSupported;
@@ -194,17 +194,17 @@ private float intro_font_y3 = 0;
 public static boolean endgame = false;
 private int outro_counter = 0;
 private String outroText1 = "GRATULACJE !!!";
-private String outroText2 = "Pomog≥eú Marcello odnaleüÊ";
-private String outroText3 = "zaginionπ kozÍ MatyldÍ !";
-private String outroText4 = "JESTEå ZWYCI ZC• !!!";
+private String outroText2 = "Pomog≈Çe≈õ Marcello odnale≈∫ƒá";
+private String outroText3 = "zaginionƒÖ kozƒô Matyldƒô !";
+private String outroText4 = "JESTE≈ö ZWYCIƒòZCƒÑ !!!";
 private int[] baloniki = new int[6];
 
 /** Podstawowy konstruktor klasy MainScreen.
  * @param gameState - stan gry.
  * @param gameWindow - obiekt klasy GameWindow czyli okno gry.
- * @param gamepadFileEnabled - true jeúli plik konfiguracyjny gamepada zosta≥ utworzony.
+ * @param gamepadFileEnabled - true je≈õli plik konfiguracyjny gamepada zosta≈Ç utworzony.
  * @param hallOfFame - obiekt klasy HallOfFame czyli Najlepsze Wyniki.
- * @param achievements - obiekt klasy Achievements czyli OsiπgniÍcia.
+ * @param achievements - obiekt klasy Achievements czyli OsiƒÖgniƒôcia.
  */
 public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFileEnabled, HallOfFame hallOfFame, Achievements achievements, int[] collectiblesList)
 {
@@ -237,17 +237,17 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 			upValueProp = prop.getProperty("value_up");
 			downProp = prop.getProperty("Down");
 			downValueProp = prop.getProperty("value_down");
-			MainClass.logging(false, Level.INFO, "Plik ustawieÒ gamepada prawid≥owo odczytany.");
+			MainClass.logging(false, Level.INFO, "Plik ustawie≈Ñ gamepada prawid≈Çowo odczytany.");
 
 		} catch (IOException ex) {
-			MainClass.logging(false, Level.WARNING,  "B≥πd odczytu pliku ustawieÒ gamepada!");
+			MainClass.logging(false, Level.WARNING,  "B≈ÇƒÖd odczytu pliku ustawie≈Ñ gamepada!");
 			MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ex));
 		} finally {
 			if (propInput != null) {
 				try {
 					propInput.close();
 				} catch (IOException e) {
-					MainClass.logging(false, Level.WARNING,  "Plik ustawieÒ gamepada zosta≥ nieprawid≥owo zamkniÍty!");
+					MainClass.logging(false, Level.WARNING,  "Plik ustawie≈Ñ gamepada zosta≈Ç nieprawid≈Çowo zamkniƒôty!");
 					MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(e));
 				}
 			}
@@ -391,7 +391,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 }
 
 
-/** Metoda powodujπca odtwarzanie muzyki nr.1 - 'Western.mp3"
+/** Metoda powodujƒÖca odtwarzanie muzyki nr.1 - 'Western.mp3"
  * 
  */
 public void playMusic1()
@@ -401,7 +401,7 @@ public void playMusic1()
 	MainClass.music.setPlaying(true);		
 }
 
-/** Metoda powodujπca odtwarzanie muzyki nr. 2 - "Mirage.mp3".
+/** Metoda powodujƒÖca odtwarzanie muzyki nr. 2 - "Mirage.mp3".
  * 
  */
 public void playMusic2()
@@ -411,7 +411,7 @@ public void playMusic2()
 	MainClass.music.setPlaying(true);
 }
 
-/** Metoda powodujπca odtwarzanie muzyki nr. 3 - "Victory.mp3".
+/** Metoda powodujƒÖca odtwarzanie muzyki nr. 3 - "Victory.mp3".
  * 
  */
 public void playMusic3()
@@ -421,7 +421,7 @@ public void playMusic3()
 	MainClass.music.setPlaying(true);
 }
 
-/** Metoda zatrzymujπca odtwarzanie muzyki.
+/** Metoda zatrzymujƒÖca odtwarzanie muzyki.
  * 
  */
 public void stopMusic()
@@ -462,7 +462,7 @@ static BufferedImage copyImage(BufferedImage bi)
 }
 
 
-/** Otwiera podanπ stronÍ internetowπ w domyúlnej przeglπdarce systemu.
+/** Otwiera podanƒÖ stronƒô internetowƒÖ w domy≈õlnej przeglƒÖdarce systemu.
  * @param website - Adres strony internetowej do otwarcia.
  */
 private void openWebsite(String website)
@@ -472,17 +472,17 @@ private void openWebsite(String website)
 
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
 			URI url = null;
-			MainClass.logging(false, Level.INFO, "Polecenie desktopowe BROWSE jest dostÍpne.");
+			MainClass.logging(false, Level.INFO, "Polecenie desktopowe BROWSE jest dostƒôpne.");
 			try {
 				url = new URI(website);
 			} catch (URISyntaxException e1) {
-				MainClass.logging(false, Level.WARNING,  "B≥πd wywo≥ania (URL) otwierania strony domowej gry.");
+				MainClass.logging(false, Level.WARNING,  "B≈ÇƒÖd wywo≈Çania (URL) otwierania strony domowej gry.");
 				MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(e1));
 			}
 			try {
 				desktop.browse(url);
 			} catch (IOException e) {
-				MainClass.logging(false, Level.WARNING, "B≥πd otwierania (browse) strony domowej gry.");
+				MainClass.logging(false, Level.WARNING, "B≈ÇƒÖd otwierania (browse) strony domowej gry.");
 				MainClass.logging(false,  Level.WARNING, MainClass.getStackTrace(e));
 			}			
 		}
@@ -490,7 +490,7 @@ private void openWebsite(String website)
 }
 
 
-/** Metoda w ktÛrej zawarty jest ca≥y game logic.
+/** Metoda w kt√≥rej zawarty jest ca≈Çy game logic.
  * 
  */
 public void tick()
@@ -589,7 +589,7 @@ public void tick()
 		
 	}
 	
-	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) // POKAØ / UKRYJ MENU
+	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) // POKA≈ª / UKRYJ MENU
 	{
 		if (gameState == GameState.Menu)
 		{
@@ -629,7 +629,7 @@ public void tick()
 		objectsHandler.clearLevel();
 		objectsHandler.resetLevelStatistics();
 		System.gc(); // GARBAGE COLLECTOR
-		MainClass.logging(false, Level.INFO, "Poziom gry zosta≥ zrestartowany.");
+		MainClass.logging(false, Level.INFO, "Poziom gry zosta≈Ç zrestartowany.");
 		objectsHandler.loadLevel(LEVEL);
 		cam.setX(0);
 		player = objectsHandler.getPlayer();
@@ -637,7 +637,7 @@ public void tick()
 	}
 	
 	
-	// PRZESUWANIE T£A W MENU G£”WNYM
+	// PRZESUWANIE T≈ÅA W MENU G≈Å√ìWNYM
 	if (gameState == GameState.MainMenu || gameState == GameState.JakGrac || gameState == GameState.NajlepszeWyniki || gameState == GameState.NajlepszeWyniki
 			|| gameState == GameState.Osiagniecia || gameState == GameState.OGrze || gameState == GameState.Znajdzki)
 	{
@@ -726,13 +726,13 @@ public void tick()
 			cam.setX(0);
 			player = objectsHandler.getPlayer();
 			achievements.restartLevel();
-			MainClass.logging(false, Level.INFO, "RozpoczÍto poziom "+selectedLevelMenuButton);
+			MainClass.logging(false, Level.INFO, "Rozpoczƒôto poziom "+selectedLevelMenuButton);
 			gameState = GameState.Game;
 		}
 	}
 	
 	
-	// OB£UGA MENU G£”WNEGO
+	// OB≈ÅUGA MENU G≈Å√ìWNEGO
 	if (gameState == GameState.MainMenu)
 	{
 		
@@ -742,7 +742,7 @@ public void tick()
 		}
 		
 		
-		// OBS£UGA FALUJACYCH LITER
+		// OBS≈ÅUGA FALUJACYCH LITER
 		
 		for (int i = 0; i < falujaceLitery.length; i++)
 		{
@@ -778,7 +778,7 @@ public void tick()
 		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
 		{
 			MainClass.menuSound2.play();
-			gameState = GameState.Zakoncz;// ZAMKNI CIE GRY KLAWISZEM ESC.
+			gameState = GameState.Zakoncz;// ZAMKNIƒòCIE GRY KLAWISZEM ESC.
 		}
 		
 		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
@@ -831,13 +831,13 @@ public void tick()
 			cam.setX(0);
 			player = objectsHandler.getPlayer();
 			achievements.restartLevel();
-			MainClass.logging(false, Level.INFO, "RozpoczÍto poziom "+selectedLevelMenuButton);
+			MainClass.logging(false, Level.INFO, "Rozpoczƒôto poziom "+selectedLevelMenuButton);
 			playMusic2();
 			gameState = GameState.Game;
 		}
 	}
 	
-	// WYWO£ANIE OUTRO
+	// WYWO≈ÅANIE OUTRO
 	if (gameState == GameState.Game && endgame)
 	{
 		for (int i = 0; i < baloniki.length; i++)
@@ -894,7 +894,7 @@ public void tick()
 	//}
 	
 	
-	// MENU WYBORU POZIOM”W
+	// MENU WYBORU POZIOM√ìW
 	if (gameState == GameState.LevelChoose)
 	{
 		for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++)
@@ -983,7 +983,7 @@ public void tick()
 				cam.setX(0);
 				player = objectsHandler.getPlayer();
 				achievements.restartLevel();
-				MainClass.logging(false, Level.INFO, "RozpoczÍto poziom "+selectedLevelMenuButton);
+				MainClass.logging(false, Level.INFO, "Rozpoczƒôto poziom "+selectedLevelMenuButton);
 				playMusic2();
 				gameState = GameState.Game;				
 			}
@@ -992,7 +992,7 @@ public void tick()
 
 	
 	
-	// OBS£UGA MENU W TRAKCIE GRY
+	// OBS≈ÅUGA MENU W TRAKCIE GRY
 	if (gameState == GameState.Menu)
 	{
 		
@@ -1037,7 +1037,7 @@ public void tick()
 					cam.setX(0);
 					player = objectsHandler.getPlayer();
 					achievements.restartLevel();
-					MainClass.logging(false, Level.INFO, "PowrÛt do menu g≥Ûwnego gry.");
+					MainClass.logging(false, Level.INFO, "Powr√≥t do menu g≈Ç√≥wnego gry.");
 					playMusic1();
 					gameState = GameState.MainMenu;
 					break;
@@ -1047,7 +1047,7 @@ public void tick()
 		}
 	}
 
-	// MENU JAK GRA∆	
+	// MENU JAK GRAƒÜ	
 	if (gameState == GameState.JakGrac)
 	{
 		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
@@ -1102,7 +1102,7 @@ public void tick()
 	}
 
 	
-	// MENU ZNAJDèKI
+	// MENU ZNAJD≈πKI
 	if (gameState == GameState.Znajdzki)
 	{
 		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
@@ -1145,7 +1145,7 @@ public void tick()
 		}
 	}
 	
-	// GRA DZIA£A
+	// GRA DZIA≈ÅA
 	if (gameState == GameState.Game && !player.isLevelFinished() && player.getHealth() > 0) {
 		objectsHandler.tick();
 		cam.tick(player);
@@ -1185,7 +1185,7 @@ public void tick()
 }
 
 
-/** Metoda obliczajπ aktualny czas gry na danym poziomie.
+/** Metoda obliczajƒÖ aktualny czas gry na danym poziomie.
  * 
  */
 public void timeTick()
@@ -1196,11 +1196,11 @@ public void timeTick()
 
 
 
-/** Metoda wyúwietlajπca osiπgniÍcie na ekranie, w≥πcznie z "najazdem" i "odjazdem" ramki z tekstem u gÛry ekranu.
+/** Metoda wy≈õwietlajƒÖca osiƒÖgniƒôcie na ekranie, w≈ÇƒÖcznie z "najazdem" i "odjazdem" ramki z tekstem u g√≥ry ekranu.
  * @param g2d Graphics2D.
- * @param msg TreúÊ osiπgniÍcia.
- * @param achievementImage Ikonka osiπgniÍcia.
- * @param counter Licznik, opisujπcy jednostki czasu przez jaki wiadomoúÊ jest wyúwietlana.
+ * @param msg Tre≈õƒá osiƒÖgniƒôcia.
+ * @param achievementImage Ikonka osiƒÖgniƒôcia.
+ * @param counter Licznik, opisujƒÖcy jednostki czasu przez jaki wiadomo≈õƒá jest wy≈õwietlana.
  */
 private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementImage, int counter)
 {
@@ -1213,11 +1213,11 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
 			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
 		    oos.writeObject(achievements.getAchievementsList());
 		    oos.close();
-		    MainClass.logging(false, Level.INFO, "Plik osiπgniÍÊ " +MainClass.achievementsFile.getName() +" zosta≥ poprawnie zapisany.");
+		    MainClass.logging(false, Level.INFO, "Plik osiƒÖgniƒôƒá " +MainClass.achievementsFile.getName() +" zosta≈Ç poprawnie zapisany.");
 			}
 			catch (IOException ioe)
 			{
-				MainClass.logging(false, Level.WARNING, "B≥πd zapisu plikÛw osiπgniÍÊ " +MainClass.achievementsFile.getName());
+				MainClass.logging(false, Level.WARNING, "B≈ÇƒÖd zapisu plik√≥w osiƒÖgniƒôƒá " +MainClass.achievementsFile.getName());
 				MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ioe));
 			}
 			saveAchievementsToFile = true;
@@ -1260,8 +1260,8 @@ private static BufferedImage toBufferedImage(Image img)
 
 
 /** Podstawowa metoda rysowania na ekranie w trakcie trwania gry.
- * @param fps_count Licznik FPSÛw.
- * @param ticks_count Licznik update'Ûw (game logic).
+ * @param fps_count Licznik FPS√≥w.
+ * @param ticks_count Licznik update'√≥w (game logic).
  */
 public void render(int fps_count, int ticks_count)
 {
@@ -1291,7 +1291,7 @@ public void render(int fps_count, int ticks_count)
 		g = Textures.getInstance().screenShotImage.createGraphics();
 	}
 	
-	// Tworzenie obrazu t≥a gry w grayScale;
+	// Tworzenie obrazu t≈Ça gry w grayScale;
 	if ((gameState == GameState.Menu || gameState == GameState.Death) && !makeBgImage)
 	{
 		makeBgImage = true;
@@ -1311,7 +1311,7 @@ public void render(int fps_count, int ticks_count)
 	// MOUNTAING & PARALLAX
 	if (gameState == GameState.Game || gameState == GameState.Death || gameState == GameState.Menu || gameState == GameState.NextLevel || gameState == GameState.Outro)
 	{
-		// BACKGROUND - GÛry i s≥oÒce
+		// BACKGROUND - G√≥ry i s≈Ço≈Ñce
 		g.setColor(new Color(184, 220, 254));
 		g.fillRect(0,0,getWidth(), getHeight());
 		if (cam.getX() < 10  && cam.getX() > -6950) g2d.drawImage(Textures.getInstance().backGroundMountains, (int) (cam.getX()*0.143), (int) (cam.getY()/1.33) + (MainClass.HEIGHT / 2), MainClass.WIDTH, (int) (MainClass.HEIGHT*1.2), null);
@@ -1408,7 +1408,7 @@ public void render(int fps_count, int ticks_count)
 		if (MainClass.language == MainClass.Languages.english) g2d.drawImage(Textures.getInstance().englishFlagImage, MainClass.WIDTH - 55, MainClass.HEIGHT - 32, null);
 	}
 	
-	// FPS CAP WSZ DZIE OPR”CZ GRY
+	// FPS CAP WSZƒòDZIE OPR√ìCZ GRY
 	if (gameState == GameState.Game || gameState == GameState.Intro || gameState == GameState.Outro) MainClass.fpsCap = false;
 	else MainClass.fpsCap = true;
 	
@@ -1527,25 +1527,25 @@ public void render(int fps_count, int ticks_count)
 			String info = "";
 			switch (showInfo)
 			{
-				case 0: if (MainClass.language == MainClass.Languages.polish) info = "      Ma≥a regeneracja zdrowia";
+				case 0: if (MainClass.language == MainClass.Languages.polish) info = "      Ma≈Ça regeneracja zdrowia";
 						if (MainClass.language == MainClass.Languages.english) info = "     Small health regeneration";
 						break;
-				case 1: if (MainClass.language == MainClass.Languages.polish) info = "      ZwiÍkszenie zdrowia o 1";
+				case 1: if (MainClass.language == MainClass.Languages.polish) info = "      Zwiƒôkszenie zdrowia o 1";
 						if (MainClass.language == MainClass.Languages.english) info = "    Increasing max health by 1";
 						break;
-				case 2: if (MainClass.language == MainClass.Languages.polish) info = "     Regeneracja ca≥ego zdrowia";
+				case 2: if (MainClass.language == MainClass.Languages.polish) info = "     Regeneracja ca≈Çego zdrowia";
 						if (MainClass.language == MainClass.Languages.english) info = "     Full health regeneration";
 						break;
-				case 3: if (MainClass.language == MainClass.Languages.polish) info = "       Tymczasowa nieúmiertelnoúÊ";
+				case 3: if (MainClass.language == MainClass.Languages.polish) info = "       Tymczasowa nie≈õmiertelno≈õƒá";
 						if (MainClass.language == MainClass.Languages.english) info = "        Temporary immortality";
 						break;
-				case 4: if (MainClass.language == MainClass.Languages.polish) info = "                UsuÒ pszczo≥y";
+				case 4: if (MainClass.language == MainClass.Languages.polish) info = "                Usu≈Ñ pszczo≈Çy";
 						if (MainClass.language == MainClass.Languages.english) info = "               Remove bees";
 						break;
-				case 5: if (MainClass.language == MainClass.Languages.polish) info = "                UsuÒ kaktusy";
+				case 5: if (MainClass.language == MainClass.Languages.polish) info = "                Usu≈Ñ kaktusy";
 						if (MainClass.language == MainClass.Languages.english) info = "               Remove cactuses";
 						break;
-				case 6: if (MainClass.language == MainClass.Languages.polish) info = "UsuniÍcie wszystkich przeciwnikÛw";
+				case 6: if (MainClass.language == MainClass.Languages.polish) info = "Usuniƒôcie wszystkich przeciwnik√≥w";
 						if (MainClass.language == MainClass.Languages.english) info = "       Remove all enemies";
 						break;
 			}
@@ -1612,7 +1612,7 @@ public void render(int fps_count, int ticks_count)
 		if (outro_counter > 350) g2d.drawString(outroText4, 350, 390);
 		
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 24f));
-		if (outro_counter > 500) g2d.drawString("Naciúnij ENTER aby wrÛciÊ na ranczo...", 320, 580);
+		if (outro_counter > 500) g2d.drawString("Naci≈õnij ENTER aby wr√≥ciƒá na ranczo...", 320, 580);
 	}
 	
 	if (gameState == GameState.Menu)
@@ -1658,17 +1658,17 @@ public void render(int fps_count, int ticks_count)
 			{
 			case 0: g2d.drawString("regeneracja 1 punktu zdrowia", 250, 95 + (i * 70));
 					break;
-			case 1: g2d.drawString("zwiÍkszenie maksymalnego zdrowia o 1", 250, 95 + (i * 70));
+			case 1: g2d.drawString("zwiƒôkszenie maksymalnego zdrowia o 1", 250, 95 + (i * 70));
 					break;
-			case 2: g2d.drawString("regeneracja ca≥ego zdrowia", 250, 95 + (i * 70));
+			case 2: g2d.drawString("regeneracja ca≈Çego zdrowia", 250, 95 + (i * 70));
 					break;
-			case 3: g2d.drawString("tymczasowa nieúmiertelnoúÊ postaci", 250, 95 + (i * 70));
+			case 3: g2d.drawString("tymczasowa nie≈õmiertelno≈õƒá postaci", 250, 95 + (i * 70));
 					break;
-			case 4: g2d.drawString("usuwa wszystkie pszczo≥y na danym poziomie", 250, 95 + (i * 70));
+			case 4: g2d.drawString("usuwa wszystkie pszczo≈Çy na danym poziomie", 250, 95 + (i * 70));
 					break;
 			case 5: g2d.drawString("usuwa wszystkie kaktusy na danym poziomie", 250, 95 + (i * 70));
 					break;
-			case 6: g2d.drawString("usuwa wszystkich przeciwnikÛw na danym poziomie", 250, 95 + (i * 70));
+			case 6: g2d.drawString("usuwa wszystkich przeciwnik√≥w na danym poziomie", 250, 95 + (i * 70));
 					break;
 			}
 		}
@@ -1795,16 +1795,16 @@ public void render(int fps_count, int ticks_count)
 		}
 		
 		g2d.setColor(MainClass.fontColor);
-		g2d.drawImage(Textures.getInstance().hallOfFameImage, 100, 0, null);
+		g2d.drawImage(Textures.getInstance().hallOfFameImage, 50, 0, null);
 		
 		g2d.setFont(MainClass.verdana18Font);
 		
-		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.HALL_OF_FAME_COLUMNS_PL, 140, 45);
-		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.HALL_OF_FAME_COLUMNS_ENG, 140, 45);
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.HALL_OF_FAME_COLUMNS_PL, 90, 45);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.HALL_OF_FAME_COLUMNS_ENG, 90, 45);
 		
-		g2d.drawLine(140, 51, 820, 51);
-		g2d.drawLine(140, 52, 820, 52);
-		g2d.drawLine(140, 53, 820, 53);
+		g2d.drawLine(85, 51, 890, 51);
+		g2d.drawLine(85, 52, 890, 52);
+		g2d.drawLine(85, 53, 890, 53);
 		
 		// CONNECTION ERROR ?
 		if (!NetworkConnector.connected) {
@@ -1815,19 +1815,20 @@ public void render(int fps_count, int ticks_count)
 		
 		defaultClip = g2d.getClip();
 		
-		g2d.setClip(new Rectangle(110, 56, (int) Textures.getInstance().hallOfFameImage.getWidth(), (int) Textures.getInstance().hallOfFameImage.getHeight()-77));
+		g2d.setClip(new Rectangle(50, 56, (int) Textures.getInstance().hallOfFameImage.getWidth(), (int) Textures.getInstance().hallOfFameImage.getHeight()-70));
 		
 		g2d.translate(0, -scrollScreenY);
 				
-		// CLIPPING DO DANEJ WIELKOåCI TAKIEJ JAK OBRAZEK T£A DL TEGO OKNA !
+		// CLIPPING DO DANEJ WIELKO≈öCI TAKIEJ JAK OBRAZEK T≈ÅA DL TEGO OKNA !
 		
 		for (int i = 0; i < hallOfFame.getHallOfFameList().size(); i++)
 		{
-		 	g2d.drawString(i+1+"", 175, 80 + (i*60));
-		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getLevel()+"", 280, 80 + (i*60));
-		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getName()+"", 360, 80+(i*60));
-		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getTimeFromMilis(hallOfFame.getHallOfFameList().get(i).getMillis()), 570, 80 + (i*60));
-		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getScore()+"", 755, 80 + (i*60));
+		 	g2d.drawString(i+1+"", 105, 80 + (i*60));
+		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getName()+"", 170, 80 + (i*60));
+		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getScore()+"", 360, 80+(i*60));
+		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getTimeFromMilis(hallOfFame.getHallOfFameList().get(i).getMillis()), 470, 80 + (i*60));
+		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getLevel()+"", 640, 80 + (i*60));
+		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getDate()+"", 680, 80 + (i*60));
 		}
 		
 		g2d.setClip(defaultClip);
@@ -1843,7 +1844,7 @@ public void render(int fps_count, int ticks_count)
 	bs.show();
 }
 
-/** Metoda zapisujπca zrzut ekranu do pliku .png. 
+/** Metoda zapisujƒÖca zrzut ekranu do pliku .png. 
  * 
  */
 public void makeScreenShot()
@@ -1857,13 +1858,13 @@ public void makeScreenShot()
 	try {
 		ImageIO.write(Textures.getInstance().screenShotImage, "png", screenShotFile);
 		} catch (IOException e) {
-			MainClass.logging(false, Level.WARNING, "B≥πd zapisu zrzutu ekranu" +screenShotFile.getName());
+			MainClass.logging(false, Level.WARNING, "B≈ÇƒÖd zapisu zrzutu ekranu" +screenShotFile.getName());
 			MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(e));
 		}
 	makeScreenShot = false;
 }
 
-/** Metoda zwracajπca pole isExit, ktÛre mÛwi, czy zosta≥o wykonane rzπdanie zakmniÍcia gry.
+/** Metoda zwracajƒÖca pole isExit, kt√≥re m√≥wi, czy zosta≈Ço wykonane rzƒÖdanie zakmniƒôcia gry.
  * @return isExit
  */
 public boolean isExit()
@@ -1873,7 +1874,7 @@ public boolean isExit()
 
 
 
-/** MÛj w≥asny prywatny MouseListener
+/** M√≥j w≈Çasny prywatny MouseListener
  * @author Piotrek
  *
  */
@@ -1957,7 +1958,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 				{
 					/// AKTYWACJA DANEJ MOCY nr. i
 					
-					if (i == 0 && player.getHealth() < player.getMaxHealth())    /// 1 MOC - ODNAWIA ZDROWIE O +1 O ILE NIE WI CEJ NIØ MAX HEALTH
+					if (i == 0 && player.getHealth() < player.getMaxHealth())    /// 1 MOC - ODNAWIA ZDROWIE O +1 O ILE NIE WIƒòCEJ NI≈ª MAX HEALTH
 					{
 						player.setHealth(player.getHealth() + 1);
 						
@@ -1965,7 +1966,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
-					if (i == 1)    /// 2 MOC - ZWI KSZA MAKSYMALNE ZDROWIE O 1 I UZUPE£NIA BRAKUJACE O JEDEN JESLI POTRZEBA
+					if (i == 1)    /// 2 MOC - ZWIƒòKSZA MAKSYMALNE ZDROWIE O 1 I UZUPE≈ÅNIA BRAKUJACE O JEDEN JESLI POTRZEBA
 					{
 						player.setMaxHealth(player.getMaxHealth() + 1);
 						player.setHealth(player.getHealth() + 1);
@@ -1974,7 +1975,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
-					if (i == 2)    /// 3 MOC - ODNAWIA CA£E ZDROWIE POSTACI
+					if (i == 2)    /// 3 MOC - ODNAWIA CA≈ÅE ZDROWIE POSTACI
 					{
 						player.setHealth(player.getMaxHealth());
 						
@@ -1982,7 +1983,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
-					if (i == 3)    /// 4 MOC - CZASOWA NIEåMIERTELNOåC POSTACI
+					if (i == 3)    /// 4 MOC - CZASOWA NIE≈öMIERTELNO≈öC POSTACI
 					{
 						
 						player.setImmortality(true);
@@ -1990,7 +1991,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 
-					if (i == 4)    /// 5 MOC - USUWA WSZYSTKIE PSZCZO£Y Z PLANSZY
+					if (i == 4)    /// 5 MOC - USUWA WSZYSTKIE PSZCZO≈ÅY Z PLANSZY
 					{
 						objectsHandler.getBee_List().clear();
 						
@@ -2006,7 +2007,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 					
-					if (i == 6)    /// 7 MOC - USUWA WSZYSTKICH PRZECIWNIK”W Z PLANSZY !
+					if (i == 6)    /// 7 MOC - USUWA WSZYSTKICH PRZECIWNIK√ìW Z PLANSZY !
 					{
 						objectsHandler.getBee_List().clear();
 						objectsHandler.getTumbleweed_List().clear();
@@ -2088,7 +2089,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 								cam.setX(0);
 								player = objectsHandler.getPlayer();
 								achievements.restartLevel();
-								MainClass.logging(false, Level.INFO, "RozpoczÍto poziom "+selectedLevelMenuButton);
+								MainClass.logging(false, Level.INFO, "Rozpoczƒôto poziom "+selectedLevelMenuButton);
 								playMusic2();
 								gameState = GameState.Game;				
 							}
@@ -2116,7 +2117,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 									cam.setX(0);
 									player = objectsHandler.getPlayer();
 									achievements.restartLevel();
-									MainClass.logging(false, Level.INFO, "PowrÛt do menu g≥Ûwnego gry.");
+									MainClass.logging(false, Level.INFO, "Powr√≥t do menu g≈Ç√≥wnego gry.");
 									playMusic1();
 									gameState = GameState.MainMenu;
 									break;

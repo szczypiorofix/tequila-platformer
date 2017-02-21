@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 import com.platformer.game.graphics.Textures;
 
 
-/** Klasa wyœwietlaj¹ca teksty i dane na ekranie w zale¿noœci od stanu gry.
+/** Klasa wyÅ›wietlajÄ…ca teksty i dane na ekranie w zaleÅ¼noÅ›ci od stanu gry.
  * @author Piotrek
  *
  */
@@ -20,13 +20,13 @@ public HUD()
 }
 
 
-/** Metoda rysuj¹ca na ekranie informacje i dane w zale¿noœci od stanu gry - czyli tzn. HUD.
+/** Metoda rysujÄ…ca na ekranie informacje i dane w zaleÅ¼noÅ›ci od stanu gry - czyli tzn. HUD.
  * @param g2d - Obiekt Graphics2D.
  * @param gameState - stan gry.
  * @param achievements - obiekt klasy Achievements.
  * @param hallOfFame - obiekt klasy HallOfFame.
- * @param fps_count - (int) iloœæ fpsów.
- * @param ticks_count - (int) iloœæ updatów logiki gry.
+ * @param fps_count - (int) iloÅ›Ä‡ fpsÃ³w.
+ * @param ticks_count - (int) iloÅ›Ä‡ updatÃ³w logiki gry.
  * 
  * @see GameState
  */
@@ -72,13 +72,13 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.LEVEL_ENG +" "+MainScreen.LEVEL +" " +TextResources.FINISHED_ENG, 315, 155);
 		
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 42f));
-		g2d.drawString("TWÓJ WYNIK: " +MainScreen.SCORE, 375, 240);
+		g2d.drawString("TWÃ“J WYNIK: " +MainScreen.SCORE, 375, 240);
 		g2d.drawString("CZAS: " +MainScreen.time, 380, 300);
 		g2d.drawString("BONUS CZASOWY: " + (int) MainScreen.time_bonus, 340, 370);
-		g2d.drawString("WYNIK KOÑCOWY: " +(int) MainScreen.TOTAL_SCORE, 340, 430);
+		g2d.drawString("WYNIK KOÅƒCOWY: " +(int) MainScreen.TOTAL_SCORE, 340, 430);
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 26f));
 		g2d.setColor(Color.WHITE);
-		g2d.drawString("PODAJ SWOJE IMIÊ I NACIŒNIJ ENTER:", 320, 480);
+		g2d.drawString("PODAJ SWOJE IMIÄ˜ I NACIÅšNIJ ENTER:", 320, 480);
 		g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 32f));
 		g2d.setColor(Color.CYAN);
 		g2d.drawString(MainScreen.playerName , 490-(MainScreen.playerName.length() * 8), 520);

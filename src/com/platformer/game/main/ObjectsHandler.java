@@ -257,11 +257,11 @@ public void loadLevel(int level)
 		ois = new ObjectInputStream(in);
 		tileValues = (int[][]) (ois.readObject());
 		ois.close();
-		MainClass.logging(false, Level.INFO, "Pliku poziomu nr. "+level +" za≥adowany poprawnie.");
+		MainClass.logging(false, Level.INFO, "Pliku poziomu nr. "+level +" za≈Çadowany poprawnie.");
 	}
 	catch (IOException | ClassNotFoundException ioe)
 	{
-		MainClass.logging(false, Level.WARNING, "B≥πd odczytu pliku poziomu nr. "+level);
+		MainClass.logging(false, Level.WARNING, "B≈ÇƒÖd odczytu pliku poziomu nr. "+level);
 		MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ioe));
 	}
 	
@@ -329,7 +329,7 @@ public void loadLevel(int level)
 				if (tileValues[yy][xx] == 51) goat_List.add(new Goat(xx*50, (yy*50)+550));
 			}
 		}
-		MainClass.logging(false, Level.INFO, "Wszystkie obiekty poziomu gry "+level +" zosta≥y za≥adowane poprawnie.");
+		MainClass.logging(false, Level.INFO, "Wszystkie obiekty poziomu gry "+level +" zosta≈Çy za≈Çadowane poprawnie.");
 		player.setMaxCoins(coin_List.size());
 		player.setMaxPowerups(tequila_List.size() + taco_List.size());
 }

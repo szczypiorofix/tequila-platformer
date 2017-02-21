@@ -9,14 +9,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
+   width="250mm"
    height="297mm"
-   viewBox="0 0 744.09449 1052.3622"
+   viewBox="0 0 885.82689 1052.3622"
    id="svg4672"
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="HallOfFameMenuBG.svg"
-   inkscape:export-filename="C:\Users\Semiko\git\platformer-game\res\Other\hallOfFameMenuBG.png"
+   inkscape:export-filename="C:\Users\Piotrek\git\platformer-game\res\Other\hallOfFameMenuBG.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -27,7 +27,7 @@
        inkscape:menu-tooltip="Darkens the edge with an inner blur and adds a flexible glow"
        inkscape:menu="Shadows and Glows"
        inkscape:label="Dark And Glow"
-       style="color-interpolation-filters:sRGB;"
+       style="color-interpolation-filters:sRGB"
        id="filter3405">
       <feGaussianBlur
          stdDeviation="5"
@@ -63,14 +63,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70000001"
-     inkscape:cx="333.19044"
-     inkscape:cy="744.86148"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="498.77364"
+     inkscape:cy="698.03587"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1600"
-     inkscape:window-height="838"
+     inkscape:window-width="1366"
+     inkscape:window-height="706"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -83,7 +83,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -91,7 +91,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,4.7244096e-6)">
+     transform="translate(0,4.7133892e-6)">
     <rect
        style="opacity:1;fill:#7be2b8;fill-opacity:1;fill-rule:nonzero;stroke:#0035dc;stroke-width:2.53200006;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3405)"
        id="rect5220"
@@ -101,7 +101,8 @@
        y="14.217074"
        ry="5.9284759"
        inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
+       inkscape:export-ydpi="90"
+       transform="matrix(1.1751713,0,0,0.97713443,1.5065302,6.7532109)" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"

@@ -5,29 +5,29 @@ public class TextResources {
 public static final String NEW_GAME_PL = "NOWA GRA";
 public static final String NEW_GAME_ENG = "NEW GAME";
 
-public static final String HOW_TO_PLAY_PL = "JAK GRA∆";
+public static final String HOW_TO_PLAY_PL = "JAK GRAƒÜ";
 public static final String HOW_TO_PLAY_ENG = "HOW TO PLAY";
 
 public static final String HALL_OF_FAME_PL = "NAJLEPSZE WYNIKI";
 public static final String HALL_OF_FAME_ENG = "HALL OF FAME";
 
-public static final String ACHIEVEMENTS_PL = "OSI•GNI CIA";
+public static final String ACHIEVEMENTS_PL = "OSIƒÑGNIƒòCIA";
 public static final String ACHIEVEMENTS_ENG = "ACHIEVEMENTS";
 
-public static final String COLLECTIBLES_PL = "KRYSZTA£Y MOCY";
+public static final String COLLECTIBLES_PL = "KRYSZTA≈ÅY MOCY";
 public static final String COLLECTIBLES_ENG = "POWER GEMS";
 
 public static final String CREDITS_PL = "O GRZE";
 public static final String CREDITS_ENG = "ABOUT GAME";
 
-public static final String EXIT_PL = "WYJåCIE";
+public static final String EXIT_PL = "WYJ≈öCIE";
 public static final String EXIT_ENG = "EXIT";
 
 
-public static final String RESUME_GAME_PL = "WZN”W GR ";
+public static final String RESUME_GAME_PL = "WZN√ìW GRƒò";
 public static final String RESUME_GAME_ENG = "RESUME GAME";
 
-public static final String MAIN_MENU_PL = "MENU G£”WNE";
+public static final String MAIN_MENU_PL = "MENU G≈Å√ìWNE";
 public static final String MAIN_MENU_ENG = "MAIN MENU";
 
 public static final String LEVEL_PL = "POZIOM";
@@ -42,28 +42,28 @@ public static final String SCORE_ENG = "SCORE";
 public static final String TIME_PL = "CZAS";
 public static final String TIME_ENG = "TIME";
 
-public static final String achievements_PL = "OsiπgniÍcia";
+public static final String achievements_PL = "OsiƒÖgniƒôcia";
 public static final String achievements_ENG = "Achievements";
 
 public static final String HIDDEN_PL = "< UKRYTY >";
 public static final String HIDDEN_ENG = "< HIDDEN >";
 
-public static final String CONNECTION_ERROR_PL = "B≥πd po≥πczenia z serwerem danych...";
+public static final String CONNECTION_ERROR_PL = "B≈ÇƒÖd po≈ÇƒÖczenia z serwerem danych...";
 public static final String CONNECTION_ERROR_ENG = "Cannot connect to database server...";
 
-public static final String HALL_OF_FAME_COLUMNS_PL = "MIEJSCE    POZIOM         IMI                          CZAS                 WYNIK";
-public static final String HALL_OF_FAME_COLUMNS_ENG = "NO.     LEVEL         NAME                         TIME                 SCORE";
+public static final String HALL_OF_FAME_COLUMNS_PL = "NR.      IMIƒò                       WYNIK             CZAS       POZIOM          DATA";
+public static final String HALL_OF_FAME_COLUMNS_ENG = "NO.   NAME                       SCORE                TIME        LEVEL          DATE";
 
-public static final String PLAYER_DEAD_PL = "NIE ØYESZ !";
+public static final String PLAYER_DEAD_PL = "NIE ≈ªYESZ !";
 public static final String PLAYER_DEAD_ENG = "YOU DIED !";
 
 public static final String PLAYER_RESTART_PL = "SPACJA - RESTART";
 public static final String PLAYER_RESTART_ENG = "SPACE - RESTART";
 
-public static final String FINISHED_PL = "UKO—CZONY !!!";
+public static final String FINISHED_PL = "UKO≈ÉCZONY !!!";
 public static final String FINISHED_ENG = "FINISHED !!!";
 
-public static final String BACK_TO_MAIN_MENU_SKIP_PL = "ESC - POWR”T DO MENU, ENTER - POMI—";
+public static final String BACK_TO_MAIN_MENU_SKIP_PL = "ESC - POWR√ìT DO MENU, ENTER - POMI≈É";
 public static final String BACK_TO_MAIN_MENU_SKIP_ENG = "ESC - BACK TO MAIN MENU, ENTER - SKIP";
 
 }

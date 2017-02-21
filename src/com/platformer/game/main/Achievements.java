@@ -6,7 +6,7 @@ import java.util.HashMap;
 import com.platformer.game.graphics.Textures;
 
 
-/** Klasa Achievements, w obiektcie ktÛrej przechowywane sπ OsiπgniÍcia.
+/** Klasa Achievements, w obiektcie kt√≥rej przechowywane sƒÖ OsiƒÖgniƒôcia.
  * @author Piotrek
  *
  */
@@ -26,150 +26,150 @@ private BufferedImage achievementImage;
 private int jump10Count;
 private static final int A_10JUMPS = 10;
 private boolean jumpCount10Complete = false;
-private final String jump10Text = "Wykona≥eú 10 skokÛw w ciπgu jednego poziomu.";
-private final String jump10TextShort = "10 skokÛw - pch≥a.";
+private final String jump10Text = "Wykona≈Çe≈õ 10 skok√≥w w ciƒÖgu jednego poziomu.";
+private final String jump10TextShort = "10 skok√≥w - pch≈Ça.";
 
 
 private int jump25Count;
 private static final int A_25JUMPS = 25;
 private boolean jumpCount25Complete = false;
-private final String jump25Text = "Wykona≥eú 25 skokÛw w ciπgu jednego poziomu.";
-private final String jump25TextShort = "25 skokÛw - øaba.";
+private final String jump25Text = "Wykona≈Çe≈õ 25 skok√≥w w ciƒÖgu jednego poziomu.";
+private final String jump25TextShort = "25 skok√≥w - ≈ºaba.";
 
 
 private int jump50Count;
 private static final int A_50JUMPS = 50;
 private boolean jumpCount50Complete = false;
-private final String jump50Text = "Wykona≥eú 50 skokÛw w ciπgu jednego poziomu.";
-private final String jump50TextShort = "50 skokÛw - kangur.";
+private final String jump50Text = "Wykona≈Çe≈õ 50 skok√≥w w ciƒÖgu jednego poziomu.";
+private final String jump50TextShort = "50 skok√≥w - kangur.";
 
 
 private int coin20Count;
 private static final int A_20COINS = 20;
 private boolean coinCount20Complete = false;
-private final String coin20Text = "Zebra≥eú 20 monet w ciπgu jednego poziomu.";
+private final String coin20Text = "Zebra≈Çe≈õ 20 monet w ciƒÖgu jednego poziomu.";
 private final String coin20TextShort = "Zbieracz monet - 20.";
 
 
 private int coin50Count;
 private static final int A_50COINS = 50;
 private boolean coinCount50Complete = false;
-private final String coin50Text = "Zebra≥eú 50 monet w ciπgu jednego poziomu.";
+private final String coin50Text = "Zebra≈Çe≈õ 50 monet w ciƒÖgu jednego poziomu.";
 private final String coin50TextShort = "Zbieracz monet - 50.";
 
 
 private int coin100Count;
 private static final int A_100COINS = 100;
 private boolean coinCount100Complete = false;
-private final String coin100Text = "Zebra≥eú 100 monet w ciπgu jednego poziomu.";
+private final String coin100Text = "Zebra≈Çe≈õ 100 monet w ciƒÖgu jednego poziomu.";
 private final String coin100TextShort = "Zbieracz monet - 100.";
 
 private int coin150Count;
 private static final int A_150COINS = 150;
 private boolean coinCount150Complete = false;
-private final String coin150Text = "Zebra≥eú 150 monet w ciπgu jednego poziomu.";
+private final String coin150Text = "Zebra≈Çe≈õ 150 monet w ciƒÖgu jednego poziomu.";
 private final String coin150TextShort = "Zbieracz monet - 150.";
 
 private int powerup3Count;
 private static final int A_3POWERUP = 3;
 private boolean powerupCount3Complete = false;
-private final String powerup3Text = "Zebra≥eú 3 power-upy w ciπgu jednego poziomu.";
-private final String powerup3TextShort = "Na≥adowany - 3 powerupy.";
+private final String powerup3Text = "Zebra≈Çe≈õ 3 power-upy w ciƒÖgu jednego poziomu.";
+private final String powerup3TextShort = "Na≈Çadowany - 3 powerupy.";
 
 private int complete1LevelCount;
 private static final int A_COMPLETE1LEVEL = 1;
 private boolean complete1LevelComplete = false;
-private final String complete1LevelText = "UkoÒczy≥eú 1 poziom.";
+private final String complete1LevelText = "Uko≈Ñczy≈Çe≈õ 1 poziom.";
 private final String complete1LevelTextShort = "1 poziom.";
 
 private int complete2LevelCount;
 private static final int A_COMPLETE2LEVEL = 1;
 private boolean complete2LevelComplete = false;
-private final String complete2LevelText = "UkoÒczy≥eú 2 poziom.";
+private final String complete2LevelText = "Uko≈Ñczy≈Çe≈õ 2 poziom.";
 private final String complete2LevelTextShort = "2 poziom.";
 
 private int complete3LevelCount;
 private static final int A_COMPLETE3LEVEL = 1;
 private boolean complete3LevelComplete = false;
-private final String complete3LevelText = "UkoÒczy≥eú 3 poziom.";
+private final String complete3LevelText = "Uko≈Ñczy≈Çe≈õ 3 poziom.";
 private final String complete3LevelTextShort = "3 poziom.";
 
 private int complete4LevelCount;
 private static final int A_COMPLETE4LEVEL = 1;
 private boolean complete4LevelComplete = false;
-private final String complete4LevelText = "UkoÒczy≥eú 4 poziom.";
+private final String complete4LevelText = "Uko≈Ñczy≈Çe≈õ 4 poziom.";
 private final String complete4LevelTextShort = "4 poziom.";
 
 private int complete5LevelCount;
 private static final int A_COMPLETE5LEVEL = 1;
 private boolean complete5LevelComplete = false;
-private final String complete5LevelText = "UkoÒczy≥eú 5 poziom.";
+private final String complete5LevelText = "Uko≈Ñczy≈Çe≈õ 5 poziom.";
 private final String complete5LevelTextShort = "5 poziom.";
 
 private int complete6LevelCount;
 private static final int A_COMPLETE6LEVEL = 1;
 private boolean complete6LevelComplete = false;
-private final String complete6LevelText = "UkoÒczy≥eú 6 poziom.";
+private final String complete6LevelText = "Uko≈Ñczy≈Çe≈õ 6 poziom.";
 private final String complete6LevelTextShort = "6 poziom.";
 
 private int complete7LevelCount;
 private static final int A_COMPLETE7LEVEL = 1;
 private boolean complete7LevelComplete = false;
-private final String complete7LevelText = "UkoÒczy≥eú 7 poziom.";
+private final String complete7LevelText = "Uko≈Ñczy≈Çe≈õ 7 poziom.";
 private final String complete7LevelTextShort = "7 poziom.";
 
 private int complete8LevelCount;
 private static final int A_COMPLETE8LEVEL = 1;
 private boolean complete8LevelComplete = false;
-private final String complete8LevelText = "UkoÒczy≥eú 8 poziom.";
+private final String complete8LevelText = "Uko≈Ñczy≈Çe≈õ 8 poziom.";
 private final String complete8LevelTextShort = "8 poziom.";
 
 private int complete9LevelCount;
 private static final int A_COMPLETE9LEVEL = 1;
 private boolean complete9LevelComplete = false;
-private final String complete9LevelText = "UkoÒczy≥eú 9 poziom.";
+private final String complete9LevelText = "Uko≈Ñczy≈Çe≈õ 9 poziom.";
 private final String complete9LevelTextShort = "9 poziom.";
 
 private int complete10LevelCount;
 private static final int A_COMPLETE10LEVEL = 1;
 private boolean complete10LevelComplete = false;
-private final String complete10LevelText = "UkoÒczy≥eú 10 poziom.";
+private final String complete10LevelText = "Uko≈Ñczy≈Çe≈õ 10 poziom.";
 private final String complete10LevelTextShort = "10 poziom.";
 
 private int completeGameCount;
 private static final int A_COMPLETEGAME = 1;
 private boolean completeGameComplete = false;
-private final String completeGameText = "Odnalaz≥eú MatyldÍ i ukoÒczy≥eú grÍ.";
+private final String completeGameText = "Odnalaz≈Çe≈õ Matyldƒô i uko≈Ñczy≈Çe≈õ grƒô.";
 private final String completeGameTextShort = "Koniec gry.";
 
 private int findAllCoinsCount;
 private static final int A_FINDALLCOINS = 1;
 private boolean findAllCoinsComplete = false;
-private final String findAllCoinsText = "Znalaz≥eú wszystkie monety na danym poziomie.";
+private final String findAllCoinsText = "Znalaz≈Çe≈õ wszystkie monety na danym poziomie.";
 private final String findAllCoinsTextShort = "Zbieracz monet ... wszystkich!";
 
 private int findAllPowerupsCount;
 private static final int A_FINDALLPOWERUPS = 1;
 private boolean findAllPowerupsComplete = false;
-private final String findAllPowerupsText = "Znalaz≥eú wszystkie powerupy na danym poziomie.";
+private final String findAllPowerupsText = "Znalaz≈Çe≈õ wszystkie powerupy na danym poziomie.";
 private final String findAllPowerupsTextShort = "Na wysokich obrotach!";
 
 private int noHarmCount;
 private static final int A_NOHARM = 1;
 private boolean noHarmComplete = false;
-private final String noHarmText = "UkoÒczy≥eú poziom bez utraty zdrowia.";
+private final String noHarmText = "Uko≈Ñczy≈Çe≈õ poziom bez utraty zdrowia.";
 private final String noHarmTextShort = "Bez utraty zdrowia.";
 
 private int megaJumpCount;
 private static final int A_MEGAJUMP = 1;
 private boolean megaJumpComplete = false;
-private final String megaJumpText = "Wykona≥eú MEGA SKOK !";
+private final String megaJumpText = "Wykona≈Çe≈õ MEGA SKOK !";
 private final String megaJumpTextShort = "MEGA SKOK !";
 
 private int sprinterCount;
 private static final int A_SPRINTER = 1;
 private boolean sprinterComplete = false;
-private final String sprinterText = "UkoÒczy≥eú poziom w czasie krÛtszym niø 1 minuta.";
+private final String sprinterText = "Uko≈Ñczy≈Çe≈õ poziom w czasie kr√≥tszym ni≈º 1 minuta.";
 private final String sprinterTextShort = "Szybciej, szybciej...";
 
 

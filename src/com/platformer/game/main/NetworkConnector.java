@@ -66,18 +66,18 @@ public void addAnotherPlayerToHoF(HallOfFamePlayer hofPlayer)
 			in.close();
 			results = response.toString();
 		}
-		else MainClass.logging(false, Level.WARNING, "Po³¹czenie ze skryptem serwera - b³¹d !!!");
+		else MainClass.logging(false, Level.WARNING, "PoÅ‚Ä…czenie ze skryptem serwera - bÅ‚Ä…d !!!");
 		
-		//System.out.println(results);
+		System.out.println(results);
 		
 		if (results.equals("OK"))
 			MainClass.logging(false, Level.INFO, "Poprawnie dodano kolejnego gracza");
 		else 
-			MainClass.logging(false, Level.WARNING, "Dodawanie gracza do listy zakoñczone b³êdem !!!");
+			MainClass.logging(false, Level.WARNING, "Dodawanie gracza do listy zakoÅ„czone bÅ‚Ä™dem !!!");
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
-			MainClass.logging(false, Level.WARNING, "B³¹d ³¹czenia ze skryptem na serwerze!");
+			MainClass.logging(false, Level.WARNING, "BÅ‚Ä…d Å‚Ä…czenia ze skryptem na serwerze!");
 			MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ex));
 		}
 }
@@ -118,9 +118,7 @@ public ArrayList<HallOfFamePlayer> getHOFRecordsFromServer()
 		results = response.toString();
 	}
 	else System.out.println("POST request not worked");
-	
-	if (results.startsWith("ï»¿")) results = results.substring(3);
-	
+		
 	//System.out.println(results);
 	
 	Gson g = new Gson();
@@ -128,10 +126,11 @@ public ArrayList<HallOfFamePlayer> getHOFRecordsFromServer()
 	
 	for (int i=0; i < persons.length; i++)
 		hallOfFameRecords.add(new HallOfFamePlayer(persons[i].getName(), persons[i].getScore(), persons[i].getMillis(), persons[i].getLevel(), persons[i].getDate()));
+	
 	}
 	catch (Exception ex) {
 		ex.printStackTrace();
-		MainClass.logging(false, Level.WARNING, "B³¹d ³¹czenia ze skryptem na serwerze!");
+		MainClass.logging(false, Level.WARNING, "BÅ‚Ä…d Å‚Ä…czenia ze skryptem na serwerze!");
 		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ex));
 	}
 	connected = true;

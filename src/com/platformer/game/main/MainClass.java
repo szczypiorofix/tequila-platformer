@@ -32,9 +32,9 @@ import com.platformer.game.sounds.SoundsLoader;
 
 
 
-/** G≥Ûwna klasa uruchamiajπca grÍ. To tutaj zainicjowane sπ poczπtkowe warunki gry, ≥adowane tekstury czy inne pliki
- * do pamiÍci. W MainClass inicjowane jest podstawowe okno gry. Tutaj rÛwnie znajduje siÍ game loop oraz przygotowywane
- * do uøytku sπ klasy obiekty klas HallOfFame oraz Achievements.
+/** G≈Ç√≥wna klasa uruchamiajƒÖca grƒô. To tutaj zainicjowane sƒÖ poczƒÖtkowe warunki gry, ≈Çadowane tekstury czy inne pliki
+ * do pamiƒôci. W MainClass inicjowane jest podstawowe okno gry. Tutaj r√≥wnie≈º znajduje siƒô game loop oraz przygotowywane
+ * do u≈ºytku sƒÖ obiekty klas HallOfFame oraz Achievements.
  * @author Piotrek
  *
  */
@@ -47,8 +47,8 @@ public static final File collectiblesFile = new File("collectibles.dat");
 public static final File gamepadConfigFile = new File("input.cfg");
 public static final File gameConfigFile = new File("tequila.cfg");
 public static final Color fontColor = new Color(60, 0, 140);
-public static final float GAME_VER = 1.0f;
-public static final int BUILD = 47;
+public static final float GAME_VER = 1.1f;
+public static final int BUILD = 49;
 public static Font verdana14Font = new Font("Verdana", Font.BOLD, 14);
 public static Font verdana18Font = new Font("Verdana", Font.BOLD, 18);
 public static Font arial14Font = new Font("Arial", Font.BOLD, 14);
@@ -113,12 +113,12 @@ public MainClass()
 			System.exit(-1);
 		}
 		
-		//LOGGER.setUseParentHandlers(false); // WYåWIETLANIE LOG”W W KONSOLI
+		//LOGGER.setUseParentHandlers(false); // WYƒè≈ºÀùWIETLANIE LOGƒè≈ºÀùW W KONSOLI
 		
 		fileHandler.setFormatter(new SimpleFormatter());
 		fileHandler.setLevel(Level.INFO);
 		LOGGER.addHandler(fileHandler);
-		logging(false, Level.INFO, "Uruchomienie gry w trybie DEBUG. Logger za≥adowany.");
+		logging(false, Level.INFO, "Uruchomienie gry w trybie DEBUG. Logger za≈Çadowany.");
 	}
 	
 	loadProperties();
@@ -141,18 +141,18 @@ public void loadProperties()
 			if (languageProp.equalsIgnoreCase("polish")) language = Languages.polish;
 			if (languageProp.equalsIgnoreCase("english")) language = Languages.english;
 
-			MainClass.logging(false, Level.INFO, "Plik ustawieÒ gry prawid≥owo odczytany.");
+			MainClass.logging(false, Level.INFO, "Plik ustawie≈Ñ gry prawid≈Çowo odczytany.");
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			MainClass.logging(false, Level.WARNING,  "B≥πd odczytu pliku ustawieÒ gry");
+			MainClass.logging(false, Level.WARNING,  "B≈ÇƒÖd odczytu pliku ustawie≈Ñ gry!");
 			MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ex));
 		} finally {
 			if (propStream != null) {
 				try {
 					propStream.close();
 				} catch (IOException e) {
-					MainClass.logging(false, Level.WARNING,  "Plik ustawieÒ gry zosta≥ nieprawid≥owo zamkniÍty!");
+					MainClass.logging(false, Level.WARNING,  "Plik ustawie≈Ñ gry zosta≈Ç‚Äö nieprawid≈Çowo zamkniƒôty!");
 					MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(e));
 				}
 			}
@@ -193,7 +193,7 @@ public void splashScreen()
 	logging(false, Level.INFO, "Uruchomienie ekranu splashScreen.");
 }
 
-/** Inicjuje poczπtekowe warunki i stany gry, np. gameWindow, MainScreen (Canvas). W tej metodzie uruchamiany jest wπtek
+/** Inicjuje poczƒÖtkowe warunki i stany gry, np. gameWindow, MainScreen (Canvas). W tej metodzie uruchamiany jest wƒÖtek
  * renderowania i update'owania gry.
  * 
  */
@@ -203,14 +203,14 @@ private void gameInit()
 	
 	try {
 		texasFont = Font.createFont(Font.TRUETYPE_FONT, TEXAS_FONT);
-		logging(false, Level.INFO, "Czcionka Textas Font za≥adowana.");
+		logging(false, Level.INFO, "Czcionka Textas Font za≈Çadowana.");
 		smokunFont = Font.createFont(Font.TRUETYPE_FONT, SMOKUN_FONT);
-		logging(false, Level.INFO, "Czcionka Smokun Font Font za≥adowana.");
+		logging(false, Level.INFO, "Czcionka Smokun Font Font za≈Çadowana.");
 	}
 	catch (FontFormatException | IOException e)
 	{
 		String message = getStackTrace(e);
-		logging(false, Level.WARNING, "B≥πd ≥adowania czcionki! ");
+		logging(false, Level.WARNING, "B≈ÇƒÖd ≈Çadowania czcionki ! ");
 		logging(true, Level.WARNING, message);
 	}
 	
@@ -262,7 +262,7 @@ public synchronized void musicThreadStart()
 }
 
 
-/** Metoda uruchamiajπca wπtek renderowania i obliczania logic gry.
+/** Metoda uruchamiajƒÖca wƒÖtek renderowania i obliczania logiki gry.
  * 
  */
 public synchronized void gameThreadStart()
@@ -280,7 +280,7 @@ public void run()
 	gameWindow.requestFocus();
 	
 	gameState = GameState.Game;
-	logging(false, Level.INFO, "Wπtek gry uruchomiony.");
+	logging(false, Level.INFO, "WƒÖtek gry uruchomiony.");
 	
 	// GAME LOOP
 	long lastTime = System.nanoTime();
@@ -327,7 +327,7 @@ public void run()
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
-				logging(false, Level.WARNING, "B≥πd game loop w momencie Thread.sleep(5); ! ");
+				logging(false, Level.WARNING, "B≈ÇƒÖd game loop w momencie Thread.sleep(5); ! ");
 				logging(true, Level.WARNING, getStackTrace(e));
 			}
 		}
@@ -362,7 +362,7 @@ public void prepareCollectibles()
 		}
 		catch (IOException ioe)
 		{
-			logging(false, Level.WARNING, "B≥πd zapisu do pliku "+MainClass.collectiblesFile.getName());
+			logging(false, Level.WARNING, "B≈ÇƒÖd zapisu do pliku "+MainClass.collectiblesFile.getName());
 			logging(true, Level.WARNING, getStackTrace(ioe));
 		}
 	}
@@ -371,11 +371,11 @@ public void prepareCollectibles()
 		ois = new ObjectInputStream(new FileInputStream(MainClass.collectiblesFile));
 		collectiblesList = (int[]) ois.readObject();
 		ois.close();
-		logging(false, Level.INFO, "Dane Collectibles z pliku "+MainClass.collectiblesFile.getName() +" poprawnie za≥adowane");
+		logging(false, Level.INFO, "Dane Collectibles z pliku "+MainClass.collectiblesFile.getName() +" poprawnie za≈Çadowane");
 		}
 		catch (IOException | ClassNotFoundException e)
 		{
-			logging(false, Level.WARNING, "B≥πd odczytu pliku "+MainClass.collectiblesFile.getName());
+			logging(false, Level.WARNING, "B≈ÇƒÖd odczytu pliku "+MainClass.collectiblesFile.getName());
 			logging(true, Level.WARNING, getStackTrace(e));
 		}
 }
@@ -400,7 +400,7 @@ private void prepareAchievements()
 			catch (IOException ioe)
 			{
 				String message = getStackTrace(ioe);
-				logging(true, Level.WARNING, "B≥πd zapisu do pliku "+MainClass.achievementsFile.getName());
+				logging(true, Level.WARNING, "B≈ÇƒÖd zapisu do pliku "+MainClass.achievementsFile.getName());
 				logging(true, Level.WARNING, message);
 			}
 	}
@@ -409,11 +409,11 @@ private void prepareAchievements()
 	ois = new ObjectInputStream(new FileInputStream(MainClass.achievementsFile));
 	achievementsList = (HashMap<Integer, Boolean>) ois.readObject();
 	ois.close();
-	logging(false, Level.INFO, "Dane Achievements z pliku "+MainClass.achievementsFile.getName() +" poprawnie za≥adowane");
+	logging(false, Level.INFO, "Dane Achievements z pliku "+MainClass.achievementsFile.getName() +" poprawnie za≈Çadowane");
 	}
 	catch (IOException | ClassNotFoundException e)
 	{
-		logging(false, Level.WARNING, "B≥πd odczytu pliku "+MainClass.achievementsFile.getName());
+		logging(false, Level.WARNING, "B≈ÇƒÖd odczytu pliku "+MainClass.achievementsFile.getName());
 		logging(true, Level.WARNING, getStackTrace(e));
 	}
 
@@ -445,11 +445,11 @@ private void prepareAchievements()
 }
 
 
-/**  Metoda wrzucajπca do loga treúÊ wyjπtku/informacji.
- * Dzia≥a tylko jeúli DEBUG_MODE = true;
- * @param critical True jeúli b≥πd jest krytyczny i naleøy przerwaÊ dzia≥anie programu.
- * @param level Poziom informacji (z regu≥y INFO lub WARNING)
- * @param msg TreúÊ wiadomoúci do loga.
+/**  Metoda wrzucajƒÖca do loga tre≈õƒá wyjƒÖtku/informacji.
+ * Dziaƒπ‚Äöa tylko je≈ºeli DEBUG_MODE = true;
+ * @param critical True je≈ºeli b≈ÇƒÖd jest krytyczny i nale≈ºy przerwaƒá dzia≈Çanie programu.
+ * @param level Poziom informacji (z regu≈Çy INFO lub WARNING)
+ * @param msg Tre≈õƒá wiadomo≈õci do loga.
  */
 public static void logging(boolean critical, Level level, String msg)
 {
@@ -457,15 +457,15 @@ public static void logging(boolean critical, Level level, String msg)
 	{
 		LOGGER.log(level, msg);
 		if (critical) {
-			LOGGER.log(Level.WARNING, "Zamykanie programu z b≥Ídem.");
+			LOGGER.log(Level.WARNING, "Zamykanie programu z b≈Çƒôdem.");
 			System.exit(-1);
 		}
 	}
 }
 
 
-/** Metoda zwracajπca tekst PrintStackTrace w postaci String.
- * @param throwable  Wyjπtek.
+/** Metoda zwracajƒÖca tekst PrintStackTrace w postaci String.
+ * @param throwable  WyjƒÖtek.
  * @return (String) tekst PrintStackTrace.
  */
 public static String getStackTrace(final Throwable throwable) {
@@ -477,7 +477,7 @@ public static String getStackTrace(final Throwable throwable) {
 
 
 
-// URUCHAMIANIE Z "-DEBUG" W£ACZA DEBUG-MODE.
+// URUCHAMIANIE Z "-DEBUG" Wƒè≈ºÀùACZA DEBUG-MODE.
 public static void main(String[] args)
 {
 	if (args.length > 0)
@@ -488,7 +488,7 @@ public static void main(String[] args)
 }
 
 
-/** Prywatna klasa wπtku odtwarzajπcego muzykÍ z pliku mp3.
+/** Prywatna klasa wƒÖtku odtwarzajƒÖcego muzykƒô z pliku mp3.
  * @author Piotrek
  *
  */
@@ -498,7 +498,7 @@ private class MusicThread implements Runnable
 	@Override
 	public void run() {
 
-		MainClass.logging(false, Level.INFO, "Wπtek muzyczny uruchomiony.");
+		MainClass.logging(false, Level.INFO, "WƒÖtek muzyczny uruchomiony.");
 		
 		music.setPlaying(true);
 		music.restart(Music.WESTERN);

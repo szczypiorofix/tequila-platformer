@@ -35,7 +35,7 @@ public void showWindow(boolean showWindow)
 	if (!showWindow) {
 		mainclass.saveOptions();
 		this.dispose();
-		MainClass.logging(false, Level.INFO, "Wywo³anie zamkniêcia gry.");
+		MainClass.logging(false, Level.INFO, "WywoÅ‚anie zamkniÄ™cia gry.");
 		System.exit(0);
 	}
 }

@@ -1,6 +1,6 @@
 package com.platformer.game.main;
 
-/** Enum zawieraj¹cy informacje w jakim aktualnie stanie znajduje siê gra i co nale¿y prezentowaæ w danym momencie na ekranie czyli poszczególne menusy oraz sama gra.
+/** Enum zawierajÄ…cy informacje w jakim aktualnie stanie znajduje siÄ™ gra i co naleÅ¼y prezentowaÄ‡ w danym momencie na ekranie czyli poszczegÃ³lne menusy oraz sama gra.
  * 
  * Game, MainMenu, Menu, Death, NextLevel, JakGrac, NajlepszeWyniki, Osiagniecia, Znajdzki, OGrze, Zakoncz
  * 
@@ -14,22 +14,22 @@ public enum GameState {
 	 */
 	Game,
 	
-	/** Wyœwietlane na pocz¹tku gry
+	/** WyÅ›wietlane na poczÄ…tku gry
 	 * 
 	 */
 	Intro,
 	
-	/** Wyœwietlane na zakoñczenie gry
+	/** WyÅ›wietlane na zakoÅ„czenie gry
 	 * 
 	 */
 	Outro,
 		
-	/** Menu wyboru poziomów - poziomy dostêpne wybierane na podstawie osi¹gniêæ ukoñczonych leveli
+	/** Menu wyboru poziomÃ³w - poziomy dostÄ™pne wybierane na podstawie osiÄ…gniÄ™Ä‡ ukoÅ„czonych leveli
 	 * 
 	 */
 	LevelChoose,
 		
-	/** G³ówne menu gry.
+	/** GÅ‚Ã³wne menu gry.
 	 * 
 	 */
 	MainMenu,
@@ -39,42 +39,42 @@ public enum GameState {
 	 */
 	Menu,
 	
-	/** Œmieræ gracza.
+	/** ÅšmierÄ‡ gracza.
 	 * 
 	 */
 	Death,
 	
-	/** Przejœcie gracza do nastêpnego poziomu.
+	/** PrzejÅ›cie gracza do nastÄ™pnego poziomu.
 	 * 
 	 */
 	NextLevel,
 	
-	/** Podmenu menu g³ównego - Jak Graæ.
+	/** Podmenu menu gÅ‚Ã³wnego - Jak GraÄ‡.
 	 * 
 	 */
 	JakGrac,
 	
-	/** Podmenu menu g³ównego - Najlepsze Wyniki.
+	/** Podmenu menu gÅ‚Ã³wnego - Najlepsze Wyniki.
 	 * 
 	 */
 	NajlepszeWyniki,
 	
-	/** Podmenu menu g³ównego - Osi¹gniêcia.
+	/** Podmenu menu gÅ‚Ã³wnego - OsiÄ…gniÄ™cia.
 	 * 
 	 */
 	Osiagniecia,
 	
-	/** Podmenu menu g³ównego - ZnajdŸki.
+	/** Podmenu menu gÅ‚Ã³wnego - ZnajdÅºki.
 	 * 
 	 */
 	Znajdzki,
 	
-	/** Podmenu menu g³ównego - O Grze.
+	/** Podmenu menu gÅ‚Ã³wnego - O Grze.
 	 * 
 	 */
 	OGrze,
 	
-	/** Polecenie zamkniêcia gry.
+	/** Polecenie zamkniÄ™cia gry.
 	 * 
 	 */
 	Zakoncz;
