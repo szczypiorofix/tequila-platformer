@@ -2043,7 +2043,6 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 									intro_font_y1 = 0;
 									intro_font_y2 = 0;
 									intro_font_y3 = 0;
-									//gameState = GameState.Intro;		
 									gameState = GameState.LevelChoose;
 									break;				
 							case 1: gameState = GameState.JakGrac;
