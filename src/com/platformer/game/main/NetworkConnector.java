@@ -68,7 +68,7 @@ public void addAnotherPlayerToHoF(HallOfFamePlayer hofPlayer)
 		}
 		else MainClass.logging(false, Level.WARNING, "Połączenie ze skryptem serwera - błąd !!!");
 		
-		System.out.println(results);
+		//System.out.println(results); // Wyswietla `OK` jesli dodanie wyniku do bazy przebiegnie pomyslnie.
 		
 		if (results.equals("OK"))
 			MainClass.logging(false, Level.INFO, "Poprawnie dodano kolejnego gracza");
