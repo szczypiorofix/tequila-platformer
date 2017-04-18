@@ -29,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="203.71118"
+     inkscape:cx="203.40499"
      inkscape:cy="913.43033"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -78,18 +78,18 @@
          y="149.53838" /></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20.9992981px;line-height:125%;font-family:Smokum;-inkscape-font-specification:'Smokum, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#d40000;fill-opacity:1;stroke:#008000;stroke-width:0.28107828;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
-       x="89.074928"
-       y="169.14825"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.23269653px;line-height:125%;font-family:Smokum;-inkscape-font-specification:'Smokum, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#d40000;fill-opacity:1;stroke:#008000;stroke-width:0.28107825;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1"
+       x="98.391251"
+       y="154.0442"
        id="text3338"
        sodipodi:linespacing="125%"
-       transform="scale(1.087472,0.9195639)"
+       transform="scale(0.98461128,1.0156292)"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
-         id="tspan3340"
-         x="89.074928"
-         y="169.14825"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.0053215px;line-height:125%;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#d40000;stroke:#008000;stroke-width:0.28107828;stroke-miterlimit:4.30000019;stroke-dasharray:none">wroblewskipiotr.pl/tequila</tspan></text>
+         id="tspan4138"
+         x="98.391251"
+         y="154.0442"
+         style="stroke-width:0.28107825">wroblewskipiotr.pl/project/tequila</tspan></text>
   </g>
 </svg>

@@ -3,11 +3,9 @@ package com.platformer.game.main;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
-
 import javax.net.ssl.HttpsURLConnection;
 
 import com.google.gson.Gson;
@@ -19,8 +17,8 @@ public static boolean connected;
 
 private ArrayList<HallOfFamePlayer> hallOfFameRecords;
 private static final String USER_AGENT = "Mozilla/5.0";
-private static final String POST_URL_GET_RESULTS = "http://www.wroblewskipiotr.pl/gethalloffameresults.php";
-private static final String POST_URL_ADD_RESULT = "http://www.wroblewskipiotr.pl/addhalloffameresult.php";
+private static final String POST_URL_GET_RESULTS = "https://www.wroblewskipiotr.pl/gethalloffameresults.php";
+private static final String POST_URL_ADD_RESULT = "https://www.wroblewskipiotr.pl/addhalloffameresult.php";
 private static final String POST_PARAMS = "getallresults";
 private static String post_addplayer = "";
 
@@ -35,7 +33,7 @@ public void addAnotherPlayerToHoF(HallOfFamePlayer hofPlayer)
 	hallOfFameRecords = new ArrayList<HallOfFamePlayer>();
 	try {
 		URL obj = new URL(POST_URL_ADD_RESULT);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 		con.setRequestMethod("POST");
 		con.setRequestProperty("User-Agent", USER_AGENT);
 		con.setRequestProperty("Accept-Charset", "UTF-8");
@@ -55,7 +53,7 @@ public void addAnotherPlayerToHoF(HallOfFamePlayer hofPlayer)
 		
 		String results = "";
 		int responseCode = con.getResponseCode();
-		if (responseCode == HttpURLConnection.HTTP_OK) {
+		if (responseCode == HttpsURLConnection.HTTP_OK) {
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					con.getInputStream()));
 			String inputLine;
@@ -89,7 +87,7 @@ public ArrayList<HallOfFamePlayer> getHOFRecordsFromServer()
 	
 	try {
 	URL obj = new URL(POST_URL_GET_RESULTS);
-	HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+	HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 	con.setRequestMethod("POST");
 	con.setRequestProperty("User-Agent", USER_AGENT);
 	con.setRequestProperty("Accept-Charset", "UTF-8");
@@ -106,7 +104,7 @@ public ArrayList<HallOfFamePlayer> getHOFRecordsFromServer()
 	
 	String results = "";
 	int responseCode = con.getResponseCode();
-	if (responseCode == HttpURLConnection.HTTP_OK) {
+	if (responseCode == HttpsURLConnection.HTTP_OK) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				con.getInputStream()));
 		String inputLine;
