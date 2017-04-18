@@ -2025,7 +2025,7 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 			
 			if (isDesktopSupported && me.getX() >= 330 && me.getX() <= Textures.getInstance().websiteButton.getWidth()+330
 				&& me.getY() >= MainClass.HEIGHT - 25  && me.getY() <= MainClass.HEIGHT - 25 + Textures.getInstance().websiteButton.getHeight())
-				openWebsite("https://wroblewskipiotr.pl/tequila/");
+				openWebsite("http://www.wroblewskipiotr.pl/project/tequila/");
 			{
 			for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++)
 			{

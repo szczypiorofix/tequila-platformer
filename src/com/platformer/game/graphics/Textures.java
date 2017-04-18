@@ -5,7 +5,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 
-/** Klasa, której obiekt przechowuje wszystkie grafiki w grze (Design Patterns - Singleton).
+/** Klasa, ktï¿½rej obiekt przechowuje wszystkie grafiki w grze (Design Patterns - Singleton).
  * @author Piotrek
  *
  */
@@ -107,7 +107,7 @@ public final BufferedImage megaJumpImage;
 public final BufferedImage sprinterImage;
 
 
-public BufferedImage howToPlayImage, hallOfFameImage, creditsImage, achievementsMenuBGImage, collectiblesImage;
+public BufferedImage howToPlayImagePL, howToPlayImageEN, hallOfFameImage, creditsImage, achievementsMenuBGImage, collectiblesImage;
 
 
 
@@ -339,7 +339,8 @@ private Textures()
 	mainMenuButton = loader.loadImage("/mainMenuButton.png");
 	mainMenuButtonSelected = loader.loadImage("/mainMenuButtonSelected.png");
 	
-	howToPlayImage = loader.loadImage("/JakGrac.png");
+	howToPlayImagePL = loader.loadImage("/JakGrac.png");
+	howToPlayImageEN = loader.loadImage("/HowToPlay.png");
 	hallOfFameImage = loader.loadImage("/hallOfFameMenuBG.png");
 	creditsImage = loader.loadImage("/OGrze.png");
 	achievementsMenuBGImage = loader.loadImage("/AchievementsMenuBG.png");
@@ -434,7 +435,7 @@ private Textures()
 
 
 
-/** Metoda zwracaj¹ podstawow¹ i jedyn¹ instancjê klasy Textures (zgodna z wzorcem Singleton).
+/** Metoda zwracajï¿½ podstawowï¿½ i jedynï¿½ instancjï¿½ klasy Textures (zgodna z wzorcem Singleton).
  * @return instance - jedyna instancja obiektu klasy Textures.
  */
 public static final Textures getInstance()

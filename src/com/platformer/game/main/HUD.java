@@ -91,7 +91,8 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		break;
 	}
 	case JakGrac: {
-		g2d.drawImage(Textures.getInstance().howToPlayImage, 145, 5, null);
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawImage(Textures.getInstance().howToPlayImagePL, 145, 5, null);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawImage(Textures.getInstance().howToPlayImageEN, 145, 5, null);
 		break;
 	}
 	case Osiagniecia: {
