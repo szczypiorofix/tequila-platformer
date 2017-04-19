@@ -105,7 +105,8 @@ public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achiev
 		break;
 	}
 	case OGrze: {
-		g2d.drawImage(Textures.getInstance().creditsImage, 255, 15, null);
+		if (MainClass.language == MainClass.Languages.polish) g2d.drawImage(Textures.getInstance().creditsImagePL, 255, 15, null);
+		if (MainClass.language == MainClass.Languages.english) g2d.drawImage(Textures.getInstance().creditsImageEN, 255, 15, null);
 		break;
 	}
 	default: {	

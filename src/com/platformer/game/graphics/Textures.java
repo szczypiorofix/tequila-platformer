@@ -107,7 +107,7 @@ public final BufferedImage megaJumpImage;
 public final BufferedImage sprinterImage;
 
 
-public BufferedImage howToPlayImagePL, howToPlayImageEN, hallOfFameImage, creditsImage, achievementsMenuBGImage, collectiblesImage;
+public BufferedImage howToPlayImagePL, howToPlayImageEN, hallOfFameImage, creditsImagePL, creditsImageEN, achievementsMenuBGImage, collectiblesImage;
 
 
 
@@ -342,7 +342,8 @@ private Textures()
 	howToPlayImagePL = loader.loadImage("/JakGrac.png");
 	howToPlayImageEN = loader.loadImage("/HowToPlay.png");
 	hallOfFameImage = loader.loadImage("/hallOfFameMenuBG.png");
-	creditsImage = loader.loadImage("/OGrze.png");
+	creditsImagePL = loader.loadImage("/OGrze.png");
+	creditsImageEN = loader.loadImage("/AboutGame.png");
 	achievementsMenuBGImage = loader.loadImage("/AchievementsMenuBG.png");
 	collectiblesImage = loader.loadImage("/CollectiblesMenuBG.png");
 	

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg4672"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="AboutGame.svg"
+   inkscape:export-filename="C:\Users\Piotrek\git\platformer-game\res\Other\AboutGame.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4674">
+    <filter
+       y="-0.25"
+       height="1.5"
+       inkscape:menu-tooltip="Darkens the edge with an inner blur and adds a flexible glow"
+       inkscape:menu="Shadows and Glows"
+       inkscape:label="Dark And Glow"
+       style="color-interpolation-filters:sRGB;"
+       id="filter4179">
+      <feGaussianBlur
+         stdDeviation="5"
+         result="result6"
+         id="feGaussianBlur4181" />
+      <feComposite
+         result="result8"
+         in="SourceGraphic"
+         operator="atop"
+         in2="result6"
+         id="feComposite4183" />
+      <feComposite
+         result="result9"
+         operator="over"
+         in2="SourceAlpha"
+         in="result8"
+         id="feComposite4185" />
+      <feColorMatrix
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 "
+         result="result10"
+         id="feColorMatrix4187" />
+      <feBlend
+         in="result10"
+         mode="normal"
+         in2="result6"
+         id="feBlend4189" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="251.10187"
+     inkscape:cy="656.62288"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="706"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4677">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#7be2b8;fill-opacity:1;fill-rule:nonzero;stroke:#0000ff;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4.30000019;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter4179)"
+       id="rect5220"
+       width="519.79065"
+       height="549.58972"
+       x="14.471951"
+       y="16.977739"
+       ry="5.9305582"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="208.09142"
+       y="44.229965"
+       id="text5222"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5224"
+         x="208.09142"
+         y="44.229965" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:21.01461411px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="152.9277"
+       y="39.117527"
+       id="text5226"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0465396,0.95553002)"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5228"
+         x="152.9277"
+         y="39.117527"
+         style="font-size:19.26339531px">Tequila Platformer</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.11685562px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="31.550835"
+       y="56.399773"
+       id="text5230"
+       sodipodi:linespacing="125%"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       transform="scale(1.0389613,0.96249976)"><tspan
+         sodipodi:role="line"
+         id="tspan4914"
+         x="31.550835"
+         y="56.399773">Game was made in pure Java.</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4916"
+         x="31.550835"
+         y="70.17231"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4918"
+         x="31.550835"
+         y="83.944847"> Additional libraries:</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4920"
+         x="31.550835"
+         y="97.717392">- JLayer - .mp3 files support.</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4922"
+         x="31.550835"
+         y="111.48993">- JInput - gamepad support.</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4924"
+         x="31.550835"
+         y="125.26247"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4926"
+         x="31.550835"
+         y="139.035">Free assets used in this game:</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4928"
+         x="31.550835"
+         y="152.80754">- character - GameArt2D:</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4930"
+         x="31.550835"
+         y="166.58008">   http://www.gameart2d.com/temple-run---free-sprites.html</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4932"
+         x="31.550835"
+         y="180.35262"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4934"
+         x="31.550835"
+         y="194.12517">- tiles, scenery and background from GameArt2D</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4936"
+         x="31.550835"
+         y="207.89771">  http://www.gameart2d.com/free-desert-platformer-tileset.html</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4938"
+         x="31.550835"
+         y="221.67024"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4940"
+         x="31.550835"
+         y="235.44278">- Bee - OpenGameArt.org:</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4942"
+         x="31.550835"
+         y="249.21532">                  http://opengameart.org/content/bee-enemy</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4944"
+         x="31.550835"
+         y="262.98785"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4946"
+         x="31.550835"
+         y="276.76041">- coins - OpenGameArt.org: http://opengameart.org/content/coins-asset</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4948"
+         x="31.550835"
+         y="290.53293"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4950"
+         x="31.550835"
+         y="304.30548">- airplane - OpenGameArt.org : // http://opengameart.org/content/red-biplane </tspan><tspan
+         sodipodi:role="line"
+         id="tspan4952"
+         x="31.550835"
+         y="318.078"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4954"
+         x="31.550835"
+         y="331.85056">- music -</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4956"
+         x="31.550835"
+         y="345.62308">        &quot;Mirage&quot; from OpenGameArt.org : http://opengameart.org/content/mirage</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4958"
+         x="31.550835"
+         y="359.39563">        &quot;Western&quot; from OpenGameArt.org : http://opengameart.org/content/western</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4960"
+         x="31.550835"
+         y="373.16818">        &quot;Victory&quot; from OpenGameArt.org :</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4962"
+         x="31.550835"
+         y="386.9407">              http://opengameart.org/content/lively-meadow-victory-fanfare-and-song</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4964"
+         x="31.550835"
+         y="400.71326"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4966"
+         x="31.550835"
+         y="414.48578">- SFX - http://www.bfxr.net/</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4968"
+         x="31.550835"
+         y="428.25833"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4970"
+         x="31.550835"
+         y="442.03085">- fonts - </tspan><tspan
+         sodipodi:role="line"
+         id="tspan4972"
+         x="31.550835"
+         y="455.80341">          Cowboy Hippie Pro: https://www.fontsquirrel.com/fonts/cowboy-hippie-pro</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4974"
+         x="31.550835"
+         y="469.57593">          Smokum: https://www.fontsquirrel.com/fonts/smokum</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4976"
+         x="31.550835"
+         y="483.34848"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4978"
+         x="31.550835"
+         y="497.12103">- the other graphics was made or modified by me.</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4980"
+         x="31.550835"
+         y="510.89355"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4982"
+         x="31.550835"
+         y="524.66608">- Tools &amp; Programs: GIMP, Inkscape, Paint.NET, Eclipse (Neon JEE),</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4984"
+         x="31.550835"
+         y="538.43866">   Git (BitBucket).</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4986"
+         x="31.550835"
+         y="552.21118"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan4988"
+         x="31.550835"
+         y="565.9837">Copyrights (c) 2016. All rights resered.</tspan></text>
+  </g>
+</svg>
