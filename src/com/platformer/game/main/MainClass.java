@@ -113,7 +113,7 @@ public MainClass()
 			System.exit(-1);
 		}
 		
-		//LOGGER.setUseParentHandlers(false); // WYďż˝WIETLANIE LOGďż˝W W KONSOLI
+		//LOGGER.setUseParentHandlers(false); // WYŚWIETLANIE LOGÓW W KONSOLI
 		
 		fileHandler.setFormatter(new SimpleFormatter());
 		fileHandler.setLevel(Level.INFO);
@@ -178,7 +178,7 @@ public void saveOptions()
 	}
 }
 
-public void splashScreen()
+private void splashScreen()
 {
 	window = new JWindow();
 	if (language == Languages.polish) splashScreen = splashScreenLoader.loadImage("/splashScreenPl.png");
