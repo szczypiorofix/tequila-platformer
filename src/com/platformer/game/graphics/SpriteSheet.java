@@ -2,23 +2,18 @@ package com.platformer.game.graphics;
 
 import java.awt.image.BufferedImage;
 
-public class SpriteSheet {
+class SpriteSheet {
 
-	
-private BufferedImage image;
+	private BufferedImage image;
 
-public SpriteSheet(BufferedImage image)
-{
-	this.image = image;
-}
-
-
-public BufferedImage grabImage(int col, int row, int width, int height)
-{
-	BufferedImage img = image.getSubimage((col * width) - width, (row * height) - height, width, height);
-	return img;
-}
+	SpriteSheet(BufferedImage image)
+	{
+		this.image = image;
+	}
 
 
-
+	BufferedImage grabImage(int col, int row, int width, int height)
+	{
+		return image.getSubimage((col * width) - width, (row * height) - height, width, height);
+	}
 }
