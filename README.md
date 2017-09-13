@@ -35,10 +35,10 @@ Power Gems types and powers:
  
 
 ## Dangers
-* water - unfortunately, Marcello can't swim
-* Bees - can sting
-* Angry Cactuses - can shot needles
-* Tumbleweeds - can spin around and harm Marcello
+* **water** - unfortunately, Marcello can't swim
+* **Bees** - can sting
+* **Angry** **Cactuses** - can shot needles
+* **Tumbleweeds** - can spin around and harm Marcello
 
 
 ## Main features
@@ -56,15 +56,15 @@ Power Gems types and powers:
  
 
 ## Additional libraries
-* JLayer (1.0.1) - support for .mp3 files
-* JInput (2.0.5) - gamepad support   - gamepad support is not fully available
+* *JLayer* (1.0.1) - support for .mp3 files
+* *JInput* (2.0.5) - gamepad support   - gamepad support is not fully available
 
  
 
 ## Assets
 A several free assets are used in this game:
 
-* graphics & music from opengameart.org and gameart2d.com.
+* graphics & music from www.opengameart.org and www.gameart2d.com.
 * some of the graphics was made (eg Power Gems, birds in main menu, floating letters, tumbleweeds) or modified (eg moving platforms, airplane, cactuses) by me.
 * Cowboy Hippie Pro and Smokun fonts are from www.fontsquirrel.com
 
@@ -73,11 +73,14 @@ A several free assets are used in this game:
 * GIMP
 * Inkscape
 * Paint.NET
-* Git (Bitbucket)
+* Git (Bitbucket & GitHub)
 
 ## Authors
 
 * **Piotr Wróblewski** - *all work* - [szczypiorofix](https://github.com/szczypiorofix)
+
+## Website & Hall of Fame
+[Tequila Platformer](https://www.wroblewskipiotr.pl/project/tequila)
 
 ## License
 
