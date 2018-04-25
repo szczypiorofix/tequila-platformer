@@ -2,21 +2,20 @@ package com.platformer.game.main;
 
 import java.util.ArrayList;
 
-public class HallOfFame {
+class HallOfFame {
+
+	private ArrayList<HallOfFamePlayer> hallOfFame;
+
+	HallOfFame(ArrayList<HallOfFamePlayer> hallOfFame) {
+		this.hallOfFame = hallOfFame;
+	}
 
 
-private ArrayList<HallOfFamePlayer> hallOfFame;
+	ArrayList<HallOfFamePlayer> getHallOfFameList() {
+		return hallOfFame;
+	}
 
-HallOfFame(ArrayList<HallOfFamePlayer> hallOfFame) {
-	this.hallOfFame = hallOfFame;
-}
-
-
-public ArrayList<HallOfFamePlayer> getHallOfFameList() {
-	return hallOfFame;
-}
-
-public void setHallOfFame(ArrayList<HallOfFamePlayer> hallOfFame) {
-	this.hallOfFame = hallOfFame;
-}	
+	void setHallOfFame(ArrayList<HallOfFamePlayer> hallOfFame) {
+		this.hallOfFame = hallOfFame;
+	}
 }

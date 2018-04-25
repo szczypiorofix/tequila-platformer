@@ -10,68 +10,68 @@ import com.platformer.game.graphics.Textures;
 public class HandMenuItem {
 
 
-private BufferedImage image;
-private float x, y;
-private final float width, height;
-private boolean active;
-	
-HandMenuItem(BufferedImage image, float x, float y) {
-	this.image = image;
-	active = false;
-	this.x = x;
-	this.y = y;
-	width = 47;
-	height = 41;
-}
+	private BufferedImage image;
+	private float x, y;
+	private final float width, height;
+	private boolean active;
 
-public Rectangle getBounds() {
-	return new Rectangle((int) x, (int) y, (int) width, (int) height);
-}
+	HandMenuItem(BufferedImage image, float x, float y) {
+		this.image = image;
+		active = false;
+		this.x = x;
+		this.y = y;
+		width = 47;
+		height = 41;
+	}
 
-public void drawItem(Graphics2D g2d) {
-	g2d.drawImage(image, (int) x, (int) y, null);
-	if (active) g2d.drawImage(Textures.getInstance().handMenuItemFrame, (int) x-2, (int) y-8, null);
-	g2d.setFont(MainClass.verdana18Font);
-	g2d.setColor(Color.BLACK);
-}
+	public Rectangle getBounds() {
+		return new Rectangle((int) x, (int) y, (int) width, (int) height);
+	}
 
-public BufferedImage getImage() {
-	return image;
-}
+	void drawItem(Graphics2D g2d) {
+		g2d.drawImage(image, (int) x, (int) y, null);
+		if (active) g2d.drawImage(Textures.getInstance().handMenuItemFrame, (int) x-2, (int) y-8, null);
+		g2d.setFont(MainClass.verdana18Font);
+		g2d.setColor(Color.BLACK);
+	}
 
-public void setImage(BufferedImage image) {
-	this.image = image;
-}
+	public BufferedImage getImage() {
+		return image;
+	}
 
-public float getX() {
-	return x;
-}
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
 
-public void setX(float x) {
-	this.x = x;
-}
+	public float getX() {
+		return x;
+	}
 
-public float getY() {
-	return y;
-}
+	public void setX(float x) {
+		this.x = x;
+	}
 
-public void setY(float y) {
-	this.y = y;
-}
+	public float getY() {
+		return y;
+	}
 
-public boolean isActive() {
-	return active;
-}
+	public void setY(float y) {
+		this.y = y;
+	}
 
-public void setActive(boolean active) {
-	this.active = active;
-}
+	boolean isActive() {
+		return active;
+	}
 
-public float getWidth() {
-	return width;
-}
+	void setActive(boolean active) {
+		this.active = active;
+	}
 
-public float getHeight() {
-	return height;
-}
+	public float getWidth() {
+		return width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
 }

@@ -10,19 +10,16 @@ import com.platformer.game.main.MainClass;
 
 public class BufferedImageLoader {
 
+	private BufferedImage image;
 
-private BufferedImage image;
-
-
-public BufferedImage loadImage(String path)
-{
-	try {
-		image = ImageIO.read(getClass().getResource(path));
-		MainClass.logging(false, Level.INFO, "Obraz "+path +" załadowany poprawnie.");
-	} catch (IOException ex) {
-		MainClass.logging(false, Level.WARNING, "Błąd ładowania obrazu " +path);
-		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ex));
+	public BufferedImage loadImage(String path) {
+		try {
+			image = ImageIO.read(getClass().getResource(path));
+			MainClass.logging(false, Level.INFO, "Obraz "+path +" załadowany poprawnie.");
+		} catch (IOException ex) {
+			MainClass.logging(false, Level.WARNING, "Błąd ładowania obrazu " +path);
+			MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ex));
+		}
+		return image;
 	}
-	return image;
-}
 }

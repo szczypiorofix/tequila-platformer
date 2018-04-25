@@ -18,12 +18,9 @@ private float velX, velY;
 private int direction;
 private boolean action, visible;
 private Animation spikeAnimation;
-private int animationTempo;
-
 
 	
-public SpikeBlock(float x, float y)
-{
+public SpikeBlock(float x, float y) {
 	super();
 	this.x = x;
 	this.y = y;
@@ -34,7 +31,7 @@ public SpikeBlock(float x, float y)
 	direction = 1;
 	action = false;
 	visible = true;
-	animationTempo = 10;
+	int animationTempo = 10;
 	spikeAnimation = new Animation(animationTempo, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock1
 			, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock1, Textures.getInstance().spikeBlock2
 			, Textures.getInstance().spikeBlock3, Textures.getInstance().spikeBlock4, Textures.getInstance().spikeBlock4, Textures.getInstance().spikeBlock4
@@ -60,7 +57,6 @@ public void tick(LinkedList<GameObject> object) {
 public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, (int )width, (int) height-30);
 }
-
 
 @Override
 public float getX() {
