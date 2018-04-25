@@ -206,8 +206,7 @@ private int[] baloniki = new int[6];
  * @param hallOfFame - obiekt klasy HallOfFame czyli Najlepsze Wyniki.
  * @param achievements - obiekt klasy Achievements czyli Osiągnięcia.
  */
-public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFileEnabled, HallOfFame hallOfFame, Achievements achievements, int[] collectiblesList)
-{
+MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFileEnabled, HallOfFame hallOfFame, Achievements achievements, int[] collectiblesList) {
 	super();	
 	this.setFocusable(false);
 	this.gameState = gameState;
@@ -217,9 +216,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	this.gamepadEnabled = gamepadFileEnabled;
 	this.collectiblesList = collectiblesList;
 	
-	if (this.gamepadEnabled) 
-	{
-		
+	if (this.gamepadEnabled) {
 		try {
 			propInput = new FileInputStream(MainClass.gamepadConfigFile);
 
@@ -260,7 +257,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 			myGamepad = joystick.getMyFirstGamepad();
 			System.out.println("Input - " +myGamepad.getName());
 			gamepadComponents = myGamepad.getComponents();
-		
+
 			for (int i = 0; i < gamepadComponents.length; i++)
 				System.out.println(gamepadComponents[i].getName());
 			
@@ -314,8 +311,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	mainMenuButtons = new MenuButton[MAX_MAIN_MENU_BUTTONS];
 		
 	selectedMainMenuButton = 0;
-	if (MainClass.language == MainClass.Languages.polish)
-	{
+	if (MainClass.language == MainClass.Languages.polish) {
 		mainMenuButtons[0] = new MenuButton(TextResources.NEW_GAME_PL, 650, 120, 310, 50);
 		mainMenuButtons[1] = new MenuButton(TextResources.HOW_TO_PLAY_PL, 650, 180, 310, 50);
 		mainMenuButtons[2] = new MenuButton(TextResources.HALL_OF_FAME_PL, 650, 240, 310, 50);
@@ -324,8 +320,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 		mainMenuButtons[5] = new MenuButton(TextResources.CREDITS_PL, 650, 420, 310, 50);
 		mainMenuButtons[6] = new MenuButton(TextResources.EXIT_PL, 650, 480, 310, 50);		
 	}
-	if (MainClass.language == MainClass.Languages.english)
-	{
+	if (MainClass.language == MainClass.Languages.english) {
 		mainMenuButtons[0] = new MenuButton(TextResources.NEW_GAME_ENG, 650, 120, 310, 50);
 		mainMenuButtons[1] = new MenuButton(TextResources.HOW_TO_PLAY_ENG, 650, 180, 310, 50);
 		mainMenuButtons[2] = new MenuButton(TextResources.HALL_OF_FAME_ENG, 650, 240, 310, 50);
@@ -338,14 +333,12 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	menuButtons = new MenuButton[MAX_MENU_BUTTONS];
 	selectedMenuButton = 0;
 	
-	if (MainClass.language == MainClass.Languages.polish)
-	{
+	if (MainClass.language == MainClass.Languages.polish) {
 		menuButtons[0] = new MenuButton(TextResources.RESUME_GAME_PL, 360, 190);
 		menuButtons[1] = new MenuButton(TextResources.MAIN_MENU_PL, 360, 270);
 		menuButtons[2] = new MenuButton(TextResources.EXIT_PL, 360, 350);		
 	}
-	if (MainClass.language == MainClass.Languages.english)
-	{
+	if (MainClass.language == MainClass.Languages.english) {
 		menuButtons[0] = new MenuButton(TextResources.RESUME_GAME_ENG, 360, 190);
 		menuButtons[1] = new MenuButton(TextResources.MAIN_MENU_ENG, 360, 270);
 		menuButtons[2] = new MenuButton(TextResources.EXIT_ENG, 360, 350);		
@@ -356,14 +349,11 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 	levelMenuButtons = new MenuButton[MAX_LEVEL_MENU_BUTTONS];
 	selectedLevelMenuButton = 0;
 	
-	for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++)
-	{
-		if (MainClass.language == MainClass.Languages.polish)
-		{
+	for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++) {
+		if (MainClass.language == MainClass.Languages.polish) {
 			levelMenuButtons[i] = new MenuButton("      " +TextResources.LEVEL_PL +" " +(i+1), 360, 25+(i*55), 300, 45);
 		}
-		if (MainClass.language == MainClass.Languages.english)
-		{
+		if (MainClass.language == MainClass.Languages.english) {
 			levelMenuButtons[i] = new MenuButton("      " +TextResources.LEVEL_ENG +" " +(i+1), 360, 25+(i*55), 300, 45);
 		}
 		levelMenuButtons[i].setLocked(true);
@@ -394,8 +384,7 @@ public MainScreen(GameState gameState, GameWindow gameWindow, boolean gamepadFil
 /** Metoda powodująca odtwarzanie muzyki nr.1 - 'Western.mp3"
  * 
  */
-public void playMusic1()
-{
+private void playMusic1() {
 	MainClass.music.stop();
 	MainClass.music.restart(Music.WESTERN);
 	MainClass.music.setPlaying(true);		
@@ -404,8 +393,7 @@ public void playMusic1()
 /** Metoda powodująca odtwarzanie muzyki nr. 2 - "Mirage.mp3".
  * 
  */
-public void playMusic2()
-{
+private void playMusic2() {
 	MainClass.music.stop();
 	MainClass.music.restart(Music.MIRAGE);
 	MainClass.music.setPlaying(true);
@@ -414,8 +402,7 @@ public void playMusic2()
 /** Metoda powodująca odtwarzanie muzyki nr. 3 - "Victory.mp3".
  * 
  */
-public void playMusic3()
-{
+private void playMusic3() {
 	MainClass.music.stop();
 	MainClass.music.restart(Music.VICTORY);
 	MainClass.music.setPlaying(true);
@@ -424,15 +411,13 @@ public void playMusic3()
 /** Metoda zatrzymująca odtwarzanie muzyki.
  * 
  */
-public void stopMusic()
-{
+public void stopMusic() {
 	MainClass.music.stop();
 	MainClass.music.setPlaying(false); // KONIECZNE !!
 }
 
 
-public BufferedImage makeGrayScale(BufferedImage input)
-{
+private BufferedImage makeGrayScale(BufferedImage input) {
 	BufferedImage newImage = copyImage(input);
 	int bgWidth = newImage.getWidth();
     int bgHeight = newImage.getHeight();
@@ -453,8 +438,7 @@ public BufferedImage makeGrayScale(BufferedImage input)
     return newImage;
 }
 
-static BufferedImage copyImage(BufferedImage bi)
-{
+private static BufferedImage copyImage(BufferedImage bi) {
 	ColorModel cm = bi.getColorModel();
 	boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
 	WritableRaster raster = bi.copyData(null);
@@ -465,8 +449,7 @@ static BufferedImage copyImage(BufferedImage bi)
 /** Otwiera podaną stronę internetową w domyślnej przeglądarce systemu.
  * @param website - Adres strony internetowej do otwarcia.
  */
-private void openWebsite(String website)
-{
+private void openWebsite(String website) {
 	if (isDesktopSupported) {
 		desktop = Desktop.getDesktop();
 
@@ -493,56 +476,42 @@ private void openWebsite(String website)
 /** Metoda w której zawarty jest cały game logic.
  * 
  */
-public void tick()
-{
+public void tick() {
 	// GAMEPAD
-	if (this.gamepadEnabled)
-	{
+	if (this.gamepadEnabled) {
 		myGamepad.poll();    
 		net.java.games.input.EventQueue queue = myGamepad.getEventQueue();
 		Event event = new Event();
     
-		while(queue.getNextEvent(event))
-		{
+		while(queue.getNextEvent(event)) {
 			Component comp = event.getComponent();
 			float value = event.getValue();          	
     	
-			if (comp.getName().equals(startProp))
-			{
+			if (comp.getName().equals(startProp)) {
 				if (Float.toString(value).equals(startValueProp) && gameState == GameState.MainMenu) exit = true;
 			}
 			
-			if (comp.getName().equals(jumpProp) && gameState == GameState.Game)
-    			{
+			if (comp.getName().equals(jumpProp) && gameState == GameState.Game) {
 				if (Float.toString(value).equals(jumpValueProp)) PLAYER_JUMP = true;
     				else PLAYER_JUMP = false;
     			}
 			
-			if (comp.getName().equals(leftProp) && gameState == GameState.Game)
-			{
-				if (Float.toString(value).equals(leftValueProp))
-				{
+			if (comp.getName().equals(leftProp) && gameState == GameState.Game) {
+				if (Float.toString(value).equals(leftValueProp)) {
 					PLAYER_LEFT = true;
-				}
-				else PLAYER_LEFT = false;
+				} else PLAYER_LEFT = false;
 			}
 			
-			if (comp.getName().equals(rightProp) && gameState == GameState.Game)
-			{
-				if (Float.toString(value).equals(rightValueProp))
-				{
+			if (comp.getName().equals(rightProp) && gameState == GameState.Game) {
+				if (Float.toString(value).equals(rightValueProp)) {
 					PLAYER_RIGHT = true;
-				}
-				else PLAYER_RIGHT = false;
+				} else PLAYER_RIGHT = false;
 			}
 			
 			// MAIN MENU
-			if (comp.getName().equals(upProp) && gameState == GameState.MainMenu)
-			{
-				if (Float.toString(value).equals(upValueProp))
-				{
-					if (selectedMainMenuButton >= 0)
-					{
+			if (comp.getName().equals(upProp) && gameState == GameState.MainMenu) {
+				if (Float.toString(value).equals(upValueProp)) {
+					if (selectedMainMenuButton >= 0) {
 						MainClass.menuSound1.play();
 						mainMenuButtons[selectedMainMenuButton].setSelected(false);
 						if (selectedMainMenuButton == 0) selectedMainMenuButton = MAX_MAIN_MENU_BUTTONS-1;
@@ -552,12 +521,9 @@ public void tick()
 				//else PLAYER_RIGHT = false;
 			}
 			
-			if (comp.getName().equals(downProp) && gameState == GameState.MainMenu)
-			{
-				if (Float.toString(value).equals(downValueProp))
-				{
-					if (selectedMainMenuButton < MAX_MAIN_MENU_BUTTONS)
-					{
+			if (comp.getName().equals(downProp) && gameState == GameState.MainMenu) {
+				if (Float.toString(value).equals(downValueProp)) {
+					if (selectedMainMenuButton < MAX_MAIN_MENU_BUTTONS) {
 						MainClass.menuSound1.play();
 						mainMenuButtons[selectedMainMenuButton].setSelected(false);
 						if (selectedMainMenuButton == MAX_MAIN_MENU_BUTTONS-1) selectedMainMenuButton = 0; 
@@ -588,26 +554,23 @@ public void tick()
 		}
 		
 	}
-	
-	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) // POKAŻ / UKRYJ MENU
-	{
-		if (gameState == GameState.Menu)
-		{
+
+	// POKAŻ / UKRYJ MENU
+	if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) {
+		if (gameState == GameState.Menu) {
 			MainClass.menuSound2.play();
 			gameState = GameState.Game;
 			return;
 		}
 		
-		if (gameState == GameState.Game)
-		{
+		if (gameState == GameState.Game) {
 			MainClass.menuSound2.play();
 			gameState = GameState.Menu;
 			return;
 		}
 	}
 	
-	if (showMessage)
-	{
+	if (showMessage) {
 		if (messageCount > 0) messageCount--;
 		else {
 			messageCount = MESSAGE_TIME;
@@ -615,15 +578,13 @@ public void tick()
 		}
 	}
 	
-	if (key.isKeyPressedOnce(KeyEvent.VK_F12))
-	{
+	if (key.isKeyPressedOnce(KeyEvent.VK_F12)) {
 		// SCREENSHOT !!!
 		makeScreenShot = true;
 	}
 	
 	// RESTART AFTEER DEATH
-	if (gameState == GameState.Death && key.isKeyPressedOnce(KeyEvent.VK_SPACE))
-	{
+	if (gameState == GameState.Death && key.isKeyPressedOnce(KeyEvent.VK_SPACE)) {
 		MainClass.menuSound2.play();
 		gameState = GameState.Game;
 		objectsHandler.clearLevel();
@@ -639,8 +600,7 @@ public void tick()
 	
 	// PRZESUWANIE TŁA W MENU GŁÓWNYM
 	if (gameState == GameState.MainMenu || gameState == GameState.JakGrac || gameState == GameState.NajlepszeWyniki || gameState == GameState.NajlepszeWyniki
-			|| gameState == GameState.Osiagniecia || gameState == GameState.OGrze || gameState == GameState.Znajdzki)
-	{
+			|| gameState == GameState.Osiagniecia || gameState == GameState.OGrze || gameState == GameState.Znajdzki) {
 		bg_move -= 1;
 		if (bg_move < -1000) bg_move = 0;
 
@@ -684,39 +644,33 @@ public void tick()
 	}
 	
 	// INTRO
-	if (gameState == GameState.Intro)
-	{
+	if (gameState == GameState.Intro) {
 		if (intro_counter == 10) {
 			intro_font_y1 = MainClass.HEIGHT;
 			intro_font_y2 = MainClass.HEIGHT;
 			intro_font_y3 = MainClass.HEIGHT;
 		}
 		intro_counter ++;
-		if (intro_counter > 300 && intro_counter < 1250)
-		{
+		if (intro_counter > 300 && intro_counter < 1250) {
 			if (intro_logo_size < 1.7) intro_logo_size += 0.002f;
 			if (intro_logo_size > 1.4) intro_logo_size *= 1.005;
 		}
-		if (intro_counter > 800 && intro_counter < 1500)
-		{
+		if (intro_counter > 800 && intro_counter < 1500) {
 			intro_font_size1 += 0.0002f;
 			intro_font_y1 -= 0.6f;
 		}
 		
-		if (intro_counter > 1000 && intro_counter < 1500)
-		{
+		if (intro_counter > 1000 && intro_counter < 1500) {
 			intro_font_size2 += 0.0002f;
 			intro_font_y2 -= 0.6f;
 		}
 		
-		if (intro_counter > 1300 && intro_counter < 1900)
-		{
+		if (intro_counter > 1300 && intro_counter < 1900) {
 			intro_font_size3 += 0.0002f;
 			intro_font_y3 -= 0.6f;
 		}
 
-		if (intro_counter > 1950 )
-		{
+		if (intro_counter > 1950 ) {
 			playMusic2();
 			objectsHandler.clearLevel();
 			objectsHandler.resetLevelStatistics();
@@ -733,19 +687,13 @@ public void tick()
 	
 	
 	// OBŁUGA MENU GŁÓWNEGO
-	if (gameState == GameState.MainMenu)
-	{
-		
-		for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++)
-		{
+	if (gameState == GameState.MainMenu) {
+		for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) {
 			if (i != selectedMainMenuButton) mainMenuButtons[i].setSelected(false);
 		}
 		
-		
 		// OBSŁUGA FALUJACYCH LITER
-		
-		for (int i = 0; i < falujaceLitery.length; i++)
-		{
+		for (int i = 0; i < falujaceLitery.length; i++) {
 			
 			if (!literyUp[i] && falujaceLitery[i] > -10) falujaceLitery[i] -= 0.6f;
 			if (literyUp[i] && falujaceLitery[i] < 0) falujaceLitery[i] += 0.6f;
@@ -755,37 +703,30 @@ public void tick()
 		}
 		
 
-		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S))
-		{
-			if (selectedMainMenuButton < MAX_MAIN_MENU_BUTTONS)
-			{
+		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S)) {
+			if (selectedMainMenuButton < MAX_MAIN_MENU_BUTTONS) {
 				MainClass.menuSound1.play();
 				if (selectedMainMenuButton == MAX_MAIN_MENU_BUTTONS-1) selectedMainMenuButton = 0; 
 				else selectedMainMenuButton++;				
 			}
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W))
-		{
-			if (selectedMainMenuButton >= 0)
-			{
+		if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W)) {
+			if (selectedMainMenuButton >= 0) {
 				MainClass.menuSound1.play();	
 				if (selectedMainMenuButton == 0) selectedMainMenuButton = MAX_MAIN_MENU_BUTTONS-1;
 				else selectedMainMenuButton--;
 			}
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) {
 			MainClass.menuSound2.play();
 			gameState = GameState.Zakoncz;// ZAMKNIĘCIE GRY KLAWISZEM ESC.
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			MainClass.menuSound2.play();
-			switch (selectedMainMenuButton)
-			{
+			switch (selectedMainMenuButton) {
 			case 0: intro_counter = 0;
 					intro_logo_size = 0.1f;
 					intro_font_size1 = 0.1f;
@@ -818,11 +759,9 @@ public void tick()
 	
 	
 	// INTRO DO GRY
-	if (gameState == GameState.Intro)
-	{
+	if (gameState == GameState.Intro) {
 		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) gameState = GameState.MainMenu;
-		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			objectsHandler.clearLevel();
 			objectsHandler.resetLevelStatistics();
 			System.gc();
@@ -838,10 +777,8 @@ public void tick()
 	}
 	
 	// WYWOŁANIE OUTRO
-	if (gameState == GameState.Game && endgame)
-	{
-		for (int i = 0; i < baloniki.length; i++)
-		{
+	if (gameState == GameState.Game && endgame) {
+		for (int i = 0; i < baloniki.length; i++) {
 			baloniki[i] = MainClass.HEIGHT + random.nextInt(600);
 		}
 		achievements.addCompleteGameCount();
@@ -850,18 +787,15 @@ public void tick()
 		gameState = GameState.Outro;
 	}
 	
-	if (gameState == GameState.Outro)
-	{
+	if (gameState == GameState.Outro) {
 		outro_counter++;
 		
-		for (int i = 0; i < baloniki.length; i++)
-		{
+		for (int i = 0; i < baloniki.length; i++) {
 			baloniki[i] -= 2;
 			if (baloniki[i] < -150) baloniki[i] = MainClass.HEIGHT + random.nextInt(600);
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			objectsHandler.clearLevel();
 			objectsHandler.resetLevelStatistics();
 			endgame = false;
@@ -895,10 +829,8 @@ public void tick()
 	
 	
 	// MENU WYBORU POZIOMÓW
-	if (gameState == GameState.LevelChoose)
-	{
-		for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++)
-		{
+	if (gameState == GameState.LevelChoose) {
+		for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++) {
 			if (i != selectedLevelMenuButton) levelMenuButtons[i].setSelected(false);
 		}
 		
@@ -940,10 +872,8 @@ public void tick()
 		}
 
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S))
-		{
-			if (selectedLevelMenuButton < unlockedLevels)
-			{
+		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S)) {
+			if (selectedLevelMenuButton < unlockedLevels) {
 				MainClass.menuSound1.play();
 				levelMenuButtons[selectedLevelMenuButton].setSelected(false);
 				if (selectedLevelMenuButton == unlockedLevels-1) selectedLevelMenuButton = 0; 
@@ -951,10 +881,8 @@ public void tick()
 			}
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W))
-		{
-			if (selectedLevelMenuButton >= 0)
-			{
+		if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W)) {
+			if (selectedLevelMenuButton >= 0) {
 				MainClass.menuSound1.play();
 				levelMenuButtons[selectedLevelMenuButton].setSelected(false);
 				if (selectedLevelMenuButton == 0) selectedLevelMenuButton = unlockedLevels-1;
@@ -962,14 +890,12 @@ public void tick()
 			}
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) {
 			MainClass.menuSound2.play();
 			gameState = GameState.MainMenu;
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			MainClass.menuSound2.play();		
 			objectsHandler.clearLevel();
 			objectsHandler.resetLevelStatistics();
@@ -993,18 +919,14 @@ public void tick()
 	
 	
 	// OBSŁUGA MENU W TRAKCIE GRY
-	if (gameState == GameState.Menu)
-	{
+	if (gameState == GameState.Menu) {
 		
-		for (int i = 0; i < MAX_MENU_BUTTONS; i++)
-		{
+		for (int i = 0; i < MAX_MENU_BUTTONS; i++) {
 			if (i != selectedMenuButton) menuButtons[i].setSelected(false);
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S))
-		{
-			if (selectedMenuButton < MAX_MENU_BUTTONS)
-			{
+		if (key.isKeyPressedOnce(KeyEvent.VK_DOWN) || key.isKeyPressedOnce(KeyEvent.VK_S)) {
+			if (selectedMenuButton < MAX_MENU_BUTTONS) {
 				MainClass.menuSound1.play();
 				menuButtons[selectedMenuButton].setSelected(false);
 				if (selectedMenuButton == MAX_MENU_BUTTONS-1) selectedMenuButton = 0; 
@@ -1012,10 +934,8 @@ public void tick()
 			}
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W))
-		{
-			if (selectedMenuButton >= 0)
-			{
+		if (key.isKeyPressedOnce(KeyEvent.VK_UP) || key.isKeyPressedOnce(KeyEvent.VK_W)) {
+			if (selectedMenuButton >= 0) {
 				MainClass.menuSound1.play();
 				menuButtons[selectedMenuButton].setSelected(false);
 				if (selectedMenuButton == 0) selectedMenuButton = MAX_MENU_BUTTONS-1;
@@ -1023,11 +943,9 @@ public void tick()
 			}
 		}
 			
-		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 			MainClass.menuSound2.play();
-			switch (selectedMenuButton)
-			{
+			switch (selectedMenuButton) {
 			case 0: gameState = GameState.Game;
 					break;				
 			case 1: objectsHandler.clearLevel();
@@ -1048,10 +966,8 @@ public void tick()
 	}
 
 	// MENU JAK GRAĆ	
-	if (gameState == GameState.JakGrac)
-	{
-		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
-		{
+	if (gameState == GameState.JakGrac) {
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) {
 			MainClass.menuSound2.play();
 			gameState = GameState.MainMenu;
 		}
@@ -1059,21 +975,17 @@ public void tick()
 	
 
 	// MENU NAJLEPSZE WYNIKI	
-	if (gameState == GameState.NajlepszeWyniki)
-	{
+	if (gameState == GameState.NajlepszeWyniki) {
 		
-		if (key.isKeyPressed(KeyEvent.VK_DOWN) && scrollScreenY < ((hallOfFame.getHallOfFameList().size() - 9) * 60))
-		{
+		if (key.isKeyPressed(KeyEvent.VK_DOWN) && scrollScreenY < ((hallOfFame.getHallOfFameList().size() - 9) * 60)) {
 			scrollScreenY += 5;
 		}
 		
-		if (key.isKeyPressed(KeyEvent.VK_UP) && scrollScreenY > 0)
-		{
+		if (key.isKeyPressed(KeyEvent.VK_UP) && scrollScreenY > 0) {
 			scrollScreenY -= 5;
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) {
 			MainClass.menuSound2.play();
 			gameState = GameState.MainMenu;
 		}
@@ -1081,21 +993,17 @@ public void tick()
 
 
 	// MENU OSIAGNIECIA
-	if (gameState == GameState.Osiagniecia)
-	{
+	if (gameState == GameState.Osiagniecia) {
 		
-		if (key.isKeyPressed(KeyEvent.VK_DOWN) && scrollScreenY < ((Achievements.maxAchievements - 9) * 60))
-		{
+		if (key.isKeyPressed(KeyEvent.VK_DOWN) && scrollScreenY < ((Achievements.maxAchievements - 9) * 60)) {
 			scrollScreenY += 5;
 		}
 		
-		if (key.isKeyPressed(KeyEvent.VK_UP) && scrollScreenY > 0)
-		{
+		if (key.isKeyPressed(KeyEvent.VK_UP) && scrollScreenY > 0) {
 			scrollScreenY -= 5;
 		}
 		
-		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
-		{
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) {
 			MainClass.menuSound2.play();
 			gameState = GameState.MainMenu;
 		}
@@ -1103,10 +1011,8 @@ public void tick()
 
 	
 	// MENU ZNAJDŹKI
-	if (gameState == GameState.Znajdzki)
-	{
-		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
-		{
+	if (gameState == GameState.Znajdzki) {
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) {
 			MainClass.menuSound2.play();
 			gameState = GameState.MainMenu;
 		}
@@ -1114,10 +1020,8 @@ public void tick()
 	
 	
 	// MENU O GRZE
-	if (gameState == GameState.OGrze)
-	{
-		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE))
-		{
+	if (gameState == GameState.OGrze) {
+		if (key.isKeyPressedOnce(KeyEvent.VK_ESCAPE)) {
 			MainClass.menuSound2.play();
 			gameState = GameState.MainMenu;
 		}
@@ -1127,8 +1031,7 @@ public void tick()
 	// PO WPISANIU IMIENIA DO LISTY NAJLEPSZYCH - ENTER!
 	if (player.isLevelFinished()) {
 		
-		if (key.isAnyKeyPressedOnce())
-		{
+		if (key.isAnyKeyPressedOnce()) {
 			if (((Character.isAlphabetic(key.getKey()) || (key.getKey() == '1' || key.getKey() == '2' || key.getKey() == '3' || key.getKey() == '4')
 					|| key.getKey() == '5' || key.getKey() == '6' || key.getKey() == '7' || key.getKey() == '8' || key.getKey() == '9' || key.getKey() == '0'
 					|| key.getKey() == ' '))
@@ -1154,8 +1057,8 @@ public void tick()
 
 	
 	// ENTER TO NEW LEVEL
-	if (gameState == GameState.NextLevel && player.isLevelFinished() && key.isKeyPressedOnce(KeyEvent.VK_ENTER)) // ENTER PO WPISANIU IMIENIA PRZENOSI NA NOWY POZIOM
-	{
+    // ENTER PO WPISANIU IMIENIA PRZENOSI NA NOWY POZIOM
+	if (gameState == GameState.NextLevel && player.isLevelFinished() && key.isKeyPressedOnce(KeyEvent.VK_ENTER)) {
 		gameState = GameState.Game;
 		MainScreen.millis = 0;
 		MainScreen.minutes = 0;
@@ -1170,13 +1073,11 @@ public void tick()
 		achievements.restartLevel();
 	}
 	
-	if (achievements.isShowAchievement())
-	{
+	if (achievements.isShowAchievement()) {
 		if (achievements.getAchievementCount() > 0) {
 			achievements.setAchievementCount(achievements.getAchievementCount() -1);
 			showMessage = true;
-		}
-		else {
+		} else {
 			achievements.setAchievementCount(achievements.getShowAchievementCooldown());
 			achievements.setShowAchievement(false);			
 		}
@@ -1188,8 +1089,7 @@ public void tick()
 /** Metoda obliczają aktualny czas gry na danym poziomie.
  * 
  */
-public void timeTick()
-{
+private void timeTick() {
 	millis += (1000/60);
 	time = new SimpleDateFormat("mm:ss:SSS").format(new Date(millis));
 }
@@ -1202,21 +1102,16 @@ public void timeTick()
  * @param achievementImage Ikonka osiągnięcia.
  * @param counter Licznik, opisujący jednostki czasu przez jaki wiadomość jest wyświetlana.
  */
-private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementImage, int counter)
-{
+private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementImage, int counter) {
 	
-	if (!saveAchievementsToFile)
-	{
-		if(MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory())
-		{
+	if (!saveAchievementsToFile) {
+		if(MainClass.achievementsFile.exists() && !MainClass.achievementsFile.isDirectory()) {
 			try {
 			oos = new ObjectOutputStream(new FileOutputStream((MainClass.achievementsFile)));
 		    oos.writeObject(achievements.getAchievementsList());
 		    oos.close();
 		    MainClass.logging(false, Level.INFO, "Plik osiągnięć " +MainClass.achievementsFile.getName() +" został poprawnie zapisany.");
-			}
-			catch (IOException ioe)
-			{
+			} catch (IOException ioe) {
 				MainClass.logging(false, Level.WARNING, "Błąd zapisu plików osiągnięć " +MainClass.achievementsFile.getName());
 				MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ioe));
 			}
@@ -1238,10 +1133,8 @@ private void showMessage(Graphics2D g2d, String msg, BufferedImage achievementIm
 }
 
 
-private static BufferedImage toBufferedImage(Image img)
-{
-    if (img instanceof BufferedImage)
-    {
+private static BufferedImage toBufferedImage(Image img) {
+    if (img instanceof BufferedImage) {
         return (BufferedImage) img;
     }
 
@@ -1263,12 +1156,10 @@ private static BufferedImage toBufferedImage(Image img)
  * @param fps_count Licznik FPSów.
  * @param ticks_count Licznik update'ów (game logic).
  */
-public void render(int fps_count, int ticks_count)
-{
+public void render(int fps_count, int ticks_count) {
 	
 	// POLECENIE EXIT
-	if (gameState == GameState.Zakoncz)
-	{
+	if (gameState == GameState.Zakoncz) {
 		exit = true;
 	}
 	
@@ -1277,23 +1168,20 @@ public void render(int fps_count, int ticks_count)
 	
 	bs = this.getBufferStrategy();
 	
-	if (bs == null)
-	{
+	if (bs == null) {
 		this.createBufferStrategy(3);
 		return;
 	}
 	
 	g = bs.getDrawGraphics();
 
-	if (makeScreenShot)
-	{
+	if (makeScreenShot) {
 		Textures.getInstance().screenShotImage = new BufferedImage(MainClass.WIDTH, MainClass.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = Textures.getInstance().screenShotImage.createGraphics();
 	}
 	
 	// Tworzenie obrazu tła gry w grayScale;
-	if ((gameState == GameState.Menu || gameState == GameState.Death) && !makeBgImage)
-	{
+	if ((gameState == GameState.Menu || gameState == GameState.Death) && !makeBgImage) {
 		makeBgImage = true;
 		Textures.getInstance().bgMenuImage = new BufferedImage(MainClass.WIDTH, MainClass.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = Textures.getInstance().bgMenuImage.createGraphics();
@@ -1309,8 +1197,7 @@ public void render(int fps_count, int ticks_count)
 	g2d.setRenderingHints(rh);
 		
 	// MOUNTAING & PARALLAX
-	if (gameState == GameState.Game || gameState == GameState.Death || gameState == GameState.Menu || gameState == GameState.NextLevel || gameState == GameState.Outro)
-	{
+	if (gameState == GameState.Game || gameState == GameState.Death || gameState == GameState.Menu || gameState == GameState.NextLevel || gameState == GameState.Outro) {
 		// BACKGROUND - Góry i słońce
 		g.setColor(new Color(184, 220, 254));
 		g.fillRect(0,0,getWidth(), getHeight());
@@ -1321,8 +1208,7 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	if (gameState == GameState.MainMenu || gameState == GameState.JakGrac || gameState == GameState.NajlepszeWyniki || gameState == GameState.NajlepszeWyniki
-			|| gameState == GameState.Osiagniecia || gameState == GameState.OGrze || gameState == GameState.Znajdzki)
-	{
+			|| gameState == GameState.Osiagniecia || gameState == GameState.OGrze || gameState == GameState.Znajdzki) {
 		g.setColor(new Color(184, 220, 254));
 		g.fillRect(0,0,getWidth(), getHeight());
 		
@@ -1343,8 +1229,7 @@ public void render(int fps_count, int ticks_count)
 		
 		
 		// PTAKI
-		if (ptaki1 > -220 && ptaki1 < 890)
-		{
+		if (ptaki1 > -220 && ptaki1 < 890) {
 			ptaki1RAnim.drawAnimation(g2d, (int) (100+ptaki1), 80, false);
 			ptaki1RAnim.drawAnimation(g2d, (int) (100+ptaki2), 100, false);
 			ptaki1RAnim.drawAnimation(g2d, (int) (100+ptaki3), 90, false);			
@@ -1352,8 +1237,7 @@ public void render(int fps_count, int ticks_count)
 		
 		
 		//plane_move = 300;
-		if (plane_move > -170 && plane_move < 1300)
-		{
+		if (plane_move > -170 && plane_move < 1300) {
 			// SAMOLOT
 			g2d.drawImage(Textures.getInstance().planeR, plane_move, 15, null);
 			smigloAnim.drawAnimation(g2d, plane_move+155, 35, false);
@@ -1366,8 +1250,7 @@ public void render(int fps_count, int ticks_count)
 		}
 		
 		
-		for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) 
-		{
+		for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) {
 			mainMenuButtons[i].render(g2d);
 		}
 		mainMenuButtons[selectedMainMenuButton].setSelected(true);
@@ -1375,8 +1258,7 @@ public void render(int fps_count, int ticks_count)
 	
 	
 	// FALUJACE LITERY
-	if (gameState == GameState.MainMenu)
-	{		
+	if (gameState == GameState.MainMenu) {
 		g2d.drawImage(Textures.getInstance().literaT, 95, (int) (MainClass.HEIGHT - 100 + falujaceLitery[0]), null);
 		g2d.drawImage(Textures.getInstance().literaE, 125, (int) (MainClass.HEIGHT - 100 + falujaceLitery[1]), null);
 		g2d.drawImage(Textures.getInstance().literaQ, 155, (int) (MainClass.HEIGHT - 100 + falujaceLitery[2]), null);
@@ -1413,8 +1295,7 @@ public void render(int fps_count, int ticks_count)
 	else MainClass.fpsCap = true;
 	
 		
-	if ((!player.isLevelFinished()) && (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel || gameState == GameState.Outro))
-	{
+	if ((!player.isLevelFinished()) && (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel || gameState == GameState.Outro)) {
 		////// CAM MOVING HERE
 		g2d.translate(cam.getX(), cam.getY());  // CAM BEGINNING
 			objectsHandler.render(g);
@@ -1423,20 +1304,17 @@ public void render(int fps_count, int ticks_count)
 	
 	
 	// INTRO
-	if (gameState == GameState.Intro)
-	{
+	if (gameState == GameState.Intro) {
 		g2d.drawImage(Textures.getInstance().backGroundMountains, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
 		
 		g2d.setColor(MainClass.fontColor);
 		
-		if (intro_counter > 50 && intro_counter < 250)
-		{
+		if (intro_counter > 50 && intro_counter < 250) {
 			g2d.setFont(MainClass.smokunFont.deriveFont(Font.BOLD, 34f));
 			g2d.drawString(introText1PL, 200, 100);	
 		}
 		
-		if (intro_counter > 300 && intro_counter < 1250)
-		{
+		if (intro_counter > 300 && intro_counter < 1250) {
 			double ratio = (double) Textures.getInstance().intro_game_logo.getWidth() / Textures.getInstance().intro_game_logo.getHeight();
 			
 			intro_logo_image = toBufferedImage(Textures.getInstance().intro_game_logo.getScaledInstance((int) (Textures.getInstance().intro_game_logo.getWidth() / (ratio * intro_logo_size)),
@@ -1445,8 +1323,7 @@ public void render(int fps_count, int ticks_count)
 			g2d.drawImage(intro_logo_image, (int) ((MainClass.WIDTH / 2) - (intro_logo_image.getWidth() / 2)), (int) ((MainClass.HEIGHT / 2) - (intro_logo_image.getHeight() /2)), null);
 		}
 		
-		if (intro_counter > 800 && intro_counter < 1300)
-		{
+		if (intro_counter > 800 && intro_counter < 1300) {
 			double ratio1 = (double) Textures.getInstance().intro_game_text1.getWidth() / Textures.getInstance().intro_game_text1.getHeight();
 			
 			BufferedImage text1image = toBufferedImage(Textures.getInstance().intro_game_text1.getScaledInstance((int) (Textures.getInstance().intro_game_text1.getWidth() / (ratio1 * intro_font_size1)),
@@ -1456,8 +1333,7 @@ public void render(int fps_count, int ticks_count)
 		}
 		
 		
-		if (intro_counter > 900 && intro_counter < 1500)
-		{
+		if (intro_counter > 900 && intro_counter < 1500) {
 			double ratio2 = (double) Textures.getInstance().intro_game_text2.getWidth() / Textures.getInstance().intro_game_text2.getHeight();
 			
 			BufferedImage text2image = toBufferedImage(Textures.getInstance().intro_game_text2.getScaledInstance((int) (Textures.getInstance().intro_game_text2.getWidth() / (ratio2 * intro_font_size2)),
@@ -1465,15 +1341,13 @@ public void render(int fps_count, int ticks_count)
 			g2d.drawImage(text2image, (int) ((MainClass.WIDTH / 2) - (text2image.getWidth() / 2)), (int) (intro_font_y2), null);
 		}
 		
-		if (intro_counter > 1000 && intro_counter < 1900)
-		{
+		if (intro_counter > 1000 && intro_counter < 1900) {
 			double ratio3 = (double) Textures.getInstance().intro_game_text3.getWidth() / Textures.getInstance().intro_game_text3.getHeight();
 			
 			BufferedImage text3image = toBufferedImage(Textures.getInstance().intro_game_text3.getScaledInstance((int) (Textures.getInstance().intro_game_text3.getWidth() / (ratio3 * intro_font_size3)),
 					(int) (Textures.getInstance().intro_game_text3.getHeight() / (ratio3 * intro_font_size3)), Image.SCALE_DEFAULT));	
 			g2d.drawImage(text3image, (int) ((MainClass.WIDTH / 2) - (text3image.getWidth() / 2)), (int) (intro_font_y3), null);
 		}
-		
 		//g2d.drawString(intro_counter+"", 100, 100);
 	}
 
@@ -1501,16 +1375,14 @@ public void render(int fps_count, int ticks_count)
 	else saveAchievementsToFile = false;
 		
 	// KONIEC POZIOMU
-	if (player.isLevelFinished())
-	{
+	if (player.isLevelFinished()) {
 		gameState = GameState.NextLevel;
 		if (millis < (1000 * 60)) achievements.addSprinterCount();
 		TOTAL_SCORE = SCORE + (int) time_bonus;
 	}
 		
 	// HAND MENU
-	if (gameState == GameState.Game)
-	{
+	if (gameState == GameState.Game) {
 		g2d.drawImage(Textures.getInstance().handMenu, 40, MainClass.HEIGHT - 200, null);
 		
 		for (int i = 0; i < handMenuItem.length; i++) {
@@ -1525,8 +1397,7 @@ public void render(int fps_count, int ticks_count)
 		if (showInfo > -1) {
 			
 			String info = "";
-			switch (showInfo)
-			{
+			switch (showInfo) {
 				case 0: if (MainClass.language == MainClass.Languages.polish) info = "      Mała regeneracja zdrowia";
 						if (MainClass.language == MainClass.Languages.english) info = "     Small health regeneration";
 						break;
@@ -1557,8 +1428,7 @@ public void render(int fps_count, int ticks_count)
 	}
 
 	// HUD gry
-	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel)
-	{
+	if (gameState==GameState.Game || gameState==GameState.Death || gameState==GameState.Menu || gameState==GameState.NextLevel) {
 		// PLAYER HEALTH
 		for (int i = 0; i < player.getHealth(); i++) g.drawImage(Textures.getInstance().heart, 360+(i*40), 5, 40, 40,null);
 		
@@ -1585,8 +1455,7 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	// ZROBIENIE SZAREGO EKRANU
-	if ((gameState == GameState.Menu || gameState == GameState.Death) && makeBgImage)
-	{
+	if ((gameState == GameState.Menu || gameState == GameState.Death) && makeBgImage) {
 		if (!makeBgImageGrayScale) {
 			backgroundGrayScaleImage = makeGrayScale(Textures.getInstance().bgMenuImage);
 			makeBgImageGrayScale = true;
@@ -1595,10 +1464,8 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	// OUTRO
-	if (endgame && gameState == GameState.Outro)
-	{
-		for (int i = 0; i < baloniki.length; i++)
-		{
+	if (endgame && gameState == GameState.Outro) {
+		for (int i = 0; i < baloniki.length; i++) {
 			g2d.drawImage(Textures.getInstance().balony[i], 50 + (i* 160), baloniki[i], null);
 		}
 		
@@ -1615,23 +1482,19 @@ public void render(int fps_count, int ticks_count)
 		if (outro_counter > 500) g2d.drawString("Naciśnij ENTER aby wrócić na ranczo...", 320, 580);
 	}
 	
-	if (gameState == GameState.Menu)
-	{
+	if (gameState == GameState.Menu) {
 		g2d.drawImage(Textures.getInstance().menuBg, 320, 140, null);
-		for (int i = 0; i < MAX_MENU_BUTTONS; i++) 
-		{
+		for (int i = 0; i < MAX_MENU_BUTTONS; i++) {
 			menuButtons[i].render(g2d);
 		}
 		menuButtons[selectedMenuButton].setSelected(true);
 	}
 	
 	// LEVEL CHOOSE
-	if (gameState == GameState.LevelChoose)
-	{
+	if (gameState == GameState.LevelChoose) {
 		g2d.drawImage(Textures.getInstance().backGroundMountains, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
 		//g2d.drawImage(Textures.getInstance().menuBg, 320, 140, null);
-		for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++) 
-		{
+		for (int i = 0; i < MAX_LEVEL_MENU_BUTTONS; i++) {
 			levelMenuButtons[i].render(g2d);
 		}
 		levelMenuButtons[selectedLevelMenuButton].setSelected(true);
@@ -1643,19 +1506,15 @@ public void render(int fps_count, int ticks_count)
 	hud.showGameHud(g2d, gameState, achievements, hallOfFame, this.fps_count, this.ticks_count);
 	
 	
-	if (gameState == GameState.Znajdzki)
-	{
+	if (gameState == GameState.Znajdzki) {
 		g2d.drawImage(Textures.getInstance().collectiblesImage, 90, 0, null);
 		g2d.setFont(MainClass.verdana18Font);
 		g2d.setColor(MainClass.fontColor);
 		
-		
-		for (int i = 0; i < Textures.getInstance().collectible.length; i++)
-		{
+		for (int i = 0; i < Textures.getInstance().collectible.length; i++) {
 			g2d.drawImage(Textures.getInstance().collectible[i], 130, 70 + (i * 70), null);
 			g2d.drawString("("+collectiblesList[i]+")", 180, 95 + (i * 70));
-			switch (i)
-			{
+			switch (i) {
 			case 0: g2d.drawString("regeneracja 1 punktu zdrowia", 250, 95 + (i * 70));
 					break;
 			case 1: g2d.drawString("zwiększenie maksymalnego zdrowia o 1", 250, 95 + (i * 70));
@@ -1676,15 +1535,13 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	
-	if (gameState == GameState.Osiagniecia)
-	{
+	if (gameState == GameState.Osiagniecia) {
 		g2d.drawImage(Textures.getInstance().achievementsMenuBGImage, 85, 0, null);
 		g2d.setFont(MainClass.verdana14Font);
 		g2d.setColor(Color.BLACK);
 		g2d.setColor(MainClass.fontColor);
 		if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.achievements_PL +": " +achievements.getAchievementsUnlocked()+"/" +Achievements.maxAchievements,380, 34);
 		if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.achievements_ENG +": " +achievements.getAchievementsUnlocked()+"/" +Achievements.maxAchievements,380, 34);
-
 		
 		defaultClip = g2d.getClip();
 		
@@ -1692,13 +1549,9 @@ public void render(int fps_count, int ticks_count)
 		
 		g2d.translate(0, -scrollScreenY); // CAM BEGINNING
 		
-		for (int i = 0; i < Achievements.maxAchievements; i++)
-		{
-
-			if (achievements.getAchievementsList().get(i))
-			{
-				switch (i)
-				{
+		for (int i = 0; i < Achievements.maxAchievements; i++) {
+			if (achievements.getAchievementsList().get(i)) {
+				switch (i) {
 				case 0:	g2d.drawString(achievements.getJump10TextShort() +"  " +achievements.getJump10Text(), 175, 70 + (i*60));
 						g2d.drawImage(Textures.getInstance().jump10Image, 110, 40 + (i*60), null);
 						break;
@@ -1773,8 +1626,7 @@ public void render(int fps_count, int ticks_count)
 						break;
 				}				
 			}
-			else
-			{
+			else {
 				if (MainClass.language == MainClass.Languages.polish) g2d.drawString(TextResources.HIDDEN_PL, 175, 70 + (i*60));
 				if (MainClass.language == MainClass.Languages.english) g2d.drawString(TextResources.HIDDEN_ENG, 175, 70 + (i*60));
 				
@@ -1785,11 +1637,9 @@ public void render(int fps_count, int ticks_count)
 	}
 	
 	
-	if (gameState == GameState.NajlepszeWyniki)
-	{
+	if (gameState == GameState.NajlepszeWyniki) {
 		
-		if (readHoFRecords)
-		{
+		if (readHoFRecords) {
 			hallOfFame.setHallOfFame(MainClass.nc.getHOFRecordsFromServer());
 			readHoFRecords = false;
 		}
@@ -1821,8 +1671,7 @@ public void render(int fps_count, int ticks_count)
 				
 		// CLIPPING DO DANEJ WIELKOŚCI TAKIEJ JAK OBRAZEK TŁA DL TEGO OKNA !
 		
-		for (int i = 0; i < hallOfFame.getHallOfFameList().size(); i++)
-		{
+		for (int i = 0; i < hallOfFame.getHallOfFameList().size(); i++) {
 		 	g2d.drawString(i+1+"", 105, 80 + (i*60));
 		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getName()+"", 170, 80 + (i*60));
 		 	g2d.drawString(hallOfFame.getHallOfFameList().get(i).getScore()+"", 360, 80+(i*60));
@@ -1847,8 +1696,7 @@ public void render(int fps_count, int ticks_count)
 /** Metoda zapisująca zrzut ekranu do pliku .png. 
  * 
  */
-public void makeScreenShot()
-{
+private void makeScreenShot() {
 	MainClass.screenShotSound.play();
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
 	Calendar cal = Calendar.getInstance();
@@ -1857,18 +1705,17 @@ public void makeScreenShot()
 			
 	try {
 		ImageIO.write(Textures.getInstance().screenShotImage, "png", screenShotFile);
-		} catch (IOException e) {
-			MainClass.logging(false, Level.WARNING, "Błąd zapisu zrzutu ekranu" +screenShotFile.getName());
-			MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(e));
-		}
+	} catch (IOException e) {
+	    MainClass.logging(false, Level.WARNING, "Błąd zapisu zrzutu ekranu" +screenShotFile.getName());
+	    MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(e));
+	}
 	makeScreenShot = false;
 }
 
 /** Metoda zwracająca pole isExit, które mówi, czy zostało wykonane rządanie zakmnięcia gry.
  * @return isExit
  */
-public boolean isExit()
-{
+public boolean isExit() {
 	return exit;
 }
 
@@ -1878,17 +1725,14 @@ public boolean isExit()
  * @author Piotrek
  *
  */
-private class MyMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener
-{
+private class MyMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener {
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		
-		if (gameState == GameState.MainMenu)
-		{
+		if (gameState == GameState.MainMenu) {
 			
 			if (me.getX() >= MainClass.WIDTH - 55 && me.getX() <= Textures.getInstance().polishFlagImage.getWidth() + MainClass.WIDTH - 55
-					&& me.getY() >= MainClass.HEIGHT - 32  && me.getY() <= MainClass.HEIGHT - 32 + Textures.getInstance().polishFlagImage.getHeight())
-			{
+					&& me.getY() >= MainClass.HEIGHT - 32  && me.getY() <= MainClass.HEIGHT - 32 + Textures.getInstance().polishFlagImage.getHeight()) {
 				if (MainClass.language == MainClass.Languages.polish) {
 					MainClass.language = MainClass.Languages.english;
 
@@ -1948,71 +1792,62 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 			}
 		}
 		
-		if (gameState == GameState.Game)
-		{
-			for (int i = 0; i < handMenuItem.length; i++)
-			{
+		if (gameState == GameState.Game) {
+			for (int i = 0; i < handMenuItem.length; i++) {
 				if (me.getX() >= handMenuItem[i].getX()+5 && me.getX() <= handMenuItem[i].getX() + handMenuItem[i].getWidth()-5
 						&& me.getY() >= handMenuItem[i].getY()+5 && me.getY() <= handMenuItem[i].getY() + handMenuItem[i].getHeight()-5
 						&& handMenuItem[i].isActive())  // MUST BE ACTIVE !!!
 				{
-					/// AKTYWACJA DANEJ MOCY nr. i
-					
-					if (i == 0 && player.getHealth() < player.getMaxHealth())    /// 1 MOC - ODNAWIA ZDROWIE O +1 O ILE NIE WIĘCEJ NIŻ MAX HEALTH
-					{
+
+				    /// AKTYWACJA DANEJ MOCY nr. i
+                    /// 1 MOC - ODNAWIA ZDROWIE O +1 O ILE NIE WIĘCEJ NIŻ MAX HEALTH{
+					if (i == 0 && player.getHealth() < player.getMaxHealth()) {
 						player.setHealth(player.getHealth() + 1);
-						
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
-					
-					if (i == 1)    /// 2 MOC - ZWIĘKSZA MAKSYMALNE ZDROWIE O 1 I UZUPEŁNIA BRAKUJACE O JEDEN JESLI POTRZEBA
-					{
+
+					/// 2 MOC - ZWIĘKSZA MAKSYMALNE ZDROWIE O 1 I UZUPEŁNIA BRAKUJACE O JEDEN JESLI POTRZEBA
+					if (i == 1) {
 						player.setMaxHealth(player.getMaxHealth() + 1);
 						player.setHealth(player.getHealth() + 1);
-						
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
-					
-					if (i == 2)    /// 3 MOC - ODNAWIA CAŁE ZDROWIE POSTACI
-					{
+
+					/// 3 MOC - ODNAWIA CAŁE ZDROWIE POSTACI
+					if (i == 2) {
 						player.setHealth(player.getMaxHealth());
-						
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
-					
-					if (i == 3)    /// 4 MOC - CZASOWA NIEŚMIERTELNOŚC POSTACI
-					{
-						
+
+                    /// 4 MOC - CZASOWA NIEŚMIERTELNOŚC POSTACI
+					if (i == 3) {
 						player.setImmortality(true);
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 
-					if (i == 4)    /// 5 MOC - USUWA WSZYSTKIE PSZCZOŁY Z PLANSZY
-					{
+                    /// 5 MOC - USUWA WSZYSTKIE PSZCZOŁY Z PLANSZY
+					if (i == 4) {
 						objectsHandler.getBee_List().clear();
-						
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
 
-					if (i == 5)    /// 6 MOC - USUWA KAKTUSY Z PLANSZY
-					{
+                    /// 6 MOC - USUWA KAKTUSY Z PLANSZY
+					if (i == 5) {
 						objectsHandler.getAngryCactus_List().clear();
-						
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
-					
-					if (i == 6)    /// 7 MOC - USUWA WSZYSTKICH PRZECIWNIKÓW Z PLANSZY !
-					{
+
+                    /// 7 MOC - USUWA WSZYSTKICH PRZECIWNIKÓW Z PLANSZY !
+					if (i == 6)	{
 						objectsHandler.getBee_List().clear();
 						objectsHandler.getTumbleweed_List().clear();
 						objectsHandler.getAngryCactus_List().clear();
-						
 						collectiblesList[i] -= 5;
 						if (collectiblesList[i] < 0) collectiblesList[i] = 0;	
 					}
@@ -2020,109 +1855,101 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 			}
 		}
 		
-		if (gameState == GameState.MainMenu)
-		{
-			
+		if (gameState == GameState.MainMenu) {
 			if (isDesktopSupported && me.getX() >= 330 && me.getX() <= Textures.getInstance().websiteButton.getWidth()+330
 				&& me.getY() >= MainClass.HEIGHT - 25  && me.getY() <= MainClass.HEIGHT - 25 + Textures.getInstance().websiteButton.getHeight())
 				openWebsite("https://www.wroblewskipiotr.pl/project/tequila/");
 			{
-			for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++)
-			{
+			for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) {
 				if (me.getX() >= mainMenuButtons[i].getX() && me.getX() <= (mainMenuButtons[i].getX() + mainMenuButtons[i].getWidth())
-						&& me.getY() >= mainMenuButtons[i].getY() && me.getY() <= (mainMenuButtons[i].getY() + mainMenuButtons[i].getHeight()))
-						{
-							MainClass.menuSound2.play();
-							switch (i)
-							{
-							case 0: intro_counter = 0;
-									intro_logo_size = 0.1f;
-									intro_font_size1 = 0.1f;
-									intro_font_size2 = 0.1f;
-									intro_font_size3 = 0.1f;
-									intro_font_y1 = 0;
-									intro_font_y2 = 0;
-									intro_font_y3 = 0;
-									gameState = GameState.LevelChoose;
-									break;				
-							case 1: gameState = GameState.JakGrac;
-									break;
-							case 2: scrollScreenY = 0;
-									readHoFRecords = true;
-									gameState = GameState.NajlepszeWyniki;
-									break;
-							case 3: scrollScreenY = 0;
-									gameState = GameState.Osiagniecia;
-									break;
-							case 4: gameState = GameState.Znajdzki;
-									break;
-							case 5: gameState = GameState.OGrze;
-									break;
-							case 6: gameState = GameState.Zakoncz;
-									break;
-							}
-						}
-			}
-			}
-		}
-		
-		
-		if (gameState == GameState.LevelChoose)
-		{
+						&& me.getY() >= mainMenuButtons[i].getY() && me.getY() <= (mainMenuButtons[i].getY() + mainMenuButtons[i].getHeight())) {
 
-			for (int i = 0; i < unlockedLevels; i++)
-			{
-				if (me.getX() >= levelMenuButtons[i].getX() && me.getX() <= (levelMenuButtons[i].getX() + levelMenuButtons[i].getWidth())
-						&& me.getY() >= levelMenuButtons[i].getY() && me.getY() <= (levelMenuButtons[i].getY() + levelMenuButtons[i].getHeight()))
-						{
-							MainClass.menuSound2.play();		
-							objectsHandler.clearLevel();
-							objectsHandler.resetLevelStatistics();
-							System.gc();
-							LEVEL = selectedLevelMenuButton+1;
-							if (LEVEL == 1) {
-								gameState = GameState.Intro;
-							}
-							else {
-								objectsHandler.loadLevel(LEVEL);
-								cam.setX(0);
-								player = objectsHandler.getPlayer();
-								achievements.restartLevel();
-								MainClass.logging(false, Level.INFO, "Rozpoczęto poziom "+selectedLevelMenuButton);
-								playMusic2();
-								gameState = GameState.Game;				
-							}
-						}
+				    MainClass.menuSound2.play();
+                    switch (i) {
+                    case 0: intro_counter = 0;
+                            intro_logo_size = 0.1f;
+                            intro_font_size1 = 0.1f;
+                            intro_font_size2 = 0.1f;
+                            intro_font_size3 = 0.1f;
+                            intro_font_y1 = 0;
+                            intro_font_y2 = 0;
+                            intro_font_y3 = 0;
+                            gameState = GameState.LevelChoose;
+                            break;
+                    case 1: gameState = GameState.JakGrac;
+                            break;
+                    case 2: scrollScreenY = 0;
+                            readHoFRecords = true;
+                            gameState = GameState.NajlepszeWyniki;
+                            break;
+                    case 3: scrollScreenY = 0;
+                            gameState = GameState.Osiagniecia;
+                            break;
+                    case 4: gameState = GameState.Znajdzki;
+                            break;
+                    case 5: gameState = GameState.OGrze;
+                            break;
+                    case 6: gameState = GameState.Zakoncz;
+                            break;
+                    }
+                }
+			}
 			}
 		}
 		
 		
-		if (gameState == GameState.Menu)
-		{
-			for (int i = 0; i < MAX_MENU_BUTTONS; i++)
-			{
+		if (gameState == GameState.LevelChoose) {
+
+			for (int i = 0; i < unlockedLevels; i++) {
+				if (me.getX() >= levelMenuButtons[i].getX() && me.getX() <= (levelMenuButtons[i].getX() + levelMenuButtons[i].getWidth())
+						&& me.getY() >= levelMenuButtons[i].getY() && me.getY() <= (levelMenuButtons[i].getY() + levelMenuButtons[i].getHeight())) {
+
+				    MainClass.menuSound2.play();
+                    objectsHandler.clearLevel();
+                    objectsHandler.resetLevelStatistics();
+                    System.gc();
+                    LEVEL = selectedLevelMenuButton+1;
+                    if (LEVEL == 1) {
+                        gameState = GameState.Intro;
+                    }
+                    else {
+                        objectsHandler.loadLevel(LEVEL);
+                        cam.setX(0);
+                        player = objectsHandler.getPlayer();
+                        achievements.restartLevel();
+                        MainClass.logging(false, Level.INFO, "Rozpoczęto poziom "+selectedLevelMenuButton);
+                        playMusic2();
+                        gameState = GameState.Game;
+                    }
+                }
+			}
+		}
+		
+		
+		if (gameState == GameState.Menu) {
+			for (int i = 0; i < MAX_MENU_BUTTONS; i++) {
 				if (me.getX() >= menuButtons[i].getX() && me.getX() <= (menuButtons[i].getX() + menuButtons[i].getWidth())
 						&& me.getY() >= menuButtons[i].getY() && me.getY() <= (menuButtons[i].getY() + menuButtons[i].getHeight())) {
-							MainClass.menuSound2.play();
-							switch (selectedMenuButton)
-							{
-							case 0: gameState = GameState.Game;
-									break;				
-							case 1: 
-									objectsHandler.clearLevel();
-									objectsHandler.resetLevelStatistics();
-									System.gc(); // GARBAGE COLLECTOR
-									objectsHandler.loadLevel(1);
-									cam.setX(0);
-									player = objectsHandler.getPlayer();
-									achievements.restartLevel();
-									MainClass.logging(false, Level.INFO, "Powrót do menu głównego gry.");
-									playMusic1();
-									gameState = GameState.MainMenu;
-									break;
-							case 2: gameState = GameState.Zakoncz;
-									break;
-							}
+
+				    MainClass.menuSound2.play();
+                    switch (selectedMenuButton) {
+                    case 0: gameState = GameState.Game;
+                            break;
+                    case 1:
+                            objectsHandler.clearLevel();
+                            objectsHandler.resetLevelStatistics();
+                            System.gc(); // GARBAGE COLLECTOR
+                            objectsHandler.loadLevel(1);
+                            cam.setX(0);
+                            player = objectsHandler.getPlayer();
+                            achievements.restartLevel();
+                            MainClass.logging(false, Level.INFO, "Powrót do menu głównego gry.");
+                            playMusic1();
+                            gameState = GameState.MainMenu;
+                            break;
+                    case 2: gameState = GameState.Zakoncz;
+                            break;
+                    }
 				}
 			}
 		}
@@ -2146,57 +1973,45 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 	@Override
 	public void mouseMoved(MouseEvent me) {
 		
-		if (gameState == GameState.Game)
-		{
+		if (gameState == GameState.Game) {
 			showInfo = -1;
-			for (int i = 0; i < handMenuItem.length; i++)
-			{
+			for (int i = 0; i < handMenuItem.length; i++) {
 				if (me.getX() >= handMenuItem[i].getX()+5 && me.getX() <= handMenuItem[i].getX() + handMenuItem[i].getWidth()-5
-						&& me.getY() >= handMenuItem[i].getY()+5 && me.getY() <= handMenuItem[i].getY() + handMenuItem[i].getHeight()-5)
-				{
+						&& me.getY() >= handMenuItem[i].getY()+5 && me.getY() <= handMenuItem[i].getY() + handMenuItem[i].getHeight()-5) {
 					showInfo = i;
 				}
 			}
 		}
 		
-		if (gameState == GameState.Menu)
-		{
-			for (int i = 0; i < MAX_MENU_BUTTONS; i++)
-			{
+		if (gameState == GameState.Menu) {
+			for (int i = 0; i < MAX_MENU_BUTTONS; i++) {
 				if (me.getX() >= menuButtons[i].getX() && me.getX() <= (menuButtons[i].getX() + menuButtons[i].getWidth())
-						&& me.getY() >= menuButtons[i].getY() && me.getY() <= (menuButtons[i].getY() + menuButtons[i].getHeight()))
-						{
+						&& me.getY() >= menuButtons[i].getY() && me.getY() <= (menuButtons[i].getY() + menuButtons[i].getHeight())) {
 							if (selectedMenuButton != i) MainClass.menuSound1.play();
 							selectedMenuButton = i;
 						}
 			}			
 		}
 		
-		if (gameState == GameState.MainMenu)
-		{
+		if (gameState == GameState.MainMenu) {
 			if (isDesktopSupported && me.getX() >= 330 && me.getX() <= Textures.getInstance().websiteButton.getWidth()+330
 					&& me.getY() >= MainClass.HEIGHT - 25  && me.getY() <= MainClass.HEIGHT - 25 + Textures.getInstance().websiteButton.getHeight())
 					clickhere = true;
 			else clickhere = false;
 			
-			for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++)
-			{
+			for (int i = 0; i < MAX_MAIN_MENU_BUTTONS; i++) {
 				if (me.getX() >= mainMenuButtons[i].getX() && me.getX() <= (mainMenuButtons[i].getX() + mainMenuButtons[i].getWidth())
-						&& me.getY() >= mainMenuButtons[i].getY() && me.getY() <= (mainMenuButtons[i].getY() + mainMenuButtons[i].getHeight()))
-						{
+						&& me.getY() >= mainMenuButtons[i].getY() && me.getY() <= (mainMenuButtons[i].getY() + mainMenuButtons[i].getHeight())) {
 							if (selectedMainMenuButton != i) MainClass.menuSound1.play();
 							selectedMainMenuButton = i;
 						}
 			}
 		}
 		
-		if (gameState == GameState.LevelChoose)
-		{
-			for (int i = 0; i < unlockedLevels; i++)
-			{
+		if (gameState == GameState.LevelChoose) {
+			for (int i = 0; i < unlockedLevels; i++) {
 				if (me.getX() >= levelMenuButtons[i].getX() && me.getX() <= (levelMenuButtons[i].getX() + levelMenuButtons[i].getWidth())
-						&& me.getY() >= levelMenuButtons[i].getY() && me.getY() <= (levelMenuButtons[i].getY() + levelMenuButtons[i].getHeight()))
-						{
+						&& me.getY() >= levelMenuButtons[i].getY() && me.getY() <= (levelMenuButtons[i].getY() + levelMenuButtons[i].getHeight())) {
 							if (selectedLevelMenuButton != i) MainClass.menuSound1.play();
 							selectedLevelMenuButton = i;
 						}
@@ -2207,44 +2022,36 @@ private class MyMouseListener implements MouseListener, MouseMotionListener, Mou
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent mwe) {
 				
-		if (gameState == GameState.Menu)
-		{
-			if (mwe.getWheelRotation() == -1)
-			{
+		if (gameState == GameState.Menu) {
+			if (mwe.getWheelRotation() == -1) {
 				if (selectedMenuButton == 0) selectedMenuButton = MAX_MENU_BUTTONS-1;
 				else selectedMenuButton--;				
 			}
 			
-			if (mwe.getWheelRotation() == 1)
-			{
+			if (mwe.getWheelRotation() == 1) {
 				if (selectedMenuButton == MAX_MENU_BUTTONS-1) selectedMenuButton = 0; 
 				else selectedMenuButton++;		
 			}
 		}
 		
-		if (gameState == GameState.MainMenu)
-		{
-			if (mwe.getWheelRotation() == -1)
-			{
+		if (gameState == GameState.MainMenu) {
+			if (mwe.getWheelRotation() == -1) {
 				if (selectedMainMenuButton == 0) selectedMainMenuButton = MAX_MAIN_MENU_BUTTONS-1;
 				else selectedMainMenuButton--;				
 			}
 			
-			if (mwe.getWheelRotation() == 1)
-			{
+			if (mwe.getWheelRotation() == 1) {
 				if (selectedMainMenuButton == MAX_MAIN_MENU_BUTTONS-1) selectedMainMenuButton = 0; 
-				else selectedMainMenuButton++;		
+				else selectedMainMenuButton++;
 			}
 		}
 		
-		if (gameState == GameState.Osiagniecia)
-		{
+		if (gameState == GameState.Osiagniecia) {
 			if (mwe.getWheelRotation() == 1 && scrollScreenY < ((Achievements.maxAchievements - 9) * 60)) scrollScreenY += 20;
 			if (mwe.getWheelRotation() == -1 && scrollScreenY > 0) scrollScreenY -= 20;
 		}
 		
-		if (gameState == GameState.NajlepszeWyniki)
-		{
+		if (gameState == GameState.NajlepszeWyniki) {
 			if (mwe.getWheelRotation() == 1 && scrollScreenY < ((hallOfFame.getHallOfFameList().size() - 9) * 60)) scrollScreenY += 20;
 			if (mwe.getWheelRotation() == -1 && scrollScreenY > 0) scrollScreenY -= 20;
 		}

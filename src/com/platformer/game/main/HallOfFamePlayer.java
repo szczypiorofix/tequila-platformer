@@ -7,7 +7,6 @@ import java.util.Date;
 public class HallOfFamePlayer implements Serializable {
 
 
-
 private static final long serialVersionUID = 8884657204736598287L;
 
 private String name;
@@ -17,8 +16,7 @@ private int level;
 private String insert_date;
 
 	
-public HallOfFamePlayer(String name, int score, long millis, int level, String date)
-{
+HallOfFamePlayer(String name, int score, long millis, int level, String date) {
 	this.name = name;
 	this.score = score;
 	this.millis = millis;
@@ -27,9 +25,7 @@ public HallOfFamePlayer(String name, int score, long millis, int level, String d
 }
 
 
-
-public String getTimeFromMilis(long millis)
-{
+public String getTimeFromMilis(long millis) {
 	return (new SimpleDateFormat("mm:ss:SSS")).format(new Date(millis));
 }
 
@@ -72,5 +68,4 @@ public void setDate(String date) {
 public String getDate() {
 	return this.insert_date;
 }
-
 }

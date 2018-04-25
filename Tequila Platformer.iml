@@ -11,10 +11,6 @@
       <sourceFolder url="file://$MODULE_DIR$/res/Tiles" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" name="JInput" level="project" />
-    <orderEntry type="library" name="JLayer" level="project" />
-    <orderEntry type="library" name="MySQL Connector" level="project" />
-    <orderEntry type="library" name="Jinput" level="project" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
   </component>
 </module>

@@ -54,8 +54,7 @@ public void render(Graphics g) {
 }
 
 @Override
-public void tick(LinkedList<GameObject> object) {
-}
+public void tick(LinkedList<GameObject> object) {}
 
 @Override
 public Rectangle getBounds() {

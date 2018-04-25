@@ -20,16 +20,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 public class LevelEditorMainClass extends JFrame{
@@ -47,12 +38,12 @@ public static Image[] tileImage = new Image[MAX_TILES];
 private JMenuBar menuBar = new JMenuBar();
 
 private JMenu menuPlik = new JMenu("Plik");
-private JMenuItem menuPlikZakoncz = new JMenuItem("Zakoñcz"), menuPlikZapisz = new JMenuItem("Zapisz"), menuPlikOtworz = new JMenuItem("Otwórz"), menuPlikNowy = new JMenuItem("Nowy");
+private JMenuItem menuPlikZakoncz = new JMenuItem("ZakoÅ„cz"), menuPlikZapisz = new JMenuItem("Zapisz"), menuPlikOtworz = new JMenuItem("OtwÃ³rz"), menuPlikNowy = new JMenuItem("Nowy");
 
 private JMenu menuGenerator = new JMenu("Generator");
-private JMenuItem menuGeneratorPodloze = new JMenuItem("Pod³o¿e");
+private JMenuItem menuGeneratorPodloze = new JMenuItem("Podï¿½oï¿½e");
 private JMenuItem menuGeneratorLosowyTeren = new JMenuItem("Losowy Teren");
-private JMenuItem menuGeneratorWyrownanieTerenu = new JMenuItem("Wyrównanie terenu");
+private JMenuItem menuGeneratorWyrownanieTerenu = new JMenuItem("WyrÃ³wnanie terenu");
 private JMenuItem menuGeneratorUstawianieTerenu = new JMenuItem("Ustawianie terenu");
 
 private TileChoose[] tilesChoose = new TileChoose[MAX_TILES];
@@ -76,7 +67,7 @@ private final KeyStroke ctrl_U = KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEve
 
 public LevelEditorMainClass()
 {
-	super("Tequila Platformer - Edytor Poziomów");
+	super("Tequila Platformer - Edytor PoziomÃ³w");
 	
 	random = new Random();
 	try {
@@ -148,7 +139,7 @@ public LevelEditorMainClass()
 	tileListener = new TileListener();
 	menuListener = new MenuListener();
 	
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	setSize(800,600);
 	//setResizable(false);
 	setLocationRelativeTo(null);
@@ -229,7 +220,7 @@ public LevelEditorMainClass()
 public class MenuListener implements ActionListener
 {
 	
-public void clearMap(boolean b)
+void clearMap(boolean b)
 {
 	for (int i = 0; i < ROWS; i++)
 		for (int j = 0; j < COLS; j++)
@@ -240,49 +231,41 @@ public void clearMap(boolean b)
 }
 	
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
+	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equalsIgnoreCase("Exit")) System.exit(0);
 		
-		if (e.getActionCommand().equalsIgnoreCase("New"))
-		{
+		if (e.getActionCommand().equalsIgnoreCase("New")) {
 			clearMap(true);
 		}
 		
-		if (e.getActionCommand().equalsIgnoreCase("Open"))
-		{
+		if (e.getActionCommand().equalsIgnoreCase("Open")) {
 			
 			String filename = "";
 		
-			filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", currentLevelName);	
+			filename = JOptionPane.showInputDialog(null, "Podaj nazwÄ™ pliku: ", currentLevelName);
 
-			if (filename != null && filename.length() != 0)
-			{
+			if (filename != null && filename.length() != 0) {
 				clearMap(true);
 				
 				currentLevelName = filename;
 				filename = "res/Other/" +filename +".lvl";
 				currentFile = filename;
-				setTitle("Tequila Platformer - Edytor Poziomów: "+currentFile);
+				setTitle("Tequila Platformer - Edytor PoziomÃ³w: "+currentFile);
 			
 				try {
 					ois = new ObjectInputStream(new FileInputStream(filename));
 					editorPane.setTileValues((int[][]) (ois.readObject()));
 					ois.close();
-				}
-				catch (IOException | ClassNotFoundException ioe)
-				{
+				} catch (IOException | ClassNotFoundException ioe) {
 					ioe.printStackTrace();
 					System.exit(0);
 				}
 			
 				for (int a = 0; a < ROWS; a++) {
-					for (int b = 0; b < COLS; b++)
-					{
+					for (int b = 0; b < COLS; b++) {
 						editorPane.editorTiles[a][b].setIcon(null);
 					
-						if (editorPane.tileValues[a][b] >= 0) 
-						{
+						if (editorPane.tileValues[a][b] >= 0) {
 							editorPane.editorTiles[a][b].setIcon(new ImageIcon(tileImage[editorPane.tileValues[a][b]]));
 						}
 					}
@@ -290,13 +273,11 @@ public void clearMap(boolean b)
 			}
 		}
 		
-		if (e.getActionCommand().equalsIgnoreCase("Save"))
-		{
+		if (e.getActionCommand().equalsIgnoreCase("Save")) {
 			String filename = "";
-			filename = JOptionPane.showInputDialog(null, "Podaj nazwê pliku: ", currentLevelName);
+			filename = JOptionPane.showInputDialog(null, "Podaj nazwÄ™ pliku: ", currentLevelName);
 			
-			if (filename != null && filename.length() != 0)
-			{
+			if (filename != null && filename.length() != 0) {
 				currentLevelName = filename;
 				filename = "res/Other/" +filename +".lvl";
 				currentFile = filename;
@@ -306,29 +287,22 @@ public void clearMap(boolean b)
 					oos = new ObjectOutputStream(new FileOutputStream(filename));
 				    oos.writeObject(editorPane.getTileValues());
 				    oos.close();
-				}
-				catch (IOException ioe)
-				{
+				} catch (IOException ioe) {
 					ioe.printStackTrace();
 					System.exit(-1);
 				}	
 			}
 		}
 		
-		if (e.getActionCommand().equalsIgnoreCase("Podloze"))
-		{
-			for (int i = 0; i < ROWS; i++)
-			{
-				for (int j = 0; j < COLS; j++)
-				{
+		if (e.getActionCommand().equalsIgnoreCase("Podloze")) {
+			for (int i = 0; i < ROWS; i++) {
+				for (int j = 0; j < COLS; j++) {
 					
-					if (i == (ROWS-2) & (j!=0) && (j!=COLS-1))
-					{
+					if (i == (ROWS-2) & (j!=0) && (j!=COLS-1)) {
 						editorPane.tileValues[i][j] = 1;
 						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));						
 					}
-					if (i == (ROWS-1) & (j!=0) && (j!=COLS-1))
-					{
+					if (i == (ROWS-1) & (j!=0) && (j!=COLS-1)) {
 						editorPane.tileValues[i][j] = 4;
 						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));						
 					}
@@ -346,18 +320,15 @@ public void clearMap(boolean b)
 		}
 		
 		
-		if (e.getActionCommand().equalsIgnoreCase("LosowyTeren"))
-		{			
+		if (e.getActionCommand().equalsIgnoreCase("LosowyTeren")) {
 			
 			tempMap = Arrays.copyOf(editorPane.tileValues, editorPane.tileValues.length);
 			
 			// LOSOWY TEREN
-			for (int i = 0; i < ROWS; i++)
-			{
-				for (int j = 0; j < COLS; j++)
-				{
+			for (int i = 0; i < ROWS; i++) {
+				for (int j = 0; j < COLS; j++) {
 					if (random(5) == 0) tempMap[i][j] = 1;
-					//else tempMap[i][j] = -1; // CZY NAK£ADAJA SIÊ NA SIEBIE LOSOWE BLOKI????
+					//else tempMap[i][j] = -1; // CZY NAKï¿½ADAJA SIï¿½ NA SIEBIE LOSOWE BLOKI????
 				}
 			}
 			
@@ -366,12 +337,9 @@ public void clearMap(boolean b)
 			editorPane.tileValues = Arrays.copyOf(tempMap, tempMap.length);
 			
 			// DODANIE DO OBECNEGO TERENU - TERENU LOSOWEGO
-			for (int i = 0; i < ROWS; i++)
-			{
-				for (int j = 0; j < COLS; j++)
-				{
-					if (editorPane.tileValues[i][j] != -1)
-					{
+			for (int i = 0; i < ROWS; i++) {
+				for (int j = 0; j < COLS; j++) {
+					if (editorPane.tileValues[i][j] != -1) {
 						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));	
 					}
 				}
@@ -379,20 +347,16 @@ public void clearMap(boolean b)
 		}
 		
 		
-		if (e.getActionCommand().equalsIgnoreCase("Wyrownanie"))
-		{
+		if (e.getActionCommand().equalsIgnoreCase("Wyrownanie")) {
 			tempMap = Arrays.copyOf(editorPane.tileValues, editorPane.tileValues.length);
 			
 			editorPane.tileValues = wygladzanie(tempMap, 5, 5, 1, -1);
 			
 			clearMap(false);
 			
-			for (int i = 0; i < ROWS; i++)
-			{
-				for (int j = 0; j < COLS; j++)
-				{
-					if (editorPane.tileValues[i][j] != -1)
-					{
+			for (int i = 0; i < ROWS; i++) {
+				for (int j = 0; j < COLS; j++) {
+					if (editorPane.tileValues[i][j] != -1) {
 						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));	
 					}
 				}
@@ -400,17 +364,14 @@ public void clearMap(boolean b)
 		}
 		
 		
-		if (e.getActionCommand().equalsIgnoreCase("Ustawianie"))
-		{
+		if (e.getActionCommand().equalsIgnoreCase("Ustawianie")) {
 			int MX = ROWS;
 			int MY = COLS;
 			tempMap = new int[MX][MY];
 			
 			// PRZEPISANIE OBECNEJ MAPY NA TEMPMAPE
-			for (int i = 0; i < MX; i++)
-			{
-				for (int j = 0; j < MY; j++)
-				{
+			for (int i = 0; i < MX; i++) {
+				for (int j = 0; j < MY; j++) {
 					tempMap[i][j] = editorPane.tileValues[i][j];
 				}
 			}
@@ -419,22 +380,15 @@ public void clearMap(boolean b)
 			
 			
 			
-			for (int i = 0; i < MX; i++)
-			{
-				for (int j = 0; j < MY; j++)
-				{
-					
-					if (j < MY-1 && i > 0)  // BEZ OSTATNIEJ KOLUMNT i BEZ PIERWSZEGO (0) WIERSZA - to daje IndexOutOFBoundsE... bo bie¿e 0-1;
-					{
-						if (tempMap[i][j] > -1 && tempMap[i-1][j] != -1)
-						{
+			for (int i = 0; i < MX; i++) {
+				for (int j = 0; j < MY; j++) {
+
+				    // BEZ OSTATNIEJ KOLUMNT i BEZ PIERWSZEGO (0) WIERSZA - to daje IndexOutOFBoundsE... bo bedzie 0-1;
+					if (j < MY-1 && i > 0) {
+						if (tempMap[i][j] > -1 && tempMap[i-1][j] != -1) {
 							tempMap[i][j] = 4;
 						}						
 					}
-					
-					
-					
-					
 				}
 			}
 			
@@ -445,13 +399,10 @@ public void clearMap(boolean b)
 			
 			clearMap(true);
 			
-			for (int i = 0; i < ROWS-2; i++)
-			{
-				for (int j = 0; j < COLS-1; j++)
-				{
+			for (int i = 0; i < ROWS-2; i++) {
+				for (int j = 0; j < COLS-1; j++) {
 					editorPane.tileValues[i][j] = tempMap[i][j];
-					if (editorPane.tileValues[i][j] != -1)
-					{
+					if (editorPane.tileValues[i][j] != -1) {
 						editorPane.editorTiles[i][j].setIcon(new ImageIcon(tileImage[editorPane.tileValues[i][j]]));	
 					}
 				}
@@ -459,101 +410,85 @@ public void clearMap(boolean b)
 		}
 	}
 
-public int random(int number)
-{
+int random(int number) {
 	int i = random.nextInt(number);
 	return i;
 }
 	
-public int random(int start, int end)
-{
+public int random(int start, int end) {
 	int i = random.nextInt(end-start+1)+start;
 	return i;
 }
 
-public int[][] wygladzanie(int [][] inputMap, int fullBlocks, int emptyBlocks, int defaultBlock, int defaultEmpty)
-{
+int[][] wygladzanie(int [][] inputMap, int fullBlocks, int emptyBlocks, int defaultBlock, int defaultEmpty) {
 	int MX = inputMap.length;
 	int MY = inputMap[0].length;
 	
 	int temp[][] = new int[MX][MY];
 	
 	// PRZEPISANIE OBECNEJ MAPY NA TEMPMAPE
-	for (int i = 0; i < MX; i++)
-	{
-		for (int j = 0; j < MY; j++)
-		{
+	for (int i = 0; i < MX; i++) {
+		for (int j = 0; j < MY; j++) {
 			temp[i][j] = inputMap[i][j];
 		}
 	}
 	
 	// TUTAJ JEST WYGLADZANIE TERENU
-	int[][] maxT = new int[MX][MY]; // TABLICA BLOKÓW
+	int[][] maxT = new int[MX][MY]; // TABLICA BLOKï¿½W
 	for (int i = 0; i < MX; i++)
 		for (int j = 0; j < MY; j++)
 			maxT[i][j] = defaultEmpty;
 			
-	int[][] maxE = new int[MX][MY]; // TABLICA BLOKÓW
+	int[][] maxE = new int[MX][MY]; // TABLICA BLOKï¿½W
 	for (int i = 0; i < MX; i++)
 		for (int j = 0; j < MY; j++)
 			maxE[i][j] = defaultEmpty;
 
-	for (int i = 0; i < MX; i++)
-	{
-		for (int j = 0; j < MY; j++)
-		{
-			if ((i > 0) && i < (MX-1) && (j > 0) && (j < MY-1))
-			{			
-				/// SPRAWDZANIE KONKRETNEGO BLOKU PE£NEGO
+	for (int i = 0; i < MX; i++) {
+		for (int j = 0; j < MY; j++) {
+			if ((i > 0) && i < (MX-1) && (j > 0) && (j < MY-1)) {
+				/// SPRAWDZANIE KONKRETNEGO BLOKU PEï¿½NEGO
 				maxT[i][j] = 0;
 				int[][] tempNeighbor = new int[3][3];
 							
-				// ZBIERANIE SASIADÓW
+				// ZBIERANIE SASIADï¿½W
 				for (int a = -1; a < 2; a++)
-					for (int b = -1; b < 2; b++)
-					{
+					for (int b = -1; b < 2; b++) {
 						tempNeighbor[a+1][b+1] = temp[i+a][j+b];						
 					}
 							
 				for (int a = 0; a < 3; a++)
-					for (int b = 0; b < 3; b++)
-					{
-						if (tempNeighbor[a][b] == 1) maxT[i][j] += 1; // NABIJANIE ILOŒCI SASIADÓW
+					for (int b = 0; b < 3; b++) {
+						if (tempNeighbor[a][b] == 1) maxT[i][j] += 1; // NABIJANIE ILOï¿½CI SASIADï¿½W
 					}	
 			}
 
-			if (maxT[i][j] > fullBlocks)
-			{
+			if (maxT[i][j] > fullBlocks) {
 				temp[i][j] = defaultBlock;
 			}
 
 		}
 	}
 	
-	for (int i = 0; i < MX; i++)
-	{
-		for (int j = 0; j < MY; j++)
-		{
-			if ((i > 0) && i < (MX-1) && (j > 0) && (j < MY-1))
-			{			
-				/// SPRAWDZANIE KONKRETNEGO BLOKU PE£NEGO
+	for (int i = 0; i < MX; i++) {
+		for (int j = 0; j < MY; j++) {
+			if ((i > 0) && i < (MX-1) && (j > 0) && (j < MY-1)) {
+				/// SPRAWDZANIE KONKRETNEGO BLOKU PEï¿½NEGO
 				maxE[i][j] = 0;
 				int[][] tempNeighbor = new int[3][3];
 							
-				// ZBIERANIE SASIADÓW
+				// ZBIERANIE SASIADï¿½W
 				for (int a = -1; a < 2; a++)
 					for (int b = -1; b < 2; b++)						
 						tempNeighbor[a+1][b+1] = temp[i+a][j+b];
 							
 				for (int a = 0; a < 3; a++)
-					for (int b = 0; b < 3; b++)
-					{
-						if (tempNeighbor[a][b] == 0) maxE[i][j] += 1; // NABIJANIE ILOŒCI SASIADÓW
+					for (int b = 0; b < 3; b++) {
+						if (tempNeighbor[a][b] == 0) maxE[i][j] += 1; // NABIJANIE ILOï¿½CI SASIADï¿½W
 					}	
 			}
 
-			if (maxE[i][j] > emptyBlocks)
-			{
+			if (maxE[i][j] > emptyBlocks) {
 				temp[i][j] = defaultEmpty;
 			}
 		}
@@ -565,8 +500,7 @@ public int[][] wygladzanie(int [][] inputMap, int fullBlocks, int emptyBlocks, i
 }
 
 
-public class TileListener implements ActionListener
-{
+public class TileListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -590,8 +524,7 @@ private Tile[][] editorTiles;
 private ActionListener editorTilesListener;
 private int[][] tileValues;
 
-public EditorPane(int row, int col)
-{
+public EditorPane(int row, int col) {
 	super(new GridLayout(row, col));
 	this.row = row;
 	this.col = col;
@@ -605,8 +538,7 @@ public EditorPane(int row, int col)
 	editorTilesListener = new EditorTilesListener();
 	
 	for (int a = 0; a < row; a++)
-		for (int b = 0; b < col; b++)
-		{
+		for (int b = 0; b < col; b++) {
 			editorTiles[a][b] = new Tile();
 			editorTiles[a][b].addActionListener(editorTilesListener);
 			editorTiles[a][b].setActionCommand(a+":"+b);
@@ -616,8 +548,8 @@ public EditorPane(int row, int col)
 }
 
 
-public class EditorTilesListener implements ActionListener
-{
+//TODO RozbiÄ‡ na osobne klasy!
+public class EditorTilesListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -626,20 +558,16 @@ public class EditorTilesListener implements ActionListener
 		String first="", second="";
 		boolean sec = false;
 		
-		for (int i = 0; i < s.length(); i++)
-		{
+		for (int i = 0; i < s.length(); i++) {
 			if (!sec && s.charAt(i)!= ':') first += s.charAt(i);
 			if (sec) second += s.charAt(i);
 			if (s.charAt(i) == ':') sec = true;
 		}
 		
-		if (editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].getIcon() == null)
-		{
+		if (editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].getIcon() == null) {
 			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(new ImageIcon(tileImage[selectedTile]));
 			tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = selectedTile;	
-		}
-		else
-		{
+		} else {
 			editorTiles[Integer.parseInt(first)][Integer.parseInt(second)].setIcon(null);
 			tileValues[Integer.parseInt(first)][Integer.parseInt(second)] = -1;
 		}
@@ -657,7 +585,7 @@ public int[][] getTileValues()
 	return tileValues;
 }
 
-public int getRow() {
+int getRow() {
 	return row;
 }
 
@@ -667,7 +595,7 @@ public void setRow(int row) {
 }
 
 
-public int getCol() {
+int getCol() {
 	return col;
 }
 
@@ -677,15 +605,7 @@ public void setCol(int col) {
 }
 }
 
-public static void main(String[] args)
-{
-	EventQueue.invokeLater(new Runnable()
-	{
-		@Override
-		public void run()
-		{
-			new LevelEditorMainClass().setVisible(true);
-		}
-	});
+public static void main(String[] args) {
+	EventQueue.invokeLater(() -> new LevelEditorMainClass().setVisible(true));
 }
 }

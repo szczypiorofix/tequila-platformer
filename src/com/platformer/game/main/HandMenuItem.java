@@ -15,8 +15,7 @@ private float x, y;
 private final float width, height;
 private boolean active;
 	
-public HandMenuItem(BufferedImage image, float x, float y)
-{
+HandMenuItem(BufferedImage image, float x, float y) {
 	this.image = image;
 	active = false;
 	this.x = x;
@@ -25,13 +24,11 @@ public HandMenuItem(BufferedImage image, float x, float y)
 	height = 41;
 }
 
-public Rectangle getBounds()
-{
+public Rectangle getBounds() {
 	return new Rectangle((int) x, (int) y, (int) width, (int) height);
 }
 
-public void drawItem(Graphics2D g2d)
-{
+public void drawItem(Graphics2D g2d) {
 	g2d.drawImage(image, (int) x, (int) y, null);
 	if (active) g2d.drawImage(Textures.getInstance().handMenuItemFrame, (int) x-2, (int) y-8, null);
 	g2d.setFont(MainClass.verdana18Font);

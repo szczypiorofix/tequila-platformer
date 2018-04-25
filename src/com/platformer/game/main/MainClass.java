@@ -30,17 +30,14 @@ import com.platformer.game.sounds.Music;
 import com.platformer.game.sounds.SoundsLoader;
 
 
-
-
-/** Główna klasa uruchamiająca grę. To tutaj zainicjowane są początkowe warunki gry, ładowane tekstury czy inne pliki
+/**
+ * Główna klasa uruchamiająca grę. To tutaj zainicjowane są początkowe warunki gry, ładowane tekstury czy inne pliki
  * do pamięci. W MainClass inicjowane jest podstawowe okno gry. Tutaj również znajduje się game loop oraz przygotowywane
  * do użytku są obiekty klas HallOfFame oraz Achievements.
  * @author Piotrek
  *
  */
 public class MainClass implements Runnable {
-
-
 
 public static final File achievementsFile = new File("achievements.dat");
 public static final File collectiblesFile = new File("collectibles.dat");
@@ -69,7 +66,7 @@ private final InputStream SMOKUN_FONT = getClass().getResourceAsStream("/Smokum-
 private final InputStream TEXAS_FONT = getClass().getResourceAsStream("/Cowboy_Hippie_Pro.otf");
 private final double amountOfTicks = 60.0;
 
-public static boolean DEBUG_MODE;
+private static boolean DEBUG_MODE;
 
 private Thread gameThread;
 private Thread musicThread;
@@ -105,9 +102,6 @@ public MainClass()
 	{
 		try {
 			fileHandler = new FileHandler("platformer.log", false);
-		} catch (SecurityException e1) {
-			e1.printStackTrace();
-			System.exit(-1);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			System.exit(-1);
@@ -128,8 +122,7 @@ public MainClass()
 }
 
 
-public void loadProperties()
-{	
+private void loadProperties() {
 	if(gameConfigFile.exists() && !gameConfigFile.isDirectory())
 	{
 		language = Languages.polish;
@@ -163,8 +156,7 @@ public void loadProperties()
 	}	
 }
 
-public void saveOptions()
-{
+public void saveOptions() {
 	prop.put("Language", language.toString());
 
 	try {
@@ -178,8 +170,7 @@ public void saveOptions()
 	}
 }
 
-private void splashScreen()
-{
+private void splashScreen() {
 	window = new JWindow();
 	if (language == Languages.polish) splashScreen = splashScreenLoader.loadImage("/splashScreenPl.png");
 	if (language == Languages.english) splashScreen = splashScreenLoader.loadImage("/splashScreenEng.png");
@@ -197,8 +188,7 @@ private void splashScreen()
  * renderowania i update'owania gry.
  * 
  */
-private void gameInit()
-{
+private void gameInit() {
 	if(gamepadConfigFile.exists() && !gamepadConfigFile.isDirectory()) gamepadConfigFileEnabled = true;
 	
 	try {
@@ -253,8 +243,7 @@ private void gameInit()
 }
 
 
-public synchronized void musicThreadStart()
-{
+private synchronized void musicThreadStart() {
 	if (musicThreadRunning) return;
 	musicThreadRunning = true;
 	musicThread = new Thread(new MusicThread());
@@ -265,8 +254,7 @@ public synchronized void musicThreadStart()
 /** Metoda uruchamiająca wątek renderowania i obliczania logiki gry.
  * 
  */
-public synchronized void gameThreadStart()
-{
+private synchronized void gameThreadStart() {
 	if (gameThreadRunning) return;
 	gameThreadRunning = true;
 	gameThread = new Thread(this);
@@ -275,8 +263,7 @@ public synchronized void gameThreadStart()
 
 
 @Override
-public void run()
-{	
+public void run() {
 	gameWindow.requestFocus();
 	
 	gameState = GameState.Game;
@@ -334,8 +321,7 @@ public void run()
 	}
 }
 
-private void prepareHallOfFame()
-{
+private void prepareHallOfFame() {
 	hallOfFameList = nc.getHOFRecordsFromServer();
 	
 	hallOfFame = new HallOfFame(hallOfFameList);
@@ -344,8 +330,7 @@ private void prepareHallOfFame()
 
 
 
-public void prepareCollectibles()
-{	
+private void prepareCollectibles() {
 	if (!MainClass.collectiblesFile.exists() && !MainClass.collectiblesFile.isDirectory())
 	{
 		for (int i = 0; i < collectiblesList.length; i++)
@@ -382,8 +367,7 @@ public void prepareCollectibles()
 
 
 @SuppressWarnings("unchecked")
-private void prepareAchievements()
-{
+private void prepareAchievements() {
 	
 	achievementsList = new HashMap<Integer, Boolean>(Achievements.maxAchievements);
 	for (int i = 0; i < Achievements.maxAchievements; i++) achievementsList.put(i, false);
@@ -451,8 +435,7 @@ private void prepareAchievements()
  * @param level Poziom informacji (z reguły INFO lub WARNING)
  * @param msg Treść wiadomości do loga.
  */
-public static void logging(boolean critical, Level level, String msg)
-{
+public static void logging(boolean critical, Level level, String msg) {
 	if (DEBUG_MODE)
 	{
 		LOGGER.log(level, msg);
@@ -478,8 +461,7 @@ public static String getStackTrace(final Throwable throwable) {
 
 
 // URUCHAMIANIE Z "-DEBUG" Wďż˝ACZA DEBUG-MODE.
-public static void main(String[] args)
-{
+public static void main(String[] args) {
 	if (args.length > 0)
 	if (args[0].equalsIgnoreCase("-debug")) DEBUG_MODE = true;
 	else DEBUG_MODE = false;
@@ -492,19 +474,13 @@ public static void main(String[] args)
  * @author Piotrek
  *
  */
-private class MusicThread implements Runnable
-{
-
+private class MusicThread implements Runnable {
 	@Override
 	public void run() {
-
 		MainClass.logging(false, Level.INFO, "Wątek muzyczny uruchomiony.");
-		
 		music.setPlaying(true);
 		music.restart(Music.WESTERN);
-		
-		while (musicThreadRunning)
-		{	
+		while (musicThreadRunning) {
 			if (music.isPlaying()) {
 				music.play();
 				music.restart(music.getSong());

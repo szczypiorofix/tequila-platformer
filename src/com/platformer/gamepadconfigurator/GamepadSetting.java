@@ -10,12 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.platformer.game.graphics.BufferedImageLoader;
 
@@ -52,7 +47,7 @@ private InputThread inputThread;
 public GamepadSetting()
 {
 	frame = new JFrame("GamePad configuration");
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	frame.setSize(400,  300);
 	frame.setLocationRelativeTo(null);
 	frame.setResizable(false);
@@ -66,51 +61,45 @@ public GamepadSetting()
 	frame.setIconImage(new BufferedImageLoader().loadImage("/gamepad.png"));
 	southPane.add(saveButton);
 	saveButton.setEnabled(false);
-	saveButton.addActionListener(new ActionListener()
-	{
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			Properties prop = new Properties();
-			prop.put("Left", left.getName());
-			prop.put("value_left", Float.toString(leftValue));
-			prop.put("Right", right.getName());
-			prop.put("value_right", Float.toString(rightValue));
-			prop.put("Jump", jump.getName());
-			prop.put("value_jump", Float.toString(jumpValue));
-			prop.put("Start", start.getName());
-			prop.put("value_start", Float.toString(startValue));
-			prop.put("Up", up.getName());
-			prop.put("value_up", Float.toString(upValue));
-			prop.put("Down", down.getName());
-			prop.put("value_down", Float.toString(downValue));
-			
-			File file = new File("input.cfg");
-			try {
-			FileOutputStream fileOut = new FileOutputStream(file);
-			prop.store(fileOut, "Gamepad Input");
-			fileOut.close();
-			}
-			catch (Exception ex)
-			{
-				ex.printStackTrace();
-			}
-			System.exit(0);
-		}
-	});
+	saveButton.addActionListener(e -> {
+        Properties prop = new Properties();
+        prop.put("Left", left.getName());
+        prop.put("value_left", Float.toString(leftValue));
+        prop.put("Right", right.getName());
+        prop.put("value_right", Float.toString(rightValue));
+        prop.put("Jump", jump.getName());
+        prop.put("value_jump", Float.toString(jumpValue));
+        prop.put("Start", start.getName());
+        prop.put("value_start", Float.toString(startValue));
+        prop.put("Up", up.getName());
+        prop.put("value_up", Float.toString(upValue));
+        prop.put("Down", down.getName());
+        prop.put("value_down", Float.toString(downValue));
+
+        File file = new File("input.cfg");
+        try {
+        FileOutputStream fileOut = new FileOutputStream(file);
+        prop.store(fileOut, "Gamepad Input");
+        fileOut.close();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        System.exit(0);
+    });
 
 	controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
-	
-    for(int i =0;i<controllers.length;i++) {
 
-    	if (controllers[i].getType() == Controller.Type.GAMEPAD || controllers[i].getType() == Controller.Type.STICK) {
-    		myGamepad = controllers[i];
-    		anyGamePad = true;
-    	}
-    }
+	for (Controller controller : controllers) {
+		if (controller.getType() == Controller.Type.GAMEPAD || controller.getType() == Controller.Type.STICK) {
+			myGamepad = controller;
+			anyGamePad = true;
+		}
+	}
     
     if (!anyGamePad) {
-    	JOptionPane.showMessageDialog(frame, "Nie wykryto �adnego urz�dzenia typu gamepad lub stick", "ERROR 13", JOptionPane.ERROR_MESSAGE);
+    	JOptionPane.showMessageDialog(frame, "Nie wykryto żadnego urządzenia typu gamepad lub stick", "ERROR 13", JOptionPane.ERROR_MESSAGE);
     	System.exit(0);
     }
     
@@ -177,11 +166,9 @@ public GamepadSetting()
    thread.start();
 }
 
-
-
+//TODO Rozbić to na osobne klasy
 public class ButtonListener implements ActionListener
 {
-
 	@Override
 	public void actionPerformed(ActionEvent e) {		
 		if (e.getActionCommand().equalsIgnoreCase("RIGHT")) awaitingButton = 1;
@@ -198,73 +185,71 @@ public class ButtonListener implements ActionListener
 		else if (awaitingButton == 5) awaitingLabel.setText("Oczekiwanie na przycisk UP ...");
 		else if (awaitingButton == 6) awaitingLabel.setText("Oczekiwanie na przycisk DOWN ...");
 		awaitingDialog.setVisible(true);
-		
 	}
 }
 
-
+//TODO Rozbić to na osobne klasy
 public class InputThread implements Runnable
 {
 
-@Override
-public void run()
-{
+	@Override
+	public void run() {
 
-	while(true) {
-		myGamepad.poll();
-        
-        net.java.games.input.EventQueue queue = myGamepad.getEventQueue();
-        
-        Event event = new Event();
-        while(queue.getNextEvent(event))
-        {
-        	Component comp = event.getComponent();
-        	float value = event.getValue();          	
-        	if ((awaitingDialog.isVisible()) && awaitingButton != 0) {
-        		
-        		if (awaitingButton == 1 && (value > 0.2f || value < -0.2f)) {
-        			System.out.println("RIGHT przypisany do " +comp.getName() +" " +value+"");
-        			rightLabel.setText(comp.getName() +" " +value);
-        			right = comp;
-        			rightValue = value;
-        		}
-        		if (awaitingButton == 2 && (value > 0.2f || value < -0.2f)) {
-        			System.out.println("LEFT przypisany do " +comp.getName() +" " +value+"");
-        			leftLabel.setText(comp.getName() +" " +value);
-        			left = comp;
-        			leftValue = value;
-        		}
-        		if (awaitingButton == 3 && (value > 0.2f || value < -0.2f)) {
-        			System.out.println("JUMP przypisany do " +comp.getName() +" " +value+"");
-        			jumpLabel.setText(comp.getName() +" " +value);
-        			jump = comp;
-        			jumpValue = value;
-        		}
-        		if (awaitingButton == 4 && (value > 0.2f || value < -0.2f)) {
-        			System.out.println("START/EXIT przypisany do " +comp.getName() +" " +value+"");
-        			startLabel.setText(comp.getName() +" " +value);
-        			start = comp;
-        			startValue = value;
-        		}
-        		if (awaitingButton == 5 && (value > 0.2f || value < -0.2f)) {
-        			System.out.println("UP przypisany do " +comp.getName() +" " +value+"");
-        			upLabel.setText(comp.getName() +" " +value);
-        			up = comp;
-        			upValue = value;
-        		}
-        		if (awaitingButton == 6 && (value > 0.2f || value < -0.2f)) {
-        			System.out.println("DOWN przypisany do " +comp.getName() +" " +value+"");
-        			downLabel.setText(comp.getName() +" " +value);
-        			down = comp;
-        			downValue = value;
-        		}
-        		awaitingButton = 0;
-        		awaitingDialog.setVisible(false);
-        		if (left != null && right != null && jump != null && start != null && up != null && down != null) saveButton.setEnabled(true);
-        	}
-        }
+		while(true) {
+			myGamepad.poll();
+
+			net.java.games.input.EventQueue queue = myGamepad.getEventQueue();
+
+			Event event = new Event();
+			while(queue.getNextEvent(event))
+			{
+				Component comp = event.getComponent();
+				float value = event.getValue();
+				if ((awaitingDialog.isVisible()) && awaitingButton != 0) {
+
+					if (awaitingButton == 1 && (value > 0.2f || value < -0.2f)) {
+						System.out.println("RIGHT przypisany do " +comp.getName() +" " +value+"");
+						rightLabel.setText(comp.getName() +" " +value);
+						right = comp;
+						rightValue = value;
+					}
+					if (awaitingButton == 2 && (value > 0.2f || value < -0.2f)) {
+						System.out.println("LEFT przypisany do " +comp.getName() +" " +value+"");
+						leftLabel.setText(comp.getName() +" " +value);
+						left = comp;
+						leftValue = value;
+					}
+					if (awaitingButton == 3 && (value > 0.2f || value < -0.2f)) {
+						System.out.println("JUMP przypisany do " +comp.getName() +" " +value+"");
+						jumpLabel.setText(comp.getName() +" " +value);
+						jump = comp;
+						jumpValue = value;
+					}
+					if (awaitingButton == 4 && (value > 0.2f || value < -0.2f)) {
+						System.out.println("START/EXIT przypisany do " +comp.getName() +" " +value+"");
+						startLabel.setText(comp.getName() +" " +value);
+						start = comp;
+						startValue = value;
+					}
+					if (awaitingButton == 5 && (value > 0.2f || value < -0.2f)) {
+						System.out.println("UP przypisany do " +comp.getName() +" " +value+"");
+						upLabel.setText(comp.getName() +" " +value);
+						up = comp;
+						upValue = value;
+					}
+					if (awaitingButton == 6 && (value > 0.2f || value < -0.2f)) {
+						System.out.println("DOWN przypisany do " +comp.getName() +" " +value+"");
+						downLabel.setText(comp.getName() +" " +value);
+						down = comp;
+						downValue = value;
+					}
+					awaitingButton = 0;
+					awaitingDialog.setVisible(false);
+					if (left != null && right != null && jump != null && start != null && up != null && down != null) saveButton.setEnabled(true);
+				}
+			}
+		}
 	}
-}
 }
 
 
@@ -273,8 +258,7 @@ public static void main(String[] args)
 	EventQueue.invokeLater(new Runnable()
 	{
 		@Override
-		public void run()
-		{
+		public void run() {
 			new GamepadSetting();	
 		}
 	});

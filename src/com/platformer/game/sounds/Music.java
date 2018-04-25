@@ -10,7 +10,7 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 
-/** Podstawowa klasa zajmuj¹ca siê odtwarzaniem muzyki z plików w formacie mp3.
+/** Podstawowa klasa zajmujÄ…ca siÄ™ odtwarzaniem muzyki z plikÃ³w w formacie mp3.
  * @author Piotrek
  *
  */
@@ -33,17 +33,17 @@ public static final int MIRAGE = 2;
  */
 public static final int VICTORY = 3;
 
-/** Obiekt klasy Player. G³ówny odtwarzacz mp3 ze strumienia fis.
+/** Obiekt klasy Player. GÅ‚Ã³wny odtwarzacz mp3 ze strumienia fis.
  *
  */
 private Player player;
 
-/** Obiekt klasy InputStream czyli strumieñ wejœciowy z pliku mp3.
+/** Obiekt klasy InputStream czyli strumieÅ„ wejÅ›ciowy z pliku mp3.
  * 
  */
 private InputStream fis;
 
-/** Przyjmuje wartoœæ "true" jeœli odtwarzana jest jakakolwiek muzyka. 
+/** Przyjmuje wartoÅ›Ä‡ "true" jeÅ›li odtwarzana jest jakakolwiek muzyka.
  * 
  */
 private boolean playing = false;
@@ -66,7 +66,7 @@ public Music()
 
 
 
-/** Metoda odœwie¿aj¹ca strumienie oraz inicjuj¹ca nowy odtwarzacz mp3 (Player)
+/** Metoda odÅ›wieÅ¼ajÄ…ca strumienie oraz inicjujÄ…ca nowy odtwarzacz mp3 (Player)
  * 
  * @param song : WESTERN lub MIRAGE
  */
@@ -78,32 +78,31 @@ public void restart(int song)
 		if (this.song == MIRAGE) fis = this.getClass().getResourceAsStream("/mirage.mp3");
 		if (this.song == VICTORY) fis = this.getClass().getResourceAsStream("/victory.mp3");
 		player = new Player(new BufferedInputStream(fis));
-		MainClass.logging(false, Level.INFO, "Plik z muzyk¹ nr." +song +" za³adowany poprawnie.");
+		MainClass.logging(false, Level.INFO, "Plik z muzykÄ… nr." +song +" zaÅ‚adowany poprawnie.");
 	} catch (JavaLayerException e) {
-		MainClass.logging(false, Level.WARNING, "B³¹d odczytu strumienia z pliku nr." +song);
+		MainClass.logging(false, Level.WARNING, "BÅ‚Ä…d odczytu strumienia z pliku nr." +song);
 		MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(e));
 	}		
 }
 
-/** Metoda rozpoczynaj¹ca odtwarzanie pliku mp3.
+/** Metoda rozpoczynajÄ…ca odtwarzanie pliku mp3.
  * 
  */
 public void play()
 {
 	try {
 		player.play();
-		MainClass.logging(false, Level.INFO, "Odtwarzanie pliku z muzyk¹ nr." +song);
+		MainClass.logging(false, Level.INFO, "Odtwarzanie pliku z muzykÄ… nr." +song);
 	} catch (JavaLayerException e) {
-		MainClass.logging(false, Level.WARNING, "B³¹d odtwarzania z pliku nr." +song);
+		MainClass.logging(false, Level.WARNING, "BÅ‚Ä…d odtwarzania z pliku nr." +song);
 		MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(e));
 	}		
 }
 
-/** Metoda zatrzymuj¹ca odtwarzanie pliku mp3.
+/** Metoda zatrzymujÄ…ca odtwarzanie pliku mp3.
  * 
  */
-public void stop()
-{
+public void stop() {
 	if (playing)
 	{
 		player.close();
@@ -111,7 +110,7 @@ public void stop()
 	}
 }
 
-/** Metoda zwracaj¹ca wartoœæ true lub false w zale¿noœci od tego czy plik jest w tym momencie odtwarzany.
+/** Metoda zwracajÄ…ca wartoÅ›Ä‡ true lub false w zaleÅ¼noÅ›ci od tego czy plik jest w tym momencie odtwarzany.
  * @return true lub false
  */
 public boolean isPlaying() {
@@ -119,8 +118,8 @@ public boolean isPlaying() {
 }
 
 
-/** Metoda przypisujaca wartoœæ true lub false do wartoœci "playing", co wp³ywa na odtwarzanie lub zatrzymanie odtwarzania pliku mp3.
- * @param playing true lub false - plik ma byæ odtwarzany b¹dŸ nie.
+/** Metoda przypisujaca wartoÅ›Ä‡ true lub false do wartoÅ›ci "playing", co wpÅ‚ywa na odtwarzanie lub zatrzymanie odtwarzania pliku mp3.
+ * @param playing true lub false - plik ma byÄ‡ odtwarzany bÄ…dÅº nie.
  * 
  */
 public void setPlaying(boolean playing) {

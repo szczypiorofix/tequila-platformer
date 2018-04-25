@@ -42,10 +42,10 @@ public SoundsLoader(String path)
 		clip = AudioSystem.getClip();
 		clip.open(dais);
 		gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		MainClass.logging(false, Level.INFO, "Plik dŸwiêkowy (.wav) " +path +" za³adowany poprawnie");
+		MainClass.logging(false, Level.INFO, "Plik dÅºwiÄ™kowy (.wav) " +path +" zaÅ‚adowany poprawnie");
     }
 	catch(Exception ex) {
-			MainClass.logging(false, Level.WARNING, "B³¹d odczytu z pliku " +path);
+			MainClass.logging(false, Level.WARNING, "BÅ‚Ä…d odczytu z pliku " +path);
 			MainClass.logging(true, Level.WARNING, MainClass.getStackTrace(ex));
     	}
 }

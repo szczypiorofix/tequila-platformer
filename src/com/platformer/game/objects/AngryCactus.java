@@ -35,8 +35,7 @@ public AngryCactus(float x, float y) {
 
 @Override
 public void render(Graphics g) {
-	if (action)
-	{
+	if (action) {
 		if (direction == 1) g.drawImage(Textures.getInstance().angryCactusR, (int) x, (int) y-30, null);
 		else g.drawImage(Textures.getInstance().angryCactusL, (int) x, (int) y-30, null);	
 	}

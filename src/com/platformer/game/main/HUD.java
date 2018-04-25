@@ -15,8 +15,7 @@ import com.platformer.game.graphics.Textures;
 public class HUD {
 
 
-public HUD()
-{
+HUD() {
 }
 
 
@@ -32,8 +31,7 @@ public HUD()
  */
 public void showGameHud(Graphics2D g2d, GameState gameState, Achievements achievements, HallOfFame hallOfFame, int fps_count, int ticks_count)
 {
-	switch (gameState)
-	{
+	switch (gameState) {
 	case Game: {
 		break;
 	}

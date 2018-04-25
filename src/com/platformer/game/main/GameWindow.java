@@ -12,25 +12,23 @@ import com.platformer.game.graphics.BufferedImageLoader;
 public class GameWindow extends Frame implements WindowListener{
 
 private static final long serialVersionUID = 8434543456858249978L;
-public static DisplayMode currentDisplayMode = null;
-private BufferedImageLoader loader = new BufferedImageLoader();
+//public static DisplayMode currentDisplayMode = null;
 private MainClass mainclass;
 
-public GameWindow(MainClass mainClass)
-{	
+GameWindow(MainClass mainClass) {
 	this.mainclass = mainClass;
 	this.setIgnoreRepaint(true);
 	this.setTitle("TEQUILA PLATFORMER");
 	this.setResizable(false);
 	this.setSize(1006, 628);
 	this.setLocationRelativeTo(null);
-	this.setBackground(Color.BLACK);    
+	this.setBackground(Color.BLACK);
+	BufferedImageLoader loader = new BufferedImageLoader();
 	this.setIconImage(loader.loadImage("/programIcon.png"));
 	this.addWindowListener(this);
 }
 
-public void showWindow(boolean showWindow)
-{
+public void showWindow(boolean showWindow) {
 	this.setVisible(showWindow);
 	if (!showWindow) {
 		mainclass.saveOptions();

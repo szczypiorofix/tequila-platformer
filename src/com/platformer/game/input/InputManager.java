@@ -18,13 +18,11 @@ private int keyCode;
 private char key;
 
 
-private enum KeyState
-{
+private enum KeyState {
 	PRESSED, RELEASED, ONCE;
 }
 
-public InputManager()
-{
+public InputManager() {
 	keys = new boolean[MAX_KEYS];
 	keyState = new KeyState[MAX_KEYS];
 	for (int i = 0; i < MAX_KEYS; i++) keyState[i] = KeyState.RELEASED;
@@ -45,18 +43,15 @@ public synchronized void update() {
 	}
 }
 
-public boolean isKeyPressed(int key)
-{
+public boolean isKeyPressed(int key) {
 	return keyState[key] == KeyState.ONCE || keyState[key] == KeyState.PRESSED;
 }
 
-public boolean isKeyPressedOnce(int key)
-{
+public boolean isKeyPressedOnce(int key) {
 	return keyState[key] == KeyState.ONCE;
 }
 
-public boolean isAnyKeyPressedOnce()
-{
+public boolean isAnyKeyPressedOnce() {
 	boolean b = false;
 	for (int i = 0; i < MAX_KEYS; i++)
 	{
@@ -68,8 +63,7 @@ public boolean isAnyKeyPressedOnce()
 	return b;
 }
 
-public boolean isAnyKeyPressed()
-{
+public boolean isAnyKeyPressed() {
 	boolean b = false;
 	for (int i = 0; i < MAX_KEYS; i++)
 	{
@@ -81,13 +75,11 @@ public boolean isAnyKeyPressed()
 	return b;
 }
 
-public int getKeyNumber()
-{
+public int getKeyNumber() {
 	return keyCode;
 }
 
-public char getKey()
-{
+public char getKey() {
 	return key;
 }
 
@@ -104,7 +96,6 @@ public synchronized void keyPressed(KeyEvent e) {
 
 @Override
 public synchronized void keyReleased(KeyEvent e) {
-
 	keyCode = e.getKeyCode();
 	if (keyCode >= 0 && keyCode < MAX_KEYS)
 	{
@@ -115,44 +106,27 @@ public synchronized void keyReleased(KeyEvent e) {
 @Override
 public void keyTyped(KeyEvent e) {}
 
+@Override
+public void mouseWheelMoved(MouseWheelEvent m) {}
 
 @Override
-public void mouseWheelMoved(MouseWheelEvent m) {
-}
-
+public void mouseDragged(MouseEvent e) {}
 
 @Override
-public void mouseDragged(MouseEvent e) {
-}
-
+public void mouseMoved(MouseEvent e) {}
 
 @Override
-public void mouseMoved(MouseEvent e) {
-}
-
+public void mouseClicked(MouseEvent e) {}
 
 @Override
-public void mouseClicked(MouseEvent e) {
-}
-
+public void mouseEntered(MouseEvent e) {}
 
 @Override
-public void mouseEntered(MouseEvent e) {
-}
-
+public void mouseExited(MouseEvent e) {}
 
 @Override
-public void mouseExited(MouseEvent e) {
-}
-
+public void mousePressed(MouseEvent e) {}
 
 @Override
-public void mousePressed(MouseEvent e) {
-}
-
-
-@Override
-public void mouseReleased(MouseEvent e) {
-}
-
+public void mouseReleased(MouseEvent e) {}
 }

@@ -18,9 +18,9 @@ public BufferedImage loadImage(String path)
 {
 	try {
 		image = ImageIO.read(getClass().getResource(path));
-		MainClass.logging(false, Level.INFO, "Obraz "+path +" za³adowany poprawnie.");
+		MainClass.logging(false, Level.INFO, "Obraz "+path +" zaÅ‚adowany poprawnie.");
 	} catch (IOException ex) {
-		MainClass.logging(false, Level.WARNING, "B³¹d ³adowania obrazu " +path);
+		MainClass.logging(false, Level.WARNING, "BÅ‚Ä…d Å‚adowania obrazu " +path);
 		MainClass.logging(false, Level.WARNING, MainClass.getStackTrace(ex));
 	}
 	return image;

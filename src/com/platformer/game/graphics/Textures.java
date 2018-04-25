@@ -17,15 +17,15 @@ public final class Textures {
 private static Textures instance = null;
 
 
-public BufferedImage[] block = new BufferedImage[12];
+//public BufferedImage[] block = new BufferedImage[12];
 public BufferedImage[] playerRunR = new BufferedImage[10];
 public BufferedImage[] playerRunL = new BufferedImage[10];
 public BufferedImage[] playerIdleR = new BufferedImage[10];
 public BufferedImage[] playerIdleL = new BufferedImage[10];
 public BufferedImage[] playerJumpR = new BufferedImage[5];
 public BufferedImage[] playerJumpL = new BufferedImage[5];
-public BufferedImage[] playerDeadR = new BufferedImage[7];
-public BufferedImage[] playerDeadL = new BufferedImage[7];
+//public BufferedImage[] playerDeadR = new BufferedImage[7];
+//public BufferedImage[] playerDeadL = new BufferedImage[7];
 
 public BufferedImage backGroundMountains, bg_gory, bg_niebo;
 public BufferedImage screenShotImage;
@@ -39,8 +39,8 @@ public BufferedImage[] blocks = new BufferedImage[16];
 public BufferedImage movingBlockX, movingBlockY;
 public BufferedImage waterDeep, water1, water2, water3, water4, water5;
 public BufferedImage levelend;
-private BufferedImage coinImage;
-public SpriteSheet coinSheet;  // http://opengameart.org/content/coins-asset
+//private BufferedImage coinImage;
+//private SpriteSheet coinSheet;  // http://opengameart.org/content/coins-asset
 public BufferedImage[] coinAnim = new BufferedImage[61];
 public BufferedImage[] beeR = new BufferedImage[5];
 public BufferedImage[] beeL = new BufferedImage[5];
@@ -107,12 +107,17 @@ public final BufferedImage megaJumpImage;
 public final BufferedImage sprinterImage;
 
 
-public BufferedImage howToPlayImagePL, howToPlayImageEN, hallOfFameImage, creditsImagePL, creditsImageEN, achievementsMenuBGImage, collectiblesImage;
+public BufferedImage howToPlayImagePL,
+        howToPlayImageEN,
+        hallOfFameImage,
+        creditsImagePL,
+        creditsImageEN,
+        achievementsMenuBGImage,
+        collectiblesImage;
 
 
 
-private Textures()
-{	
+private Textures() {
 	BufferedImageLoader loader = new BufferedImageLoader();
 		
 	// http://charas-project.net/charas2/  - GENERATOR !!!
@@ -189,21 +194,21 @@ private Textures()
 	playerJumpL[3] = loader.loadImage("/Jump03L.png");
 	playerJumpL[4] = loader.loadImage("/Jump04L.png");
 	
-	playerDeadR[0] = loader.loadImage("/Dead00R.png");  // PLAYER DEAD RIGHT
-	playerDeadR[1] = loader.loadImage("/Dead01R.png");
-	playerDeadR[2] = loader.loadImage("/Dead02R.png");
-	playerDeadR[3] = loader.loadImage("/Dead03R.png");
-	playerDeadR[4] = loader.loadImage("/Dead04R.png");
-	playerDeadR[5] = loader.loadImage("/Dead05R.png");
-	playerDeadR[6] = loader.loadImage("/Dead06R.png");
-	
-	playerDeadL[0] = loader.loadImage("/Dead00L.png");  // PLAYER DEAD LEFT
-	playerDeadL[1] = loader.loadImage("/Dead01L.png");
-	playerDeadL[2] = loader.loadImage("/Dead02L.png");
-	playerDeadL[3] = loader.loadImage("/Dead03L.png");
-	playerDeadL[4] = loader.loadImage("/Dead04L.png");
-	playerDeadL[5] = loader.loadImage("/Dead05L.png");
-	playerDeadL[6] = loader.loadImage("/Dead06L.png");
+//	playerDeadR[0] = loader.loadImage("/Dead00R.png");  // PLAYER DEAD RIGHT
+//	playerDeadR[1] = loader.loadImage("/Dead01R.png");
+//	playerDeadR[2] = loader.loadImage("/Dead02R.png");
+//	playerDeadR[3] = loader.loadImage("/Dead03R.png");
+//	playerDeadR[4] = loader.loadImage("/Dead04R.png");
+//	playerDeadR[5] = loader.loadImage("/Dead05R.png");
+//	playerDeadR[6] = loader.loadImage("/Dead06R.png");
+//
+//	playerDeadL[0] = loader.loadImage("/Dead00L.png");  // PLAYER DEAD LEFT
+//	playerDeadL[1] = loader.loadImage("/Dead01L.png");
+//	playerDeadL[2] = loader.loadImage("/Dead02L.png");
+//	playerDeadL[3] = loader.loadImage("/Dead03L.png");
+//	playerDeadL[4] = loader.loadImage("/Dead04L.png");
+//	playerDeadL[5] = loader.loadImage("/Dead05L.png");
+//	playerDeadL[6] = loader.loadImage("/Dead06L.png");
 	
 	backGroundMountains = loader.loadImage("/BG.png");  // http://opengameart.org/content/generic-platformer-tileset-16x16-background
 	sun = loader.loadImage("/sun.png");
@@ -240,8 +245,8 @@ private Textures()
 	
 	waterDeep = loader.loadImage("/17.png");
 	
-	coinImage = loader.loadImage("/coin32.png");
-	coinSheet = new SpriteSheet(coinImage);
+	BufferedImage coinImage = loader.loadImage("/coin32.png");
+	SpriteSheet coinSheet = new SpriteSheet(coinImage);
 	
 	for (int i = 1; i < 61; i++) coinAnim[i-1] = coinSheet.grabImage(i, 1, 32, 32);
 	
@@ -434,13 +439,10 @@ private Textures()
 }
 
 
-
-
-/** Metoda zwracaj� podstawow� i jedyn� instancj� klasy Textures (zgodna z wzorcem Singleton).
+/** Metoda zwracająca podstawową i jedyną instancję klasy Textures (zgodna z wzorcem Singleton).
  * @return instance - jedyna instancja obiektu klasy Textures.
  */
-public static final Textures getInstance()
-{
+public static Textures getInstance() {
 	if (instance == null) instance = new Textures();
 	return instance;
 }

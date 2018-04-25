@@ -15,20 +15,14 @@ private BufferedImage[] images;
 private BufferedImage currentImage;
 private float counter = 0.2f;
 
-public Animation(int speed, BufferedImage... args)
-{
+public Animation(int speed, BufferedImage... args) {
 	this.speed = speed;
 	images = new BufferedImage[args.length];
-	
-	for (int i = 0; i < args.length; i++)
-	{
-		images[i] = args[i];
-	}
+	System.arraycopy(args, 0, images, 0, args.length);
 	maxKlatki = args.length;
 }
 
-public void runAnimation()
-{
+public void runAnimation() {
 	index++;
 	if (index > speed)
 	{
@@ -37,18 +31,16 @@ public void runAnimation()
 	}
 }
 
-public int geMaxKlatki()
-{
-	return maxKlatki;
-}
+//public int geMaxKlatki() {
+//    return maxKlatki;
+//}
 
 public int getKlatkaAnimacji()
 {
 	return klatkaAnimacji;
 }
 
-private void nextFrame()
-{
+private void nextFrame() {
 	for (int i = 0; i < maxKlatki; i++)
 	{
 		if (klatkaAnimacji == i) currentImage = images[i];
@@ -57,7 +49,7 @@ private void nextFrame()
 	if (klatkaAnimacji >= maxKlatki) klatkaAnimacji = 0;
 }
 
-public static BufferedImage makeImageTranslucent(BufferedImage source, double alpha) {
+private static BufferedImage makeImageTranslucent(BufferedImage source, double alpha) {
     BufferedImage target = new BufferedImage(source.getWidth(),
         source.getHeight(), java.awt.Transparency.TRANSLUCENT);
     // Get the images graphics
@@ -72,13 +64,13 @@ public static BufferedImage makeImageTranslucent(BufferedImage source, double al
     return target;
 }
 
-public void drawAnimation(Graphics g,  int x, int y, boolean hit)
-{
-	if (!hit) g.drawImage(currentImage, x, y, null);
-	else {
-		counter += 0.02f;
-		if (counter > 0.8f) counter = 0.2f;
-		g.drawImage(makeImageTranslucent(currentImage, counter), x, y, null);
-	}
+public void drawAnimation(Graphics g,  int x, int y, boolean hit) {
+    if (!hit) {
+        g.drawImage(currentImage, x, y, null);
+    } else {
+        counter += 0.02f;
+        if (counter > 0.8f) counter = 0.2f;
+        g.drawImage(makeImageTranslucent(currentImage, counter), x, y, null);
+    }
 }
 }

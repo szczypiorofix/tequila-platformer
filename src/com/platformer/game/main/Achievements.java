@@ -22,7 +22,6 @@ private String achievementTextShort;
 private BufferedImage achievementImage;
 
 
-
 private int jump10Count;
 private static final int A_10JUMPS = 10;
 private boolean jumpCount10Complete = false;
@@ -173,8 +172,7 @@ private final String sprinterText = "Ukończyłeś poziom w czasie krótszym ni�
 private final String sprinterTextShort = "Szybciej, szybciej...";
 
 
-public Achievements(HashMap<Integer, Boolean> achievementsList)
-{
+public Achievements(HashMap<Integer, Boolean> achievementsList) {
 	this.achievementsList = achievementsList;
 	
 	achievementCount = showAchievementCooldown;
@@ -207,8 +205,7 @@ public Achievements(HashMap<Integer, Boolean> achievementsList)
 }
 
 
-public void restartLevel()
-{
+public void restartLevel() {
 	jump10Count = 0;
 	jump25Count = 0;
 	jump50Count = 0;
@@ -225,8 +222,7 @@ public void restartLevel()
 	sprinterCount = 0;
 }
 
-public void addJump10Count()
-{
+public void addJump10Count() {
 	if (!jumpCount10Complete) {
 		jump10Count++;
 		if (jump10Count>= A_10JUMPS) {
@@ -240,8 +236,7 @@ public void addJump10Count()
 	}
 }
 
-public void addJump25Count()
-{
+public void addJump25Count() {
 	if (!jumpCount25Complete) {
 		jump25Count++;
 		if (jump25Count>= A_25JUMPS) {
@@ -255,8 +250,7 @@ public void addJump25Count()
 	}
 }
 
-public void addJump50Count()
-{
+public void addJump50Count() {
 	if (!jumpCount50Complete) {
 		jump50Count++;
 		if (jump50Count>= A_50JUMPS) {
@@ -270,8 +264,7 @@ public void addJump50Count()
 	}
 }
 
-public void addCoin20Count()
-{
+public void addCoin20Count() {
 	if (!coinCount20Complete) {
 		coin20Count++;
 		if (coin20Count>= A_20COINS) {
@@ -285,8 +278,7 @@ public void addCoin20Count()
 	}
 }
 
-public void addCoin50Count()
-{
+public void addCoin50Count() {
 	if (!coinCount50Complete) {
 		coin50Count++;
 		if (coin50Count>= A_50COINS) {
@@ -300,8 +292,7 @@ public void addCoin50Count()
 	}
 }
 
-public void addCoin100Count()
-{
+public void addCoin100Count() {
 	if (!coinCount100Complete) {
 		coin100Count++;
 		if (coin100Count>= A_100COINS) {
@@ -315,8 +306,7 @@ public void addCoin100Count()
 	}
 }
 
-public void addCoin150Count()
-{
+public void addCoin150Count() {
 	if (!coinCount150Complete) {
 		coin150Count++;
 		if (coin150Count>= A_150COINS) {
@@ -331,8 +321,7 @@ public void addCoin150Count()
 }
 
 
-public void addPowerup3Count()
-{
+public void addPowerup3Count() {
 	if (!powerupCount3Complete) {
 		powerup3Count++;
 		if (powerup3Count>= A_3POWERUP) {
@@ -346,8 +335,7 @@ public void addPowerup3Count()
 	}
 }
 
-public void addComplete1LevelCount()
-{
+public void addComplete1LevelCount() {
 	if (!complete1LevelComplete) {
 		complete1LevelCount++;
 		if (complete1LevelCount>= A_COMPLETE1LEVEL) {
@@ -361,8 +349,7 @@ public void addComplete1LevelCount()
 	}
 }
 
-public void addComplete2LevelCount()
-{
+public void addComplete2LevelCount() {
 	if (!complete2LevelComplete) {
 		complete2LevelCount++;
 		if (complete2LevelCount>= A_COMPLETE2LEVEL) {
@@ -376,8 +363,7 @@ public void addComplete2LevelCount()
 	}
 }
 
-public void addComplete3LevelCount()
-{
+public void addComplete3LevelCount() {
 	if (!complete3LevelComplete) {
 		complete3LevelCount++;
 		if (complete3LevelCount>= A_COMPLETE3LEVEL) {
@@ -391,8 +377,7 @@ public void addComplete3LevelCount()
 	}
 }
 
-public void addComplete4LevelCount()
-{
+public void addComplete4LevelCount() {
 	if (!complete4LevelComplete) {
 		complete4LevelCount++;
 		if (complete4LevelCount>= A_COMPLETE4LEVEL) {
@@ -406,8 +391,7 @@ public void addComplete4LevelCount()
 	}
 }
 
-public void addComplete5LevelCount()
-{
+public void addComplete5LevelCount() {
 	if (!complete5LevelComplete) {
 		complete5LevelCount++;
 		if (complete5LevelCount>= A_COMPLETE5LEVEL) {
@@ -421,8 +405,7 @@ public void addComplete5LevelCount()
 	}
 }
 
-public void addComplete6LevelCount()
-{
+public void addComplete6LevelCount() {
 	if (!complete6LevelComplete) {
 		complete6LevelCount++;
 		if (complete6LevelCount>= A_COMPLETE6LEVEL) {
@@ -436,8 +419,7 @@ public void addComplete6LevelCount()
 	}
 }
 
-public void addComplete7LevelCount()
-{
+public void addComplete7LevelCount() {
 	if (!complete7LevelComplete) {
 		complete7LevelCount++;
 		if (complete7LevelCount>= A_COMPLETE7LEVEL) {
@@ -451,8 +433,7 @@ public void addComplete7LevelCount()
 	}
 }
 
-public void addComplete8LevelCount()
-{
+public void addComplete8LevelCount() {
 	if (!complete8LevelComplete) {
 		complete8LevelCount++;
 		if (complete8LevelCount>= A_COMPLETE8LEVEL) {
@@ -466,8 +447,7 @@ public void addComplete8LevelCount()
 	}
 }
 
-public void addComplete9LevelCount()
-{
+public void addComplete9LevelCount() {
 	if (!complete9LevelComplete) {
 		complete9LevelCount++;
 		if (complete9LevelCount>= A_COMPLETE9LEVEL) {
@@ -481,8 +461,7 @@ public void addComplete9LevelCount()
 	}
 }
 
-public void addComplete10LevelCount()
-{
+public void addComplete10LevelCount() {
 	if (!complete10LevelComplete) {
 		complete10LevelCount++;
 		if (complete10LevelCount>= A_COMPLETE10LEVEL) {
@@ -496,8 +475,7 @@ public void addComplete10LevelCount()
 	}
 }
 
-public void addCompleteGameCount()
-{
+public void addCompleteGameCount() {
 	if (!completeGameComplete) {
 		completeGameCount++;
 		if (completeGameCount>= A_COMPLETEGAME) {
@@ -511,8 +489,7 @@ public void addCompleteGameCount()
 	}
 }
 
-public void addFindAllCoinsCount()
-{
+public void addFindAllCoinsCount() {
 	if (!findAllCoinsComplete) {
 		findAllCoinsCount++;
 		if (findAllCoinsCount>= A_FINDALLCOINS) {
@@ -526,8 +503,7 @@ public void addFindAllCoinsCount()
 	}
 }
 
-public void addFindAllPowerupsCount()
-{
+public void addFindAllPowerupsCount() {
 	if (!findAllPowerupsComplete) {
 		findAllPowerupsCount++;
 		if (findAllPowerupsCount>= A_FINDALLPOWERUPS) {
@@ -541,8 +517,7 @@ public void addFindAllPowerupsCount()
 	}
 }
 
-public void addNoHarmCount()
-{
+public void addNoHarmCount() {
 	if (!noHarmComplete) {
 		noHarmCount++;
 		if (noHarmCount>= A_NOHARM) {
@@ -557,8 +532,7 @@ public void addNoHarmCount()
 }
 
 
-public void addMegaJumpCount()
-{
+public void addMegaJumpCount() {
 	if (!megaJumpComplete) {
 		megaJumpCount++;
 		if (megaJumpCount>= A_MEGAJUMP) {
@@ -573,8 +547,7 @@ public void addMegaJumpCount()
 }
 
 
-public void addSprinterCount()
-{
+public void addSprinterCount() {
 	if (!sprinterComplete) {
 		sprinterCount++;
 		if (sprinterCount>= A_SPRINTER) {
@@ -589,8 +562,7 @@ public void addSprinterCount()
 }
 
 
-public HashMap<Integer, Boolean> getAchievementsList()
-{
+public HashMap<Integer, Boolean> getAchievementsList() {
 	return achievementsList;
 }
 
@@ -638,8 +610,7 @@ public void setAchievementImage(BufferedImage achievementImage) {
 	this.achievementImage = achievementImage;
 }
 
-public int getAchievementsUnlocked()
-{
+public int getAchievementsUnlocked() {
 	int unlocked = 0;
 	for (int i = 0; i < achievementsList.size(); i++)
 	{
@@ -647,7 +618,6 @@ public int getAchievementsUnlocked()
 	}
 	return unlocked;
 }
-
 
 
 
