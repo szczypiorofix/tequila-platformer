@@ -17,7 +17,7 @@ import javazoom.jl.player.Player;
 public class Music {
 
 	
-	/** Piosenka "Wester.mp3"
+	/** Piosenka "Western.mp3"
 	 *
 	 */
 	public static final int WESTERN = 1;

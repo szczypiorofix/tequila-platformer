@@ -17,8 +17,8 @@ public static boolean connected;
 
 private ArrayList<HallOfFamePlayer> hallOfFameRecords;
 private static final String USER_AGENT = "Mozilla/5.0";
-private static final String POST_URL_GET_RESULTS = "https://www.wroblewskipiotr.pl/gethalloffameresults.php";
-private static final String POST_URL_ADD_RESULT = "https://www.wroblewskipiotr.pl/addhalloffameresult.php";
+private static final String POST_URL_GET_RESULTS = "https://wroblewskipiotr.pl/gethalloffameresults.php";
+private static final String POST_URL_ADD_RESULT = "https://wroblewskipiotr.pl/addhalloffameresult.php";
 private static final String POST_PARAMS = "getallresults";
 private static String post_addplayer = "";
 
